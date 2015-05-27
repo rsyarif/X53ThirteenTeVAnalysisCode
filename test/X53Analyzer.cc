@@ -9,23 +9,25 @@
 #include <stdio.h>
 #include "LeptonAnalyzer.cc"
 #include "JetAnalyzer.cc"
-
+#include "../interface/TreeMaker.h"
+#include <assert.h>
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
-bool checkSameSigneLeptons(std::vector<TLepton*>);
+bool checkSameSignLeptons(std::vector<TLepton*>);
 
 int main(int argc, char* argv[]){
   //make TreeReader
   TString filename(argv[1]);
   TreeReader* tr= new TreeReader(filename);
-  TTree* t=tr->tree;  
-
-  TFile* fsig = new TFile("LeptonDists_1000_NewIso_rh_pair.root","RECREATE");
+  TTree* t=tr->tree;
+  TreeMaker* tm = new TreeMaker();
+  tm->InitTree();
+  TFile* fsig = new TFile("X53TToAll_RH_M-1000.root","RECREATE");
 
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
   TH1F* h_DilepMass = new TH1F("h_DilepMass","Generator Level Dilepton Mass", 25, 0, 1000);
-  TH1F* h_GenHT = new TH1F("h_GenHT","Generator HT", 75,0,3000);
+  //TH1F* h_GenHT = new TH1F("h_GenHT","Generator HT", 75,0,3000);
 
   /* doMuonCutFlow(fsig,t,tr);
   doBarrelElectronCutFlow(fsig,t,tr);
@@ -79,11 +81,11 @@ int main(int argc, char* argv[]){
       float dilepmass = (v1+v2).M();
       h_DilepMass->Fill(dilepmass);
       
-      float HT=0;
+      /*      float HT=0;
       for(unsigned int uijet=0; uijet<tr->genJets.size();uijet++){
 	HT+=tr->genJets.at(uijet)->pt;
       }
-      h_GenHT->Fill(HT);
+      h_GenHT->Fill(HT);*/
     }
 
 
@@ -145,8 +147,13 @@ int main(int argc, char* argv[]){
 
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
+
+    float HT=0;
+    for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
+      HT+=tr->allAK4Jets.at(uijet)->pt;
+    }
   
-    tm->FillHists(tr,t);
+    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET);
 
 
 
@@ -161,6 +168,10 @@ int main(int argc, char* argv[]){
     else nElEl+=1;
 
   }//end event loop
+
+  //write the tree
+  tm->tree->Write();
+
 
   //normalize cutflow to first bin                                                                                                                                                                                
   h_MuCutFlow->Scale( 1. / h_MuCutFlow->GetBinContent(1) );
@@ -179,6 +190,8 @@ int main(int argc, char* argv[]){
   h_MuCutFlow->GetXaxis()->SetBinLabel(11,"N_{ValidPixHits}>=1");
   h_MuCutFlow->GetXaxis()->SetBinLabel(12,"N_{TrackerLayer}>5");
   h_MuCutFlow->GetXaxis()->SetBinLabel(13,"RelIso <0.2");
+
+
 
 
   fsig->Write();
@@ -231,7 +244,7 @@ bool checkSameSignLeptons(std::vector<TLepton*> leptons){
     }
   }
 
-  return samesign
+  return samesign;
   
 }
 
@@ -243,9 +256,9 @@ std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*> leptons){
   for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
     for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
       if(leptons.at(uilep)->charge == leptons.at(ujlep)->charge){
-	samesign=true;
-	vSSLep.push_back(goodLeptons.at(uilep));
-	vSSLep.push_back(goodLeptons.at(ujlep));
+	
+	vSSLep.push_back(leptons.at(uilep));
+	vSSLep.push_back(leptons.at(ujlep));
 
       }
     }
