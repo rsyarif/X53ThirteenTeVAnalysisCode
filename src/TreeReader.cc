@@ -78,6 +78,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     if(allElectrons.at(iel)->cutBasedTight()) goodElectrons.push_back(allElectrons.at(iel));
   }
 
+
   return stat;
 }
 
@@ -221,5 +222,8 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("genPt_DileptonCalc", &genPt, &b_genPt_DileptonCalc);
   //  tree->SetBranchAddress("genCharge_DileptonCalc", &genCharge, &b_genCharge_DileptonCalc);
 
+  //met
+
+  tree->SetBranchAddress("met_DileptonCalc", &MET, &b_MET_DileptonCalc);
 
 }
