@@ -1,0 +1,166 @@
+g++ -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/cvmfs/cms.cern.ch/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_3_0/external/slc6_amd64_gcc491/bin/../../../../../../lcg/root/5.34.18-cms6/include -L/cvmfs/cms.cern.ch/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_3_0/external/slc6_amd64_gcc491/bin/../../../../../../lcg/root/5.34.18-cms6/lib -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl -rdynamic -L/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/../lib -I/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/tools -lObjects -lz -O2 -Wall -o X53Analyzer.o X53Analyzer.cc
+In file included from X53Analyzer.cc:10:0:
+LeptonAnalyzer.cc: In function 'void doBarrelElectronCutFlow(TFile*, TTree*, TreeReader*)':
+LeptonAnalyzer.cc:333:7: error: 'nAllMatchedElBarrel' was not declared in this scope
+       nAllMatchedElBarrel+=1;
+       ^
+LeptonAnalyzer.cc:334:7: error: 'MatchedElBarrel_Pt' was not declared in this scope
+       MatchedElBarrel_Pt->Fill(matchedElectrons.at(iel)->pt);
+       ^
+LeptonAnalyzer.cc:336:7: error: 'nMatchedElBarrelPtCut' was not declared in this scope
+       nMatchedElBarrelPtCut+=1;
+       ^
+LeptonAnalyzer.cc:339:7: error: 'nMatchedElBarreldEtaCut' was not declared in this scope
+       nMatchedElBarreldEtaCut+=1;
+       ^
+LeptonAnalyzer.cc:342:7: error: 'nMatchedElBarreldPhiCut' was not declared in this scope
+       nMatchedElBarreldPhiCut+=1;
+       ^
+LeptonAnalyzer.cc:345:7: error: 'nMatchedElBarrelsigmaIetaIetaCut' was not declared in this scope
+       nMatchedElBarrelsigmaIetaIetaCut+=1;
+       ^
+LeptonAnalyzer.cc:348:7: error: 'nMatchedElBarrelhOverECut' was not declared in this scope
+       nMatchedElBarrelhOverECut+=1;
+       ^
+LeptonAnalyzer.cc:351:7: error: 'nMatchedElBarreld0Cut' was not declared in this scope
+       nMatchedElBarreld0Cut+=1;
+       ^
+LeptonAnalyzer.cc:354:7: error: 'nMatchedElBarreldZCut' was not declared in this scope
+       nMatchedElBarreldZCut+=1;
+       ^
+LeptonAnalyzer.cc:357:7: error: 'nMatchedElBarrelooEmooPCut' was not declared in this scope
+       nMatchedElBarrelooEmooPCut+=1;
+       ^
+LeptonAnalyzer.cc:360:7: error: 'nMatchedElBarrelmHitsCut' was not declared in this scope
+       nMatchedElBarrelmHitsCut+=1;
+       ^
+LeptonAnalyzer.cc:363:7: error: 'nMatchedElBarrelRelIsoCut' was not declared in this scope
+       nMatchedElBarrelRelIsoCut+=1;
+       ^
+LeptonAnalyzer.cc:366:7: error: 'nMatchedElBarrelchargeConsistencyCut' was not declared in this scope
+       nMatchedElBarrelchargeConsistencyCut+=1;
+       ^
+LeptonAnalyzer.cc:391:7: error: 'nAllMatchedElBarrelSS' was not declared in this scope
+       nAllMatchedElBarrelSS+=1;
+       ^
+LeptonAnalyzer.cc:392:7: error: 'MatchedElBarrelSS_Pt' was not declared in this scope
+       MatchedElBarrelSS_Pt->Fill(matchedElectrons.at(iel)->pt);
+       ^
+LeptonAnalyzer.cc:394:7: error: 'nMatchedElBarrelSSPtCut' was not declared in this scope
+       nMatchedElBarrelSSPtCut+=1;
+       ^
+LeptonAnalyzer.cc:397:7: error: 'nMatchedElBarrelSSdEtaCut' was not declared in this scope
+       nMatchedElBarrelSSdEtaCut+=1;
+       ^
+LeptonAnalyzer.cc:400:7: error: 'nMatchedElBarrelSSdPhiCut' was not declared in this scope
+       nMatchedElBarrelSSdPhiCut+=1;
+       ^
+LeptonAnalyzer.cc:403:7: error: 'nMatchedElBarrelSSsigmaIetaIetaCut' was not declared in this scope
+       nMatchedElBarrelSSsigmaIetaIetaCut+=1;
+       ^
+LeptonAnalyzer.cc:406:7: error: 'nMatchedElBarrelSShOverECut' was not declared in this scope
+       nMatchedElBarrelSShOverECut+=1;
+       ^
+LeptonAnalyzer.cc:409:7: error: 'nMatchedElBarrelSSd0Cut' was not declared in this scope
+       nMatchedElBarrelSSd0Cut+=1;
+       ^
+LeptonAnalyzer.cc:412:7: error: 'nMatchedElBarrelSSdZCut' was not declared in this scope
+       nMatchedElBarrelSSdZCut+=1;
+       ^
+LeptonAnalyzer.cc:415:7: error: 'nMatchedElBarrelSSooEmooPCut' was not declared in this scope
+       nMatchedElBarrelSSooEmooPCut+=1;
+       ^
+LeptonAnalyzer.cc:418:7: error: 'nMatchedElBarrelSSmHitsCut' was not declared in this scope
+       nMatchedElBarrelSSmHitsCut+=1;
+       ^
+LeptonAnalyzer.cc:421:7: error: 'nMatchedElBarrelSSRelIsoCut' was not declared in this scope
+       nMatchedElBarrelSSRelIsoCut+=1;
+       ^
+LeptonAnalyzer.cc:424:7: error: 'nMatchedElBarrelSSchargeConsistencyCut' was not declared in this scope
+       nMatchedElBarrelSSchargeConsistencyCut+=1;
+       ^
+LeptonAnalyzer.cc:432:43: error: 'nMatchedElBarrelPtCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(2,nMatchedElBarrelPtCut/nAllMatchedElBarrel);                       MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(2,"p_{T} >30");
+                                           ^
+LeptonAnalyzer.cc:432:65: error: 'nAllMatchedElBarrel' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(2,nMatchedElBarrelPtCut/nAllMatchedElBarrel);                       MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(2,"p_{T} >30");
+                                                                 ^
+LeptonAnalyzer.cc:433:43: error: 'nMatchedElBarreldEtaCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(3,nMatchedElBarreldEtaCut/nMatchedElBarrelPtCut);                   MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(3,"#Delta_{#eta}<0.006574");
+                                           ^
+LeptonAnalyzer.cc:434:43: error: 'nMatchedElBarreldPhiCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(4,nMatchedElBarreldPhiCut/nMatchedElBarreldEtaCut);                 MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(4,"#Delta_{#phi}<0.022868");
+                                           ^
+LeptonAnalyzer.cc:435:43: error: 'nMatchedElBarrelsigmaIetaIetaCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(5,nMatchedElBarrelsigmaIetaIetaCut/nMatchedElBarreldPhiCut);        MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(5,"#sigma_{I#etaI#eta}<0.010181");
+                                           ^
+LeptonAnalyzer.cc:436:43: error: 'nMatchedElBarrelhOverECut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(6,nMatchedElBarrelhOverECut/nMatchedElBarrelsigmaIetaIetaCut);      MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(6,"H/E <0.037553");
+                                           ^
+LeptonAnalyzer.cc:437:43: error: 'nMatchedElBarreld0Cut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(7,nMatchedElBarreld0Cut/nMatchedElBarrelhOverECut);                 MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(7,"d0<0.009924");
+                                           ^
+LeptonAnalyzer.cc:438:43: error: 'nMatchedElBarreldZCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(8,nMatchedElBarreldZCut/nMatchedElBarreld0Cut);                     MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(8,"dZ<0.015310");
+                                           ^
+LeptonAnalyzer.cc:439:43: error: 'nMatchedElBarrelooEmooPCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(9,nMatchedElBarrelooEmooPCut/nMatchedElBarreldZCut);                MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(9,"1/E - 1/P <0.131191");
+                                           ^
+LeptonAnalyzer.cc:440:44: error: 'nMatchedElBarrelmHitsCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(10,nMatchedElBarrelmHitsCut/nMatchedElBarrelooEmooPCut);            MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(10,"Missing Hits <1");
+                                            ^
+LeptonAnalyzer.cc:441:44: error: 'nMatchedElBarrelRelIsoCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(11,nMatchedElBarrelRelIsoCut/nMatchedElBarrelmHitsCut);             MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(11,"RelIso <0.1649");
+                                            ^
+LeptonAnalyzer.cc:442:44: error: 'nMatchedElBarrelchargeConsistencyCut' was not declared in this scope
+   MatchedElBarrelCutHist->SetBinContent(12,nMatchedElBarrelchargeConsistencyCut/nMatchedElBarrelRelIsoCut); MatchedElBarrelCutHist->GetXaxis()->SetBinLabel(12,"chargeConsistent");
+                                            ^
+LeptonAnalyzer.cc:446:45: error: 'nMatchedElBarrelSSPtCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(2,nMatchedElBarrelSSPtCut/nAllMatchedElBarrelSS);                       MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(2,"p_{T} >30");
+                                             ^
+LeptonAnalyzer.cc:446:69: error: 'nAllMatchedElBarrelSS' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(2,nMatchedElBarrelSSPtCut/nAllMatchedElBarrelSS);                       MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(2,"p_{T} >30");
+                                                                     ^
+LeptonAnalyzer.cc:447:45: error: 'nMatchedElBarrelSSdEtaCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(3,nMatchedElBarrelSSdEtaCut/nMatchedElBarrelSSPtCut);                   MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(3,"#Delta_{#eta}<0.006574");
+                                             ^
+LeptonAnalyzer.cc:448:45: error: 'nMatchedElBarrelSSdPhiCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(4,nMatchedElBarrelSSdPhiCut/nMatchedElBarrelSSdEtaCut);                 MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(4,"#Delta_{#phi}<0.022868");
+                                             ^
+LeptonAnalyzer.cc:449:45: error: 'nMatchedElBarrelSSsigmaIetaIetaCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(5,nMatchedElBarrelSSsigmaIetaIetaCut/nMatchedElBarrelSSdPhiCut);        MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(5,"#sigma_{I#etaI#eta}<0.010181");
+                                             ^
+LeptonAnalyzer.cc:450:45: error: 'nMatchedElBarrelSShOverECut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(6,nMatchedElBarrelSShOverECut/nMatchedElBarrelSSsigmaIetaIetaCut);      MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(6,"H/E <0.037553");
+                                             ^
+LeptonAnalyzer.cc:451:45: error: 'nMatchedElBarrelSSd0Cut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(7,nMatchedElBarrelSSd0Cut/nMatchedElBarrelSShOverECut);                 MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(7,"d0<0.009924");
+                                             ^
+LeptonAnalyzer.cc:452:45: error: 'nMatchedElBarrelSSdZCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(8,nMatchedElBarrelSSdZCut/nMatchedElBarrelSSd0Cut);                     MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(8,"dZ<0.015310");
+                                             ^
+LeptonAnalyzer.cc:453:45: error: 'nMatchedElBarrelSSooEmooPCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(9,nMatchedElBarrelSSooEmooPCut/nMatchedElBarrelSSdZCut);                MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(9,"1/E - 1/P <0.131191");
+                                             ^
+LeptonAnalyzer.cc:454:46: error: 'nMatchedElBarrelSSmHitsCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(10,nMatchedElBarrelSSmHitsCut/nMatchedElBarrelSSooEmooPCut);            MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(10,"Missing Hits <1");
+                                              ^
+LeptonAnalyzer.cc:455:46: error: 'nMatchedElBarrelSSRelIsoCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(11,nMatchedElBarrelSSRelIsoCut/nMatchedElBarrelSSmHitsCut);             MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(11,"RelIso <0.1649");
+                                              ^
+LeptonAnalyzer.cc:456:46: error: 'nMatchedElBarrelSSchargeConsistencyCut' was not declared in this scope
+   MatchedElBarrelSSCutHist->SetBinContent(12,nMatchedElBarrelSSchargeConsistencyCut/nMatchedElBarrelSSRelIsoCut); MatchedElBarrelSSCutHist->GetXaxis()->SetBinLabel(12,"chargeConsistent");
+                                              ^
+LeptonAnalyzer.cc:268:9: warning: unused variable 'MatchedElBarrel_pt' [-Wunused-variable]
+   TH1F* MatchedElBarrel_pt= new TH1F("MatchedElBarrel_pt","p_{T} of loose OR tight electrons in same-sign events",100,0,500);
+         ^
+LeptonAnalyzer.cc:269:9: warning: unused variable 'MatchedElBarrel_eta' [-Wunused-variable]
+   TH1F* MatchedElBarrel_eta= new TH1F("MatchedElBarrel_eta","#eta of loose OR tight electrons in same-sign events",25,-5,5);
+         ^
+LeptonAnalyzer.cc:282:9: warning: unused variable 'MatchedElBarrelSS_pt' [-Wunused-variable]
+   TH1F* MatchedElBarrelSS_pt= new TH1F("MatchedElBarrelSS_pt","p_{T} of loose OR tight electrons in same-sign events",100,0,500);
+         ^
+LeptonAnalyzer.cc:283:9: warning: unused variable 'MatchedElBarrelSS_eta' [-Wunused-variable]
+   TH1F* MatchedElBarrelSS_eta= new TH1F("MatchedElBarrelSS_eta","#eta of loose OR tight electrons in same-sign events",25,-5,5);
+         ^
+make: *** [T53Analyzer] Error 1

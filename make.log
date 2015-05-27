@@ -1,0 +1,4 @@
+g++ -O -Wall -fPIC -DNO_ORCA_CLASSES -pthread -std=c++11 -Wno-deprecated-declarations -m64 -I/cvmfs/cms.cern.ch/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_3_0/external/slc6_amd64_gcc491/bin/../../../../../../lcg/root/5.34.18-cms6/include   -c -o src/TreeReader.o src/TreeReader.cc
+Building libObjects...
+g++ -L/cvmfs/cms.cern.ch/slc6_amd64_gcc491/cms/cmssw/CMSSW_7_3_0/external/slc6_amd64_gcc491/bin/../../../../../../lcg/root/5.34.18-cms6/lib -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl -rdynamic -shared -g -O -Wall -fPIC src/TElectron.o src/TGenLepton.o src/TJet.o src/TLepton.o src/TMuon.o src/TreeReader.o -o libObjects.so
+mv libObjects.so ./lib/ ;
