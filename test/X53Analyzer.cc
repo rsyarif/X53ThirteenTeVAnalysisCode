@@ -10,6 +10,11 @@
 #include "LeptonAnalyzer.cc"
 #include "JetAnalyzer.cc"
 
+
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
+std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
+bool checkSameSigneLeptons(std::vector<TLepton*>);
+
 int main(int argc, char* argv[]){
   //make TreeReader
   TString filename(argv[1]);
@@ -128,45 +133,22 @@ int main(int argc, char* argv[]){
     }
 
 
-    //make vector of TLeptons
-    std::vector<TLepton*> goodLeptons;
-
-    //fill with good muons
-    for(unsigned int uimu=0; uimu<tr->goodMuons.size(); uimu++){
-      TMuon* imu = tr->goodMuons.at(uimu);
-      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
-      iLep->isMu = true;
-      iLep->isEl = false;
-      goodLeptons.push_back(iLep);
-      //delete iLep;
-    }
-
-    //fill with good electrons
-    for(unsigned int uiel=0; uiel<tr->goodElectrons.size(); uiel++){
-      TElectron* iel = tr->goodElectrons.at(uiel);
-      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-      iLep->isMu = false;
-      iLep->isEl = true;
-      goodLeptons.push_back(iLep);
-      //delete iLep;
-    }
+    //make vector of good Leptons
+    std::vector<TLepton*> goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons);
 
     //now that we have good leptons check for two with same-sign charge
-    bool samesign =false;
-    std::vector<TLepton*> vSSLep;
-    for(unsigned int uilep=0; uilep<goodLeptons.size(); uilep++){
-      for(unsigned int ujlep=uilep+1; ujlep<goodLeptons.size(); ujlep++){
-	if(goodLeptons.at(uilep)->charge == goodLeptons.at(ujlep)->charge){
-	  samesign=true;
-	  vSSLep.push_back(goodLeptons.at(uilep));
-	  vSSLep.push_back(goodLeptons.at(ujlep));
-	}
-      }
-    }
-
-
+    bool samesign = checkSameSignLeptons(goodLeptons);
 
     if(!samesign) continue;
+
+    std::vector<TLepton*> vSSLep = makeSSLeptons(goodLeptons);
+
+    //dummy check to make sure the vector got filled properly
+    assert(vSSLep.size() > 1);
+  
+    tm->FillHists(tr,t);
+
+
 
 
 
@@ -206,4 +188,69 @@ int main(int argc, char* argv[]){
   std::cout<<"Number of ElMu: "<<nElMu<<std::endl;
   std::cout<<"Number of ElEl: "<<nElEl<<std::endl;
 
+}
+
+
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
+
+  std::vector<TLepton*> Leptons;
+
+  //fill with  muons
+  for(unsigned int uimu=0; uimu<muons.size(); uimu++){
+    TMuon* imu = muons.at(uimu);
+    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+    iLep->isMu = true;
+    iLep->isEl = false;
+    Leptons.push_back(iLep);
+ 
+  }
+  
+  //fill with  electrons
+  for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
+    TElectron* iel = electrons.at(uiel);
+    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+    iLep->isMu = false;
+      iLep->isEl = true;
+      Leptons.push_back(iLep);
+ 
+  }
+  
+  return Leptons;
+
+}
+
+bool checkSameSignLeptons(std::vector<TLepton*> leptons){
+
+  bool samesign=false;
+
+  for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
+    for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
+      if(leptons.at(uilep)->charge == leptons.at(ujlep)->charge){
+	samesign=true;
+      }
+    }
+  }
+
+  return samesign
+  
+}
+
+
+std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*> leptons){
+
+  std::vector<TLepton*> vSSLep;
+
+  for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
+    for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
+      if(leptons.at(uilep)->charge == leptons.at(ujlep)->charge){
+	samesign=true;
+	vSSLep.push_back(goodLeptons.at(uilep));
+	vSSLep.push_back(goodLeptons.at(ujlep));
+
+      }
+    }
+  }
+
+  return vSSLep;
+  
 }
