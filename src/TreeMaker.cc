@@ -10,8 +10,11 @@ TreeMaker::~TreeMaker(){}
 
 //Initialize tree
 void TreeMaker::InitTree(){
+  tree = new TTree();
+
 
   tree->Branch("Lep1Pt",&Lep1Pt_);
+
   tree->Branch("Lep1Eta",&Lep1Eta_);
   tree->Branch("Lep1Phi",&Lep1Phi_);
   tree->Branch("Lep1Energy",&Lep1Energy_);
@@ -19,6 +22,7 @@ void TreeMaker::InitTree(){
   tree->Branch("Lep1Charge",&Lep1Charge_);
   tree->Branch("Lep1Loose",&Lep1Loose_);
   tree->Branch("Lep1Tight",&Lep1Tight_);
+
 
   tree->Branch("Lep2Pt",&Lep2Pt_);
   tree->Branch("Lep2Eta",&Lep2Eta_);
@@ -28,6 +32,7 @@ void TreeMaker::InitTree(){
   tree->Branch("Lep2Charge",&Lep2Charge_);
   tree->Branch("Lep2Loose",&Lep2Loose_);
   tree->Branch("Lep2Tight",&Lep2Tight_);
+
 
   //tree->Branch("NTightLeptons",&NTightLeptons_);
   tree->Branch("nAK4Jets",&nAK4Jets_);
@@ -95,5 +100,6 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     AK4Jet2Energy_=-999;
   }
 
+  tree->Fill();
 
 }
