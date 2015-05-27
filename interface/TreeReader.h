@@ -29,6 +29,11 @@ class TreeReader{
   std::vector <TGenParticle*> genParticles;
   std::vector <TJet*> allAK4Jets;
   std::vector <TJet*> genJets;
+
+  //met
+  double MET;
+  TBranch* b_MET_DileptonCalc;
+
   TTree* tree;
 
   //function to get the data
