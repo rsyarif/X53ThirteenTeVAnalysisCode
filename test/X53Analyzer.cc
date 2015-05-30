@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <map>
 #include <string>
+#include <sstream> 
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
@@ -77,13 +78,22 @@ int main(int argc, char* argv[]){
     return 0;
   }
 
+  if(bg_samples.find(argv[1])!=bg_samples.end()) bg_mc=true;
+  if(sig_samples.find(argv[1])!=sig_samples.end()) signal=true;
+
   //make TreeReader
-  TString filename(argv[1]);
-  TreeReader* tr= new TreeReader(filename);
+  std::string filename;
+  if(bg_mc) filename = bg_samples.find(argv[1])->second;
+  if(signal) filename = sig_samples.find(argv[1])->second;
+
+  TreeReader* tr= new TreeReader(filename.c_str());
   TTree* t=tr->tree;
   TreeMaker* tm = new TreeMaker();
   tm->InitTree();
-  TFile* fsig = new TFile("X53TToAll_RH_M-1000.root","RECREATE");
+  std::stringstream outnamestream;
+  outnamestream<<argv[1]<<".root";
+  std::string outname = outnamestream.str();
+  TFile* fsig = new TFile(outname.c_str(),"RECREATE");
 
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
   TH1F* h_DilepMass = new TH1F("h_DilepMass","Generator Level Dilepton Mass", 25, 0, 1000);
