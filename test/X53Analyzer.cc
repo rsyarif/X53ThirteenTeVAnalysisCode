@@ -11,12 +11,70 @@
 #include "JetAnalyzer.cc"
 #include "../interface/TreeMaker.h"
 #include <assert.h>
+#include <map>
+#include <string>
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
 
+
 int main(int argc, char* argv[]){
+
+  typedef std::map<std::string,std::string> StringMap;
+ 
+ StringMap bg_samples, sig_samples;
+ bg_samples["ttbar"]="ljmet_tree_ttbar.root";
+ bg_samples["ttW"]="ljmet_tree_ttW.root";
+ bg_samples["ttZ"]="ljmet_tree_ttZ.root";
+ bg_samples["ttWW"]="ljmet_tree_ttWW.root";
+ bg_samples["WW"]="ljmet_tree_WW.root";
+ bg_samples["WWW"]="ljmet_tree_WWW.root";
+ bg_samples["WZ"]="ljmet_tree_WZ.root";
+ bg_samples["ZZ"]="ljmet_tree_ZZ.root";
+ 
+ 
+ sig_samples["X53m700RH"]="ljmet_tree_X53X53_M-700_right.root";
+ sig_samples["X53m800RH"]="ljmet_tree_X53X53_M-800_right.root";
+ sig_samples["X53m900RH"]="ljmet_tree_X53X53_M-900_right.root";
+ sig_samples["X53m1000RH"]="ljmet_tree_X53X53_M-1000_right.root";
+ sig_samples["X53m1100RH"]="ljmet_tree_X53X53_M-1100_right.root";
+ sig_samples["X53m1200RH"]="ljmet_tree_X53X53_M-1200_right.root";
+ sig_samples["X53m1300RH"]="ljmet_tree_X53X53_M-1300_right.root";
+ sig_samples["X53m1400RH"]="ljmet_tree_X53X53_M-1400_right.root";
+ sig_samples["X53m1500RH"]="ljmet_tree_X53X53_M-1500_right.root";
+ sig_samples["X53m1600RH"]="ljmet_tree_X53X53_M-1600_right.root";
+ sig_samples["X53m700LH"]="ljmet_tree_X53X53_M-700_left.root";
+ sig_samples["X53m800LH"]="ljmet_tree_X53X53_M-800_left.root";
+ sig_samples["X53m900LH"]="ljmet_tree_X53X53_M-900_left.root";
+ sig_samples["X53m1000LH"]="ljmet_tree_X53X53_M-1000_left.root";
+ sig_samples["X53m1100LH"]="ljmet_tree_X53X53_M-1100_left.root";
+ sig_samples["X53m1200LH"]="ljmet_tree_X53X53_M-1200_left.root";
+ sig_samples["X53m1300LH"]="ljmet_tree_X53X53_M-1300_left.root";
+ sig_samples["X53m1400LH"]="ljmet_tree_X53X53_M-1400_left.root";
+ sig_samples["X53m1500LH"]="ljmet_tree_X53X53_M-1500_left.root";
+ sig_samples["X53m1600LH"]="ljmet_tree_X53X53_M-1600_left.root";
+
+
+  bool signal=false;
+  bool bg_mc=false;
+  bool bg_dd=false;
+  bool data=false;
+
+  //check usage
+  if(argc<2){
+    std::cout<<"Need to supply argument for sample name of one of the following"<<std::endl;
+    std::cout<<std::endl<<"********** Background *********"<<std::endl;
+    for(std::map<std::string,std::string>::iterator iter=bg_samples.begin(); iter!= bg_samples.end(); iter++){
+      std::cout<<iter->second<<std::endl;
+    }
+    std::cout<<std::endl<<"********** Signal *********"<<std::endl;
+    for(std::map<std::string,std::string>::iterator iter=sig_samples.begin(); iter!= sig_samples.end(); iter++){
+      std::cout<<iter->second<<std::endl;
+    }  
+    return 0;
+  }
+
   //make TreeReader
   TString filename(argv[1]);
   TreeReader* tr= new TreeReader(filename);
@@ -40,6 +98,7 @@ int main(int argc, char* argv[]){
   int nMuMu=0;
   int nElMu=0;
   int nElEl=0;
+  int nGenMuMu=0;
 
   for(int ient=0; ient<nEntries; ient++){
 
@@ -72,21 +131,24 @@ int main(int argc, char* argv[]){
 	  vSSGenLep.push_back(tr->genParticles.at(jgen));
 	}
 
+	if( ( tr->genParticles.at(igen)->id==13 && tr->genParticles.at(jgen)->id==13) || (tr->genParticles.at(igen)->id==-13 && tr->genParticles.at(jgen)->id==-13)) nGenMuMu+=1;
+
       }
     }
 
-    if(GenSamesign){
+    /* if(GenSamesign){
       TLorentzVector v1 = vSSGenLep.at(0)->lv;
       TLorentzVector v2 = vSSGenLep.at(1)->lv;
       float dilepmass = (v1+v2).M();
       h_DilepMass->Fill(dilepmass);
-      
-      /*      float HT=0;
+      if(fabs(vSSGenLep.at(0)->id)==13 and fabs(vSSGenLep.at(1)->id)==13) nGenMuMu+=1;
+           float HT=0;
       for(unsigned int uijet=0; uijet<tr->genJets.size();uijet++){
 	HT+=tr->genJets.at(uijet)->pt;
       }
-      h_GenHT->Fill(HT);*/
-    }
+      h_GenHT->Fill(HT);
+      }*/
+  
 
 
     //Muon CutFlow                                                                                                                                                                                               
@@ -96,7 +158,7 @@ int main(int argc, char* argv[]){
       //run through gen particle collection:                                                                                                                                                                      
       float dR=999;
       for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
-        //only run over muons from hard scattering                                                                                                                                                               
+        //only run over muons from hard scattering                                                                                                     
         if(!( ( fabs(tr->genParticles.at(igen)->id)==13) && (tr->genParticles.at(igen)->status==23 || tr->genParticles.at(igen)->status==1)) ) continue;
         float drtemp = pow( pow( imu->eta - tr->genParticles.at(igen)->eta, 2 ) + pow( imu->phi - tr->genParticles.at(igen)->phi, 2), 0.5);
         if(drtemp < dR){
@@ -197,6 +259,7 @@ int main(int argc, char* argv[]){
   fsig->Write();
   fsig->Close();
 
+  std::cout<<"Number of Gen MuMu: "<<nGenMuMu<<std::endl;
   std::cout<<"Number of MuMu: "<<nMuMu<<std::endl;
   std::cout<<"Number of ElMu: "<<nElMu<<std::endl;
   std::cout<<"Number of ElEl: "<<nElEl<<std::endl;
