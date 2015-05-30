@@ -25,36 +25,36 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
  
  StringMap bg_samples, sig_samples;
- bg_samples["ttbar"]="ljmet_tree_ttbar.root";
- bg_samples["ttW"]="ljmet_tree_ttW.root";
- bg_samples["ttZ"]="ljmet_tree_ttZ.root";
- bg_samples["ttWW"]="ljmet_tree_ttWW.root";
- bg_samples["WW"]="ljmet_tree_WW.root";
- bg_samples["WWW"]="ljmet_tree_WWW.root";
- bg_samples["WZ"]="ljmet_tree_WZ.root";
- bg_samples["ZZ"]="ljmet_tree_ZZ.root";
+ bg_samples["ttbar"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ttbar.root";
+ bg_samples["ttW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ttW.root";
+ bg_samples["ttZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ttZ.root";
+ bg_samples["ttWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ttWW.root";
+ bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WW.root";
+ bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WWW.root";
+ bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WZ.root";
+ bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ZZ.root";
  
  
- sig_samples["X53m700RH"]="ljmet_tree_X53X53_M-700_right.root";
- sig_samples["X53m800RH"]="ljmet_tree_X53X53_M-800_right.root";
- sig_samples["X53m900RH"]="ljmet_tree_X53X53_M-900_right.root";
- sig_samples["X53m1000RH"]="ljmet_tree_X53X53_M-1000_right.root";
- sig_samples["X53m1100RH"]="ljmet_tree_X53X53_M-1100_right.root";
- sig_samples["X53m1200RH"]="ljmet_tree_X53X53_M-1200_right.root";
- sig_samples["X53m1300RH"]="ljmet_tree_X53X53_M-1300_right.root";
- sig_samples["X53m1400RH"]="ljmet_tree_X53X53_M-1400_right.root";
- sig_samples["X53m1500RH"]="ljmet_tree_X53X53_M-1500_right.root";
- sig_samples["X53m1600RH"]="ljmet_tree_X53X53_M-1600_right.root";
- sig_samples["X53m700LH"]="ljmet_tree_X53X53_M-700_left.root";
- sig_samples["X53m800LH"]="ljmet_tree_X53X53_M-800_left.root";
- sig_samples["X53m900LH"]="ljmet_tree_X53X53_M-900_left.root";
- sig_samples["X53m1000LH"]="ljmet_tree_X53X53_M-1000_left.root";
- sig_samples["X53m1100LH"]="ljmet_tree_X53X53_M-1100_left.root";
- sig_samples["X53m1200LH"]="ljmet_tree_X53X53_M-1200_left.root";
- sig_samples["X53m1300LH"]="ljmet_tree_X53X53_M-1300_left.root";
- sig_samples["X53m1400LH"]="ljmet_tree_X53X53_M-1400_left.root";
- sig_samples["X53m1500LH"]="ljmet_tree_X53X53_M-1500_left.root";
- sig_samples["X53m1600LH"]="ljmet_tree_X53X53_M-1600_left.root";
+ sig_samples["X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-700_right.root";
+ sig_samples["X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-800_right.root";
+ sig_samples["X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-900_right.root";
+ sig_samples["X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1000_right.root";
+ sig_samples["X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1100_right.root";
+ sig_samples["X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1200_right.root";
+ sig_samples["X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1300_right.root";
+ sig_samples["X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1400_right.root";
+ sig_samples["X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1500_right.root";
+ sig_samples["X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1600_right.root";
+ sig_samples["X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-700_left.root";
+ sig_samples["X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-800_left.root";
+ sig_samples["X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-900_left.root";
+ sig_samples["X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1000_left.root";
+ sig_samples["X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1100_left.root";
+ sig_samples["X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1200_left.root";
+ sig_samples["X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1300_left.root";
+ sig_samples["X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1400_left.root";
+ sig_samples["X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1500_left.root";
+ sig_samples["X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53_M-1600_left.root";
 
 
   bool signal=false;
