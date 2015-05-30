@@ -62,7 +62,9 @@ int main(int argc, char* argv[]){
   bool data=false;
 
   //check usage
-  if(argc<2){
+  bool correctusage=true;
+  if(argc!=2 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end()) ) correctusage=false;
+  if(!correctusage){
     std::cout<<"Need to supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
     for(std::map<std::string,std::string>::iterator iter=bg_samples.begin(); iter!= bg_samples.end(); iter++){
