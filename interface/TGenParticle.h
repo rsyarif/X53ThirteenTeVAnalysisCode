@@ -18,7 +18,7 @@ public:
   int status;
   int id;
   int motherId;
-  int charge;
+  float charge;
   
   TLorentzVector lv;
   void setLV(){
