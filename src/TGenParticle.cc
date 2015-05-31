@@ -8,8 +8,8 @@ TGenParticle::TGenParticle(double pttemp, double etatemp, double phitemp, double
 {
 
   if( (id==11) || (id==13) || (id==15)) charge =-1;
-  else if( (id== -11) || (id == -13) || (id== -15) charge=1;
-  else if( (id==1) || (id==3) || (id==5) charge = -0.333; 
+  else if( (id== -11) || (id == -13) || (id== -15) ) charge=1;
+  else if( (id==1) || (id==3) || (id==5) ) charge = -0.333; 
   else if( (id==-1) || (id==-3) || (id==-5) ) charge = 0.333;
   else if( (id==2) || (id==4) || (id==6) ) charge= 0.667;
   else if( (id==-2) || (id==-4) || (id==-6) ) charge= -0.667;
