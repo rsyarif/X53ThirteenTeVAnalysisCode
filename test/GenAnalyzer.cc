@@ -17,8 +17,8 @@ void doGenPlots(TFile* outFile, TTree* t, TreeReader* tr){
   genDir->cd();
 
   //histograms
-  TH1F* h_dilepMass = new TH1F("h_dilepMass","Same Sign Dilepton Mass", 25, 0, 500);
-  TH1F* h_GenHT = new TH1F("h_GenHT", "Gen H_{T}", 50, 0, 2500);
+  TH1F* h_dilepMass = new TH1F("h_dilepMass","Same Sign Dilepton Mass", 25, 0, 1000);
+  TH1F* h_GenHT = new TH1F("h_GenHT", "Gen H_{T}", 50, 500, 3000);
   //get number of entries
   int nEntries = t->GetEntries();
 
