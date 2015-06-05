@@ -19,7 +19,7 @@
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
-
+int getNSSDLGen(std::vector<TGenParticle*>, int);
 
 int main(int argc, char* argv[]){
 
@@ -118,16 +118,12 @@ int main(int argc, char* argv[]){
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
 
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
-  TH1F* h_DilepMass = new TH1F("h_DilepMass","Generator Level Dilepton Mass", 25, 0, 1000);
-  //TH1F* h_GenHT = new TH1F("h_GenHT","Generator HT", 75,0,3000);
+
+
 
   doGenPlots(fsig,t,tr);
-
-  /* doMuonCutFlow(fsig,t,tr);
-  doBarrelElectronCutFlow(fsig,t,tr);
-  DrawGenJetHists(fsig,t,tr);
-  DrawAK4JetHists(fsig,t,tr);*/
-  //MakeJetResponseHist(fsig,t,tr);
+  //cd back to main directory after making gen plots
+  fsig->cd();
 
   int nEntries = t->GetEntries();
 
@@ -135,6 +131,8 @@ int main(int argc, char* argv[]){
   int nElMu=0;
   int nElEl=0;
   int nGenMuMu=0;
+  int nGenElMu=0;
+  int nGenElEl=0;
 
   for(int ient=0; ient<nEntries; ient++){
 
@@ -143,10 +141,14 @@ int main(int argc, char* argv[]){
     tr->GetEntry(ient);
 
 
-    bool GenSamesign=false;
-    std::vector<TGenParticle*> vSSGenLep;
-    //run through gen particle collection:
-    for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
+    //bool GenSamesign=false;
+    //std::vector<TGenParticle*> vSSGenLep;
+    //get number of generated same-sign dilepton events gen particle collection (second parameter is number of muons to search for)
+    nGenMuMu += getNSSDLGen(tr->genParticles, 2);
+    nGenElMu += getNSSDLGen(tr->genParticles, 1);
+    nGenElEl += getNSSDLGen(tr->genParticles, 0);
+
+    /*    for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
       //only run over electrons and muons from hard scattering
       if(!( ( fabs(tr->genParticles.at(igen)->id)==13 || fabs(tr->genParticles.at(igen)->id)==11) && (tr->genParticles.at(igen)->status==23 || tr->genParticles.at(igen)->status==1)) ) continue;
       //make sure genlepton is within detector acceptance
@@ -170,7 +172,7 @@ int main(int argc, char* argv[]){
 	if( ( tr->genParticles.at(igen)->id==13 && tr->genParticles.at(jgen)->id==13) || (tr->genParticles.at(igen)->id==-13 && tr->genParticles.at(jgen)->id==-13)) nGenMuMu+=1;
 
       }
-    }
+      }*/
 
     /* if(GenSamesign){
       TLorentzVector v1 = vSSGenLep.at(0)->lv;
@@ -365,4 +367,49 @@ std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*> leptons){
 
   return vSSLep;
   
+}
+
+int getNSSDLGen(std::vector<TGenParticle*> genParticles, int nMu){
+
+  bool samesign;
+ 
+  int flav1=-999;
+  int flav2=-999;
+
+  for(unsigned int uigen=0; uigen < genParticles.size(); uigen++){
+    //only check electrons and muons
+    if( !( abs(genParticles.at(uigen)->id)==11 || abs(genParticles.at(uigen)->id)==13) ) continue;
+    for(unsigned int ujgen=uigen+1;  ujgen < genParticles.size(); ujgen++){
+      //only check electrons and muons
+      if( !( abs(genParticles.at(ujgen)->id)==11 || abs(genParticles.at(ujgen)->id)==13) ) continue;
+      if( genParticles.at(uigen)->charge == genParticles.at(ujgen)->charge){
+	samesign = true;
+	flav1 = abs(genParticles.at(uigen)->id);
+	flav2 = abs(genParticles.at(ujgen)->id);
+      }
+    }
+
+  }
+
+  if(!samesign) return 0;
+
+  if(nMu==2){
+    if( flav1 ==13 && flav2==13) return 1;
+    else return 0;
+  }
+
+  if(nMu==1){
+    if( (flav1==11 && flav2==13) || (flav1==13 || flav2==11) ) return 1;
+    else return 0;
+  }
+
+
+  if(nMu==0){
+    if( flav1==11 && flav2==11) return 1;
+    else return 0;
+  }
+
+  //in case none above 
+  return 0;
+
 }
