@@ -9,8 +9,8 @@ TreeMaker::TreeMaker(){}
 TreeMaker::~TreeMaker(){}
 
 //Initialize tree
-void TreeMaker::InitTree(){
-  tree = new TTree();
+void TreeMaker::InitTree(std::string treename){
+  tree = new TTree("tree",treename.c_str());
 
 
   tree->Branch("Lep1Pt",&Lep1Pt_);
