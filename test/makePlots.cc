@@ -6,9 +6,11 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "THStack.h"
 
 std::map<std::string, std::map<float,float> > makeBkgSampleVector();
 std::map<std::string, float> makeBkgLumiWeights(std::map<string< std::map<float,float> > bkgmap, float lumi);
+std::vector<TTree*> getTTreeVec(std::map<std::string,std::map<float, float> > vBkg);
 
 void makePlots.cc(){
 
@@ -19,7 +21,9 @@ void makePlots.cc(){
   float lumi = 5.0; //fb^-1
   std::map<std::string,float> vBkgLumiWeights = makeBkgLumiWeights(vBkgSamples,lumi);
 
+  std::vector<TTree*> vTree = getTTreeVec(vBkgSamples);
 
+  THStack* bgStack;
 
 
 }
@@ -50,7 +54,19 @@ std::map<std::string, float> makeBkgLumiWeights(std::map<string< std::map<float,
 
   for(std::map<std::string,std::map<float,float>::iterator iter=bkgmap.begin(); iter!=bkgmap.end(); iter++){
     float weight = (lumi * (iter->second)->first)/ ( (iter->second)->second);
-    map.insert(std::pair<std::string,float>(iter->first,weight);
+    map.insert(std::pair<std::string,float>(iter->first,weight));
   }
+  
+}
 
+std::vector<TTree*> getTTreeVec(std::map<std::string, std::map<float,float > > vBkg){
+
+  std::vector<TTree*> vTree;
+
+  for(std::map<std::string, std::map<float,float> >::iterator iter=vBkg.begin(); iter!=vBkg.end(); iter++){
+    std::string filename = iter->first()+".root";
+    TFile* f = new TFile(filename.c_str());
+    TTree* t = f->Get("tEvts_ssdl");
+    vTree.push_back(t);
+  }
 }
