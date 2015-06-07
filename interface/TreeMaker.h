@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <string>
 
 class TreeMaker {
 
@@ -58,7 +59,7 @@ class TreeMaker {
 
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
-  void InitTree();
+  void InitTree(std::string treename);
   void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, float HTtemp, float METtemp);
 
 };
