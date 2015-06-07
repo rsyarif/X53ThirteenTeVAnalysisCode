@@ -20,6 +20,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
+void printParticle(TGenParticle*);
+void printParticle(TLepton*);
 
 int main(int argc, char* argv[]){
 
@@ -34,6 +36,7 @@ int main(int argc, char* argv[]){
  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WWW.root";
  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WZ.root";
  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ZZ.root";
+ bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WJets.root";
  
  
  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-700_right.root";
@@ -91,11 +94,11 @@ int main(int argc, char* argv[]){
     std::cout<<"Need to supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
     for(std::map<std::string,std::string>::iterator iter=bg_samples.begin(); iter!= bg_samples.end(); iter++){
-      std::cout<<iter->second<<std::endl;
+      std::cout<<iter->first<<std::endl;
     }
     std::cout<<std::endl<<"********** Signal *********"<<std::endl;
     for(std::map<std::string,std::string>::iterator iter=sig_samples.begin(); iter!= sig_samples.end(); iter++){
-      std::cout<<iter->second<<std::endl;
+      std::cout<<iter->first<<std::endl;
     }  
     return 0;
   }
@@ -111,7 +114,7 @@ int main(int argc, char* argv[]){
   TreeReader* tr= new TreeReader(filename.c_str());
   TTree* t=tr->tree;
   TreeMaker* tm = new TreeMaker();
-  tm->InitTree();
+  tm->InitTree("tEvts_ssdl");
   std::stringstream outnamestream;
   outnamestream<<argv[1]<<".root";
   std::string outname = outnamestream.str();
@@ -145,8 +148,8 @@ int main(int argc, char* argv[]){
     //std::vector<TGenParticle*> vSSGenLep;
     //get number of generated same-sign dilepton events gen particle collection (second parameter is number of muons to search for)
     nGenMuMu += getNSSDLGen(tr->genParticles, 2);
-    nGenElMu += getNSSDLGen(tr->genParticles, 1);
-    nGenElEl += getNSSDLGen(tr->genParticles, 0);
+    //nGenElMu += getNSSDLGen(tr->genParticles, 1);
+    //nGenElEl += getNSSDLGen(tr->genParticles, 0);
 
     /*    for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
       //only run over electrons and muons from hard scattering
@@ -261,7 +264,14 @@ int main(int argc, char* argv[]){
 
 
     //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
-    if(vSSLep.size()>2) std::cout<<"found two same-sign pairs"<<std::endl;
+    if(vSSLep.size()>=2){
+      std::cout<<"found same-sign dileptons"<<std::endl;
+      std::cout<<"Number of ssdl: "<<vSSLep.size()<<" Size of genparticles is: "<<tr->genParticles.size()<<std::endl;
+      for(unsigned int ui=0; ui<tr->genParticles.size(); ui++){
+	printParticle(tr->genParticles.at(ui));
+      }
+      std::cout<<"\n *** End Event *** \n"<<std::endl;
+    }
 
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu) nMuMu+=1;
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)) nElMu+=1;
@@ -377,9 +387,15 @@ int getNSSDLGen(std::vector<TGenParticle*> genParticles, int nMu){
   int flav2=-999;
 
   for(unsigned int uigen=0; uigen < genParticles.size(); uigen++){
+    //only check particles from the hard scattering
+    //if( genParticles.at(uigen)->status!=23) continue;
     //only check electrons and muons
     if( !( abs(genParticles.at(uigen)->id)==11 || abs(genParticles.at(uigen)->id)==13) ) continue;
-    for(unsigned int ujgen=uigen+1;  ujgen < genParticles.size(); ujgen++){
+    for(unsigned int ujgen=0;  ujgen < genParticles.size(); ujgen++){
+      //only check particles from the hard scattering
+    if( genParticles.at(ujgen)->status!=23) continue;
+      if(ujgen==uigen) continue;
+      //std::cout<<"flavor 1: "<<genParticles.at(uigen)->id<<" w/ charge: "<<genParticles.at(uigen)->charge<<" flavor 2: "<<genParticles.at(ujgen)->id<<" w/ charge: "<<genParticles.at(ujgen)->charge<<std::endl;
       //only check electrons and muons
       if( !( abs(genParticles.at(ujgen)->id)==11 || abs(genParticles.at(ujgen)->id)==13) ) continue;
       if( genParticles.at(uigen)->charge == genParticles.at(ujgen)->charge){
@@ -390,6 +406,8 @@ int getNSSDLGen(std::vector<TGenParticle*> genParticles, int nMu){
     }
 
   }
+
+  //std::cout<<"\n *** End Event *** \n"<<std::endl;
 
   if(!samesign) return 0;
 
@@ -412,4 +430,13 @@ int getNSSDLGen(std::vector<TGenParticle*> genParticles, int nMu){
   //in case none above 
   return 0;
 
+}
+
+
+void printParticle(TGenParticle* p){
+	std::cout<<"genP id: "<<p->id<<" charge "<<p->charge<<" status: "<<p->status<<" pt: "<<p->pt<<" eta: "<<p->eta<<" phi: "<<p->phi<<std::endl;
+}
+
+void printParticle(TLepton* l){
+	std::cout<<"charge "<<l->charge<<" pt: "<<l->pt<<" eta: "<<l->eta<<" phi: "<<l->phi<<std::endl;
 }
