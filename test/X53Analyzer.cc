@@ -28,10 +28,10 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
  
  StringMap bg_samples, sig_samples;
- bg_samples["ttbar"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTbar.root";
- bg_samples["ttW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTW.root";
- bg_samples["ttZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTZ.root";
- bg_samples["ttWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTWW.root";
+ bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTbar.root";
+ bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTW.root";
+ bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTZ.root";
+ bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_TTWW.root";
  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WW.root";
  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WWW.root";
  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WZ.root";
