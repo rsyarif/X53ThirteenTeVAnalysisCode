@@ -8,16 +8,21 @@
 #include <map>
 #include "THStack.h"
 #include "../plugins/Sample.cc"
+#include "../plugins/SetTDRStyle.cc"
+#include "../plugins/Variable.cc"
 #include "TCanvas.h"
-
+#include "TLegend.h"
 
 
 std::vector<Sample*> getSampleVec(std::string cut,float lumi);
-
-void DrawAndSave(std::string s, std::vector<Sample*> vBkg);
+std::vector<Variable*> getVariableVec();
+void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg);
 //TCanvas* DrawCanvas(std::string variable, std::vector<Sample*> vBkg);
   
 void makePlots(){
+
+  //set TDRStyle
+  setTDRStyle();
   
  
   //desired lumi:
@@ -25,15 +30,18 @@ void makePlots(){
 
 
   std::vector<Sample*> vBkgSamples = getSampleVec("ssdl", lumi);
+  std::vector<Variable*> vVariables = getVariableVec();
 
-  DrawAndSave("Lep1Pt",vBkgSamples);
-  DrawAndSave("Lep2Pt",vBkgSamples);
-  DrawAndSave("AK4HT",vBkgSamples);
+  for(unsigned int i=0; i<vVariables.size();i++){
+    DrawAndSave(vVariables.at(i),vBkgSamples);
+  }
 
 
 }
 
 std::vector<Sample*> getSampleVec(std::string cut, float lumi){
+
+  
 
    //setup info for list of samples, xsec and events run
   std::vector<std::string> vBkgNames;
@@ -48,13 +56,9 @@ std::vector<Sample*> getSampleVec(std::string cut, float lumi){
   //now make vector to hold weights;
   std::vector<float> vWeights;
   for(unsigned int ui=0; ui<vXsec.size(); ui++){
-    vWeights.push_back( lumi * ( vXsec.at(ui) / vNEvts.at(ui) ) );
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(ui) / vNEvts.at(ui) ) ); //factor of 1000 to convert lumi to pb^-1
   }
 
-
-  //for(unsigned int ui=0; ui<vBkgNames.size(); ui++){
-  //std::cout<<"Number: "<<ui<<" Name: "<<vBkgNames.at(ui)<<" xsec: "<<vXsec.at(ui)<<" weight: "<<vWeights.at(ui)<<std::endl;
-  //}
 
   std::vector<Sample*> vSample;
   TFile* ttfile = new TFile("TTZ.root");
@@ -76,46 +80,62 @@ std::vector<Sample*> getSampleVec(std::string cut, float lumi){
 
 }
 
+std::vector<Variable*> getVariableVec(){
 
-/*void DrawAndSave(std::string variable, std::vector<Sample*> vBkg){
+  std::vector<Variable*> vVar;
 
-  TCanvas * c1 = DrawCanvas(variable, vBkg);  
+  Variable* lep1pt = new Variable("Lep1Pt",60,0,600);
+  vVar.push_back(lep1pt);
+  Variable* lep2pt = new Variable("Lep2Pt",60,0,600);
+  vVar.push_back(lep2pt);
+  Variable* ak4ht = new Variable("AK4HT",60,0,3000);
+  vVar.push_back(ak4ht);
+  Variable* nak4jets = new Variable("nAK4Jets",15,0,15);
+  vVar.push_back(nak4jets);
 
-  }*/
+  return vVar;
 
-void DrawAndSave(std::string variable, std::vector<Sample*> vBkg){
+}
+
+
+void DrawAndSave(Variable* var, std::vector<Sample*> vBkg){
 
   TCanvas* c1 = new TCanvas("c1","c1");
 
   c1->SetLogy();
 
   THStack* tStack = new THStack("tStack","");
-
+  TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);
+  leg->SetFillStyle(0);
+  leg->SetBorderSize(0);
   for(unsigned int uk=0; uk<vBkg.size(); uk++){
     Sample* s = vBkg.at(uk);
-    TH1F* h = new TH1F("h",variable.c_str(),50,0,2000);
+    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
     //std::string drawstring = variable+">>h";
     //std::cout<<"drawstring is: "<<drawstring<<std::endl;
     //t->Draw(drawstring.c_str());
-    t->Project("h",variable.c_str());
+    t->Project("h",(var->name).c_str());
     //scale by weight
     h->Scale(s->weight);
     h->SetFillColor(s->color);
-    std::cout<<"mean of: "<<variable<<" in sample "<<vBkg.at(uk)->name<<" is: "<<h->GetMean()<<std::endl;
+    //add to legend
+    leg->AddEntry(h,(vBkg.at(uk)->name).c_str(),"f");
     assert(h);
     tStack->Add(h);
-    //delete h;
+
   }
 
-  std::cout<<"about to draw tstack"<<std::endl;
+
   tStack->Draw("HIST");
   c1->Update();
-  std::cout<<"drew tstack"<<std::endl;
 
-  std::string pdfname = variable+"_"+(vBkg[0]->cutname)+".pdf";
-  std::cout<<"pdfname: "<<pdfname<<std::endl;
+  leg->Draw("same");
+
+  std::string pdfname = (var->name)+"_"+(vBkg[0]->cutname)+".pdf";
+
   c1->Print(pdfname.c_str());
   delete c1;
 
 }
+
