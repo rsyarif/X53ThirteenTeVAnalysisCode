@@ -7,21 +7,22 @@
 class Sample {
 
 public:
-  Sample(std::string n, TFile* f, float w, int c,std::string cut);
+  Sample(std::string n, TFile* f, float w, float xs,std::string cut,int c);
   ~Sample();
 
   std::string name;
   TFile* file;
   TTree* tree;
   float weight;
-  int color;
+  float xsec;
   std::string cutname;
+  int color;
 };
   
 Sample::~Sample(){};
 
-Sample::Sample(std::string n, TFile* f, float w, int c, std::string cut):
-  name(n),file(f),weight(w), color(c), cutname(cut)
+Sample::Sample(std::string n, TFile* f, float w, float xs, std::string cut, int c):
+  name(n),file(f),weight(w), xsec(xs),cutname(cut), color(c)
   
 {
   std::string tname = "tEvts_"+cutname;
