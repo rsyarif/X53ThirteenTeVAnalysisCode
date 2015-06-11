@@ -255,13 +255,16 @@ int main(int argc, char* argv[]){
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
 
+    //now get dilepton mass
+    float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
+
     float HT=0;
     for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
       HT+=tr->allAK4Jets.at(uijet)->pt;
     }
 
 
-    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET);
+    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass);
 
 
 
