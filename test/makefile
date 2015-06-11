@@ -13,3 +13,8 @@ TOOLDIR     = $(PWD)/tools
 
 T53Analyzer:
 	$(CXX) $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o X53Analyzer.o X53Analyzer.cc
+
+
+Plotter:
+	$(CXX) $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o makePlots.o makePlots.cc
+
