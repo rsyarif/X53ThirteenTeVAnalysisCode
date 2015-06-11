@@ -168,7 +168,7 @@ float getNumberEvents(Sample* s, std::string cut){
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   float nEvts = t->Draw("AK4HT",cut.c_str());
-
+  //std::cout<<"Sample: "<<s->name<<" and cut: "<<cut<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
   //now weight properly
   nEvts = nEvts * s->weight;
 
