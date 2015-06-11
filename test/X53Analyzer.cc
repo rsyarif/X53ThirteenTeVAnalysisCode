@@ -111,14 +111,18 @@ int main(int argc, char* argv[]){
   if(bg_mc) filename = bg_samples.find(argv[1])->second;
   if(signal) filename = sig_samples.find(argv[1])->second;
   std::cout<<"running file: "<<filename<<std::endl;
-  TreeReader* tr= new TreeReader(filename.c_str());
-  TTree* t=tr->tree;
-  TreeMaker* tm = new TreeMaker();
-  tm->InitTree("tEvts_ssdl");
+  //make output file
   std::stringstream outnamestream;
   outnamestream<<argv[1]<<".root";
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
+
+  TreeMaker* tm = new TreeMaker();
+  tm->InitTree("tEvts_ssdl");
+
+  TreeReader* tr= new TreeReader(filename.c_str());
+  TTree* t=tr->tree;
+
 
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
 
@@ -255,7 +259,8 @@ int main(int argc, char* argv[]){
     for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
       HT+=tr->allAK4Jets.at(uijet)->pt;
     }
-  
+
+
     tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET);
 
 
@@ -265,12 +270,12 @@ int main(int argc, char* argv[]){
 
     //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
     if(vSSLep.size()>=2){
-      std::cout<<"found same-sign dileptons"<<std::endl;
-      std::cout<<"Number of ssdl: "<<vSSLep.size()<<" Size of genparticles is: "<<tr->genParticles.size()<<std::endl;
+      //std::cout<<"found same-sign dileptons"<<std::endl;
+      //std::cout<<"Number of ssdl: "<<vSSLep.size()<<" Size of genparticles is: "<<tr->genParticles.size()<<std::endl;
       for(unsigned int ui=0; ui<tr->genParticles.size(); ui++){
-	printParticle(tr->genParticles.at(ui));
+	//printParticle(tr->genParticles.at(ui));
       }
-      std::cout<<"\n *** End Event *** \n"<<std::endl;
+      //std::cout<<"\n *** End Event *** \n"<<std::endl;
     }
 
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu) nMuMu+=1;
