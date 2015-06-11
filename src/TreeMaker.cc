@@ -50,9 +50,11 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("AK4Jet2Phi",&AK4Jet2Phi_);
   tree->Branch("AK4Jet2Energy",&AK4Jet2Energy_);  
 
+  tree->Branch("DilepMass",&DilepMass_);
+
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, float HTtemp, float METtemp){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, float HTtemp, float METtemp, float DilepMasstemp){
 
   assert(vSSLep.size()>1);
 
@@ -100,6 +102,8 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     AK4Jet2Phi_=-999;
     AK4Jet2Energy_=-999;
   }
+
+  DilepMass_ = DilepMasstemp;
 
   tree->Fill();
 

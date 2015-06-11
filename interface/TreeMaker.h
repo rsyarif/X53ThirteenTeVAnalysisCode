@@ -45,6 +45,7 @@ class TreeMaker {
 
   float AK4HT_;
   float MET_;
+  float DilepMass_;
 
   float AK4Jet1Pt_;
   float AK4Jet1Eta_;
@@ -60,7 +61,7 @@ class TreeMaker {
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, float HTtemp, float METtemp);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, float HTtemp, float METtemp, float DilepMasstemp);
 
 };
 
