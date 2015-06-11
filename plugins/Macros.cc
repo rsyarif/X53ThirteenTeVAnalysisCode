@@ -3,7 +3,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/Sample.cc"
+#include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/CutClass.cc"
 
 std::vector<Variable*> getVariableVec(){
 
@@ -131,7 +133,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 }
 
 
-std::vector<std::string> vCutString(){
+std::vector<std::string> getCutString(){
 
   std::vector<std::string> vString;
 
@@ -155,3 +157,74 @@ std::vector<std::string> vCutString(){
 
   return vString;
 }
+
+float getNumberEvents(Sample* s, std::string cut){
+
+  TTree* t = s->tree;
+
+  //draw the last variable to cut on just to be safe though it shouldn't matter
+  float nEvts = t->Draw("AK4HT",cut.c_str());
+
+  //now weight properly
+  nEvts = nEvts * s->weight;
+
+  return nEvts;
+};
+
+std::string getPrettyCutString(std::string cut){
+
+  //find the positions of && in the cut string
+  std::vector<size_t> positions; // holds all the positions that sub occurs within str
+
+  size_t pos = cut.find("&&", 0);
+  while(pos != std::string::npos)
+    {
+      positions.push_back(pos);
+      pos = cut.find("&&",pos+1);
+    }
+
+  //now take the last of them since what we want is the cut applied to the right of the last &&
+  size_t last = positions.at(positions.size()-1);
+  size_t length = cut.size() - last; //should give number of characters remaining in string
+  length = length -1; //decrement by one to ignor final ')'
+  std::string prettyString(cut, last, length);
+
+  return prettyString;
+
+};
+
+
+CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts)
+{
+
+
+  std::vector<float> vEvts;
+  std::vector<std::string> vCutsPretty;
+
+  for(size_t j=0; j < vCuts.size(); j++){
+    //get number of events and save to vector - IMPORTANT TO DO THIS WITH THE FULL CUT STRING AND NOT A PRETTY VERSION
+    float n = getNumberEvents(s, vCuts.at(j));
+    vEvts.push_back(n);
+    //now trim the cuts string to write prettily
+    std::string cutPretty = getPrettyCutString(vCuts.at(j));
+    vCutsPretty.push_back(cutPretty);
+  }
+
+  CutClass* c = new CutClass(s->name,vCutsPretty,vEvts);
+  return c;
+
+};
+
+
+std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<std::string> vCuts){
+
+  std::vector<CutClass*> vCC;
+
+  for(size_t i =0; i < vS.size(); i++){
+    CutClass* c = makeCutClass(vS.at(i),vCuts);
+    vCC.push_back(c);
+  }
+
+  return vCC;
+
+};
