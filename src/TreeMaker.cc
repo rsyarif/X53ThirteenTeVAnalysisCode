@@ -38,7 +38,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("nAK4Jets",&nAK4Jets_);
 
   tree->Branch("AK4HT",&AK4HT_);
-  tree->Branch("MET",MET_);
+  tree->Branch("MET",&MET_);
 
   tree->Branch("AK4Jet1Pt",&AK4Jet1Pt_);
   tree->Branch("AK4Jet1Eta",&AK4Jet1Eta_);
