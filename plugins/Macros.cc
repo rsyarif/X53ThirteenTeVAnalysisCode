@@ -129,3 +129,29 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   return vSample;
 
 }
+
+
+std::vector<std::string> vCutString(){
+
+  std::vector<std::string> vString;
+
+  //Z-veto
+  std::string zv = "(DilepMass < 71 || DilepMass >111)";
+  vString.push_back(zv);
+  //Leading Lep pT
+  std::string lep1pt = "("+zv+"&& Lep1Pt > 50)" ;
+  vString.push_back(lep1pt);
+  //SubLeadingLep pT
+  std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 40)" ;
+  vString.push_back(lep2pt);
+  //Leading Jet pT
+  std::string jet1pt = "("+lep2pt+"&& AK4Jet1Pt > 200)";
+  vString.push_back(jet1pt);
+  //SubLeading Jet Pt
+  std::string jet2pt = "("+jet1pt+"&& AK4Jet2Pt > 150)";
+  vString.push_back(jet2pt);
+  //HT cut
+  std::string htcut = "("+jet2pt+"&& AK4HT > 1200)";
+
+  return vString;
+}
