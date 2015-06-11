@@ -6,7 +6,7 @@
 class CutClass {
 
 public:
-  CutClass(std::string sample, std::vector<std::string >cut, std::vector<float> n);
+  CutClass(std::string sample, std::vector<std::string > cut, std::vector<float> n);
   ~CutClass();
 
   std::string samplename;
