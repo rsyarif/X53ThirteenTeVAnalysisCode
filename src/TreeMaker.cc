@@ -10,7 +10,7 @@ TreeMaker::~TreeMaker(){}
 
 //Initialize tree
 void TreeMaker::InitTree(std::string treename){
-  tree = new TTree("tree",treename.c_str());
+  tree = new TTree(treename.c_str(),treename.c_str());
 
 
   tree->Branch("Lep1Pt",&Lep1Pt_);
@@ -68,6 +68,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   Lep2Energy_=vSSLep.at(1)->energy;
   vSSLep.at(1)->isMu ? Lep2Flavor_=1 : Lep2Flavor_=0;
 
+  if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
 
   AK4HT_=HTtemp;
   MET_=METtemp;
