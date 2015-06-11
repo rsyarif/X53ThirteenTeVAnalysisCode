@@ -11,40 +11,44 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",60,0,600,"p_{T} (GeV)","N_{Events}");
+  Variable* lep1pt = new Variable("Lep1Pt",60,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep1pt);
-  Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"#eta","N_{Events}");
+  Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
-  Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"#phi","N_{Events}");
+  Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
 
-  Variable* lep2pt = new Variable("Lep2Pt",60,0,600,"p_{T} (GeV)","N_{Events}");
+  Variable* lep2pt = new Variable("Lep2Pt",60,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep2pt);
-  Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"#eta","N_{Events}");
+  Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton p_{T} #eta","N_{Events}");
   vVar.push_back(lep2eta);
-  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"#phi","N_{Events}");
+  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton p_{T} #phi","N_{Events}");
   vVar.push_back(lep2phi);
 
-  Variable* ak4jet1pt = new Variable("AK4Jet1Pt",60,0,600,"p_{T} (GeV)","N_{Events}");
+  Variable* ak4jet1pt = new Variable("AK4Jet1Pt",60,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(ak4jet1pt);
-  Variable* ak4jet1eta = new Variable("AK4Jet1Eta",25,-5,5,"#eta","N_{Events}");
+  Variable* ak4jet1eta = new Variable("AK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(ak4jet1eta);
-  Variable* ak4jet1phi = new Variable("AK4Jet1Phi",20,-3.5,3.5,"#phi","N_{Events}");
+  Variable* ak4jet1phi = new Variable("AK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(ak4jet1phi);
 
-  Variable* ak4jet2pt = new Variable("AK4Jet2Pt",60,0,600,"p_{T} (GeV)","N_{Events}");
+  Variable* ak4jet2pt = new Variable("AK4Jet2Pt",60,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(ak4jet2pt);
-  Variable* ak4jet2eta = new Variable("AK4Jet2Eta",25,-5,5,"#eta","N_{Events}");
+  Variable* ak4jet2eta = new Variable("AK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(ak4jet2eta);
-  Variable* ak4jet2phi = new Variable("AK4Jet2Phi",20,-3.5,3.5,"#phi","N_{Events}");
+  Variable* ak4jet2phi = new Variable("AK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
   vVar.push_back(ak4jet2phi);
 
 
-  Variable* ak4ht = new Variable("AK4HT",60,0,3000,"H_{T} (GeV)","N_{Events}");
+  Variable* ak4ht = new Variable("AK4HT",60,0,3000,"AK4 H_{T} (GeV)","N_{Events}");
   vVar.push_back(ak4ht);
   Variable* nak4jets = new Variable("nAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(nak4jets);
 
+  Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
+  vVar.push_back(met);
+  Variable* dilepMass = new Variable("DilepMass",60,0,600,"Dilepton Mass (GeV)", "N_{Events}");
+  vVar.push_back(dilepMass);
   return vVar;
 
 }
@@ -154,7 +158,7 @@ std::vector<std::string> getCutString(){
   vString.push_back(jet2pt);
   //HT cut
   std::string htcut = "("+jet2pt+"&& AK4HT > 1200)";
-
+  vString.push_back(htcut);
   return vString;
 }
 
@@ -184,11 +188,13 @@ std::string getPrettyCutString(std::string cut){
     }
 
   //now take the last of them since what we want is the cut applied to the right of the last &&
+  if(positions.size()==0) return "Z Veto";
   size_t last = positions.at(positions.size()-1);
   size_t length = cut.size() - last; //should give number of characters remaining in string
-  length = length -1; //decrement by one to ignor final ')'
-  std::string prettyString(cut, last, length);
-
+  length = length -3; //decrement by one to ignor final ')'
+  
+  std::string prettyString(cut, last+2, length);
+  
   return prettyString;
 
 };
@@ -202,10 +208,12 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts)
   std::vector<std::string> vCutsPretty;
 
   for(size_t j=0; j < vCuts.size(); j++){
+    
     //get number of events and save to vector - IMPORTANT TO DO THIS WITH THE FULL CUT STRING AND NOT A PRETTY VERSION
     float n = getNumberEvents(s, vCuts.at(j));
     vEvts.push_back(n);
     //now trim the cuts string to write prettily
+    
     std::string cutPretty = getPrettyCutString(vCuts.at(j));
     vCutsPretty.push_back(cutPretty);
   }
