@@ -42,7 +42,8 @@ int main(int argc, char* argv[]){
  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-700_right.root";
  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-800_right.root";
  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-900_right.root";
- sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1000_right.root";
+ sig_samples["X53X53m1000RH"]="ljmet_tree_X53X53ToAll_M-1000_right.root";
+ //sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1000_right.root";
  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1100_right.root";
  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1200_right.root";
  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1300_right.root";
@@ -152,47 +153,9 @@ int main(int argc, char* argv[]){
     //std::vector<TGenParticle*> vSSGenLep;
     //get number of generated same-sign dilepton events gen particle collection (second parameter is number of muons to search for)
     nGenMuMu += getNSSDLGen(tr->genParticles, 2);
-    //nGenElMu += getNSSDLGen(tr->genParticles, 1);
-    //nGenElEl += getNSSDLGen(tr->genParticles, 0);
+    nGenElMu += getNSSDLGen(tr->genParticles, 1);
+    nGenElEl += getNSSDLGen(tr->genParticles, 0);
 
-    /*    for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
-      //only run over electrons and muons from hard scattering
-      if(!( ( fabs(tr->genParticles.at(igen)->id)==13 || fabs(tr->genParticles.at(igen)->id)==11) && (tr->genParticles.at(igen)->status==23 || tr->genParticles.at(igen)->status==1)) ) continue;
-      //make sure genlepton is within detector acceptance
-      if(! ( tr->genParticles.at(igen)->eta < 2.4)) continue;
-      //check against the rest of the gen particles
-      for(unsigned int jgen=igen+1; jgen<tr->genParticles.size();jgen++){
-	if(!( ( fabs(tr->genParticles.at(jgen)->id)==13 || fabs(tr->genParticles.at(jgen)->id)==11) && (tr->genParticles.at(jgen)->status==23 || tr->genParticles.at(jgen)->status==1)) ) continue;
-	//make sure genlepton is within detector acceptance
-	if(! ( tr->genParticles.at(jgen)->eta < 2.4)) continue;
-	//if same id then same-sign since not using fabs and these are already only looking at leptons from hard scattering
-	if( tr->genParticles.at(igen)->id==tr->genParticles.at(jgen)->id) GenSamesign=true;
-	//or if both are greater than zero same sign since looking only at electrons and muons from hard scattering
-	else if( (tr->genParticles.at(igen)->id >0) && (tr->genParticles.at(jgen)->id >0 ) ) GenSamesign=true;
-	//or if both are less than zero same sign since looking only at electrons and muons from hard scattering
-	else if( (tr->genParticles.at(igen)->id <0) && (tr->genParticles.at(jgen)->id <0 ) ) GenSamesign=true;
-	if(GenSamesign){
-	  vSSGenLep.push_back(tr->genParticles.at(igen));
-	  vSSGenLep.push_back(tr->genParticles.at(jgen));
-	}
-
-	if( ( tr->genParticles.at(igen)->id==13 && tr->genParticles.at(jgen)->id==13) || (tr->genParticles.at(igen)->id==-13 && tr->genParticles.at(jgen)->id==-13)) nGenMuMu+=1;
-
-      }
-      }*/
-
-    /* if(GenSamesign){
-      TLorentzVector v1 = vSSGenLep.at(0)->lv;
-      TLorentzVector v2 = vSSGenLep.at(1)->lv;
-      float dilepmass = (v1+v2).M();
-      h_DilepMass->Fill(dilepmass);
-      if(fabs(vSSGenLep.at(0)->id)==13 and fabs(vSSGenLep.at(1)->id)==13) nGenMuMu+=1;
-           float HT=0;
-      for(unsigned int uijet=0; uijet<tr->genJets.size();uijet++){
-	HT+=tr->genJets.at(uijet)->pt;
-      }
-      h_GenHT->Fill(HT);
-      }*/
   
 
 
@@ -263,8 +226,13 @@ int main(int argc, char* argv[]){
       HT+=tr->allAK4Jets.at(uijet)->pt;
     }
 
+    //get channel
+    int nMu=0;
+    if(vSSLep.at(0)->isMu) nMu++;
+    if(vSSLep.at(1)->isMu) nMu++;
 
-    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass);
+
+    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu);
 
 
 
