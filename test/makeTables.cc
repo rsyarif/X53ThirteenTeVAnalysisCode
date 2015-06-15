@@ -7,7 +7,7 @@
 #include "TTree.h"
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c);
-void printTable(TFile* outfile, std::vector<CutClass*> vCC, int nmu);
+std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu);
 
 void makeTables(){
 
@@ -37,7 +37,8 @@ void makeTables(){
     //now make a vector of cutClass for sig
     std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
     //now print background table
-    printTable(outfile,vCutBkg,nmu);
+    outfile<<(printTable(vCutBkg,vCutString,nmu)).str();
+    outfile<<(printTable(vCutSig,vCutString,nmu)).str();
 
   }
 
@@ -64,7 +65,9 @@ std::string tableHeader(std::vector<std::string> vC, CutClass* cC){
   return str.str();
 };
 
-void printTable(TFile* outfile, std::vector<CutClass*> vCC,int nmu){
+std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu){
+
+  std::stringstream tablestring;
 
   //caption
   std::string caption;
@@ -73,15 +76,16 @@ void printTable(TFile* outfile, std::vector<CutClass*> vCC,int nmu){
   if(nmu==1) caption = "Event Count for electron-muon channel";
   if(nmu==2) caption = "Event Count for di-muon channel";
 
-  outfile<<tableHeader(vCutString, vCC.at(0));  
+  tablestring<<tableHeader(vCS, vCC.at(0));  
   for(size_t i=0; i < vCC.size(); i++){
-    outfile<<vCC.at(i)->samplename;
+    tablestring<<vCC.at(i)->samplename;
     for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
-      outfile<<" & "<<(vCC.at(i)->nEvents).at(j);
+      tablestring<<" & "<<(vCC.at(i)->nEvents).at(j);
     }
-    outfile<<" \\\\"<<std::endl;
+    tablestring<<" \\\\"<<std::endl;
   }
-  outfile<<"\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<" \\end{table} \n\n";
+  tablestring<<"\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<" \\end{table} \n\n";
 
+  return tablestring;
  
 }
