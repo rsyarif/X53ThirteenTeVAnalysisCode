@@ -42,8 +42,8 @@ int main(int argc, char* argv[]){
  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-700_right.root";
  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-800_right.root";
  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-900_right.root";
- sig_samples["X53X53m1000RH"]="ljmet_tree_X53X53ToAll_M-1000_right.root";
- //sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1000_right.root";
+ //sig_samples["X53X53m1000RH"]="ljmet_tree_X53X53ToAll_M-1000_right.root";
+ sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1000_right.root";
  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1100_right.root";
  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1200_right.root";
  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-1300_right.root";
