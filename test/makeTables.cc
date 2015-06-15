@@ -7,6 +7,7 @@
 #include "TTree.h"
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c);
+void printTable(TFile* outfile, std::vector<CutClass*> vCC, int nmu);
 
 void makeTables(){
 
@@ -30,22 +31,16 @@ void makeTables(){
     std::cout<<vCutString.at(i)<<std::endl;
   }
 
-  //now make a vector of cutClass for bkg
-  std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString);
+  for(int nmu=-1; nmu<3; nmu++){
+    //now make a vector of cutClass for bkg
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    //now make a vector of cutClass for sig
+    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    //now print background table
+    printTable(outfile,vCutBkg,nmu);
 
-  //now make a vector of cutClass for sig
-  std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString);
-
-  //now print background table
-  outfile<<tableHeader(vCutString, vCutBkg.at(0));  
-  for(size_t i=0; i < vCutBkg.size(); i++){
-    outfile<<vCutBkg.at(i)->samplename;
-    for(size_t j =0; j < (vCutBkg.at(i)->nEvents).size(); j++){
-      outfile<<" & "<<(vCutBkg.at(i)->nEvents).at(j);
-    }
-    outfile<<" \\\\"<<std::endl;
   }
-  outfile<<"\\end{tabular} \n \\end{table}";
+
   outfile.close();
 }
 
@@ -53,7 +48,7 @@ std::string tableHeader(std::vector<std::string> vC, CutClass* cC){
 
   std::stringstream str;
 
-  str<<"\\begin{table}\n"<<"\\begin{tabular}|";
+  str<<"\\begin{table}\n"<<"\\centering\n"<<"\\begin{tabular}|";
   for(size_t i =0; i< (vC.size()+1); i++){
     str<<"c|";
   }
@@ -68,3 +63,25 @@ std::string tableHeader(std::vector<std::string> vC, CutClass* cC){
 
   return str.str();
 };
+
+void printTable(TFile* outfile, std::vector<CutClass*> vCC,int nmu){
+
+  //caption
+  std::string caption;
+  if(nmu==-1) caption = "Event Count for all channels combined";
+  if(nmu==0) caption = "Event Count for di-electron channel";
+  if(nmu==1) caption = "Event Count for electron-muon channel";
+  if(nmu==2) caption = "Event Count for di-muon channel";
+
+  outfile<<tableHeader(vCutString, vCC.at(0));  
+  for(size_t i=0; i < vCC.size(); i++){
+    outfile<<vCC.at(i)->samplename;
+    for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
+      outfile<<" & "<<(vCC.at(i)->nEvents).at(j);
+    }
+    outfile<<" \\\\"<<std::endl;
+  }
+  outfile<<"\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<" \\end{table} \n\n";
+
+ 
+}
