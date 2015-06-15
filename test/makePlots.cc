@@ -82,14 +82,10 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     assert(h);
     tStack->Add(h);
     
-    //add to legend
-    //leg->AddEntry(vBkg.at(uk)->hist,(vBkg.at(uk)->name).c_str(),"f");
-    //assert(vBkg.at(uk)->hist);
-    //tStack->Add(vBkg.at(uk)->hist);
-    //std::cout<<"mean is: "<<vBkg.at(uk)->hist->GetMean()<<std::endl;
+
   }
 
-  std::cout<<"********************** Finished making stack for variable "<<var->name<<" *************** "<<std::endl;
+ 
 
   tStack->Draw("HIST");
   tStack->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -104,7 +100,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   //tStack->GetYaxis()->SetTitleSize(0.015);
   c1->RedrawAxis();
   c1->Update();
-  //std::cout<<"updated the tcanvas "<<std::endl;
+
 
   //draw signal:
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
@@ -112,9 +108,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     Sample* s = vSig.at(i1);
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
-    //std::string drawstring = variable+">>h";
-    //std::cout<<"drawstring is: "<<drawstring<<std::endl;
-    //t->Draw(drawstring.c_str());
+
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
     //scale by weight
     h->Scale(s->weight);
@@ -134,7 +128,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   }
 
-  std::cout<<" ********** Finished making signal hists *************"<<std::endl;
+ 
 
   TLatex* cmstex = new TLatex();
   cmstex->SetNDC();
@@ -149,6 +143,15 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Simulation Preliminary");
   lumitex->DrawLatex(0.65,0.96,"5.0 fb^{-1} (13 TeV)");
+
+  //draw latex for channels
+  TLatex* chantex = new TLatex();
+  chantex->SetNDC();
+  chantex->SetTextSize(0.04);
+  if(nMu==-1) chantex->DrawLatex(0.25,0.8,"All Channels");
+  if(nMu==0) chantex->DrawLatex(0.25,0.8,"#bf{ee}");
+  if(nMu==1) chantex->DrawLatex(0.25,0.8,"#bf{e#mu}");
+  if(nMu==2) chantex->DrawLatex(0.25,0.8,"#bf{#mu#mu}");
 
   //rename plots by channel
   std::string channel;
