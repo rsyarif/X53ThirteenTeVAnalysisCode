@@ -76,6 +76,13 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
   if(nmu==1) caption = "Event Count for electron-muon channel";
   if(nmu==2) caption = "Event Count for di-muon channel";
 
+  //label
+  std::string label;
+  if(nmu==-1) label = "\\label{tab:ExpEvtsAll}";
+  if(nmu==0) label = "\\label{tab:ExpEvtsElEl}";
+  if(nmu==1) label = "\\label{tab:ExpEvtsElMu}";
+  if(nmu==2) label = "\\label{tab:ExpEvtsMuMu}";
+
   tablestring<<tableHeader(vCS, vCC.at(0));  
   for(size_t i=0; i < vCC.size(); i++){
     tablestring<<vCC.at(i)->samplename;
@@ -84,7 +91,7 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
     }
     tablestring<<" \\\\"<<std::endl;
   }
-  tablestring<<"\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<" \\end{table} \n\n";
+  tablestring<<"\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<label<<'\n'<<"\\end{table} \n\n";
 
   return tablestring;
  
