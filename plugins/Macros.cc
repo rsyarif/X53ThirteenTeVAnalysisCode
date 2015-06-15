@@ -164,12 +164,18 @@ std::vector<std::string> getCutString(){
   return vString;
 }
 
-float getNumberEvents(Sample* s, std::string cut){
+float getNumberEvents(Sample* s, std::string cut,int nMu){
 
   TTree* t = s->tree;
 
+  //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work
+  std::stringstream channel;
+  channel<<"&& Channel >"<<nMu;
+
+  std::string cutstring= cut+channel.str();
+
   //draw the last variable to cut on just to be safe though it shouldn't matter
-  float nEvts = t->Draw("AK4HT",cut.c_str());
+  float nEvts = t->Draw("AK4HT",cutstring.c_str());
   //std::cout<<"Sample: "<<s->name<<" and cut: "<<cut<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
   //now weight properly
   nEvts = nEvts * s->weight;
@@ -202,7 +208,7 @@ std::string getPrettyCutString(std::string cut){
 };
 
 
-CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts)
+CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts,int nMu)
 {
 
 
@@ -212,7 +218,7 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts)
   for(size_t j=0; j < vCuts.size(); j++){
     
     //get number of events and save to vector - IMPORTANT TO DO THIS WITH THE FULL CUT STRING AND NOT A PRETTY VERSION
-    float n = getNumberEvents(s, vCuts.at(j));
+    float n = getNumberEvents(s, vCuts.at(j), nMu);
     vEvts.push_back(n);
     //now trim the cuts string to write prettily
     
@@ -226,12 +232,12 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts)
 };
 
 
-std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<std::string> vCuts){
+std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<std::string> vCuts, int nMu){
 
   std::vector<CutClass*> vCC;
 
   for(size_t i =0; i < vS.size(); i++){
-    CutClass* c = makeCutClass(vS.at(i),vCuts);
+    CutClass* c = makeCutClass(vS.at(i),vCuts,nMu);
     vCC.push_back(c);
   }
 
