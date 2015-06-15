@@ -16,7 +16,7 @@
 #include "TROOT.h"
 #include "../plugins/Macros.cc"
 
-void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile);
+void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1);
   
 void makePlots(){
 
@@ -38,6 +38,9 @@ void makePlots(){
   for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
     //    std::vector<TH1F*> vBkgHist = getHistVector(v);
     DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout);
+    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,0);
+    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,1);
+    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,2);
     gROOT->Reset();
   }
 
@@ -47,12 +50,14 @@ void makePlots(){
 
 
 
-void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile){
+void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu){
 
   TCanvas* c1 = new TCanvas("c1","c1");
 
   c1->SetLogy();
 
+  std::stringstream cutstring;
+  cutstring<<"Channel<="<<nMu;
 
   THStack* tStack = new THStack("tStack","");
   TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);
@@ -67,7 +72,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //std::string drawstring = variable+">>h";
     //std::cout<<"drawstring is: "<<drawstring<<std::endl;
     //t->Draw(drawstring.c_str());
-    t->Project("h",(var->name).c_str());
+    t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
     //scale by weight
     h->Scale(s->weight);
     //aesthetics
@@ -112,7 +117,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //std::string drawstring = variable+">>h";
     //std::cout<<"drawstring is: "<<drawstring<<std::endl;
     //t->Draw(drawstring.c_str());
-    t->Project("h",(var->name).c_str());
+    t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
     //scale by weight
     h->Scale(s->weight);
     //aesthetics
@@ -142,13 +147,19 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw legend, cms and lumi
   leg->Draw("same");
-  std::cout<<"drew legend"<<std::endl;
+
+  //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Simulation Preliminary");
-  std::cout<<"drew cms tex"<<std::endl;
   lumitex->DrawLatex(0.65,0.96,"5.0 fb^{-1} (13 TeV)");
-  std::cout<<"drew lumitex"<<std::endl;
-  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+".pdf";
-  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+".png";
+
+  //rename plots by channel
+  std::string channel;
+  if(nMu==-1) channel="All";
+  if(nMu==0) channel="ElEl";
+  if(nMu==1) channel="ElMu";
+  if(nMu==2) channel="MuMu");
+  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+".pdf";
+  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
