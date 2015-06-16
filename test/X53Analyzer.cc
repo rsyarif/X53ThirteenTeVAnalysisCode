@@ -37,6 +37,7 @@ int main(int argc, char* argv[]){
  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WZ.root";
  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_ZZ.root";
  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_WJets.root";
+ bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root";
  
  
  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_X53X53ToAll_M-700_right.root";
@@ -85,8 +86,8 @@ int main(int argc, char* argv[]){
 
   bool signal=false;
   bool bg_mc=false;
-  bool bg_dd=false;
-  bool data=false;
+  //bool bg_dd=false;
+  //bool data=false;
 
   //check usage
   bool correctusage=true;
@@ -167,6 +168,15 @@ int main(int argc, char* argv[]){
   int nGenElMu=0;
   int nGenElEl=0;
 
+
+  //get etaWeights in DY events
+  std::vector<float> etaWeights;
+  if(argv[1]=="DYJets"){
+    etaWeights=GetEtaWeights(tr,t);
+  }
+
+
+
   for(int ient=0; ient<nEntries; ient++){
 
     if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
@@ -232,16 +242,35 @@ int main(int argc, char* argv[]){
 
     //make vector of good Leptons
     std::vector<TLepton*> goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons);
+    bool samesign;
 
-    //now that we have good leptons check for two with same-sign charge
-    bool samesign = checkSameSignLeptons(goodLeptons);
+    //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
+    bool zLeps = true;
+    float weight;
+    if(argv[1]=="DYJets"){
+      samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons outside Zpeak (71-111GeV)
+    }
+    //now that we have good leptons, if it's not DY sample just check for two with same-sign charge and assign weight of 1
+    else{
+      samesign = checkSameSignLeptons(goodLeptons);
+      weight=1;
+    }
 
-    if(!samesign) continue;
 
-    std::vector<TLepton*> vSSLep = makeSSLeptons(goodLeptons);
+    if(!zLeps || !samesign) continue;
+
+    //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
+    std::vector<TLepton*> vSSLep;
+    if(argv[1]=="DYJets"){
+      vSSLep = makeOSLeptonsForDY(goodLeptons);
+    }
+    else vSSLep = makeSSLeptons(goodLeptons);
 
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
+
+    //with vector now get weight for DY Events
+    if(argv[1]=="DYJets") weight = getEtaWeight(etaWeights,vSSLep);
 
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
@@ -266,14 +295,6 @@ int main(int argc, char* argv[]){
 
 
     //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
-    if(vSSLep.size()>=2){
-      //std::cout<<"found same-sign dileptons"<<std::endl;
-      //std::cout<<"Number of ssdl: "<<vSSLep.size()<<" Size of genparticles is: "<<tr->genParticles.size()<<std::endl;
-      for(unsigned int ui=0; ui<tr->genParticles.size(); ui++){
-	//printParticle(tr->genParticles.at(ui));
-      }
-      //std::cout<<"\n *** End Event *** \n"<<std::endl;
-    }
 
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
