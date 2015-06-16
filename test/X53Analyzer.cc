@@ -279,6 +279,34 @@ int main(int argc, char* argv[]){
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
     else {nElEl+=1; elel=true;}
 
+    //fill muon trigger histograms
+    if(mumu){
+      //HLTMu40 - check efficiency of leading lepton
+      h_Mu40Den->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_Mu40) h_Mu40Num->Fill(vSSLep.at(0)->pt);
+      //HLT_IsoTkMu24 - also check for leading lepton
+      h_IsoTkMu24Den->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_IsoTkMu24) h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
+      //HLT_Mu30TkMu11 - check for subleading lepton
+      h_Mu30TkMu11Den->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_Mu30TkMu11) h_Mu30TkMu11Num->Fill(vSSLep.at(1)-pt);
+      //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
+      h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
+    }
+    //now electron trigger
+    if(elel){
+      //HLt_Ele27 - check vs leading lepton
+      h_Ele27WP85Den->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_Ele27WP85) h_Ele27WP85Num->Fill(vSSLep.at(0)->pt);
+      //HLT_DoubleEle33 - check vs subleading lepton
+      h_DoubleEle33Den->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_DoubleEle33) h_DoubleEle33Num->Fill(vSSLep.at(1)->pt);
+      //HLT_DoubleEle33_MW - check vs subleading lepton
+      h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
+    }
+
   }//end event loop
 
   //write the tree
