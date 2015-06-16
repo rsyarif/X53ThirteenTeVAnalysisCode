@@ -154,7 +154,7 @@ int main(int argc, char* argv[]){
 
 
 
-  doGenPlots(fsig,t,tr);
+  //doGenPlots(fsig,t,tr);
   //cd back to main directory after making gen plots
   fsig->cd();
 
@@ -331,7 +331,33 @@ int main(int argc, char* argv[]){
   h_MuCutFlow->GetXaxis()->SetBinLabel(12,"N_{TrackerLayer}>5");
   h_MuCutFlow->GetXaxis()->SetBinLabel(13,"RelIso <0.2");
 
+  //write the histograms
+  fsig->WriteTObject(h_MuCutFlow);
 
+  fsig->WriteTObject(h_DoubleEle33Num); 
+  fsig->WriteTObject(h_DoubleEle33_MWNum);
+  fsig->WriteTObject(h_Ele27WP85Num); 
+  fsig->WriteTObject(h_Mu30TkMu11Num); 
+  fsig->WriteTObject(h_Mu40Num); 
+  fsig->WriteTObject(h_IsoTkMu24Num); 
+  fsig->WriteTObject(h_DoubleMu33NoFiltersNoVtxNum);
+  //fsig->WriteTObject(h_Mu33Ele12Num);
+  //fsig->WriteTObject(h_Mu8Ele23Num);
+  //fsig->WriteTObject(h_PFHT900Num);
+  //fsig->WriteTObject(h_AK8PFJet360TrimMass30Num);
+
+  fsig->WriteTObject(h_DoubleEle33Den); 
+  fsig->WriteTObject(h_DoubleEle33_MWDen);
+  fsig->WriteTObject(h_Ele27WP85Den);
+  fsig->WriteTObject(h_Mu30TkMu11Den);
+  fsig->WriteTObject(h_Mu40Den);
+  fsig->WriteTObject(h_IsoTkMu24Den);
+  fsig->WriteTObject(h_DoubleMu33NoFiltersNoVtxDen);
+  //fsig->WriteTObject(h_Mu33Ele12Den);
+  //fsig->WriteTObject(h_Mu8Ele23Den);
+  //fsig->WriteTObject(h_PFHT900Den);
+  //fsig->WriteTObject(h_AK8PFJet360TrimMass30Den);
+  
 
 
   fsig->Write();
