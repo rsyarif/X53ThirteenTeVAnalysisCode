@@ -19,6 +19,7 @@
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
+std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
 bool checkOppositeSignLeptonsForDY(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
@@ -492,6 +493,38 @@ std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*> leptons){
 
   return vSSLep;
   
+}
+
+std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
+
+  std::vector<TLepton*> vSSLep;
+  float minDiff=99999;
+  float pairMass=91.1;
+
+  TLepton* Lep1;
+  TLepton* Lep2;
+
+  for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
+    TLepton* lep1 = leptons.at(uilep);
+    for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
+      TLepton* lep2 = leptons.at(ujlep);
+      float m = (lep1->lv + lep2->lv).M();
+      float diff = fabs(91.1 - m);
+      if( diff< minDiff){
+	minDiff=diff;
+	pairmass=m;
+	Lep1=lep1;
+	Lep2=lep2;
+      }
+    }
+  }
+
+  vSSLep.push_back(Lep1);
+  vSSLep.push_back(Lep2);
+
+
+  return vSSLep;
+
 }
 
 int getNSSDLGen(std::vector<TGenParticle*> genParticles, int nMu){
