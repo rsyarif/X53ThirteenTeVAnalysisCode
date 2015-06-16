@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include <sstream> 
+#include "../plugins/Macros.cc"
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
@@ -172,7 +173,7 @@ int main(int argc, char* argv[]){
   //get etaWeights in DY events
   std::vector<float> etaWeights;
   if(argv[1]=="DYJets"){
-    etaWeights=GetEtaWeights(tr,t);
+    etaWeights=GetEtaWeights(tr,t,fsig);
   }
 
 
@@ -434,6 +435,42 @@ bool checkSameSignLeptons(std::vector<TLepton*> leptons){
 
   return samesign;
   
+}
+
+bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
+
+  bool outsidePeak=false;
+  bool oppositeSign=false;
+
+  float minDiff=99999;
+  float pairMass=91.1;
+
+  TLepton* Lep1;
+  TLepton* Lep2;
+
+  for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
+    TLepton* lep1 = leptons.at(uilep);
+    for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
+      TLepton* lep2 = leptons.at(ujlep);
+      float m = (lep1->lv + lep2->lv).M();
+      float diff = fabs(91.1 - m);
+      if( diff< minDiff){
+	minDiff=diff;
+	pairmass=m;
+	Lep1=lep1;
+	Lep2=lep2;
+      }
+    }
+  }
+
+  if(minDiff!=99999){
+    if(minDiff>20) outsidePeak=true;
+    if(Lep1->charge != Lep2->charge) oppositeSign=true;
+  }
+
+  if(! ( outsidePeak && oppositeSign) ) return false;
+  else return true;
+
 }
 
 
