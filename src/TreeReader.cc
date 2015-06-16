@@ -223,7 +223,22 @@ void TreeReader::Init(TTree *treetemp)
   //  tree->SetBranchAddress("genCharge_DileptonCalc", &genCharge, &b_genCharge_DileptonCalc);
 
   //met
-
   tree->SetBranchAddress("met_DileptonCalc", &MET, &b_MET_DileptonCalc);
+
+
+  //trigger info
+  tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc", &HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle33_MW_DileptonCalc",&HLT_DoubleEle33,&b_HLT_DoubleEle33_MW_DileptonCalc);
+  tree->SetBranchAddress("HLT_Ele27WP85_DileptonCalc",&HLT_Ele27WP85,&b_HLT_Ele27WP85_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu30TkMu11_DileptonCalc",&HLT_Mu30TkMu11,&b_HLT_Mu30TkMu11_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu40_DileptonCalc",&HLT_Mu40,&b_HLT_Mu40_DileptonCalc);
+  tree->SetBranchAddress("HLT_IsoTkMu24_DileptonCalc",&HLT_IsoTkMu24,&b_HLT_IsoTkMu24_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc",&HLT_DoubleMu33NoFiltersNoVtx,&b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu33Ele12_DileptonCalc",&HLT_Mu33Ele12,&b_HLT_Mu33Ele12_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu8Ele23_DileptonCalc",&HLT_Mu8Ele23,&b_HLT_Mu8Ele23_DileptonCalc);
+  tree->SetBranchAddress("HLT_PFHT900_DileptonCalc",&HLT_PFHT900,&b_HLT_PFHT900_DileptonCalc);
+  tree->SetBranchAddress("HLT_AK8PFJet360TrimMass30_DileptonCalc",&HLT_AK8PFJet360TrimMass30,&b_HLT_AK8PFJet360TrimMass30_DileptonCalc);
+
+
 
 }

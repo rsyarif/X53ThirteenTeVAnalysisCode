@@ -169,6 +169,32 @@ class TreeReader{
   std::vector<double>  *genJetPt;
   TBranch        *b_genJetPt_DileptonCalc;
 
+
+  // Trigger Info
+  bool HLT_DoubleEle33;
+  TBranch* b_HLT_DoubleEle33_DileptonCalc;
+  bool HLT_DoubleEle33_MW;
+  TBranch* b_HLT_DoubleEle33_MW_DileptonCalc;
+  bool HLT_Ele27WP85;
+  TBranch* b_HLT_Ele27WP85_DileptonCalc;
+  bool HLT_Mu30TkMu11;
+  TBranch* b_HLT_Mu30TkMu11_DileptonCalc;
+  bool HLT_Mu40;
+  TBranch* b_HLT_Mu40_DileptonCalc;
+  bool HLT_IsoTkMu24;
+  TBranch* b_HLT_IsoTkMu24_DileptonCalc;
+  bool HLT_DoubleMu33NoFiltersNoVtx;
+  TBranch* b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc;
+  bool HLT_Mu33Ele12;
+  TBranch* b_HLT_Mu33Ele12_DileptonCalc;
+  bool HLT_Mu8Ele23;
+  TBranch* b_HLT_Mu8Ele23_DileptonCalc;
+  bool HLT_PFHT900;
+  TBranch* b_HLT_PFHT900_DileptonCalc;
+  bool HLT_AK8PFJet360TrimMass30;
+  TBranch* b_HLT_AK8PFJet360TrimMass30_DileptonCalc;
+
+
 };
 
 #endif
