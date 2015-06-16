@@ -15,8 +15,11 @@
 #include "TLatex.h"
 #include "TROOT.h"
 #include "../plugins/Macros.cc"
+#include "TGraphAsymmErrors.h"
+
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1);
+void DraawTriggerEff(Sample* s, TFile* outfile);
   
 void makePlots(){
 
@@ -43,6 +46,13 @@ void makePlots(){
     DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,2);
     gROOT->Reset();
   }
+
+  //trigger plots - only for signal
+  for(size_t i=0; i<vSigSamples.size();i++){
+    DrawTriggerEff(vSigSamples.at(i),fout);
+  }
+
+
 
   fout->Close();
 
@@ -170,3 +180,29 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   delete lumitex;
 }
 
+void DrawTriggerEff(Sample* s, TFile* outfile){
+
+  std::vector<std::string> vTrigNames;
+  vTrigNames.push_back("DoubleEle33");
+  vTrigNames.push_back("DoubleEle33_MW");
+  vTrigNames.push_back("Ele27WP85");
+  vTrigNames.push_back("Mu30TkMu11");
+  vTrigNames.push_back("Mu40");
+  vTrigNames.push_back("IsoTkMu24");
+  vTrigNames.push_back("DoubleMu33NoFiltersNoVtx");
+  //vTrigNames.push_back("Mu33Ele12");
+  //vTrigNames.push_back("Mu8Ele23");
+  //vTrigNames.push_back("PFHT900");
+  //vTrigNames.push_back("AK8PFJet360TrimMass30");
+
+  for(size_t j=0; j<vTrigNames.size();j++){    
+    std::string hDenName="h_"+vTrigName.at(j)+"Den";
+    std::string hNumName="h_"+vTrigName.at(j)+"Num";
+    TH1F* hDen = (s->file)->Get(hDenName.c_str());
+    TH1F* hNum = (s->file)->Get(hNumName.c_str());
+    TGraphAsymmErrors * g = new TGraphAsymmErrors(hNum,hDen);
+    TCanvas c2 = new TCanvas();
+    
+  }
+
+}
