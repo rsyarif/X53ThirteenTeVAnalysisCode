@@ -234,9 +234,10 @@ int main(int argc, char* argv[]){
 
     tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu);
 
-
-
-
+    //bools for channels
+    bool mumu=false;
+    bool elmu=false;
+    bool elel=false;
 
 
     //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
@@ -249,9 +250,9 @@ int main(int argc, char* argv[]){
       //std::cout<<"\n *** End Event *** \n"<<std::endl;
     }
 
-    if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu) nMuMu+=1;
-    else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)) nElMu+=1;
-    else nElEl+=1;
+    if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
+    else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
+    else {nElEl+=1; elel=true;}
 
   }//end event loop
 
