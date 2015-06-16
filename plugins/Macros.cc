@@ -6,6 +6,7 @@
 #include <cmath>
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/Sample.cc"
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/CutClass.cc"
+#include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/interface/TreeReader.h"
 
 std::vector<Variable*> getVariableVec(){
 
@@ -244,3 +245,62 @@ std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<st
   return vCC;
 
 };
+
+
+std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
+
+  std::vector<float> etaWeights;
+
+  float xbins[9] = {-2.5,-2.1,-1.5,0.9,0,0.9,1.5,2.1,2.5}
+
+  TH1F* h_ss = new TH1F("h_ss","",8,xbins);
+  TH1F* h_all = new TH1F("h_all","",8,xbins);
+
+  int nEntries=t->GetEntries();
+
+  float minDiff=9999;
+  TElectron* El1;
+  TElectron* El2;
+
+  for(int ient=0; ient<nEntries(); ient++){
+    tr->GetEntry(ient);
+    //run over good electrons and find pair closest to Z Mass
+    for(size_t i=0; i< tr->goodElectrons.size(); i++){
+      TElectron* el1 = tr->goodElectrons.at(i);
+      for(size_t j=i+1; j<tr->goodElectrons.size(); j++){
+	TElectron* el2 = tr->goodElectrons.at(j);
+	float mass = (el1->lv + el2->lv).M();
+	if( fabs( 91.1 - mass) < minDiff){
+	  minDiff = fabs(91.1 - mass);
+	  El1=el1;
+	  El2=el2;
+	}
+      }
+    }
+    bool inPeak=false;
+    if(minDiff<20) inPeak=true;
+
+    if(!inPeak) continue;
+
+    if(El1->charge == El2->charge){
+      h_ss->Fill(El1->eta);
+      h_ss->Fill(El2->eta);
+    }
+    else{
+      h_all->Fill(El1->eta);
+      h_all->Fill(El2->eta);
+    }
+
+  }//end event loop
+
+  TGraphAsymmErrors* chargeMisIDgraph = new TGraphAsymmErrors(h_ss,h_all);
+
+  outfile.WriteTObject(chargeMisIDgraph);
+
+  for(size_t i=0; i< chargeMisIDgraph->GetN(); i++){
+    etaWeights.push_back(chargeMisIDgraph->GetY()[i]);
+  }
+
+  return etaWeights;
+
+}
