@@ -6,10 +6,13 @@ import os
 plots = os.listdir("plots")
 
 def printFigure(figName,f):
+#clearpage if staring channels anew
+    if not figName.find("All")==-1:
+        f.write("\\clearpage\n")
 #write header
     f.write("""\\begin{figure}
 \\centering
-\\includegraphics[width=0.75\\textwidth]{""")
+\\includegraphics[width=0.45\\textwidth]{plots/""")
     f.write(figName)
     f.write("}\n")
 #make caption
