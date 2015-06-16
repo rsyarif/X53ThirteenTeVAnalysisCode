@@ -251,7 +251,7 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
   std::vector<float> etaWeights;
 
-  float xbins[9] = {-2.5,-2.1,-1.5,0.9,0,0.9,1.5,2.1,2.5};
+  float xbins[9] = {-2.5,-2.1,-1.5,-0.9,0,0.9,1.5,2.1,2.5};
 
   TH1F* h_ss = new TH1F("h_ss","",8,xbins);
   TH1F* h_all = new TH1F("h_all","",8,xbins);
