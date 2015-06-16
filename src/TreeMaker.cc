@@ -12,6 +12,8 @@ TreeMaker::~TreeMaker(){}
 void TreeMaker::InitTree(std::string treename){
   tree = new TTree(treename.c_str(),treename.c_str());
 
+  //weight
+  tree->Branch("ChargeMisIDWeight",&weight_);
 
   tree->Branch("Lep1Pt",&Lep1Pt_);
 
@@ -54,7 +56,9 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
+
+  weight_=weight;
 
   assert(vSSLep.size()>1);
 
