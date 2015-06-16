@@ -289,7 +289,7 @@ int main(int argc, char* argv[]){
       if(tr->HLT_IsoTkMu24) h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
       //HLT_Mu30TkMu11 - check for subleading lepton
       h_Mu30TkMu11Den->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_Mu30TkMu11) h_Mu30TkMu11Num->Fill(vSSLep.at(1)-pt);
+      if(tr->HLT_Mu30TkMu11) h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
       //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
       h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
