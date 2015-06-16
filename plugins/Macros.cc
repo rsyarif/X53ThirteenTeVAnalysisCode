@@ -304,3 +304,44 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
   return etaWeights;
 
 }
+
+float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons){
+
+  float weight1=1;
+  float weight2=1;
+  TLepton* Lep1;
+  TLepton* Lep2;
+
+  if(Lep1->isEl){
+    if(Lep1->eta<-2.1) weight1 = weight1*etaWeights.at(0);
+    else if(Lep1->eta<-1.5) weight1 = weight1*etaWeights.at(1);
+    else if(Lep1->eta<-0.9) weight1 = weight1*etaWeights.at(2);
+    else if(Lep1->eta<0) weight1 = weight1*etaWeights.at(3);
+    else if(Lep1->eta< 0.9) weight1 = weight1*etaWeights.at(4);
+    else if(Lep1->eta< 1.5) weight1 = weight1*etaWeights.at(5);
+    else if(Lep1->eta< 2.1) weight1 = weight1*etaWeights.at(6);
+    else if(Lep1->eta<2.5) weight1 = weight1*etaWeights.at(7);
+  }
+
+  if(Lep2->isEl){
+    if(Lep2->eta<-2.1) weight2 = weight2*etaWeights.at(0);
+    else if(Lep2->eta<-1.5) weight2 = weight2*etaWeights.at(1);
+    else if(Lep2->eta<-0.9) weight2 = weight2*etaWeights.at(2);
+    else if(Lep2->eta<0) weight2 = weight2*etaWeights.at(3);
+    else if(Lep2->eta< 0.9) weight2 = weight2*etaWeights.at(4);
+    else if(Lep2->eta< 1.5) weight2 = weight2*etaWeights.at(5);
+    else if(Lep2->eta< 2.1) weight2 = weight2*etaWeights.at(6);
+    else if(Lep2->eta<2.5) weight2 = weight2*etaWeights.at(7);
+  }
+
+  float weight=1;
+  if(Lep1->isEl && Lep2->isEl) weight = weight1 + weight2 - weight1*weight2;
+  else if(Lep1->isEl || Lep2->isEl){
+    if(Lep1->isEl) weight = weight1;
+    else weight = weight2;
+  }
+  else weight=1;
+
+  return weight;
+
+}
