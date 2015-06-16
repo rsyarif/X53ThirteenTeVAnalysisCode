@@ -251,7 +251,7 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
   std::vector<float> etaWeights;
 
-  float xbins[9] = {-2.5,-2.1,-1.5,0.9,0,0.9,1.5,2.1,2.5}
+  float xbins[9] = {-2.5,-2.1,-1.5,0.9,0,0.9,1.5,2.1,2.5};
 
   TH1F* h_ss = new TH1F("h_ss","",8,xbins);
   TH1F* h_all = new TH1F("h_all","",8,xbins);
@@ -262,7 +262,7 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
   TElectron* El1;
   TElectron* El2;
 
-  for(int ient=0; ient<nEntries(); ient++){
+  for(int ient=0; ient<nEntries; ient++){
     tr->GetEntry(ient);
     //run over good electrons and find pair closest to Z Mass
     for(size_t i=0; i< tr->goodElectrons.size(); i++){
@@ -295,7 +295,7 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
   TGraphAsymmErrors* chargeMisIDgraph = new TGraphAsymmErrors(h_ss,h_all);
 
-  outfile.WriteTObject(chargeMisIDgraph);
+  outfile->WriteTObject(chargeMisIDgraph);
 
   for(size_t i=0; i< chargeMisIDgraph->GetN(); i++){
     etaWeights.push_back(chargeMisIDgraph->GetY()[i]);

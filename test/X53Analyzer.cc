@@ -174,8 +174,8 @@ int main(int argc, char* argv[]){
 
   //get etaWeights in DY events
   std::vector<float> etaWeights;
-  if(argv[1]=="DYJets"){
-    etaWeights=GetEtaWeights(tr,t,fsig);
+  if(outname.find("DYJets")!=std::string::npos){
+    etaWeights=getEtaWeights(tr,t,fsig);
   }
 
 
@@ -250,7 +250,7 @@ int main(int argc, char* argv[]){
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
     bool zLeps = true;
     float weight;
-    if(argv[1]=="DYJets"){
+    if(outname.find("DYJets")!=std::string::npos){
       samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons outside Zpeak (71-111GeV)
     }
     //now that we have good leptons, if it's not DY sample just check for two with same-sign charge and assign weight of 1
@@ -264,7 +264,7 @@ int main(int argc, char* argv[]){
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
-    if(argv[1]=="DYJets"){
+    if(outname.find("DYJets")!=std::string::npos){
       vSSLep = makeOSLeptonsForDY(goodLeptons);
     }
     else vSSLep = makeSSLeptons(goodLeptons);
@@ -273,7 +273,7 @@ int main(int argc, char* argv[]){
     assert(vSSLep.size() > 1);
 
     //with vector now get weight for DY Events
-    if(argv[1]=="DYJets") weight = getEtaWeight(etaWeights,vSSLep);
+    if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
@@ -289,7 +289,7 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(1)->isMu) nMu++;
 
 
-    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu);
+    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
 
     //bools for channels
     bool mumu=false;
@@ -458,7 +458,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
       float diff = fabs(91.1 - m);
       if( diff< minDiff){
 	minDiff=diff;
-	pairmass=m;
+	pairMass=m;
 	Lep1=lep1;
 	Lep2=lep2;
       }
@@ -512,7 +512,7 @@ std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
       float diff = fabs(91.1 - m);
       if( diff< minDiff){
 	minDiff=diff;
-	pairmass=m;
+	pairMass=m;
 	Lep1=lep1;
 	Lep2=lep2;
       }
