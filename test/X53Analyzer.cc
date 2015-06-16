@@ -20,6 +20,7 @@
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
+bool checkOppositeSignLeptonsForDY(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
