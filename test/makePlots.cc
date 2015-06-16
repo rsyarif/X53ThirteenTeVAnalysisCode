@@ -5,6 +5,7 @@
 #include "TH2.h"
 #include <vector>
 #include <string>
+#include <sstream>
 #include <map>
 #include "THStack.h"
 //#include "../plugins/Sample.cc"
@@ -19,7 +20,7 @@
 
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1);
-void DraawTriggerEff(Sample* s, TFile* outfile);
+void DrawTriggerEff(Sample* s, TFile* outfile);
   
 void makePlots(){
 
@@ -196,12 +197,28 @@ void DrawTriggerEff(Sample* s, TFile* outfile){
   //vTrigNames.push_back("AK8PFJet360TrimMass30");
 
   for(size_t j=0; j<vTrigNames.size();j++){    
-    std::string hDenName="h_"+vTrigName.at(j)+"Den";
-    std::string hNumName="h_"+vTrigName.at(j)+"Num";
-    TH1F* hDen = (s->file)->Get(hDenName.c_str());
-    TH1F* hNum = (s->file)->Get(hNumName.c_str());
+    std::string hDenName="h_"+vTrigNames.at(j)+"Den";
+    std::string hNumName="h_"+vTrigNames.at(j)+"Num";
+    TH1F* hDen = (TH1F*) (s->file)->Get(hDenName.c_str());
+    TH1F* hNum = (TH1F*) (s->file)->Get(hNumName.c_str());
     TGraphAsymmErrors * g = new TGraphAsymmErrors(hNum,hDen);
-    TCanvas c2 = new TCanvas();
+    TCanvas* c2 = new TCanvas();
+
+    std::string title = "Efficiency of HLT_"+vTrigNames.at(j);
+    g->SetTitle(title.c_str());
+    g->GetYaxis()->SetTitle("Eff");
+    g->GetXaxis()->SetTitle("p_{T} GeV");
+
+    g->Draw("apl");
+
+    std::string pdfname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+".pdf";
+    std::string pngname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+".png";
+    c2->Print(pdfname.c_str());
+    c2->Print(pngname.c_str());
+
+    outfile->WriteTObject(c2);
+    delete c2;
+    delete g;
     
   }
 
