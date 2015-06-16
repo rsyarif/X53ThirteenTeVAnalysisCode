@@ -1,3 +1,6 @@
+#ifndef SAMPLE
+#define SAMPLE
+
 #include "TTree.h"
 #include "TFile.h"
 #include <iostream>
@@ -65,3 +68,4 @@ void Sample::setHist(Variable* var){
 
 }
 
+#endif

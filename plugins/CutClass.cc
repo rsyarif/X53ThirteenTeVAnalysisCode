@@ -1,3 +1,6 @@
+#ifndef CUTCLASS
+#define CUTCLASS
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -22,3 +25,5 @@ CutClass::CutClass(std::string sample, std::vector<std::string> cut, std::vector
   samplename(sample),cutname(cut),nEvents(n)
 {
 };
+
+#endif
