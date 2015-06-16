@@ -124,8 +124,33 @@ int main(int argc, char* argv[]){
   TreeReader* tr= new TreeReader(filename.c_str());
   TTree* t=tr->tree;
 
-
+  //histogram for cutflow
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
+
+  //histogram for trigger studies
+  TH1F* h_DoubleEle33Num = new TH1F("h_DoubleEle33Num","",60,0,600);
+  TH1F* h_DoubleEle33_MWNum = new TH1F("h_DoubleEle33_MWNum","",60,0,600);
+  TH1F* h_Ele27WP85Num = new TH1F("h_Ele27WP85Num","",60,0,600);
+  TH1F* h_Mu30TkMu11Num = new TH1F("h_Mu30TkMu11Num","",60,0,600);
+  TH1F* h_Mu40Num = new TH1F("h_Mu40Num","",60,0,600);
+  TH1F* h_IsoTkMu24Num = new TH1F("h_IsoTkMu24Num","",60,0,600);
+  TH1F* h_DoubleMu33NoFiltersNoVtxNum = new TH1F("h_DoubleMu33NoFiltersNoVtxNum","",60,0,600);
+  TH1F* h_Mu33Ele12Num = new TH1F("h_Mu33Ele12Num","",60,0,600);
+  TH1F* h_Mu8Ele23Num = new TH1F("h_Mu8Ele23Num","",60,0,600);
+  TH1F* h_PFHT900Num = new TH1F("h_PFHT900Num","",60,0,600);
+  TH1F* h_AK8PFJet360TrimMass30Num = new TH1F("h_AK8PFJet360TrimMass30Num","",60,0,600);
+
+  TH1F* h_DoubleEle33Den = new TH1F("h_DoubleEle33Den","",60,0,600);
+  TH1F* h_DoubleEle33_MWDen = new TH1F("h_DoubleEle33_MWDen","",60,0,600);
+  TH1F* h_Ele27WP85Den = new TH1F("h_Ele27WP85Den","",60,0,600);
+  TH1F* h_Mu30TkMu11Den = new TH1F("h_Mu30TkMu11Den","",60,0,600);
+  TH1F* h_Mu40Den = new TH1F("h_Mu40Den","",60,0,600);
+  TH1F* h_IsoTkMu24Den = new TH1F("h_IsoTkMu24Den","",60,0,600);
+  TH1F* h_DoubleMu33NoFiltersNoVtxDen = new TH1F("h_DoubleMu33NoFiltersNoVtxDen","",60,0,600);
+  TH1F* h_Mu33Ele12Den = new TH1F("h_Mu33Ele12Den","",60,0,600);
+  TH1F* h_Mu8Ele23Den = new TH1F("h_Mu8Ele23Den","",60,0,600);
+  TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
+  TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
 
 
