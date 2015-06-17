@@ -21,7 +21,8 @@
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1);
 void DrawTriggerEff(Sample* s, TFile* outfile);
-  
+void DrawChargeMisIDGraph(TFile* outfile);
+
 void makePlots(){
 
   //make output file
@@ -53,7 +54,8 @@ void makePlots(){
     DrawTriggerEff(vSigSamples.at(i),fout);
   }
 
-
+  //get graph of chargemisID
+  DrawChargeMisIDGraph(fout);
 
   fout->Close();
 
@@ -221,5 +223,26 @@ void DrawTriggerEff(Sample* s, TFile* outfile){
     delete g;
     
   }
+
+}
+
+
+void DrawChargeMisIDGraph(TFile* outfile){
+  TFile* f = new TFile("DYJets.root");
+  TGraphAsymmErrors* chargeMisIDGraph = (TGraphAsymmErrors*) f->Get("divide_h_ss_by_h_all");
+
+  chargeMisIDGraph->SetTitle("Electron Charge MisID Rate");
+
+  chargeMisIDGraph->GetYaxis()->SetTitle("Charge MisID Rate");
+  chargeMisIDGraph->GetXaxis()->SetTitle("Electron #eta");
+
+  TCanvas c3;
+
+  chargeMisIDGraph->Draw("apl");
+  chargeMisIDGraph->GetYaxis()->SetLabelSize(0.02);
+  c3.Print("plots/ElectronChargeMisID.pdf");
+  c3.Print("plots/ElectronChargeMisID.png");
+
+  outfile->WriteTObject(chargeMisIDGraph);
 
 }
