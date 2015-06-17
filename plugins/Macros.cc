@@ -261,16 +261,20 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
   //float xbins[9] = {-2.5,-2.1,-1.5,-0.9,0,0.9,1.5,2.1,2.5};
 
-  TH1F* h_ss = new TH1F("h_ss","",15,-2.5,2.5);
-  TH1F* h_all = new TH1F("h_all","",15,-2.5,2.5);
-
+  TH1F* h_ss = new TH1F("h_ss","",15,-3,3);
+  TH1F* h_all = new TH1F("h_all","",15,-3,3);
+  TH1F* h_PairMass = new TH1F("h_PairMass","",50,50,150);
   int nEntries=t->GetEntries();
 
-  float minDiff=9999;
-  TElectron* El1;
-  TElectron* El2;
+
 
   for(int ient=0; ient<nEntries; ient++){
+
+    float mindiff=9999;
+    float pairmass=-9999;
+    TElectron* El1;
+    TElectron* El2;
+
     tr->GetEntry(ient);
     //run over good electrons and find pair closest to Z Mass
     for(size_t i=0; i< tr->goodElectrons.size(); i++){
@@ -278,29 +282,39 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
       for(size_t j=i+1; j<tr->goodElectrons.size(); j++){
 	TElectron* el2 = tr->goodElectrons.at(j);
 	float mass = (el1->lv + el2->lv).M();
-	if( fabs( 91.1 - mass) < minDiff){
-	  minDiff = fabs(91.1 - mass);
+	
+	if( fabs( 91.1 - mass) < mindiff){
+	  mindiff=fabs(91.1 - mass);
 	  El1=el1;
 	  El2=el2;
+	  pairmass=mass;	  
 	}
-      }
-    }
-    bool inPeak=false;
-    if(minDiff<20) inPeak=true;
 
+      }
+      
+    }
+
+    bool inPeak=false;
+    if(mindiff<20) inPeak=true; //also implies that a pair was found since requires min diff to be reset;
+    //std::cout<<"size of goodEls: "<<tr->goodElectrons.size()<<"El 1 eta: "<<El1->eta<<" El2 eta: "<<El2->eta<<" mass: "<<pairmass<<" mindiff: "<<mindiff<<std::endl;
+    
+    h_PairMass->Fill(pairmass);
     if(!inPeak) continue;
 
     if(El1->charge == El2->charge){
       h_ss->Fill(El1->eta);
       h_ss->Fill(El2->eta);
     }
-    else{
-      h_all->Fill(El1->eta);
-      h_all->Fill(El2->eta);
-    }
+
+    h_all->Fill(El1->eta);
+    h_all->Fill(El2->eta);
+
 
   }//end event loop
 
+  outfile->WriteTObject(h_PairMass);
+  outfile->WriteTObject(h_ss);
+  outfile->WriteTObject(h_all);
   //scale by 1/2
   h_all->Sumw2();
   h_ss->Sumw2();
@@ -314,6 +328,8 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
   for(size_t i=0; i< chargeMisIDgraph->GetN(); i++){
     etaWeights.push_back(chargeMisIDgraph->GetY()[i]);
   }
+
+  std::cout<<"size of etaWeights: "<<etaWeights.size()<<std::endl;
 
   return etaWeights;
 
