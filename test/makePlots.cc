@@ -68,8 +68,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   c1->SetLogy();
 
   std::stringstream cutstring;
-  if(nMu>0)  cutstring<<"Channel=="<<nMu;
-  else cutstring<<""; //empty if no cut on channel
+  if(nMu>=0)  cutstring<<"(( ChargeMisIDWeight) * (Channel=="<<nMu<<") )";
+  else cutstring<<"ChargeMisIDWeight"; //just chargeMisID if no channel
 
   THStack* tStack = new THStack("tStack","");
   TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);

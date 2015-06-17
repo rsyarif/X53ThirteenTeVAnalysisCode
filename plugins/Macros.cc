@@ -7,6 +7,7 @@
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/Sample.cc"
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/plugins/CutClass.cc"
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/interface/TreeReader.h"
+#include "TGraphAsymmErrors.h"
 
 std::vector<Variable*> getVariableVec(){
 
@@ -109,7 +110,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");
   //make vector of x-sec (in pb)
   std::vector<float> vXsec;
-  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.634); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2); 
+  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.599); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2); 
   //make vector of actual number of events run
   std::vector<int> vNEvts;
   vNEvts.push_back( 2206600); vNEvts.push_back(  249275); vNEvts.push_back(   246521); vNEvts.push_back( 237484); vNEvts.push_back(3828404); vNEvts.push_back(1366703);
@@ -126,14 +127,20 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   vSample.push_back(ttSample);
   TFile* ttZfile = new TFile("TTZ.root");
-  Sample* ttZSample = new Sample(vBkgNames.at(1),ttZfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
+  Sample* ttZSample = new Sample(vBkgNames.at(1),ttZfile, vWeights.at(1),vXsec.at(1),cut,kRed);
   vSample.push_back(ttZSample);
+  TFile* ttwfile = new TFile("TTW.root");
+  Sample* ttwSample = new Sample(vBkgNames.at(2),ttwfile, vWeights.at(2),vXsec.at(2),cut,kYellow-2);
+  vSample.push_back(ttwSample);
   TFile* wzfile = new TFile("WZ.root");
-  Sample* wzSample = new Sample(vBkgNames.at(2),wzfile, vWeights.at(2),vXsec.at(2),cut,kBlue-3);
+  Sample* wzSample = new Sample(vBkgNames.at(3),wzfile, vWeights.at(3),vXsec.at(3),cut,kBlue-3);
   vSample.push_back(wzSample);
   TFile* wjfile = new TFile("WJets.root");
-  Sample* wjSample = new Sample(vBkgNames.at(3),wjfile, vWeights.at(3),vXsec.at(3),cut,kGreen+2);
+  Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   vSample.push_back(wjSample);
+  TFile* dyjfile = new TFile("DYJets.root");
+  Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
+  vSample.push_back(dyjSample);
 
   return vSample;
 
@@ -171,7 +178,8 @@ float getNumberEvents(Sample* s, std::string cut,int nMu){
 
   //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work also apply chargeMisIDWeight
   std::stringstream channel;
-  channel<<"&& (chargeMisIDWeight* (Channel >"<<nMu<<") )";
+  if(nMu>=0)  channel<<"&& (ChargeMisIDWeight* (Channel =="<<nMu<<") )";
+  else  channel<<"&& (ChargeMisIDWeight)";
 
   std::string cutstring= cut+channel.str();
 

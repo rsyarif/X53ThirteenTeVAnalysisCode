@@ -472,6 +472,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
   }
 
   if(! ( outsidePeak && oppositeSign) ) return false;
+  else if( Lep1->isMu && Lep2->isMu) return false; //don't allow mumu events to pass
   else return true;
 
 }
