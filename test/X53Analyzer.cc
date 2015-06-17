@@ -265,6 +265,7 @@ int main(int argc, char* argv[]){
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
     if(outname.find("DYJets")!=std::string::npos){
+      
       vSSLep = makeOSLeptonsForDY(goodLeptons);
     }
     else vSSLep = makeSSLeptons(goodLeptons);
