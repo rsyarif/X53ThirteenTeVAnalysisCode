@@ -106,13 +106,13 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 
    //setup info for list of samples, xsec and events run
   std::vector<std::string> vBkgNames;
-  vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");
+  vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");
   //make vector of x-sec (in pb)
   std::vector<float> vXsec;
-  vXsec.push_back(    491.2);  vXsec.push_back(  2.232); vXsec.push_back(    1.634); vXsec.push_back(   3*50100);
+  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.634); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2); 
   //make vector of actual number of events run
   std::vector<int> vNEvts;
-  vNEvts.push_back( 2206600); vNEvts.push_back(249275);  vNEvts.push_back( 237484); vNEvts.push_back(   3828404);
+  vNEvts.push_back( 2206600); vNEvts.push_back(  249275); vNEvts.push_back(   246521); vNEvts.push_back( 237484); vNEvts.push_back(3828404); vNEvts.push_back(1366703);
 
   //now make vector to hold weights;
   std::vector<float> vWeights;
@@ -169,9 +169,9 @@ float getNumberEvents(Sample* s, std::string cut,int nMu){
 
   TTree* t = s->tree;
 
-  //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work
+  //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work also apply chargeMisIDWeight
   std::stringstream channel;
-  channel<<"&& Channel >"<<nMu;
+  channel<<"&& (chargeMisIDWeight* (Channel >"<<nMu<<") )";
 
   std::string cutstring= cut+channel.str();
 
