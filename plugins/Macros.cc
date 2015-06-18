@@ -140,6 +140,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   vSample.push_back(wjSample);
   TFile* dyjfile = new TFile("DYJets.root");
   Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
+  std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(dyjSample);
 
   return vSample;
@@ -175,20 +176,21 @@ std::vector<std::string> getCutString(){
 float getNumberEvents(Sample* s, std::string cut,int nMu){
 
   TTree* t = s->tree;
-
+  TH1F* hdummy = new TH1F("hdummy","hdummy",100,0,10000);
   //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work also apply chargeMisIDWeight
   std::stringstream channel;
-  if(nMu>=0)  channel<<"&& (ChargeMisIDWeight* (Channel =="<<nMu<<") )";
-  else  channel<<"&& (ChargeMisIDWeight)";
+  if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
+  else  channel<<"";
 
-  std::string cutstring= cut+channel.str();
+  std::string cutstring= "ChargeMisIDWeight * ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
-  float nEvts = t->Draw("AK4HT",cutstring.c_str());
-  //std::cout<<"Sample: "<<s->name<<" and cut: "<<cut<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
+  t->Project("hdummy","AK4HT",cutstring.c_str());
+  float nEvts = hdummy->Integral();
+  //std::cout<<"Sample: "<<s->name<<" and cut: "<<cutstring<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
   //now weight properly
   nEvts = nEvts * s->weight;
-
+  delete hdummy;
   return nEvts;
 };
 
