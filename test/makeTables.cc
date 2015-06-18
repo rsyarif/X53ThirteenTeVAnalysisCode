@@ -46,6 +46,11 @@ void makeTables(){
 
   }
 
+  //make charge misID table
+  outfile<<"\n";
+  std::string chargeMisIDTable = printChargeMisIDTable().str();
+  outfile<<chargeMisIDTable;
+
   outfile.close();
 }
 
@@ -122,17 +127,28 @@ std::stringstream printChargeMisIDTable(){
 
   std::stringstream table;
   table<<"\\begin{table}\n\\centering\n\\begin{tabular}{|";
-  for(int i=0;i<13;i++){
+  for(int i=0;i<2;i++){
     table<<"c|";
   }
-  table<<"}\n";
+  table<<"}\n\\hline\\hline\n";
+
+  table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
   TFile* f = new TFile("DYJets.root");
   TGraphAsymmErrors* g = (TGraphAsymmErrors*) f->Get("divide_h_ss_by_h_all");
 
   for(unsigned int j=0; j< g->GetN(); j++){
-    
+    std::cout<<"making point: "<<j<<" x bin: "<<g->GetX()[j]<<"+/-"<<g->GetErrorX(j)<<" and y value: "<<g->GetY()[j]<<std::endl;
+    float xlow = g->GetX()[j] - g->GetErrorX(j);
+    float xhigh = g->GetX()[j] + g->GetErrorX(j);
+    std::string etabin = Form("%.1f $>\\eta>$ %.1f",xlow,xhigh);
+    std::string misIDRate = Form("%1.5f",g->GetY()[j]);
+    table<<etabin<<" & "<<misIDRate<<"\\\\\n";
   }
+  std::cout<<"made everything but table footer"<<std::endl;
+  table<<"\\hline\n\\end{tabular}\n\\caption{Charge misID rate for electrons. Measured in DY MC requiring two tight electrons with \\pt greater than 30 GeV and an invariant mass within 20 GeV of the Z-boson mass.}\n\\end{table}";
+  std::cout<<"made table footer"<<std::endl;
 
+  return table;
 
 }
