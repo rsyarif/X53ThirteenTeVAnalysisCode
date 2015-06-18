@@ -27,6 +27,9 @@ public:
 
   bool cutBasedTight();
   bool cutBasedLoose();
+  bool CMSDASTight();
+  bool CMSDASLoose();
+
   void init(){
     pt   = -100;
     eta  = -100;

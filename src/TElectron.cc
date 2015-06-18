@@ -82,3 +82,67 @@ bool TElectron::cutBasedLoose(){
   return true;
 }
 
+bool TElectron::CMSDASTight(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
+    if(fabs(dEta) > 0.0091)    return false;
+    if(fabs(dPhi) > 0.031)     return false;
+    if(sigmaIetaIeta > 0.0106) return false;
+    if(hOverE > 0.0532)        return false;
+    if(fabs(d0) > 0.0126)      return false;
+    if(fabs(dZ) > 0.0116)      return false;
+    if(fabs(ooEmooP) > 0.0609) return false;
+    if(relIso > 0.1649)        return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+  //Endcap
+  else{
+    if(fabs(dEta) > 0.0106)    return false;
+    if(fabs(dPhi) > 0.0359)    return false;
+    if(sigmaIetaIeta > 0.0305) return false;
+    if(hOverE > 0.0835)        return false;
+    if(fabs(d0) > 0.0163)      return false;
+    if(fabs(dZ) > 0.5999)      return false;
+    if(fabs(ooEmooP) > 0.1126) return false;
+    if(relIso > 0.2075)        return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+  return true;
+}
+
+bool TElectron::CMSDASLoose(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
+    if(fabs(dEta) > 0.0181)    return false;
+    if(fabs(dPhi) > 0.0936)    return false;
+    if(sigmaIetaIeta > 0.0123) return false;
+    if(hOverE > 0.141)         return false;
+    if(fabs(d0) > 0.0166)      return false;
+    if(fabs(dZ) > 0.54342)     return false;
+    if(fabs(ooEmooP) > 0.1353) return false;
+    if(relIso > 0.24)          return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+
+  //Endcap
+  else{
+    if(fabs(dEta) > 0.0124)    return false;
+    if(fabs(dPhi) > 0.0642)    return false;
+    if(sigmaIetaIeta > 0.035)  return false;
+    if(hOverE > 0.1115)        return false;
+    if(fabs(d0) > 0.098)       return false;
+    if(fabs(dZ) > 0.9187)      return false;
+    if(fabs(ooEmooP) > 0.1443) return false;
+    if(relIso > 0.3529)        return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+  return true;
+}
