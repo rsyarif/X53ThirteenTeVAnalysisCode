@@ -185,8 +185,8 @@ class TreeReader{
   TBranch* b_HLT_IsoTkMu24_DileptonCalc;
   bool HLT_DoubleMu33NoFiltersNoVtx;
   TBranch* b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc;
-  bool HLT_Mu33Ele12;
-  TBranch* b_HLT_Mu33Ele12_DileptonCalc;
+  bool HLT_Mu23Ele12;
+  TBranch* b_HLT_Mu23Ele12_DileptonCalc;
   bool HLT_Mu8Ele23;
   TBranch* b_HLT_Mu8Ele23_DileptonCalc;
   bool HLT_PFHT900;
