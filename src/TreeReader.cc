@@ -29,6 +29,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   goodMuons.clear();
   allElectrons.clear();
   goodElectrons.clear();
+  cmsdasElectrons.clear();
   allAK4Jets.clear();
   genJets.clear();
   genParticles.clear();
@@ -76,6 +77,10 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //now from allElectrons make goodElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->cutBasedTight()) goodElectrons.push_back(allElectrons.at(iel));
+  }
+  //now from allElectrons make cmsdasElectrons
+  for(unsigned int iel=0; iel< allElectrons.size(); iel++){
+    if(allElectrons.at(iel)->CMSDASTight()) cmsdasElectrons.push_back(allElectrons.at(iel));
   }
 
 
