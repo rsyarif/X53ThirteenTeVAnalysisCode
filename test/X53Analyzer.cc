@@ -139,7 +139,7 @@ int main(int argc, char* argv[]){
   TH1F* h_Mu40Num = new TH1F("h_Mu40Num","",60,0,600);
   TH1F* h_IsoTkMu24Num = new TH1F("h_IsoTkMu24Num","",60,0,600);
   TH1F* h_DoubleMu33NoFiltersNoVtxNum = new TH1F("h_DoubleMu33NoFiltersNoVtxNum","",60,0,600);
-  TH1F* h_Mu33Ele12Num = new TH1F("h_Mu33Ele12Num","",60,0,600);
+  TH1F* h_Mu23Ele12Num = new TH1F("h_Mu23Ele12Num","",60,0,600);
   TH1F* h_Mu8Ele23Num = new TH1F("h_Mu8Ele23Num","",60,0,600);
   TH1F* h_PFHT900Num = new TH1F("h_PFHT900Num","",60,0,600);
   TH1F* h_AK8PFJet360TrimMass30Num = new TH1F("h_AK8PFJet360TrimMass30Num","",60,0,600);
@@ -151,7 +151,7 @@ int main(int argc, char* argv[]){
   TH1F* h_Mu40Den = new TH1F("h_Mu40Den","",60,0,600);
   TH1F* h_IsoTkMu24Den = new TH1F("h_IsoTkMu24Den","",60,0,600);
   TH1F* h_DoubleMu33NoFiltersNoVtxDen = new TH1F("h_DoubleMu33NoFiltersNoVtxDen","",60,0,600);
-  TH1F* h_Mu33Ele12Den = new TH1F("h_Mu33Ele12Den","",60,0,600);
+  TH1F* h_Mu23Ele12Den = new TH1F("h_Mu23Ele12Den","",60,0,600);
   TH1F* h_Mu8Ele23Den = new TH1F("h_Mu8Ele23Den","",60,0,600);
   TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
@@ -171,6 +171,15 @@ int main(int argc, char* argv[]){
   int nGenElMu=0;
   int nGenElEl=0;
 
+  //floats for trigger eff
+  float nMu40=0;
+  float nIsoTkMu24=0;
+  float nMu30TkMu11=0;
+  float nEle27=0;
+  float nDoubleEle33=0;
+  float nMu8Ele23=0;
+  float nMu23Ele12=0;
+  float nMu8Ele23ORMu23Ele12=0;
 
   //get etaWeights in DY events
   std::vector<float> etaWeights;
@@ -308,13 +317,22 @@ int main(int argc, char* argv[]){
     if(mumu){
       //HLTMu40 - check efficiency of leading lepton
       h_Mu40Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_Mu40) h_Mu40Num->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_Mu40){
+	h_Mu40Num->Fill(vSSLep.at(0)->pt);
+	nMu40+=1;
+      }
       //HLT_IsoTkMu24 - also check for leading lepton
       h_IsoTkMu24Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_IsoTkMu24) h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_IsoTkMu24){
+	h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
+	nIsoTkMu24+=1;
+      }
       //HLT_Mu30TkMu11 - check for subleading lepton
       h_Mu30TkMu11Den->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_Mu30TkMu11) h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_Mu30TkMu11){
+	h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
+	nMu30TkMu11+=1;
+      }
       //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
       h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
@@ -323,14 +341,30 @@ int main(int argc, char* argv[]){
     if(elel){
       //HLt_Ele27 - check vs leading lepton
       h_Ele27WP85Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_Ele27WP85) h_Ele27WP85Num->Fill(vSSLep.at(0)->pt);
+      if(tr->HLT_Ele27WP85){
+	h_Ele27WP85Num->Fill(vSSLep.at(0)->pt);
+	nEle27+=1;
+      }
       //HLT_DoubleEle33 - check vs subleading lepton
       h_DoubleEle33Den->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_DoubleEle33) h_DoubleEle33Num->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_DoubleEle33){
+	h_DoubleEle33Num->Fill(vSSLep.at(1)->pt);
+	nDoubleEle33+=1;
+      }
       //HLT_DoubleEle33_MW - check vs subleading lepton
       h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
     }
+
+    //if cross channel
+    if(elmu){
+      if(tr->HLT_Mu8Ele23) nMu8Ele23+=1;
+      if(tr->HLT_Mu23Ele12) nMu23Ele12+=1;
+      //also get OR
+      if( (tr->HLT_Mu8Ele23) || (tr->HLT_Mu23Ele12) ) nMu8Ele23ORMu23Ele12+=1;
+      
+    }
+
 
   }//end event loop
 
@@ -366,7 +400,7 @@ int main(int argc, char* argv[]){
   fsig->WriteTObject(h_Mu40Num); 
   fsig->WriteTObject(h_IsoTkMu24Num); 
   fsig->WriteTObject(h_DoubleMu33NoFiltersNoVtxNum);
-  //fsig->WriteTObject(h_Mu33Ele12Num);
+  //fsig->WriteTObject(h_Mu23Ele12Num);
   //fsig->WriteTObject(h_Mu8Ele23Num);
   //fsig->WriteTObject(h_PFHT900Num);
   //fsig->WriteTObject(h_AK8PFJet360TrimMass30Num);
@@ -378,7 +412,7 @@ int main(int argc, char* argv[]){
   fsig->WriteTObject(h_Mu40Den);
   fsig->WriteTObject(h_IsoTkMu24Den);
   fsig->WriteTObject(h_DoubleMu33NoFiltersNoVtxDen);
-  //fsig->WriteTObject(h_Mu33Ele12Den);
+  //fsig->WriteTObject(h_Mu23Ele12Den);
   //fsig->WriteTObject(h_Mu8Ele23Den);
   //fsig->WriteTObject(h_PFHT900Den);
   //fsig->WriteTObject(h_AK8PFJet360TrimMass30Den);
@@ -393,6 +427,18 @@ int main(int argc, char* argv[]){
   std::cout<<"Number of ElMu: "<<nElMu<<std::endl;
   std::cout<<"Number of ElEl: "<<nElEl<<std::endl;
 
+
+  std::cout<<"Efficiency of Mu40 for MuMu: "<<nMu40/(nMuMu)<<std::endl;
+  std::cout<<"Efficiency of Mu40 for MuMu+ElMu: "<<nMu40/(nMuMu + nElMu)<<std::endl;
+  std::cout<<"Efficiency of IsoTkmu24 for MuMu: "<<nIsoTkMu24/(nMuMu)<<std::endl;
+  std::cout<<"Efficiency of IsoTkmu24 for MuMu+ElMu: "<<nIsoTkMu24/(nMuMu+nElMu)<<std::endl;
+  std::cout<<"Efficiency of Mu30TkMu11: "<<nMu30TkMu11/nMuMu<<std::endl<<"\n";
+  std::cout<<"Efficiency of Ele27 for ElEl: "<<nEle27/nElEl<<std::endl;
+  std::cout<<"Efficiency of Ele27 for ElEl + ElMu: "<<nEle27/(nElMu +nElEl)<<std::endl;
+  std::cout<<"Efficiency of DoubleEle33: "<<nDoubleEle33/nElEl<<std::endl<<"\n";
+  std::cout<<"Efficiency of Mu8Ele23: "<<nMu8Ele23/nElMu<<std::endl;
+  std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<std::endl;
+  std::cout<<"Efficiency of Mu8Ele12 OR Mu23Ele12: "<<nMu8Ele23ORMu23Ele12/nElMu<<std::endl;
 }
 
 
