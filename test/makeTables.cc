@@ -8,6 +8,7 @@
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c);
 std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
+std::stringstream printChargeMisIDTable();
 
 void makeTables(){
 
@@ -115,4 +116,23 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
 
   return tablestring;
  
+}
+
+std::stringstream printChargeMisIDTable(){
+
+  std::stringstream table;
+  table<<"\\begin{table}\n\\centering\n\\begin{tabular}{|";
+  for(int i=0;i<13;i++){
+    table<<"c|";
+  }
+  table<<"}\n";
+
+  TFile* f = new TFile("DYJets.root");
+  TGraphAsymmErrors* g = (TGraphAsymmErrors*) f->Get("divide_h_ss_by_h_all");
+
+  for(unsigned int j=0; j< g->GetN(); j++){
+    
+  }
+
+
 }
