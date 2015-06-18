@@ -327,6 +327,7 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
   for(size_t i=0; i< chargeMisIDgraph->GetN(); i++){
     etaWeights.push_back(chargeMisIDgraph->GetY()[i]);
+    std::cout<<"Weight is: "<<chargeMisIDgraph->GetY()[i]<<std::endl;
   }
 
   std::cout<<"size of etaWeights: "<<etaWeights.size()<<std::endl;
