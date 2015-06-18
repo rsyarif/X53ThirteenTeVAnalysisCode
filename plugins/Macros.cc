@@ -87,10 +87,10 @@ std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
   vSigSamples.push_back(x53x53m700L);
 
   TFile* x53x531000Rfile = new TFile("X53X53m1000RH.root");
-  Sample* x53x53m1000R = new Sample(vSigNames.at(2),x53x531000Rfile,vWeights.at(2),vXsec.at(2),cut,kBlack,2);
+  Sample* x53x53m1000R = new Sample(vSigNames.at(2),x53x531000Rfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000R);
   TFile* x53x531000Lfile = new TFile("X53X53m1000LH.root");
-  Sample* x53x53m1000L = new Sample(vSigNames.at(3),x53x531000Lfile,vWeights.at(3),vXsec.at(3),cut,kBlack,1);
+  Sample* x53x53m1000L = new Sample(vSigNames.at(3),x53x531000Lfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000L);
 
   TFile* x53x531300Rfile = new TFile("X53X53m1300RH.root");
@@ -167,7 +167,7 @@ std::vector<std::string> getCutString(){
   std::string jet2pt = "("+jet1pt+"&& AK4Jet2Pt > 150)";
   vString.push_back(jet2pt);
   //HT cut
-  std::string htcut = "("+jet2pt+"&& AK4HT > 1200)";
+  std::string htcut = "("+jet2pt+"&& AK4HT > 900)";
   vString.push_back(htcut);
   return vString;
 }
@@ -343,35 +343,50 @@ float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons)
   TLepton* Lep2=leptons.at(1);
 
   if(Lep1->isEl){
-    if(Lep1->eta<-2.1) weight1 = weight1*etaWeights.at(0);
-    else if(Lep1->eta<-1.5) weight1 = weight1*etaWeights.at(1);
-    else if(Lep1->eta<-0.9) weight1 = weight1*etaWeights.at(2);
-    else if(Lep1->eta<0) weight1 = weight1*etaWeights.at(3);
-    else if(Lep1->eta< 0.9) weight1 = weight1*etaWeights.at(4);
-    else if(Lep1->eta< 1.5) weight1 = weight1*etaWeights.at(5);
-    else if(Lep1->eta< 2.1) weight1 = weight1*etaWeights.at(6);
-    else if(Lep1->eta<2.5) weight1 = weight1*etaWeights.at(7);
+    if(Lep1->eta<-2.6) weight1 = 0;//no electrons greater than 2.6
+    else if(Lep1->eta<-2.2) weight1 = weight1*etaWeights.at(0);
+    else if(Lep1->eta<-1.8) weight1 = weight1*etaWeights.at(1);
+    else if(Lep1->eta<-1.4) weight1 = weight1*etaWeights.at(2);
+    else if(Lep1->eta< -1.0) weight1 = weight1*etaWeights.at(3);
+    else if(Lep1->eta< -0.6) weight1 = weight1*etaWeights.at(4);
+    else if(Lep1->eta< -0.2) weight1 = weight1*etaWeights.at(5);
+    else if(Lep1->eta< 0.2) weight1 = weight1*etaWeights.at(6);
+    else if(Lep1->eta< 0.6) weight1 = weight1*etaWeights.at(7);
+    else if(Lep1->eta< 1.0) weight1 = weight1*etaWeights.at(8);
+    else if(Lep1->eta< 1.4) weight1 = weight1*etaWeights.at(9);
+    else if(Lep1->eta< 1.8) weight1 = weight1*etaWeights.at(10);
+    else if(Lep1->eta< 2.2) weight1 = weight1*etaWeights.at(11);
+    else if(Lep1->eta< 2.6) weight1 = weight1*etaWeights.at(12);
+    else if(Lep1->eta< 3.0) weight1 = 0; //no electrons w/ eta greater than 2.6
+
   }
 
   if(Lep2->isEl){
-    if(Lep2->eta<-2.1) weight2 = weight2*etaWeights.at(0);
-    else if(Lep2->eta<-1.5) weight2 = weight2*etaWeights.at(1);
-    else if(Lep2->eta<-0.9) weight2 = weight2*etaWeights.at(2);
-    else if(Lep2->eta<0) weight2 = weight2*etaWeights.at(3);
-    else if(Lep2->eta< 0.9) weight2 = weight2*etaWeights.at(4);
-    else if(Lep2->eta< 1.5) weight2 = weight2*etaWeights.at(5);
-    else if(Lep2->eta< 2.1) weight2 = weight2*etaWeights.at(6);
-    else if(Lep2->eta<2.5) weight2 = weight2*etaWeights.at(7);
+    if(Lep2->eta<-2.6) weight2 = 0;//no electrons outside eta 2.6
+    else if(Lep2->eta<-2.2) weight2 = weight2*etaWeights.at(0);
+    else if(Lep2->eta<-1.8) weight2 = weight2*etaWeights.at(1);
+    else if(Lep2->eta<-1.4) weight2 = weight2*etaWeights.at(2);
+    else if(Lep2->eta< -1.0) weight2 = weight2*etaWeights.at(3);
+    else if(Lep2->eta< -0.6) weight2 = weight2*etaWeights.at(4);
+    else if(Lep2->eta< -0.2) weight2 = weight2*etaWeights.at(5);
+    else if(Lep2->eta< 0.2) weight2 = weight2*etaWeights.at(6);
+    else if(Lep2->eta< 0.6) weight2 = weight2*etaWeights.at(7);
+    else if(Lep2->eta< 1.0) weight2 = weight2*etaWeights.at(8);
+    else if(Lep2->eta< 1.4) weight2 = weight2*etaWeights.at(9);
+    else if(Lep2->eta< 1.8) weight2 = weight2*etaWeights.at(10);
+    else if(Lep2->eta< 2.2) weight2 = weight2*etaWeights.at(11);
+    else if(Lep2->eta< 2.6) weight2 = weight2*etaWeights.at(12);
+    else if(Lep2->eta< 3.0) weight2 = 0; //no electrons outside eta 2.6
   }
 
 
   float weight=1;
   if(Lep1->isEl && Lep2->isEl) weight = weight1 + weight2 - weight1*weight2;
-  else if(Lep1->isEl || Lep2->isEl){
+  else if( (Lep1->isEl && !Lep2->isEl) || (!Lep1->isEl && Lep2->isEl) ){
     if(Lep1->isEl) weight = weight1;
     else weight = weight2;
   }
-  else weight=1;
+
 
   return weight;
 
