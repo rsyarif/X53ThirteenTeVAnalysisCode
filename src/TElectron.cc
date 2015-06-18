@@ -20,6 +20,71 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 bool TElectron::cutBasedTight(){
   //Barrel
   if(fabs(eta) <= 1.479){
+    if(fabs(dEta) >= 0.006046)    return false;
+    if(fabs(dPhi) >= 0.028092)     return false;
+    if(sigmaIetaIeta >= 0.009947) return false;
+    if(hOverE >= 0.045772)        return false;
+    if(fabs(d0) >= 0.008790)      return false;
+    if(fabs(dZ) >= 0.021226)      return false;
+    if(ooEmooP >= 0.020118) return false;
+    if(relIso > 0.1649)        return false; //still at apr2015 iso cut because new iso cut relies on iso in cone 0.3
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <30)                 return false;
+  }
+  //Endcap
+  else{
+    if(fabs(dEta) >= 0.007057)    return false;
+    if(fabs(dPhi) >= 0.030159)    return false;
+    if(sigmaIetaIeta >= 0.028237) return false;
+    if(hOverE >= 0.067778)        return false;
+    if(fabs(d0) >= 0.027984)      return false;
+    if(fabs(dZ) >= 0.133431)      return false;
+    if(ooEmooP >= 0.098919) return false;
+    if(relIso >= 0.090185)        return false; //same as above
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <30)                 return false;
+  }
+  return true;
+}
+
+bool TElectron::cutBasedLoose(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
+    if(fabs(dEta) >= 0.009277)    return false;
+    if(fabs(dPhi) >= 0.094739)    return false;
+    if(sigmaIetaIeta >= 0.010331) return false;
+    if(hOverE >= 0.093068)         return false;
+    if(fabs(d0) >= 0.035904)      return false;
+    if(fabs(dZ) >= 0.075496)     return false;
+    if(ooEmooP >= 0.189968) return false;
+    if(relIso >= 0.120026)          return false; //same as above
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+  
+  //Endcap
+  else{
+    if(fabs(dEta) >= 0.009833)    return false;
+    if(fabs(dPhi) >= 0.149934)    return false;
+    if(sigmaIetaIeta >= 0.031838)  return false;
+    if(hOverE >= 0.115754)        return false;
+    if(fabs(d0) >= 0.099266)       return false;
+    if(fabs(dZ) >= 0.197897)      return false;
+    if(ooEmooP >= 0.140662) return false;
+    if(relIso >= 0.162914)        return false; //same as above
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(pt <20)                 return false;
+  }
+  return true;
+}
+
+bool TElectron::cutBasedTightApr2015(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
     if(fabs(dEta) >= 0.006574)    return false;
     if(fabs(dPhi) >= 0.022868)     return false;
     if(sigmaIetaIeta >= 0.010181) return false;
@@ -49,7 +114,7 @@ bool TElectron::cutBasedTight(){
   return true;
 }
 
-bool TElectron::cutBasedLoose(){
+bool TElectron::cutBasedLooseApr2015(){
   //Barrel
   if(fabs(eta) <= 1.479){
     if(fabs(dEta) >= 0.012442)    return false;
