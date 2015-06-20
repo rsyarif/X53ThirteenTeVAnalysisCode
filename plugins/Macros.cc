@@ -107,13 +107,13 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 
    //setup info for list of samples, xsec and events run
   std::vector<std::string> vBkgNames;
-  vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");
+  vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");vBkgNames.push_back("ZZ");
   //make vector of x-sec (in pb)
   std::vector<float> vXsec;
-  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.599); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2); 
+  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.599); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2);vXsec.push_back( 16.5);
   //make vector of actual number of events run
   std::vector<int> vNEvts;
-  vNEvts.push_back( 2206600); vNEvts.push_back(  249275); vNEvts.push_back(   246521); vNEvts.push_back( 237484); vNEvts.push_back(3828404); vNEvts.push_back(1366703);
+  vNEvts.push_back( 2206600); vNEvts.push_back(  249275); vNEvts.push_back(   246521); vNEvts.push_back( 237484); vNEvts.push_back(3828404); vNEvts.push_back(1366703);vNEvts.push_back(1958600);
 
   //now make vector to hold weights;
   std::vector<float> vWeights;
@@ -141,7 +141,11 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   TFile* dyjfile = new TFile("DYJets.root");
   Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
   std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(dyjSample);
+  //vSample.push_back(dyjSample);
+  TFile* zzjfile = new TFile("ZZ.root");
+  Sample* zzjSample = new Sample(vBkgNames.at(6),zzjfile, vWeights.at(6),vXsec.at(6),cut,kOrange+1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(zzjSample);
 
   return vSample;
 
@@ -394,3 +398,5 @@ float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons)
   return weight;
 
 }
+
+//  LocalWords:  dyjSample
