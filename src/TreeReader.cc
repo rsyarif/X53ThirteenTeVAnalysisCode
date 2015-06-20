@@ -55,6 +55,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   }
 
   for (unsigned int i=0;i<nAK4Jets; i++){
+    //require jet to be greater than 30 GeV and eta less than 2.4
+    if( ( (*AK4JetPt)[i]<30) || fabs((*AK4JetEta)[i])>2.4) continue;
     allAK4Jets.push_back(new TJet( (*AK4JetPt)[i], (*AK4JetEta)[i], (*AK4JetPhi)[i],(*AK4JetEnergy)[i]) );
   }
 
