@@ -95,13 +95,13 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     for(unsigned int iel=0; iel<goodElectrons.size(); iel++){
       TElectron* el = goodElectrons.at(iel);
       float deltaR = pow( pow( jet->eta - el->eta,2) + pow( jet->phi - el->phi,2), 0.5);
-      if(deltaR <0.3) cleanLV= cleanLV - el->lv;
+      if(deltaR <0.4) cleanLV= cleanLV - el->lv;
     }
     //clean any tight muons from the jet
     for(unsigned int imu=0; imu<goodMuons.size(); imu++){
       TMuon* mu = goodMuons.at(imu);
       float deltaR = pow( pow( jet->eta - mu->eta,2) + pow( jet->phi - mu->phi,2), 0.5);
-      if(deltaR <0.3) cleanLV= cleanLV - mu->lv;
+      if(deltaR <0.4) cleanLV= cleanLV - mu->lv;
     }
 
     cleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
