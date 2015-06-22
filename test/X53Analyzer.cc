@@ -366,7 +366,7 @@ int main(int argc, char* argv[]){
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu30TkMu11 || tr->HLT_DoubleEle33) ) continue;
 
     //fill tree
-    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
+    tm->FillTree(vSSLep, tr->allAK4Jets, tr->cleanAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
   }//end event loop
 
   //write the tree

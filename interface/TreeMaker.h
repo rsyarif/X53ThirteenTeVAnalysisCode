@@ -60,12 +60,27 @@ class TreeMaker {
   float AK4Jet2Phi_;
   float AK4Jet2Energy_;
 
+  //collections for cleaned jets
+  float cleanAK4Jet1Pt_;
+  float cleanAK4Jet1Eta_;
+  float cleanAK4Jet1Phi_;
+  float cleanAK4Jet1Energy_;
+
+  float cleanAK4Jet2Pt_;
+  float cleanAK4Jet2Eta_;
+  float cleanAK4Jet2Phi_;
+  float cleanAK4Jet2Energy_;
+
+  int nCleanAK4Jets_;
+  float cleanAK4HT_;
+
+
   int nMu_; //the number of same-sign dileptons which are muons acts as standin for channel
 
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight);
 
 };
 
