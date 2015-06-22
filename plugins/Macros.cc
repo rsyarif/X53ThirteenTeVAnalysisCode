@@ -110,7 +110,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");vBkgNames.push_back("ZZ");
   //make vector of x-sec (in pb)
   std::vector<float> vXsec;
-  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.599); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2);vXsec.push_back( 16.5);
+  vXsec.push_back(    831.76 );  vXsec.push_back(  2.232); vXsec.push_back(    1.152);  vXsec.push_back(  1.599); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2);vXsec.push_back( 0.1853);
   //make vector of actual number of events run
   std::vector<int> vNEvts;
   vNEvts.push_back( 2206600); vNEvts.push_back(  249275); vNEvts.push_back(   246521); vNEvts.push_back( 237484); vNEvts.push_back(3828404); vNEvts.push_back(1366703);vNEvts.push_back(1958600);
