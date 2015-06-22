@@ -298,9 +298,6 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(0)->isMu) nMu++;
     if(vSSLep.at(1)->isMu) nMu++;
 
-
-    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
-
     //bools for channels
     bool mumu=false;
     bool elmu=false;
@@ -365,7 +362,11 @@ int main(int argc, char* argv[]){
       
     }
 
+    //require OR of triggers
+    if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu30TkMu11 || tr->HLT_DoubleEle33) ) continue;
 
+    //fill tree
+    tm->FillTree(vSSLep, tr->allAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
   }//end event loop
 
   //write the tree
@@ -432,11 +433,36 @@ int main(int argc, char* argv[]){
   std::cout<<"Efficiency of Mu40 for MuMu+ElMu: "<<nMu40/(nMuMu + nElMu)<<std::endl;
   std::cout<<"Efficiency of IsoTkmu24 for MuMu: "<<nIsoTkMu24/(nMuMu)<<std::endl;
   std::cout<<"Efficiency of IsoTkmu24 for MuMu+ElMu: "<<nIsoTkMu24/(nMuMu+nElMu)<<std::endl;
-  std::cout<<"Efficiency of Mu30TkMu11: "<<nMu30TkMu11/nMuMu<<std::endl<<"\n";
+
+  TH1F* hNMu30TkMu11Num = new TH1F("hNMu30TkMu11Num","",1,0,10000);
+  TH1F* hNMu30TkMu11Den = new TH1F("hNMu30TkMu11Den","",1,0,10000);
+  for(int j =0; j<nMu30TkMu11;j++) hNMu30TkMu11Num->Fill(j);
+  for(int j =0; j<nMuMu;j++) hNMu30TkMu11Den->Fill(j);
+  TGraphAsymmErrors* Mu30Tk11Graph = new TGraphAsymmErrors(hNMu30TkMu11Num,hNMu30TkMu11Den);
+  std::cout<<"Efficiency of Mu30TkMu11: "<<nMu30TkMu11/nMuMu<<" +"<<Mu30Tk11Graph->GetErrorYhigh(0)<<" -"<<Mu30Tk11Graph->GetErrorYlow(0)<<std::endl<<"\n";
   std::cout<<"Efficiency of Ele27 for ElEl: "<<nEle27/nElEl<<std::endl;
   std::cout<<"Efficiency of Ele27 for ElEl + ElMu: "<<nEle27/(nElMu +nElEl)<<std::endl;
-  std::cout<<"Efficiency of DoubleEle33: "<<nDoubleEle33/nElEl<<std::endl<<"\n";
-  std::cout<<"Efficiency of Mu8Ele23: "<<nMu8Ele23/nElMu<<std::endl;
+
+  TH1F* hNDoubleEle33Num = new TH1F("hNDoubleEle33Num","",1,0,10000);
+  TH1F* hNDoubleEle33Den = new TH1F("hNDoubleEle33Den","",1,0,10000);
+  for(int j =0; j<nDoubleEle33;j++) hNDoubleEle33Num->Fill(j);
+  for(int j =0; j<nElEl;j++) hNDoubleEle33Den->Fill(j);
+  TGraphAsymmErrors* DoubleEle33Graph = new TGraphAsymmErrors(hNDoubleEle33Num,hNDoubleEle33Den);
+  std::cout<<"Efficiency of DoubleEle33: "<<nDoubleEle33/nElEl<<" +"<<DoubleEle33Graph->GetErrorYhigh(0)<<" -"<<DoubleEle33Graph->GetErrorYlow(0)<<std::endl<<"\n";
+
+  TH1F* hNMu8Ele23Num = new TH1F("hNMu8Ele23Num","",1,0,10000);
+  TH1F* hNMu8Ele23Den = new TH1F("hNMu8Ele23Den","",1,0,10000);
+  for(int j =0; j<nMu8Ele23;j++) hNMu8Ele23Num->Fill(j);
+  for(int j =0; j<nElMu;j++) hNMu8Ele23Den->Fill(j);
+  TGraphAsymmErrors* Mu8Ele23Graph = new TGraphAsymmErrors(hNMu8Ele23Num,hNMu8Ele23Den);
+  std::cout<<"Efficiency of Mu8Ele23: "<<nMu8Ele23/nElMu<<" +"<<Mu8Ele23Graph->GetErrorYhigh(0)<<" -"<<Mu8Ele23Graph->GetErrorYlow(0)<<std::endl<<"\n";
+
+  TH1F* hNMu23Ele12Num = new TH1F("hNMu23Ele12Num","",1,0,10000);
+  TH1F* hNMu23Ele12Den = new TH1F("hNMu23Ele12Den","",1,0,10000);
+  for(int j =0; j<nMu23Ele12;j++) hNMu23Ele12Num->Fill(j);
+  for(int j =0; j<nElMu;j++) hNMu23Ele12Den->Fill(j);
+  TGraphAsymmErrors* Mu23Ele12Graph = new TGraphAsymmErrors(hNMu23Ele12Num,hNMu23Ele12Den);
+  std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<" +"<<Mu23Ele12Graph->GetErrorYhigh(0)<<" -"<<Mu23Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
   std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<std::endl;
   std::cout<<"Efficiency of Mu8Ele12 OR Mu23Ele12: "<<nMu8Ele23ORMu23Ele12/nElMu<<std::endl;
 }
