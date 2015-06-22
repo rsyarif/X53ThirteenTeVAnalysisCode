@@ -27,7 +27,7 @@ class TreeReader{
   std::vector <TMuon*> allMuons, goodMuons,looseMuons;
   std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons;
   std::vector <TGenParticle*> genParticles;
-  std::vector <TJet*> allAK4Jets;
+  std::vector <TJet*> allAK4Jets,cleanedAK4Jets;
   std::vector <TJet*> genJets;
 
   //met

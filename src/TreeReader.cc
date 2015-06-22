@@ -31,6 +31,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   goodElectrons.clear();
   cmsdasElectrons.clear();
   allAK4Jets.clear();
+  cleanedAK4Jets.clear();
   genJets.clear();
   genParticles.clear();
 
@@ -83,6 +84,28 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //now from allElectrons make cmsdasElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->CMSDASTight()) cmsdasElectrons.push_back(allElectrons.at(iel));
+  }
+
+  //make clean jets collection
+  for(unsigned int ijet=0; ijet<allAK4Jets.size();ijet++){
+    TJet* jet = allAK4Jets.at(ijet);
+    TLorentzVector cleanLV= jet->lv;
+
+    //clean any tight electrons from the jet
+    for(unsigned int iel=0; iel<goodElectrons.size(); iel++){
+      TElectron* el = goodElectrons.at(iel);
+      float deltaR = pow( pow( jet->eta - el->eta,2) + pow( jet->phi - el->phi,2), 0.5);
+      if(deltaR <0.3) cleanLV= cleanLV - el->lv;
+    }
+    //clean any tight muons from the jet
+    for(unsigned int imu=0; imu<goodMuons.size(); imu++){
+      TMuon* mu = goodMuons.at(imu);
+      float deltaR = pow( pow( jet->eta - mu->eta,2) + pow( jet->phi - mu->phi,2), 0.5);
+      if(deltaR <0.3) cleanLV= cleanLV - mu->lv;
+    }
+
+    cleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
+
   }
 
 
