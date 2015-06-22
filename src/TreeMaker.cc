@@ -52,11 +52,26 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("AK4Jet2Phi",&AK4Jet2Phi_);
   tree->Branch("AK4Jet2Energy",&AK4Jet2Energy_);  
 
+
+  //cleaned jets
+  tree->Branch("nCleanAK4Jets",&nCleanAK4Jets_);
+  tree->Branch("cleanAK4HT",&cleanAK4HT_);
+  tree->Branch("cleanAK4Jet1Pt",&cleanAK4Jet1Pt_);
+  tree->Branch("cleanAK4Jet1Eta",&cleanAK4Jet1Eta_);
+  tree->Branch("cleanAK4Jet1Phi",&cleanAK4Jet1Phi_);
+  tree->Branch("cleanAK4Jet1Energy",&cleanAK4Jet1Energy_);
+
+  tree->Branch("cleanAK4Jet2Pt",&cleanAK4Jet2Pt_);
+  tree->Branch("cleanAK4Jet2Eta",&cleanAK4Jet2Eta_);
+  tree->Branch("cleanAK4Jet2Phi",&cleanAK4Jet2Phi_);
+  tree->Branch("cleanAK4Jet2Energy",&cleanAK4Jet2Energy_);  
+
+
   tree->Branch("DilepMass",&DilepMass_);
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
 
   weight_=weight;
 
@@ -106,6 +121,43 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     AK4Jet2Phi_=-999;
     AK4Jet2Energy_=-999;
   }
+
+
+  //cleaned jets
+  nCleanAK4Jets_ = cleanAK4Jets.size();
+  cleanAK4HT_=0;
+  for(int i=0; i<nCleanAK4Jets_;i++){
+    cleanAK4HT_+=cleanAK4Jets.at(i)->pt;
+  }
+
+  if(nCleanAK4Jets_>0){
+    cleanAK4Jet1Pt_=cleanAK4Jets.at(0)->pt;    
+    cleanAK4Jet1Eta_=cleanAK4Jets.at(0)->eta;
+    cleanAK4Jet1Phi_=cleanAK4Jets.at(0)->phi;
+    cleanAK4Jet1Energy_=cleanAK4Jets.at(0)->energy;
+  }
+  else{
+    cleanAK4Jet1Pt_=-999;
+    cleanAK4Jet1Eta_=-999;
+    cleanAK4Jet1Phi_=-999;
+    cleanAK4Jet1Energy_=-999;
+  }
+
+  if(nCleanAK4Jets_>1){
+    cleanAK4Jet2Pt_=cleanAK4Jets.at(1)->pt;    
+    cleanAK4Jet2Eta_=cleanAK4Jets.at(1)->eta;
+    cleanAK4Jet2Phi_=cleanAK4Jets.at(1)->phi;
+    cleanAK4Jet2Energy_=cleanAK4Jets.at(1)->energy;
+  }
+  else{
+    cleanAK4Jet2Pt_=-999;
+    cleanAK4Jet2Eta_=-999;
+    cleanAK4Jet2Phi_=-999;
+    cleanAK4Jet2Energy_=-999;
+  }
+
+
+
 
   DilepMass_ = DilepMasstemp;
   nMu_= nMu;
