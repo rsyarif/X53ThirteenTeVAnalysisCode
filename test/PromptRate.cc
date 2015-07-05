@@ -7,10 +7,6 @@
 #include "TChain.h"
 #include "../interface/TreeReader.h"
 #include <stdio.h>
-#include "LeptonAnalyzer.cc"
-#include "JetAnalyzer.cc"
-#include "GenAnalyzer.cc"
-#include "../interface/TreeMaker.h"
 #include <assert.h>
 #include <map>
 #include <string>
@@ -63,6 +59,12 @@ int main(int argc, char* argv[]){
   TreeReader* tr= new TreeReader(filename.c_str());
   TTree* t=tr->tree;
 
+  //initialize needed histograms
+  TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
+  TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
+  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
+  TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
+
   //get number of entries and start event loop
   int nEntries = t->GetEntries();
   for(int ient=0; ient<nEntries; ient++){
@@ -71,10 +73,58 @@ int main(int argc, char* argv[]){
 
     if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
-    
+    //make vector of leptons
+    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
 
+    //check for at least one tight lepton
+    bool oneTight=false;
+    for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
+      if(leptons.at(ilep)->Tight){
+	oneTight=true;
+	break;
+      }
+    }
+
+    //skip of not at least one tight and at least one other loose  
+    if(!oneTight || leptons.size()<2) continue;
+
+    //get pair of leptons closest to z mass;
+    float zmass = 91.1;
+    float massDiff=9999;
+    TLepton* lep1,lep2;
+    float pairmass=-9999;
+    for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
+      //loop over remaining leptons
+      for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<leptons.size(); jlep++){
+	pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
+	if(fabs(zmass-pairmass)<massDiff){
+	  massdiff = fabs(zmass-pairmass);
+	  lep1=leptons.at(ilep);
+	  lep2=leptons.at(jlep);
+	}
+      }//end second loop over leptons
+    }//end loop over leptons
+
+    //check that leptons are in Zpeak
+    bool zpeak= massDiff<15 ? true : false;
+
+    if(!zpeak) continue;
+
+    //now fill histograms
+    ptDenHist->Fill(lep2->pt);
+    if(lep2->Tight) ptNumhist->Fill(lep2->pt);
+    etaDenHist->Fill(lep2->eta);
+    if(lep2->Tight) etaNumHist->Fill(lep2->eta);
 
   }//end event loop
+
+  //make tgraphs for promptrate
+  TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
+  TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
+
+
+  //write file now that histograms have been filled
+  fout->Write();
 
   return 0;
 }
@@ -93,7 +143,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Loose=imu->cutBasedLoose();
       iLep->isMu = true;
       iLep->isEl = false;
-      Leptons.push_back(iLep);
+      //only save if at least loose
+      if(iLep->Tight || iLep->Loose) Leptons.push_back(iLep);
     }
   }
   else{
@@ -105,7 +156,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Loose=iel->cutBasedLoose();
       iLep->isMu = false;
       iLep->isEl = true;
-      Leptons.push_back(iLep);
+      //only save if at least loose
+      if(iLep->Tight || iLep->Loose) Leptons.push_back(iLep);
       
     }
   }
