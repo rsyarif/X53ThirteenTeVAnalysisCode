@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double relIsotemp,int chargeconsistencytemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double relIsotemp,bool passConv, int chargeconsistencytemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),  
   dEta(dEtatemp),
   dPhi(dPhitemp),
@@ -12,6 +12,7 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   ooEmooP(ooEmooPtemp),
   sigmaIetaIeta(sigmaIetaIetatemp),
   relIso(relIsotemp),
+  passConversion(passconv),
   chargeConsistency(chargeconsistencytemp)
 {
   setLV();
@@ -30,6 +31,7 @@ bool TElectron::cutBasedTight(){
     if(relIso > 0.069537)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
     if(pt <30)                 return false;
   }
   //Endcap
@@ -44,6 +46,7 @@ bool TElectron::cutBasedTight(){
     if(relIso >= 0.078265)        return false; 
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
     if(pt <30)                 return false;
   }
   return true;
@@ -62,6 +65,7 @@ bool TElectron::cutBasedLoose(){
     if(relIso >= 0.130136)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
     if(pt <20)                 return false;
   }
   
@@ -74,9 +78,10 @@ bool TElectron::cutBasedLoose(){
     if(fabs(d0) >= 0.099266)       return false;
     if(fabs(dZ) >= 0.197897)      return false;
     if(ooEmooP >= 0.140662) return false;
-    if(relIso >= 0.177032)        return false;
+    if(relIso >= 0.163368)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
     if(pt <20)                 return false;
   }
   return true;
