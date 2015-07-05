@@ -22,9 +22,9 @@ std::vector<Variable*> getVariableVec(){
 
   Variable* lep2pt = new Variable("Lep2Pt",60,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep2pt);
-  Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton p_{T} #eta","N_{Events}");
+  Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
-  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton p_{T} #phi","N_{Events}");
+  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
   vVar.push_back(lep2phi);
 
   Variable* ak4jet1pt = new Variable("AK4Jet1Pt",60,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
@@ -46,6 +46,31 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(ak4ht);
   Variable* nak4jets = new Variable("nAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(nak4jets);
+
+  //cleaned jet variables
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",60,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4jet1pt);
+  Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+  vVar.push_back(cleanak4jet1eta);
+  Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+  vVar.push_back(cleanak4jet1phi);
+
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",60,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4jet2pt);
+  Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+  vVar.push_back(cleanak4jet2eta);
+  Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+  vVar.push_back(cleanak4jet2phi);
+
+
+  Variable* cleanak4ht = new Variable("cleanAK4HT",60,0,3000,"cleanAK4 H_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4ht);
+  Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{cleanAK4 Jets}","N_{Events}");
+  vVar.push_back(ncleanak4jets);
+
+
+
+
 
   Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
   vVar.push_back(met);

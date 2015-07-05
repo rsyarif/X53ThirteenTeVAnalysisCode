@@ -164,7 +164,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->isMu = true;
       iLep->isEl = false;
       //only save if at least loose
-      if(iLep->Tight || iLep->Loose) Leptons.push_back(iLep);
+      if(iLep->Tight || iLep->Loose){
+	//apply pt cut
+	if(iLep->pt>30) Leptons.push_back(iLep);
+      }
     }
   }
   else{
@@ -177,8 +180,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if at least loose
-      if(iLep->Tight || iLep->Loose) Leptons.push_back(iLep);
-      
+      if(iLep->Tight || iLep->Loose){
+	//apply pt cut
+	if(iLep->pt>30) Leptons.push_back(iLep);
+      }
     }
   }
 
