@@ -45,7 +45,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   unsigned int ngenJets = genJetPt->size();
 
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elRelIso)[i],(*elChargeConsistent)[i]));
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elRelIso)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
   }
 
   for(unsigned int i=0; i<nMuons;i++){
@@ -138,7 +138,7 @@ void TreeReader::Init(TTree *treetemp)
   elCharge = 0;
   elIsEBEE = 0;
   elMHits = 0;
-  elNotConversion = 0;
+  elPassConversionVeto = 0;
   elQuality = 0;
   elVtxFitConv = 0;
 
@@ -190,7 +190,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);
   tree->SetBranchAddress("elIsEBEE_DileptonCalc", &elIsEBEE, &b_elIsEBEE_DileptonCalc);
   tree->SetBranchAddress("elMHits_DileptonCalc", &elMHits, &b_elMHits_DileptonCalc);
-  tree->SetBranchAddress("elNotConversion_DileptonCalc", &elNotConversion, &b_elNotConversion_DileptonCalc);
+  tree->SetBranchAddress("elVtxFitConv_DileptonCalc", &elPassConversionVeto, &b_elPassConversionVeto_DileptonCalc);
   tree->SetBranchAddress("elQuality_DileptonCalc", &elQuality, &b_elQuality_DileptonCalc);
   tree->SetBranchAddress("elVtxFitConv_DileptonCalc", &elVtxFitConv, &b_elVtxFitConv_DileptonCalc);
   tree->SetBranchAddress("elD0_DileptonCalc", &elD0, &b_elD0_DileptonCalc);

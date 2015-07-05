@@ -27,7 +27,7 @@ class TreeReader{
   std::vector <TMuon*> allMuons, goodMuons,looseMuons;
   std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons;
   std::vector <TGenParticle*> genParticles;
-  std::vector <TJet*> allAK4Jets,cleanAK4Jets;
+  std::vector <TJet*> allAK4Jets,cleanedAK4Jets;
   std::vector <TJet*> genJets;
 
   //met
@@ -62,8 +62,8 @@ class TreeReader{
   TBranch        *b_elIsEBEE_DileptonCalc;
   std::vector<int>     *elMHits;
   TBranch        *b_elMHits_DileptonCalc;
-  std::vector<int>     *elNotConversion;
-  TBranch        *b_elNotConversion_DileptonCalc;
+  std::vector<int>     *elPassConversionVeto;
+  TBranch        *b_elPassConversionVeto_DileptonCalc;
   std::vector<int>     *elQuality;
   TBranch        *b_elQuality_DileptonCalc;
   std::vector<int>     *elVtxFitConv;

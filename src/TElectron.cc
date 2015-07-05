@@ -12,7 +12,7 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   ooEmooP(ooEmooPtemp),
   sigmaIetaIeta(sigmaIetaIetatemp),
   relIso(relIsotemp),
-  passConversion(passconv),
+  passConversion(passConv),
   chargeConsistency(chargeconsistencytemp)
 {
   setLV();
