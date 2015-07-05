@@ -20,8 +20,20 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
 
 int main(int argc, char* argv[]){
 
+  if(argc!=3){
+    std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
+	     <<"./PromptRate.o Data El\n"
+	     <<"./PromptRate.o Data Mu\n"
+	     <<"./PromptRate.o MC El\n"
+	     <<"./PromptRate.o MC Mu\n";
+    return 0;
+  }
+
+  std::string argv1 = argv[1];
+  std::string argv2 = argv[2];
+
   bool correctusage=false;
-  if(argc==3 && (argv[1]!="Data" || argv[1]!="MC") && (argv[2]!="El" || argv[2]!="Mu") ) correctusage=false;
+  if(argc==3 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("El")!=std::string::npos || argv2.find("Mu")!=std::string::npos)  ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
 	     <<"./PromptRate.o Data El\n"
@@ -33,12 +45,12 @@ int main(int argc, char* argv[]){
   //get filename based on Data/MC
   std::string filename;
   bool data;
-  if(argv[1]=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false}
+  if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false;}
 
   //get channel based on El/Mu
   bool MuonChannel;
-  if(argv[2]=="Mu") MuonChannel=true;
+  if(argv2=="Mu") MuonChannel=true;
   else MuonChannel=false;
 
   //make filename for output root file
@@ -91,14 +103,15 @@ int main(int argc, char* argv[]){
     //get pair of leptons closest to z mass;
     float zmass = 91.1;
     float massDiff=9999;
-    TLepton* lep1,lep2;
+    TLepton* lep1;
+    TLepton* lep2;
     float pairmass=-9999;
     for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
       //loop over remaining leptons
       for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<leptons.size(); jlep++){
 	pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
 	if(fabs(zmass-pairmass)<massDiff){
-	  massdiff = fabs(zmass-pairmass);
+	  massDiff = fabs(zmass-pairmass);
 	  lep1=leptons.at(ilep);
 	  lep2=leptons.at(jlep);
 	}
@@ -112,7 +125,7 @@ int main(int argc, char* argv[]){
 
     //now fill histograms
     ptDenHist->Fill(lep2->pt);
-    if(lep2->Tight) ptNumhist->Fill(lep2->pt);
+    if(lep2->Tight) ptNumHist->Fill(lep2->pt);
     etaDenHist->Fill(lep2->eta);
     if(lep2->Tight) etaNumHist->Fill(lep2->eta);
 
@@ -121,7 +134,9 @@ int main(int argc, char* argv[]){
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
-
+  //write the tgraphs
+  fout->WriteTObject(ptGraph);
+  fout->WriteTObject(etaGraph);
 
   //write file now that histograms have been filled
   fout->Write();
