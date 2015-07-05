@@ -17,6 +17,8 @@
 #include <sstream> 
 #include "../plugins/Macros.cc"
 
+//helper functions
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
 
 //A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
 
@@ -34,13 +36,80 @@ int main(int argc, char* argv[]){
 
   //get filename based on Data/MC
   std::string filename;
-  if(argv[1]=="Data") filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root";
-  else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root";
+  bool data;
+  if(argv[1]=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false}
 
   //get channel based on El/Mu
   bool MuonChannel;
   if(argv[2]=="Mu") MuonChannel=true;
   else MuonChannel=false;
 
+  //make filename for output root file
+  std::string outname;
+  if(MuonChannel){
+    if(data)outname="PromptRate_Data_Muons.root"; 
+    else outname="PromptRate_MC_Muons.root"; 
+  }
+  else{
+    if(data)outname="PromptRate_Data_Electrons.root"; 
+    else outname="PromptRate_MC_Electrons.root"; 
+  }
+
+  //open output file
+  TFile* fout= new TFile(outname.c_str(),"RECREATE");
+
+  //get tree reader to read in data
+  TreeReader* tr= new TreeReader(filename.c_str());
+  TTree* t=tr->tree;
+
+  //get number of entries and start event loop
+  int nEntries = t->GetEntries();
+  for(int ient=0; ient<nEntries; ient++){
+
+    tr->GetEntry(ient);
+
+    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+
+    
+
+
+  }//end event loop
+
   return 0;
+}
+
+
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
+
+  std::vector<TLepton*> Leptons;
+
+  if(Muons){
+    //fill with  muons
+    for(unsigned int uimu=0; uimu<muons.size(); uimu++){
+      TMuon* imu = muons.at(uimu);
+      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+      iLep->Tight=imu->cutBasedTight();
+      iLep->Loose=imu->cutBasedLoose();
+      iLep->isMu = true;
+      iLep->isEl = false;
+      Leptons.push_back(iLep);
+    }
+  }
+  else{
+    //fill with  electrons
+    for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
+      TElectron* iel = electrons.at(uiel);
+      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+      iLep->Tight=iel->cutBasedTight();
+      iLep->Loose=iel->cutBasedLoose();
+      iLep->isMu = false;
+      iLep->isEl = true;
+      Leptons.push_back(iLep);
+      
+    }
+  }
+
+  return Leptons;
+
 }
