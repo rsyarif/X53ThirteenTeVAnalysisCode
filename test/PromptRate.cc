@@ -131,6 +131,11 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
+  //write file now that histograms have been filled
+  fout->WriteTObject(ptNumHist);
+  fout->WriteTObject(ptDenHist);
+  fout->WriteTObject(etaNumHist);
+  fout->WriteTObject(etaDenHist);
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
@@ -138,8 +143,8 @@ int main(int argc, char* argv[]){
   fout->WriteTObject(ptGraph);
   fout->WriteTObject(etaGraph);
 
-  //write file now that histograms have been filled
-  fout->Write();
+
+
 
   return 0;
 }
