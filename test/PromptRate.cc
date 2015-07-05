@@ -32,6 +32,15 @@ int main(int argc, char* argv[]){
 	     <<"./PromptRate.o MC Mu\n";
   }
 
+  //get filename based on Data/MC
+  std::string filename;
+  if(argv[1]=="Data") filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root";
+  else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root";
+
+  //get channel based on El/Mu
+  bool MuonChannel;
+  if(argv[2]=="Mu") MuonChannel=true;
+  else MuonChannel=false;
 
   return 0;
 }
