@@ -6,7 +6,7 @@
 #include "TFile.h"
 #include "TTree.h"
 
-std::string tableHeader(std::vector<std::string> vC, CutClass* c);
+std::string tableHeader(std::vector<std::string> vC, CutClass* c, std::string caption);
 std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
 std::stringstream printChargeMisIDTable();
 
@@ -54,11 +54,11 @@ void makeTables(){
   outfile.close();
 }
 
-std::string tableHeader(std::vector<std::string> vC, CutClass* cC){
+std::string tableHeader(std::vector<std::string> vC, CutClass* cC, std::string caption){
 
   std::stringstream str;
 
-  str<<"\\begin{table}\n"<<"\\centering\n"<<"\\begin{tabular}{|";
+  str<<"\\begin{table}\n"<<"\\centering\n"<<"\\topcaption{"<<caption<<"}\n"<<"\\begin{tabular}{|";
   for(size_t i =0; i< (vC.size()+1); i++){
     str<<"c|";
   }
@@ -109,7 +109,7 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
     if(nmu==2) label = "\\label{tab:ExpBkgEvtsMuMu}";
   }
 
-  tablestring<<tableHeader(vCS, vCC.at(0)); tablestring<<"\\hline \n";
+  tablestring<<tableHeader(vCS, vCC.at(0), caption); tablestring<<"\\hline \n";
   for(size_t i=0; i < vCC.size(); i++){
     tablestring<<vCC.at(i)->samplename;
     for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
@@ -117,7 +117,7 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
     }
     tablestring<<" \\\\"<<std::endl;
   }
-  tablestring<<"\\hline \n\\end{tabular} \n"<<"\\caption{"<<caption<<"}\n"<<label<<'\n'<<"\\end{table} \n\n";
+  tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";
 
   return tablestring;
  
@@ -126,10 +126,13 @@ std::stringstream printTable(std::vector<CutClass*> vCC, std::vector<std::string
 std::stringstream printChargeMisIDTable(){
 
   std::stringstream table;
-  table<<"\\begin{table}\n\\centering\n\\begin{tabular}{|";
+  table<<"\\begin{table}\n\\centering\n";
+  table<<"\\topcaption{Charge misID rate for electrons. Measured in DY MC requiring two tight electrons with \\pt greater than 30 GeV and an invariant mass within 20 GeV of the Z-boson mass.}";
+  table<<"\\begin{tabular}{|";
   for(int i=0;i<2;i++){
     table<<"c|";
   }
+
   table<<"}\n\\hline\\hline\n";
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
@@ -145,8 +148,11 @@ std::stringstream printChargeMisIDTable(){
     std::string misIDRate = Form("%1.5f",g->GetY()[j]);
     table<<etabin<<" & "<<misIDRate<<"\\\\\n";
   }
+
+  table<<"\\hline\n\\end{tabular}\\end{table}";
+
   std::cout<<"made everything but table footer"<<std::endl;
-  table<<"\\hline\n\\end{tabular}\n\\caption{Charge misID rate for electrons. Measured in DY MC requiring two tight electrons with \\pt greater than 30 GeV and an invariant mass within 20 GeV of the Z-boson mass.}\n\\end{table}";
+
   std::cout<<"made table footer"<<std::endl;
 
   return table;
