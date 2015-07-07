@@ -18,6 +18,67 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
 
 int main(int argc, char* argv[]){
 
+  //example usage: ./FakeRate.o Data Electrons
+
+  if(argc!=3){
+    std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option as well as electrons or muons"<<std::endl;
+    return 0;
+  }
+
+  std::string argv1 = argv[1];
+  std::string argv2 = argv[2];
+
+  if(argv1.find("Data")==std::string::npos && argv1.find("MC")==std::string::npos){
+    std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option"<<std::endl;
+    return 0;
+  }
+
+  //now get boolean for data or mc
+  bool data=false;
+  if(argv1.find("Data")!=std::string::npos) data=true;
+
+  //boolean for channel
+  bool MuonChannel=false;
+  if(argv2.find("Muons")!=std::string::npos) MuonChannel=true;
+
+
+  //make output file
+  std::string outname;
+  if(data){
+    if(MuonChannel) outname = "FakeRate_Data_Muons.root";
+    else outname = "FakeRate_Data_Electrons.root";
+  }
+
+  else{
+    if(MuonChannel) outname = "FakeRate_MC_Muons.root";
+    else outname = "FakeRate_MC_Electrons.root";
+  }
+
+  TFile* fout = new TFile(outfile.c_str(),"RECREATE");
+
+
+  //get tree reader to read in data
+  TreeReader* tr= new TreeReader(filename.c_str());
+  TTree* t=tr->tree;
+
+
+  //initialize needed histograms
+  TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
+  TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
+  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
+  TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
+
+  //get number of entries and start event loop
+  int nEntries = t->GetEntries();
+  for(int ient=0; ient<nEntries; ient++){
+
+    tr->GetEntry(ient);
+
+    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+
+    //make vector of leptons
+    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+  }
 
 }
 
