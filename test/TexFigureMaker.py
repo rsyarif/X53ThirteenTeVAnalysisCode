@@ -5,24 +5,28 @@ import os
 #get list of figures
 plots = os.listdir("plots")
 
-def printFigure(figName,f):
+def printHeader(figName,f):
 #clearpage if staring channels anew
     if not figName.find("All")==-1:
-        f.write("\\clearpage\n")
-#write header
-    f.write("""\\begin{figure}
+        #write header
+        f.write("""\\begin{figure}
 \\centering
 \\includegraphics[width=0.45\\textwidth]{plots/""")
-    f.write(figName)
-    f.write("}\n")
-#make caption
-    caption="\\caption{"
+        f.write(figName)
+        f.write("}\n")
+
+def printFigure(figName,f):
+        f.write("\\includegraphics[width=0.45\\textwidth]{plots/")
+        f.write(figName)
+        f.write("}\n")
+
+def printFooter(figName,f):
+#first print figure:
+    printFigure(figName,f)
 #make label
     label="\\label{fig:"
     name=figName.split("_")
     label+=name[0]
-    channel=name[2].split(".")
-    label+=channel[0]
     label+="}\n"
     f.write(label)
 #end figure
@@ -37,8 +41,12 @@ for plot in plots:
 #skip non pdfs
     if plot.find(".pdf")==-1:
         continue
-    printFigure(plot,outfile)
-
+    if not plot.find("All")==-1:
+        printHeader(plot,outfile)
+    elif plot.find("MuMu")==-1:
+        printFigure(plot,outfile)
+    else:
+        printFooter(plot,outfile)
 
 outfile.close()
 
