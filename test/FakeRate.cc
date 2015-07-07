@@ -15,6 +15,7 @@
 
 //helper functions
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
+bool ZVetoCheck(std::vector<TLepton*> leptons, std::vector<TJet*> jets);
 
 int main(int argc, char* argv[]){
 
@@ -78,6 +79,20 @@ int main(int argc, char* argv[]){
 
     //make vector of leptons
     std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+
+    //veto on events with more than one lepton or no leptons
+    if((leptons.size()==0) || (leptons.size() >1) ) continue;
+
+    //make sure not much met in event to veto on leptons from Ws
+    if(tr->MET > 25) continue;
+    
+    //check transvers mass is 
+    
+
+    //search through jet collection to check for jet mass
+    bool Zveto = ZVetoCheck(leptons,tr->allAK4Jets);
+    if(Zveto) continue;
+
   }
 
 }
