@@ -111,16 +111,16 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
-  fout.WriteTObject(ptNumHist);
-  fout.WriteTObject(ptDenHist);
-  fout.WriteTObject(etaNumHist);
-  fout.WriteTObject(etaDenHist);
+  fout->WriteTObject(ptNumHist);
+  fout->WriteTObject(ptDenHist);
+  fout->WriteTObject(etaNumHist);
+  fout->WriteTObject(etaDenHist);
 
   TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
 
-  fout.WriteTObject(ptgraph);
-  fout.WriteTObject(etagraph);
+  fout->WriteTObject(ptgraph);
+  fout->WriteTObject(etagraph);
 
 }
 
