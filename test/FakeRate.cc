@@ -56,8 +56,13 @@ int main(int argc, char* argv[]){
     else outname = "FakeRate_MC_Electrons.root";
   }
 
-  TFile* fout = new TFile(outfile.c_str(),"RECREATE");
 
+  TFile* fout = new TFile(outname.c_str(),"RECREATE");
+
+  //get correct file
+  std::string filename;
+  if(argv1.find("Data")!=std::string::npos) filename="";
+  else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_QCD.root";
 
   //get tree reader to read in data
   TreeReader* tr= new TreeReader(filename.c_str());
@@ -89,7 +94,7 @@ int main(int argc, char* argv[]){
     //make sure not much met in event to veto on leptons from Ws
     if(tr->MET > 25) continue;
     
-    //check transvers mass is 
+    //check transvers mass is less than 25 GeV
     
 
     //search through jet collection to check for jet mass
@@ -102,7 +107,7 @@ int main(int argc, char* argv[]){
 
     //Now just fill histograms
     etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
-    if(lep->Tight){etaNumhist->Fill(lep->eta);ptNumHist->Fill(lep->pt)};
+    if(lep->Tight){etaNumHist->Fill(lep->eta);ptNumHist->Fill(lep->pt);}
 
   }//end event loop
 
@@ -155,7 +160,8 @@ bool ZVetoCheck(TLepton* lep, std::vector<TJet*> jets){
 
 
   float diff=999;
-  for(std::vector<TJet*>::size_t ijet=0; ijet< jets.size(); jet++){
+  for(std::vector<TJet*>::size_type i=0; i< jets.size(); i++){
+    TJet* ijet = jets.at(i);
     float tempmass = (lep->lv + ijet->lv).M();
     if( fabs(tempmass-91.1) <diff){
       diff = fabs(tempmass-91.1);
@@ -175,9 +181,10 @@ bool AwayJetCheck(TLepton* lep, std::vector<TJet*> jets){
 
   bool awayJet=false;
 
-  for(std::vector<TJet*>::size_t ijet=0; ijet<jets.size();ijet++){
+  for(std::vector<TJet*>::size_type i=0; i<jets.size();i++){
+    TJet* ijet = jets.at(i);
     float dr = pow( pow(lep->eta - ijet->eta,2) + pow(lep->phi - ijet->phi,2) , 0.5);
-    if(ijet->pt>40 && dr>1.0){ awayJet=true; break}
+    if(ijet->pt>40 && dr>1.0){ awayJet=true; break;}
   }
 
   return awayJet;
