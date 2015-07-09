@@ -124,7 +124,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       //only save if at least loose
       if(iLep->Tight || iLep->Loose){
 	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+	if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
       }
     }
   }
@@ -141,11 +141,44 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       //only save if at least loose
       if(iLep->Tight || iLep->Loose){
 	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+	if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
       }
     }
   }
 
   return Leptons;
 
+}
+
+bool ZVetoCheck(TLepton* lep, std::vector<TJet*> jets){
+
+
+
+  float diff=999;
+  for(std::vector<TJet*>::size_t ijet=0; ijet< jets.size(); jet++){
+    float tempmass = (lep->lv + ijet->lv).M();
+    if( fabs(tempmass-91.1) <diff){
+      diff = fabs(tempmass-91.1);
+
+    }
+  }
+
+  bool veto=false;
+  if(diff<20) veto=true;
+
+  return veto;
+
+}
+
+
+bool AwayJetCheck(TLepton* lep, std::vector<TJet*> jets){
+
+  bool awayJet=false;
+
+  for(std::vector<TJet*>::size_t ijet=0; ijet<jets.size();ijet++){
+    float dr = pow( pow(lep->eta - ijet->eta,2) + pow(lep->phi - ijet->phi,2) , 0.5);
+    if(ijet->pt>40 && dr>1.0){ awayJet=true; break}
+  }
+
+  return awayJet;
 }
