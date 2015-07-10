@@ -8,7 +8,7 @@ TMuon::TMuon(double pttemp,double etatemp,double phitemp, double energytemp, int
   setLV();
 }
 bool TMuon::cutBasedLoose(){
-  if (pt < 20)              return false;
+  //  if (pt < 20)              return false;
   if (dxy > 2.0)            return false; //Cut relaxed from 0.2 to 2.0
   if(!(Tracker || Global))   return false;
   return true;
@@ -17,7 +17,7 @@ bool TMuon::cutBasedLoose(){
 bool TMuon::cutBasedTight(){
   if(!Global)               return false;
   if(!PFMuon)               return false;
-  if (pt < 30)              return false;
+  //  if (pt < 30)              return false;
   //  if (global < 5)           return false; //Global muon and tracker muon
   if (chi2 > 10)            return false;
   if (dz > 0.5)             return false;
