@@ -17,7 +17,7 @@
 #include <sstream> 
 #include "../plugins/Macros.cc"
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>);
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
@@ -253,7 +253,7 @@ int main(int argc, char* argv[]){
 
 
     //make vector of good Leptons
-    std::vector<TLepton*> goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons);
+    std::vector<TLepton*> goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons,30.0);
     bool samesign;
 
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
@@ -468,7 +468,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, float ptCut){
 
   std::vector<TLepton*> Leptons;
 
@@ -478,6 +478,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
     iLep->isMu = true;
     iLep->isEl = false;
+    if(iLep->pt<ptCut) continue;
     Leptons.push_back(iLep);
  
   }
@@ -487,8 +488,9 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     TElectron* iel = electrons.at(uiel);
     TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
     iLep->isMu = false;
-      iLep->isEl = true;
-      Leptons.push_back(iLep);
+    iLep->isEl = true;
+    if(iLep->pt<ptCut) continue;
+    Leptons.push_back(iLep);
  
   }
   
