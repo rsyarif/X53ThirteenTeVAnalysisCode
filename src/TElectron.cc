@@ -32,7 +32,7 @@ bool TElectron::cutBasedTight(){
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
-    if(pt <30)                 return false;
+    //    if(pt <30)                 return false;
   }
   //Endcap
   else{
@@ -47,7 +47,7 @@ bool TElectron::cutBasedTight(){
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
-    if(pt <30)                 return false;
+    //    if(pt <30)                 return false;
   }
   return true;
 }
@@ -66,7 +66,7 @@ bool TElectron::cutBasedLoose(){
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
-    if(pt <20)                 return false;
+    //   if(pt <20)                 return false;
   }
   
   //Endcap
@@ -82,7 +82,7 @@ bool TElectron::cutBasedLoose(){
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   return true;
 }
@@ -100,7 +100,7 @@ bool TElectron::cutBasedTightApr2015(){
     if(relIso > 0.1649)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <30)                 return false;
+    //    if(pt <30)                 return false;
   }
   //Endcap
   else{
@@ -114,7 +114,7 @@ bool TElectron::cutBasedTightApr2015(){
     if(relIso >= 0.090185)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <30)                 return false;
+    //    if(pt <30)                 return false;
   }
   return true;
 }
@@ -132,7 +132,7 @@ bool TElectron::cutBasedLooseApr2015(){
     if(relIso >= 0.120026)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   
   //Endcap
@@ -147,7 +147,7 @@ bool TElectron::cutBasedLooseApr2015(){
     if(relIso >= 0.162914)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   return true;
 }
@@ -165,7 +165,7 @@ bool TElectron::CMSDASTight(){
     if(relIso > 0.1649)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   //Endcap
   else{
@@ -179,7 +179,7 @@ bool TElectron::CMSDASTight(){
     if(relIso > 0.2075)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   return true;
 }
@@ -197,7 +197,7 @@ bool TElectron::CMSDASLoose(){
     if(relIso > 0.24)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
 
   //Endcap
@@ -212,7 +212,7 @@ bool TElectron::CMSDASLoose(){
     if(relIso > 0.3529)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
-    if(pt <20)                 return false;
+    //    if(pt <20)                 return false;
   }
   return true;
 }
