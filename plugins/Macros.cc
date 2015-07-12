@@ -104,28 +104,93 @@ std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
 
   std::vector<Sample*> vSigSamples;
 
-  TFile* x53x53700Rfile = new TFile("X53X53m700RH.root");
-  Sample* x53x53m700R = new Sample(vSigNames.at(0),x53x53700Rfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m700R);
   TFile* x53x53700Lfile = new TFile("X53X53m700LH.root");
-  Sample* x53x53m700L = new Sample(vSigNames.at(1),x53x53700Lfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
+  Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
+  TFile* x53x53700Rfile = new TFile("X53X53m700RH.root");
+  Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
+  vSigSamples.push_back(x53x53m700R);
 
-  TFile* x53x531000Rfile = new TFile("X53X53m1000RH.root");
-  Sample* x53x53m1000R = new Sample(vSigNames.at(2),x53x531000Rfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
-  vSigSamples.push_back(x53x53m1000R);
   TFile* x53x531000Lfile = new TFile("X53X53m1000LH.root");
-  Sample* x53x53m1000L = new Sample(vSigNames.at(3),x53x531000Lfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
+  Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
+  TFile* x53x531000Rfile = new TFile("X53X53m1000RH.root");
+  Sample* x53x53m1000R = new Sample(vSigNames.at(3),x53x531000Rfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
+  vSigSamples.push_back(x53x53m1000R);
 
-  TFile* x53x531300Rfile = new TFile("X53X53m1300RH.root");
-  Sample* x53x53m1300R = new Sample(vSigNames.at(4),x53x531300Rfile,vWeights.at(4),vXsec.at(4),cut,kBlue,2);
   TFile* x53x531300Lfile = new TFile("X53X53m1300LH.root");
-  Sample* x53x53m1300L = new Sample(vSigNames.at(5),x53x531300Lfile,vWeights.at(5),vXsec.at(5),cut,kBlue,1);
+  Sample* x53x53m1300L = new Sample(vSigNames.at(4),x53x531300Lfile,vWeights.at(4),vXsec.at(4),cut,kBlue,2);
+  TFile* x53x531300Rfile = new TFile("X53X53m1300RH.root");
+  Sample* x53x53m1300R = new Sample(vSigNames.at(5),x53x531300Rfile,vWeights.at(5),vXsec.at(5),cut,kBlue,1);
 
   return vSigSamples;
 
 }
+
+std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi){
+  //make names vector
+  std::vector<std::string> vSigNames;
+  vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700");  vSigNames.push_back("LH_X53X53_M-900"); vSigNames.push_back("RH_X53X53_M-900"); vSigNames.push_back("RH_X53X53_M-1000"); vSigNames.push_back("LH_X53X53_M-1000");  vSigNames.push_back("LH_X53X53_M-1100"); vSigNames.push_back("RH_X53X53_M-1100"); vSigNames.push_back("LH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
+  //make x-sec vector - NEED TO FIX THESE VALUES************************************************
+  std::vector<float> vXsec;
+  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
+  float BRssdl= 2*( pow((.1063 + .1071 + .1138),2));
+  //FOR RUNNING ON INCLUSIVE DON'T APPLY BR TO SSDL!!
+  //vXsec.push_back(0.442*BRssdl);vXsec.push_back(0.442*BRssdl);vXsec.push_back(0.0427*BRssdl);vXsec.push_back(0.0427*BRssdl);vXsec.push_back(0.00618*BRssdl);vXsec.push_back(0.00618*BRssdl);
+  vXsec.push_back(0.442);vXsec.push_back(0.442);vXsec.push_back(.0877);vXsec.push_back(.0877);vXsec.push_back(0.0427);vXsec.push_back(0.0427);vXsec.push_back(0.0217);vXsec.push_back(0.0217);vXsec.push_back(0.00618);vXsec.push_back(0.00618);
+  //make vector for number of events ran to get weight
+  std::vector<int> vNEvts;
+  vNEvts.push_back(19600);vNEvts.push_back(16200);vNEvts.push_back(17200);vNEvts.push_back(15400);vNEvts.push_back(16600);vNEvts.push_back(20000);vNEvts.push_back(18000);vNEvts.push_back(18600);vNEvts.push_back(18800);vNEvts.push_back(19000);
+  
+
+  //vector to hold weights
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(i) / vNEvts.at(i) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+
+  std::vector<Sample*> vSigSamples;
+
+  TFile* x53x53700Lfile = new TFile("X53X53m700LH.root");
+  Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
+  vSigSamples.push_back(x53x53m700L);
+  TFile* x53x53700Rfile = new TFile("X53X53m700RH.root");
+  Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
+  vSigSamples.push_back(x53x53m700R);
+
+  TFile* x53x53900Lfile = new TFile("X53X53m900LH.root");
+  Sample* x53x53m900L = new Sample(vSigNames.at(2),x53x53900Lfile,vWeights.at(2),vXsec.at(2),cut,kGreen,2);
+  vSigSamples.push_back(x53x53m900L);
+  TFile* x53x53900Rfile = new TFile("X53X53m900RH.root");
+  Sample* x53x53m900R = new Sample(vSigNames.at(3),x53x53900Rfile,vWeights.at(3),vXsec.at(3),cut,kGreen,1);
+  vSigSamples.push_back(x53x53m900R);
+
+  TFile* x53x531000Lfile = new TFile("X53X53m1000LH.root");
+  Sample* x53x53m1000L = new Sample(vSigNames.at(4),x53x531000Lfile,vWeights.at(4),vXsec.at(4),cut,kCyan,2);
+  vSigSamples.push_back(x53x53m1000L);
+  TFile* x53x531000Rfile = new TFile("X53X53m1000RH.root");
+  Sample* x53x53m1000R = new Sample(vSigNames.at(5),x53x531000Rfile,vWeights.at(5),vXsec.at(5),cut,kCyan,1);
+  vSigSamples.push_back(x53x53m1000R);
+
+  TFile* x53x531100Lfile = new TFile("X53X53m1100LH.root");
+  Sample* x53x53m1100L = new Sample(vSigNames.at(6),x53x531100Lfile,vWeights.at(6),vXsec.at(6),cut,kBlue,2);
+  vSigSamples.push_back(x53x53m1100L);
+  TFile* x53x531100Rfile = new TFile("X53X53m1100RH.root");
+  Sample* x53x53m1100R = new Sample(vSigNames.at(7),x53x531100Rfile,vWeights.at(7),vXsec.at(7),cut,kBlue,1);
+  vSigSamples.push_back(x53x53m1100R);
+
+  TFile* x53x531300Lfile = new TFile("X53X53m1300LH.root");
+  Sample* x53x53m1300L = new Sample(vSigNames.at(8),x53x531300Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
+  vSigSamples.push_back(x53x53m1100L);
+  TFile* x53x531300Rfile = new TFile("X53X53m1300RH.root");
+  Sample* x53x53m1300R = new Sample(vSigNames.at(9),x53x531300Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
+  vSigSamples.push_back(x53x53m1300R);
+
+  return vSigSamples;
+
+}
+
+
 
 
 std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){  
