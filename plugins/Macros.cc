@@ -181,7 +181,7 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi){
 
   TFile* x53x531300Lfile = new TFile("X53X53m1300LH.root");
   Sample* x53x53m1300L = new Sample(vSigNames.at(8),x53x531300Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1100L);
+  vSigSamples.push_back(x53x53m1300L);
   TFile* x53x531300Rfile = new TFile("X53X53m1300RH.root");
   Sample* x53x53m1300R = new Sample(vSigNames.at(9),x53x531300Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1300R);
