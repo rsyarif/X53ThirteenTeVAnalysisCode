@@ -213,7 +213,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  TFile* ttfile = new TFile("TTZ.root");
+  TFile* ttfile = new TFile("TTbar.root");
   Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   vSample.push_back(ttSample);
   TFile* ttZfile = new TFile("TTZ.root");
