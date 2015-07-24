@@ -83,7 +83,7 @@ std::vector<Variable*> getVariableVec(){
 std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
   //make names vector
   std::vector<std::string> vSigNames;
-  vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-1000"); vSigNames.push_back("LH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
+  vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700"); vSigNames.push_back("LH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
   //make x-sec vector - NEED TO FIX THESE VALUES************************************************
   std::vector<float> vXsec;
   //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
@@ -130,7 +130,7 @@ std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
 std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi){
   //make names vector
   std::vector<std::string> vSigNames;
-  vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700");  vSigNames.push_back("LH_X53X53_M-900"); vSigNames.push_back("RH_X53X53_M-900"); vSigNames.push_back("RH_X53X53_M-1000"); vSigNames.push_back("LH_X53X53_M-1000");  vSigNames.push_back("LH_X53X53_M-1100"); vSigNames.push_back("RH_X53X53_M-1100"); vSigNames.push_back("LH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
+  vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700");  vSigNames.push_back("LH_X53X53_M-900"); vSigNames.push_back("RH_X53X53_M-900"); vSigNames.push_back("LH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1000");  vSigNames.push_back("LH_X53X53_M-1100"); vSigNames.push_back("RH_X53X53_M-1100"); vSigNames.push_back("LH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
   //make x-sec vector - NEED TO FIX THESE VALUES************************************************
   std::vector<float> vXsec;
   //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
