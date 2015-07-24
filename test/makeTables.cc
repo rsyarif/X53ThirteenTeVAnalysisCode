@@ -20,7 +20,7 @@ void makeTables(){
   float lumi = 5.0; //fb^-1
 
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getSigSampleVec("ssdl",lumi);
+  std::vector<Sample*> vSig = getSigSampleVecForTable("ssdl",lumi);
 
   //get vector of background samples
   std::vector<Sample*> vBkg = getBkgSampleVec("ssdl",lumi);
