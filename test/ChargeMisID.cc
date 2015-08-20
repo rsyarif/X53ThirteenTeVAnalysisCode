@@ -16,16 +16,14 @@
 //helper functions
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
 
-//A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
+//A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
 
 int main(int argc, char* argv[]){
 
-  if(argc!=3){
+  if(argc!=2){
     std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
-	     <<"./PromptRate.o Data El\n"
-	     <<"./PromptRate.o Data Mu\n"
-	     <<"./PromptRate.o MC El\n"
-	     <<"./PromptRate.o MC Mu\n";
+	     <<"./ChargeMisID.o Data \n"
+	     <<"./ChargeMisID.o MC \n";
     return 0;
   }
 
@@ -33,36 +31,24 @@ int main(int argc, char* argv[]){
   std::string argv2 = argv[2];
 
   bool correctusage=false;
-  if(argc==3 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("El")!=std::string::npos || argv2.find("Mu")!=std::string::npos)  ) correctusage=true;
+  if(argc==2 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
-	     <<"./PromptRate.o Data El\n"
-	     <<"./PromptRate.o Data Mu\n"
-	     <<"./PromptRate.o MC El\n"
-	     <<"./PromptRate.o MC Mu\n";
+	     <<"./ChargeMisID.o Data \n"
+	     <<"./ChargeMisID.o MC \n";
   }
 
   //get filename based on Data/MC
   std::string filename;
   bool data;
   if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false;}
-
-  //get channel based on El/Mu
-  bool MuonChannel;
-  if(argv2=="Mu") MuonChannel=true;
-  else MuonChannel=false;
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_DYJets.root"; data=false;}
 
   //make filename for output root file
   std::string outname;
-  if(MuonChannel){
-    if(data)outname="PromptRate_Data_Muons.root"; 
-    else outname="PromptRate_MC_Muons.root"; 
-  }
-  else{
-    if(data)outname="PromptRate_Data_Electrons.root"; 
-    else outname="PromptRate_MC_Electrons.root"; 
-  }
+  if(data)outname="ChargeMisID_Data_Electrons.root"; 
+  else outname="ChargeMisID_MC_Electrons.root"; 
+
 
   //open output file
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
@@ -103,8 +89,8 @@ int main(int argc, char* argv[]){
     //get pair of leptons closest to z mass;
     float zmass = 91.1;
     float massDiff=9999;
-    TLepton* lep1;
-    TLepton* lep2;
+    TLepton* lep1=0;
+    TLepton* lep2=0;
     float pairmass=-9999;
     for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
       //loop over remaining leptons
