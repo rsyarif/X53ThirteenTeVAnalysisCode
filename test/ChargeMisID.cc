@@ -20,10 +20,12 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
 
 int main(int argc, char* argv[]){
 
-  if(argc!=2){
-    std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data \n"
-	     <<"./ChargeMisID.o MC \n";
+  if(argc!=3){
+    std::cout<<"Need to specify whether running on Data or MC and whether 25 or 50ns. The four possible ways of running are\n"
+	     <<"./ChargeMisID.o Data 50ns \n"
+	     <<"./ChargeMisID.o Data 25ns \n"
+	     <<"./ChargeMisID.o MC 50ns \n"
+	     <<"./ChargeMisID.o MC 25ns \n";
     return 0;
   }
 
@@ -31,13 +33,14 @@ int main(int argc, char* argv[]){
   std::string argv2 = argv[2];
 
   bool correctusage=false;
-  if(argc==2 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) ) correctusage=true;
+  if(argc==2 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2=="25ns" || argv2=="50ns") ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
 	     <<"./ChargeMisID.o Data 25ns \n"
 	     <<"./ChargeMisID.o MC 50ns \n"
 	     <<"./ChargeMisID.o MC 25ns \n";
+    return 0;
   }
 
   //get filename based on Data/MC
