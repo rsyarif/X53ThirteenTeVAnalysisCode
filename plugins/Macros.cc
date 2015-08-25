@@ -230,8 +230,8 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
   vSample.push_back(wjSample);
   TFile* dyjfile = new TFile("DYJets.root");
   Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
-  std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
-  //vSample.push_back(dyjSample);
+  //std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(dyjSample);
   TFile* zzjfile = new TFile("ZZ.root");
   Sample* zzjSample = new Sample(vBkgNames.at(6),zzjfile, vWeights.at(6),vXsec.at(6),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
@@ -503,4 +503,30 @@ float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons)
 
 }
 
+float getPairMass(TLepton* lep1, TLepton* lep2){
+
+  float mass = (lep1->lv + lep2->lv).M();
+  return mass;
+
+}
+
+float getPairMass(TLepton* lep1, TMuon* mu){
+  float mass = (lep1->lv + mu->lv).M();
+  return mass;
+}
+
+float getPairMass(TLepton* lep1, TElectron* el){
+  float mass = (lep1->lv + el->lv).M();
+  return mass;
+}
+
+float getPairMass(TMuon* mu1, TMuon* mu2){
+  float mass = (mu1->lv + mu2->lv).M();
+  return mass;
+}
+
+float getPairMass(TElectron* el1, TElectron* el2){
+  float mass = (el1->lv + el2->lv).M();
+  return mass;
+}
 //  LocalWords:  dyjSample
