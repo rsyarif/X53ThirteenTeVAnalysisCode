@@ -11,11 +11,13 @@
 #include <map>
 #include <string>
 #include <sstream> 
+#include <fstream>
 #include "../plugins/Macros.cc"
 
 /* the point of this script is to produce a card file suitable for use with higgs combine tool or theta 
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
+std::ofstream& printProcesses(std::ofstream& outfile, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
 
 int main(int argc, char* argv[]){
 
@@ -48,6 +50,10 @@ int main(int argc, char* argv[]){
 
   std::cout<<"Now running with the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
 
+  //output file
+  std::ofstream outfile;
+  outfile.open("testcard.txt");
+
   //set desired lumi
   float lumi = 3.0; // fb^{-1}
 
@@ -63,5 +69,40 @@ int main(int argc, char* argv[]){
 
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
+  //need to write for every channel, -1 means all channels combined
+  for(int nmu=-1; nmu<3; nmu++){
+    //get cut class vector for signal
+    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    //get cut class vector for background
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    printProcesses(outfile,vCutSig,vCutBkg, nmu);
+
+  }
+
   return 0;
+}
+
+std::ofstream& printProcesses(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+  //write bin labels
+  file<<"bin\t";
+  int bin = nmu+1;
+  for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
+    file<<bin<<" ";
+  }
+  file<<"\n";
+  // write names
+  file<<"process \t"<<vCSig.at(0)->samplename;
+  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
+    file<<" "<<(vCBkg.at(i)->samplename);
+  }
+  file<<"\n";
+  //now write process numbers:
+  file<<"process\t"<<(vCSig.at(0)->nEvents).at(0);
+  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
+    file<<" "<<(vCBkg.at(i)->nEvents).at(0);
+  }
+  file<<"\n";
+
+  return file;
+
 }
