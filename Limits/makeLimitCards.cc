@@ -19,6 +19,9 @@
 
 int main(int argc, char* argv[]){
 
+  //debug, set to true by hand until sure script is working
+  bool debug_ = true;
+
   //check ot make sure enough arguments have been passed
   if(!argc==4){
     std::cout<<"Need to supply 3 arguments: lep1 pt shift, lep2 pt shift, and HT shift! Exiting....."<<std::endl;
@@ -45,6 +48,20 @@ int main(int argc, char* argv[]){
 
   std::cout<<"Now running with the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
 
+  //set desired lumi
+  float lumi = 3.0; // fb^{-1}
+
+  //first get our favorite vectors of samples
+  std::vector<Sample*> vBkg = getBkgSampleVec("ssdl",lumi);
+  std::vector<Sample*> vSig = getSigSampleVecForTable("ssdl",lumi);
+
+  //now make cut string according to cuts specified:
+  std::vector<std::string> vCutString;
+  std::stringstream cutSStream;
+  cutSStream<<" ChargeMisIDWeight * ( (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( AK4HT > "<<HTcut<<") )";
+  vCutString.push_back(cutSStream.str());
+
+  if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
   return 0;
 }
