@@ -14,7 +14,7 @@
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons);
 
 //A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
 
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
   std::string argv2 = argv[2];
 
   bool correctusage=false;
-  if(argc==2 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2=="25ns" || argv2=="50ns") ) correctusage=true;
+  if(argc==3 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("25ns")!=std::string::npos || argv2.find("50ns")!=std::string::npos) ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -47,10 +47,10 @@ int main(int argc, char* argv[]){
   std::string filename;
   bool data;
   bool FiftyNS;
-  if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/50ns/ljmet_tree_data.root"; data=true; FiftyNS=true}
+  if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/50ns/ljmet_tree_data.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
-  else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -75,8 +75,8 @@ int main(int argc, char* argv[]){
   //initialize needed histograms
   TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Same Sign Leptons",20,0,600);
   TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
-  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Same Sign Leptons",12,-5,5);
-  TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
+  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Same Sign Leptons",15,-3,3);
+  TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",15,-3,3);
   TH1F* massNumHist = new TH1F("massNumHist","M_{ll} of Same Sign Leptons",50,0,150);
   TH1F* massDenHist = new TH1F("massDenHist","M_ll} of All Leptons",50,0,150);
 
@@ -91,17 +91,8 @@ int main(int argc, char* argv[]){
     //make vector of leptons
     std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons);
 
-    //check for at least one tight lepton
-    bool oneTight=false;
-    for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
-      if(leptons.at(ilep)->Tight){
-	oneTight=true;
-	break;
-      }
-    }
-
-    //skip of not at least one tight and at least one other loose  
-    if(!oneTight || leptons.size()<2) continue;
+    //skip if didn't find at least two tight leptons
+    if(leptons.size()<2) continue;
 
     //get pair of leptons closest to z mass;
     float zmass = 91.1;
@@ -114,7 +105,7 @@ int main(int argc, char* argv[]){
       for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<leptons.size(); jlep++){
 	pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
 	if(fabs(zmass-pairmass)<massDiff){
-	  massDiff = fabs(zmass-pairmass);
+	  massDiff = zmass-pairmass;
 	  lep1=leptons.at(ilep);
 	  lep2=leptons.at(jlep);
 	}
@@ -122,23 +113,48 @@ int main(int argc, char* argv[]){
     }//end loop over leptons
 
     //check that leptons are in Zpeak
-    bool zpeak= massDiff<15 ? true : false;
+    bool zpeak= fabs(massDiff)<20 ? true : false;
+
+    massDenHist->Fill(zmass+massDiff);
 
     if(!zpeak) continue;
 
     //now fill histograms
+    if(lep1->charge == lep2->charge){
+      massNumHist->Fill(zmass+massDiff);
+      ptNumHist->Fill(lep1->pt);
+      ptNumHist->Fill(lep2->pt);
+      etaNumHist->Fill(lep1->eta);
+      etaNumHist->Fill(lep2->eta);
+    }
+
+    massDenHist->Fill(zmass+massDiff);
+    ptDenHist->Fill(lep1->pt);
     ptDenHist->Fill(lep2->pt);
-    if(lep2->Tight) ptNumHist->Fill(lep2->pt);
+    etaDenHist->Fill(lep1->eta);
     etaDenHist->Fill(lep2->eta);
-    if(lep2->Tight) etaNumHist->Fill(lep2->eta);
 
   }//end event loop
+
+  //save weights
+  etaNumHist->Sumw2();
+  etaDenHist->Sumw2();
+  ptNumHist->Sumw2();
+  ptDenHist->Sumw2();
+  massNumHist->Sumw2();
+  massDenHist->Sumw2();
+
+  //scale num hists by 1/2 (except mass)
+  etaNumHist->Scale(0.5);
+  ptNumHist->Scale(0.5);
 
   //write file now that histograms have been filled
   fout->WriteTObject(ptNumHist);
   fout->WriteTObject(ptDenHist);
   fout->WriteTObject(etaNumHist);
   fout->WriteTObject(etaDenHist);
+  fout->WriteTObject(massNumHist);
+  fout->WriteTObject(massDenHist);
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
