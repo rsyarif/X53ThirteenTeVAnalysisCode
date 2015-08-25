@@ -14,7 +14,7 @@
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
 
 //A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
 
@@ -33,16 +33,28 @@ int main(int argc, char* argv[]){
   bool correctusage=false;
   if(argc==2 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) ) correctusage=true;
   if(!correctusage){
-    std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data \n"
-	     <<"./ChargeMisID.o MC \n";
+    std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
+	     <<"./ChargeMisID.o Data 50ns \n"
+	     <<"./ChargeMisID.o Data 25ns \n"
+	     <<"./ChargeMisID.o MC 50ns \n"
+	     <<"./ChargeMisID.o MC 25ns \n";
   }
 
   //get filename based on Data/MC
   std::string filename;
   bool data;
-  if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_DYJets.root"; data=false;}
+  bool FiftyNS;
+  if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/50ns/ljmet_tree_data.root"; data=true; FiftyNS=true}
+  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else{
+    std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
+	     <<"./ChargeMisID.o Data 50ns \n"
+	     <<"./ChargeMisID.o Data 25ns \n"
+	     <<"./ChargeMisID.o MC 50ns \n"
+	     <<"./ChargeMisID.o MC 25ns \n";
+  }
 
   //make filename for output root file
   std::string outname;
@@ -136,43 +148,26 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons){
 
   std::vector<TLepton*> Leptons;
 
-  if(Muons){
-    //fill with  muons
-    for(unsigned int uimu=0; uimu<muons.size(); uimu++){
-      TMuon* imu = muons.at(uimu);
-      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
-      iLep->Tight=imu->cutBasedTight();
-      iLep->Loose=imu->cutBasedLoose();
-      iLep->isMu = true;
-      iLep->isEl = false;
-      //only save if at least loose
-      if(iLep->Tight || iLep->Loose){
-	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
-      }
+  //fill with  electrons
+  for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
+    TElectron* iel = electrons.at(uiel);
+    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+    iLep->Tight=iel->cutBasedTight();
+    iLep->Loose=iel->cutBasedLoose();
+    iLep->isMu = false;
+    iLep->isEl = true;
+    //only save if at least loose
+    if(iLep->Tight || iLep->Loose){
+      //apply pt cut
+      if(iLep->pt>30) Leptons.push_back(iLep);
     }
   }
-  else{
-    //fill with  electrons
-    for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
-      TElectron* iel = electrons.at(uiel);
-      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-      iLep->Tight=iel->cutBasedTight();
-      iLep->Loose=iel->cutBasedLoose();
-      iLep->isMu = false;
-      iLep->isEl = true;
-      //only save if at least loose
-      if(iLep->Tight || iLep->Loose){
-	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
-      }
-    }
-  }
+
 
   return Leptons;
-
+ 
 }
