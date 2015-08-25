@@ -263,7 +263,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("HLT_Mu40_DileptonCalc",&HLT_Mu40,&b_HLT_Mu40_DileptonCalc);
   tree->SetBranchAddress("HLT_IsoTkMu24_DileptonCalc",&HLT_IsoTkMu24,&b_HLT_IsoTkMu24_DileptonCalc);
   tree->SetBranchAddress("HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc",&HLT_DoubleMu33NoFiltersNoVtx,&b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu33Ele12_DileptonCalc",&HLT_Mu23Ele12,&b_HLT_Mu23Ele12_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu23Ele12_DileptonCalc",&HLT_Mu23Ele12,&b_HLT_Mu23Ele12_DileptonCalc);
   tree->SetBranchAddress("HLT_Mu8Ele23_DileptonCalc",&HLT_Mu8Ele23,&b_HLT_Mu8Ele23_DileptonCalc);
   tree->SetBranchAddress("HLT_PFHT900_DileptonCalc",&HLT_PFHT900,&b_HLT_PFHT900_DileptonCalc);
   tree->SetBranchAddress("HLT_AK8PFJet360TrimMass30_DileptonCalc",&HLT_AK8PFJet360TrimMass30,&b_HLT_AK8PFJet360TrimMass30_DileptonCalc);
