@@ -25,7 +25,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
-
+bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
 int main(int argc, char* argv[]){
 
   typedef std::map<std::string,std::string> StringMap;
@@ -282,6 +282,10 @@ int main(int argc, char* argv[]){
 
     //with vector now get weight for DY Events
     if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
+
+    //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
+    bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->goodMuons,tr->goodElectrons);
+    if(secondaryZVeto) continue;
 
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
@@ -662,3 +666,44 @@ void printParticle(TGenParticle* p){
 void printParticle(TLepton* l){
 	std::cout<<"charge "<<l->charge<<" pt: "<<l->pt<<" eta: "<<l->eta<<" phi: "<<l->phi<<std::endl;
 }
+
+bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
+
+  bool veto=false;
+
+  for(std::vector<TLepton*>::size_type ilep=0; ilep < leps.size(); ilep++){
+    //set up dummy mass and get lepton
+    float mass=999;
+    float zmass=91.1;
+    float diff=9999;
+    TLepton* lep = leps.at(ilep);
+    //if muon check to find mass w/ other muons
+    if(lep->isMu){
+      for(std::vector<TMuon*>::size_type imu=0; imu< muons.size(); imu++){
+	//skip where lepton is the muon we are looking at:
+	if(lep->pt==muons.at(imu)->pt) continue;
+	float difftemp =  getPairMass(lep,muons.at(imu)) - zmass;
+	if(fabs(difftemp) < fabs(diff)){
+	  diff = difftemp;
+	}
+	if(fabs(diff) < 20){ veto=true; break;}
+      }
+    }
+    else{
+      for(std::vector<TMuon*>::size_type iel=0; iel< electrons.size(); iel++){
+	//skip where lepton is electron we are looking at
+	if(lep->pt==electrons.at(iel)->pt) continue;
+	float difftemp =  getPairMass(lep,electrons.at(iel)) - zmass;
+	if(fabs(difftemp) < fabs(diff)){
+	  diff = difftemp;
+	}
+	if(fabs(diff) < 20){ veto=true; break;}
+      }
+    }
+  }
+
+  return veto;
+
+}
+
+

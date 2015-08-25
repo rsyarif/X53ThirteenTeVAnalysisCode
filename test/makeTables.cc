@@ -137,8 +137,8 @@ std::stringstream printChargeMisIDTable(){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* f = new TFile("DYJets.root");
-  TGraphAsymmErrors* g = (TGraphAsymmErrors*) f->Get("divide_h_ss_by_h_all");
+  TFile* f = new TFile("ChargeMisID_MC_Electrons.root");
+  TGraphAsymmErrors* g = (TGraphAsymmErrors*) f->Get("divide_etaNumHist_by_etaDenHist");
 
   for(unsigned int j=0; j< g->GetN(); j++){
     std::cout<<"making point: "<<j<<" x bin: "<<g->GetX()[j]<<"+/-"<<g->GetErrorX(j)<<" and y value: "<<g->GetY()[j]<<std::endl;
