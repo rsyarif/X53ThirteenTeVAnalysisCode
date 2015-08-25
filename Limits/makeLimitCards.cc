@@ -26,15 +26,25 @@ int main(int argc, char* argv[]){
   }
 
   //get arguments
-  std::istringstream lep1shift(argv[1]);
-  std::istringstream lep2shift(argv[2]);
-  std::istringstream HTshift(argv[3]);
+  std::istringstream arg1(argv[1]);
+  float lep1shift=0;
+  if(!(arg1>>lep1shift)){ std::cout<<"Invalid number for leading lepton shift! Exiting..."<<std::endl; return 0;}
+  else{arg1>>lep1shift;}
+  std::istringstream arg2(argv[2]);
+  float lep2shift=0;
+  if(!(arg2>>lep2shift)){ std::cout<<"Invalid number for subleading lepton shift! Exiting..."<<std::endl; return 0;}
+  else{arg2>>lep2shift;}
+  std::istringstream arg3(argv[3]);
+  float HTshift=0;
+  if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
+  else{arg1>>HTshift;}
 
   float lep1cut = 30.0 + lep1shift;
   float lep2cut = 30.0 + lep2shift;
   float HTcut = 900.0 + HTshift;
 
-  std::cout<<"Now running with the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "HTcut<<" GeV."<<std::endl;
+  std::cout<<"Now running with the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
+
 
   return 0;
 }
