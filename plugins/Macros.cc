@@ -432,6 +432,20 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
 }
 
+std::vector<float> getEtaWeights(TFile* weightfile){
+
+  TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
+
+  std::vector<float> etaWeights;
+
+  for(int i=0; i< g->GetN(); i++){
+    etaWeights.push_back(g->GetY()[i]);
+  }
+
+  return etaWeights;
+
+}
+
 float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons){
 
   float weight1=1;

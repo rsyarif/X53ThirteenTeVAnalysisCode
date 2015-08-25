@@ -156,6 +156,9 @@ int main(int argc, char* argv[]){
   TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
+  //load eta weights in:
+  TFile* eWfile = new TFile("ChargeMisID_MC_Electrons.root");
+  std::vector<float> etaWeights = getEtaWeights(eWfile);
 
 
   //doGenPlots(fsig,t,tr);
@@ -181,11 +184,6 @@ int main(int argc, char* argv[]){
   float nMu23Ele12=0;
   float nMu8Ele23ORMu23Ele12=0;
 
-  //get etaWeights in DY events
-  std::vector<float> etaWeights;
-  if(outname.find("DYJets")!=std::string::npos){
-    etaWeights=getEtaWeights(tr,t,fsig);
-  }
 
 
 
