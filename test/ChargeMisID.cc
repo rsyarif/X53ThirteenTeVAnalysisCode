@@ -73,10 +73,12 @@ int main(int argc, char* argv[]){
   TTree* t=tr->tree;
 
   //initialize needed histograms
-  TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
+  TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Same Sign Leptons",20,0,600);
   TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
-  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
+  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Same Sign Leptons",12,-5,5);
   TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
+  TH1F* massNumHist = new TH1F("massNumHist","M_{ll} of Same Sign Leptons",50,0,150);
+  TH1F* massDenHist = new TH1F("massDenHist","M_ll} of All Leptons",50,0,150);
 
   //get number of entries and start event loop
   int nEntries = t->GetEntries();
@@ -87,7 +89,7 @@ int main(int argc, char* argv[]){
     if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     //make vector of leptons
-    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+    std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons);
 
     //check for at least one tight lepton
     bool oneTight=false;
@@ -163,8 +165,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons){
     iLep->Loose=iel->cutBasedLoose();
     iLep->isMu = false;
     iLep->isEl = true;
-    //only save if at least loose
-    if(iLep->Tight || iLep->Loose){
+    //only save if tight
+    if(iLep->Tight){
       //apply pt cut
       if(iLep->pt>30) Leptons.push_back(iLep);
     }
