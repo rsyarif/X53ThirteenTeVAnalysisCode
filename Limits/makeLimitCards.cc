@@ -29,30 +29,47 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //check ot make sure enough arguments have been passed
-  if(!argc==4){
-    std::cout<<"Need to supply 3 arguments: lep1 pt shift, lep2 pt shift, and HT shift! Exiting....."<<std::endl;
+  if(!argc==6){
+    std::cout<<"Need to supply 5 arguments: X53 Mass, Chirality, nMu, lep1 pt shift, lep2 pt shift, and HT shift! Exiting....."<<std::endl;
     return 0;
   }
 
   //get arguments
   std::istringstream arg1(argv[1]);
-  float lep1shift=0;
-  if(!(arg1>>lep1shift)){ std::cout<<"Invalid number for leading lepton shift! Exiting..."<<std::endl; return 0;}
-  else{arg1>>lep1shift;}
-  std::istringstream arg2(argv[2]);
-  float lep2shift=0;
-  if(!(arg2>>lep2shift)){ std::cout<<"Invalid number for subleading lepton shift! Exiting..."<<std::endl; return 0;}
-  else{arg2>>lep2shift;}
+  float mass=0;
+  if(!(arg1>>mass)){ std::cout<<"Invalid number for X53 mass! Exiting..."<<std::endl; return 0;}
+  else{arg1>>mass;}
+  std::string chirality(argv[2]);
+  if( chirality.find("RH")==std::string::npos && chirality.find("LH")==std::string::npos) {std::cout<<"Invalid chirality choice! Choose either \'RH\' or \'LH\'. Exiting...."<<std::endl; return 0;}
   std::istringstream arg3(argv[3]);
+  int nMu=-1; //defaults to all channels
+  if(!(arg3>>nMu)){ std::cout<<"Invalid number for channel! Specify number of muons (-1 means all channels) Exiting..."<<std::endl; return 0;}
+  else{arg3>>nMu;}
+  std::istringstream arg4(argv[4]);
+  float lep1shift=0;
+  if(!(arg4>>lep1shift)){ std::cout<<"Invalid number for leading lepton shift! Exiting..."<<std::endl; return 0;}
+  else{arg4>>lep1shift;}
+  std::istringstream arg5(argv[5]);
+  float lep2shift=0;
+  if(!(arg5>>lep2shift)){ std::cout<<"Invalid number for subleading lepton shift! Exiting..."<<std::endl; return 0;}
+  else{arg5>>lep2shift;}
+  std::istringstream arg6(argv[6]);
   float HTshift=0;
-  if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
-  else{arg1>>HTshift;}
+  if(!(arg6>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
+  else{arg6>>HTshift;}
 
   float lep1cut = 30.0 + lep1shift;
   float lep2cut = 30.0 + lep2shift;
   float HTcut = 900.0 + HTshift;
 
-  std::cout<<"Now running with the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
+  std::string channel="";
+  if(nMu==-1) channel = "All";
+  else if(nMu==0) channel = "ee";
+  else if(nMu==1) channel = "emu";
+  else if(nMu==2) channel = "mumu";
+  else{ std::cout<<"Picked invalid channel! Exiting..."<<std::endl; return 0;}
+
+  std::cout<<"Now running for "<<mass<<" "<<chirality<<" X53"<<" in channel "<<channel<<" and the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
 
   //output file
   std::ofstream outfile;
