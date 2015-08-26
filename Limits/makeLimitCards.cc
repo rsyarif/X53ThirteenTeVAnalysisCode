@@ -18,10 +18,10 @@
 /* the point of this script is to produce a card file suitable for use with higgs combine tool or theta 
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
-std::ofstream& printProcessNames(std::ofstream& outfile, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
-std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg, int nmu, std::string channel);
-std::ofstream& printEvents(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
-std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printProcessNames(std::ofstream& outfile, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg, int nmu, std::string channel);
+std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
 
 int main(int argc, char* argv[]){
 
@@ -84,6 +84,23 @@ int main(int argc, char* argv[]){
   //first get our favorite vectors of samples
   std::vector<Sample*> vBkg = getBkgSampleVec("ssdl",lumi);
   std::vector<Sample*> vSig = getSigSampleVecForTable("ssdl",lumi);
+  //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
+  Sample* sigSample=0;
+  //convert mass to string...probably a better way exists
+  std::stringstream mss; mss<<mass;
+  std::string mstring = mss.str();
+  for(std::vector<Sample*>::size_type i=0; i< vSig.size(); i++){
+    if( vSig.at(i)->name.find(mstring)!=std::string::npos && vSig.at(i)->name.find(chirality)!=std::string::npos){
+      sigSample = vSig.at(i);
+      break;
+    }
+  }
+
+  //make sure we got the sig sample correctly
+  if(!sigSample){std::cout<<"Couldn't find the signal sample to use! Exiting....."<<std::endl; return 0;}
+
+  //check to make sure we got the right one
+  if(debug_) std::cout<<"Samples name is: "<<sigSample->name<<std::endl;
 
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
@@ -105,23 +122,23 @@ int main(int argc, char* argv[]){
   //write bin labels
   outfile<<"bin \t\t";
 
-  //get cut class vector for signal
-  std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nMu);
+  //get cut class for signal
+  CutClass* cutSig = makeCutClass(sigSample,vCutString,nMu);
   //get cut class vector for background
   std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nMu);
-  printLabels(outfile,vCutSig,vCutBkg, nMu, channel);
+  printLabels(outfile,cutSig,vCutBkg, nMu, channel);
   
   // write names
   outfile<<"\nprocess \t";
-  printProcessNames(outfile,vCutSig,vCutBkg, nMu);
+  printProcessNames(outfile,cutSig,vCutBkg, nMu);
   
   //write indices
   outfile<<"\nprocess \t";
-  printProcessIndex(outfile,vCutSig,vCutBkg, nMu);
+  printProcessIndex(outfile,cutSig,vCutBkg, nMu);
   
   // write events
   outfile<<"\n"<<"rate \t\t";
-  printEvents(outfile,vCutSig,vCutBkg, nMu);
+  printEvents(outfile,cutSig,vCutBkg, nMu);
 
   
 
@@ -131,7 +148,7 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg,int nmu, std::string channel){
+std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg,int nmu, std::string channel){
 
   for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
     file<<channel<<"\t";
@@ -140,7 +157,7 @@ std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, st
   return file;
 }
 
-std::ofstream& printProcessNames(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+std::ofstream& printProcessNames(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
 
   file<<"sig\t";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
@@ -150,7 +167,7 @@ std::ofstream& printProcessNames(std::ofstream &file, std::vector<CutClass*> vCS
 
 }
 
-std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
 
   file<<"0"<<"\t";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
@@ -161,11 +178,11 @@ std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCS
 
 }
 
-std::ofstream& printEvents(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
   //set precision
   int old_prec = std::cout.precision();
   //now write process numbers:
-  file<<std::setprecision(4)<<(vCSig.at(0)->nEvents).at(0)<<"\t";
+  file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<"\t";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
     file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<"\t";
   }
