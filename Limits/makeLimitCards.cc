@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
   outfile<<"kmax 1\n"; //dummy for flat systematic on background uncertainty
 
   //write observed - FOW NOW DUMMY
-  outfile<<"------------\n"<<"bin 1\n"<<"obsveration 0\n"<<"------------\n\n";
+  outfile<<"------------\n"<<"bin 1\n"<<"observation 0\n"<<"------------\n\n";
   //need to write for every channel, -1 means all channels combined
   outfile<<"\n";
   //write bin labels
