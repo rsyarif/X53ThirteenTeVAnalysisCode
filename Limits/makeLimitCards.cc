@@ -72,8 +72,11 @@ int main(int argc, char* argv[]){
   std::cout<<"Now running for "<<mass<<" "<<chirality<<" X53"<<" in channel "<<channel<<" and the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
 
   //output file
+  std::stringstream filename;
+  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<".txt";
+  std::string fstring = filename.str();
   std::ofstream outfile;
-  outfile.open("testcard.txt");
+  outfile.open(fstring);
 
   //set desired lumi
   float lumi = 3.0; // fb^{-1}
