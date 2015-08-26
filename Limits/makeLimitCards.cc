@@ -19,7 +19,7 @@
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
 std::ofstream& printProcessNames(std::ofstream& outfile, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
-std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg, int nmu, std::string channel);
 std::ofstream& printEvents(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
 std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
 
@@ -104,42 +104,26 @@ int main(int argc, char* argv[]){
   outfile<<"\n";
   //write bin labels
   outfile<<"bin \t\t";
-  for(int nmu=-1; nmu<0; nmu++){
-    //get cut class vector for signal
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
-    //get cut class vector for background
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-    printLabels(outfile,vCutSig,vCutBkg, nmu);
-  }
+
+  //get cut class vector for signal
+  std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nMu);
+  //get cut class vector for background
+  std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nMu);
+  printLabels(outfile,vCutSig,vCutBkg, nMu, channel);
+  
   // write names
   outfile<<"\nprocess \t";
-  for(int nmu=-1; nmu<0; nmu++){
-    //get cut class vector for signal
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
-    //get cut class vector for background
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-    printProcessNames(outfile,vCutSig,vCutBkg, nmu);
-
-  }
+  printProcessNames(outfile,vCutSig,vCutBkg, nMu);
+  
   //write indices
   outfile<<"\nprocess \t";
-  for(int nmu=-1; nmu<0; nmu++){
-    //get cut class vector for signal
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
-    //get cut class vector for background
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-    printProcessIndex(outfile,vCutSig,vCutBkg, nmu);
-  }
+  printProcessIndex(outfile,vCutSig,vCutBkg, nMu);
+  
   // write events
   outfile<<"\n"<<"rate \t\t";
-  for(int nmu=-1; nmu<0; nmu++){
-    //get cut class vector for signal
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
-    //get cut class vector for background
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-    printEvents(outfile,vCutSig,vCutBkg, nmu);
+  printEvents(outfile,vCutSig,vCutBkg, nMu);
 
-  }
+  
 
   //write systematics - DUMMY
   outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
@@ -147,11 +131,10 @@ int main(int argc, char* argv[]){
   return 0;
 }
 
-std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg,int nmu){
+std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg,int nmu, std::string channel){
 
-  int bin = nmu+2;
   for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
-    file<<bin<<"\t";
+    file<<channel<<"\t";
   }
 
   return file;
