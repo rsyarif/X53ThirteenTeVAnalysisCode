@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
@@ -17,8 +18,11 @@
 /* the point of this script is to produce a card file suitable for use with higgs combine tool or theta 
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
-std::ofstream& printProcesses(std::ofstream& outfile, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printProcessNames(std::ofstream& outfile, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
 std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printEvents(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu);
+
 int main(int argc, char* argv[]){
 
   //debug, set to true by hand until sure script is working
@@ -69,55 +73,99 @@ int main(int argc, char* argv[]){
 
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
+  //write file header:
+  outfile<<"imax 1\n";
+  outfile<<"jmax 7\n";
+  outfile<<"kmax 1\n"; //dummy for flat systematic on background uncertainty
+
+  //write observed - FOW NOW DUMMY
+  outfile<<"------------\n"<<"bin 1\n"<<"obsveration 0\n"<<"------------\n\n";
   //need to write for every channel, -1 means all channels combined
   outfile<<"\n";
   //write bin labels
-  outfile<<"bin\t";
-  for(int nmu=-1; nmu<3; nmu++){
+  outfile<<"bin \t\t";
+  for(int nmu=-1; nmu<0; nmu++){
     //get cut class vector for signal
     std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
     //get cut class vector for background
     std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
     printLabels(outfile,vCutSig,vCutBkg, nmu);
   }
-  for(int nmu=-1; nmu<3; nmu++){
+  // write names
+  outfile<<"\nprocess \t";
+  for(int nmu=-1; nmu<0; nmu++){
     //get cut class vector for signal
     std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
     //get cut class vector for background
     std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-    printProcesses(outfile,vCutSig,vCutBkg, nmu);
+    printProcessNames(outfile,vCutSig,vCutBkg, nmu);
 
   }
+  //write indices
+  outfile<<"\nprocess \t";
+  for(int nmu=-1; nmu<0; nmu++){
+    //get cut class vector for signal
+    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    //get cut class vector for background
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    printProcessIndex(outfile,vCutSig,vCutBkg, nmu);
+  }
+  // write events
+  outfile<<"\n"<<"rate \t\t";
+  for(int nmu=-1; nmu<0; nmu++){
+    //get cut class vector for signal
+    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    //get cut class vector for background
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    printEvents(outfile,vCutSig,vCutBkg, nmu);
+
+  }
+
+  //write systematics - DUMMY
+  outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
 
   return 0;
 }
 
 std::ofstream& printLabels(std::ofstream &file, std::vector<CutClass*> vCSig, std:: vector<CutClass*> vCBkg,int nmu){
 
-  int bin = nmu+1;
+  int bin = nmu+2;
   for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
-    file<<bin<<" ";
+    file<<bin<<"\t";
   }
 
   return file;
 }
 
-std::ofstream& printProcesses(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+std::ofstream& printProcessNames(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
 
-
-  // write names
-  file<<"process \t"<<vCSig.at(0)->samplename;
+  file<<"sig\t";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    file<<" "<<(vCBkg.at(i)->samplename);
+    file<<(vCBkg.at(i)->samplename)<<"\t";
   }
-  file<<"\n";
-  //now write process numbers:
-  file<<"process\t"<<(vCSig.at(0)->nEvents).at(0);
-  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    file<<" "<<(vCBkg.at(i)->nEvents).at(0);
-  }
-  file<<"\n";
-
   return file;
 
+}
+
+std::ofstream& printProcessIndex(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+
+  file<<"0"<<"\t";
+  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
+    int j=i+1;
+    file<<j<<"\t";
+  }
+  return file;
+
+}
+
+std::ofstream& printEvents(std::ofstream &file, std::vector<CutClass*> vCSig, std::vector<CutClass*> vCBkg, int nmu){
+  //set precision
+  int old_prec = std::cout.precision();
+  //now write process numbers:
+  file<<std::setprecision(4)<<(vCSig.at(0)->nEvents).at(0)<<"\t";
+  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
+    file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<"\t";
+  }
+  std::cout<<std::setprecision(old_prec);
+  return file;
 }
