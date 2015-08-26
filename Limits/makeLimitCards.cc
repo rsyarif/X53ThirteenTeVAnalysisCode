@@ -122,36 +122,85 @@ int main(int argc, char* argv[]){
   //write bin labels
   outfile<<"bin \t\t";
 
-  //get cut class for signal
-  CutClass* cutSig = makeCutClass(sigSample,vCutString,nMu);
-  //get cut class vector for background
-  std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nMu);
-  printLabels(outfile,cutSig,vCutBkg, nMu, channel);
-  
-  // write names
-  outfile<<"\nprocess \t";
-  printProcessNames(outfile,cutSig,vCutBkg, nMu);
-  
-  //write indices
-  outfile<<"\nprocess \t";
-  printProcessIndex(outfile,cutSig,vCutBkg, nMu);
-  
-  // write events
-  outfile<<"\n"<<"rate \t\t";
-  printEvents(outfile,cutSig,vCutBkg, nMu);
+  if(nMu>0){
+    //get cut class for signal
+    CutClass* cutSig = makeCutClass(sigSample,vCutString,nMu);
+    //get cut class vector for background
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nMu);
+    printLabels(outfile,cutSig,vCutBkg, nMu, channel);
+    
+    // write names
+    outfile<<"\nprocess \t";
+    printProcessNames(outfile,cutSig,vCutBkg, nMu);
+    
+    //write indices
+    outfile<<"\nprocess \t";
+    printProcessIndex(outfile,cutSig,vCutBkg, nMu);
+    
+    // write events
+    outfile<<"\n"<<"rate \t\t";
+    printEvents(outfile,cutSig,vCutBkg, nMu);
+  }
+  else{
+    for(int nmu=0; nmu<3;nmu++){
+      //get cut class for signal
+      CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
+      //get cut class vector for background
+      std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+      printLabels(outfile,cutSig,vCutBkg, nmu, channel);
+    }
+    
+    // write names
+    outfile<<"\nprocess \t";
+    for(int nmu=0; nmu<3;nmu++){
+      //get cut class for signal
+      CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
+      //get cut class vector for background
+      std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+      printProcessNames(outfile,cutSig,vCutBkg, nmu);
+    }
 
+    //write indices
+    outfile<<"\nprocess \t";
+    for(int nmu=0; nmu<3;nmu++){
+      //get cut class for signal
+      CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
+      //get cut class vector for background
+      std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+      printProcessIndex(outfile,cutSig,vCutBkg, nmu);
+    }
+
+    // write events
+    outfile<<"\n"<<"rate \t\t";
+    for(int nmu=0; nmu<3;nmu++){
+      //get cut class for signal
+      CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
+      //get cut class vector for background
+      std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+      printEvents(outfile,cutSig,vCutBkg, nmu);
+    }
+
+  }
   
 
   //write systematics - DUMMY
-  outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
-
+  if(nMu>0){
+    outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
+  }
+  else{
+    outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20 - 1.20 1.20 1.20 1.20 1.20 1.20 1.20 - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
+  }
   return 0;
 }
 
 std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg,int nmu, std::string channel){
-
+  std::string label;
+  if(nmu==-1) label = "All";
+  else if(nmu==0) label = "ee";
+  else if(nmu==1) label = "emu";
+  else if(nmu==2) label = "mumu";
   for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
-    file<<channel<<"\t";
+    file<<label<<"\t";
   }
 
   return file;
