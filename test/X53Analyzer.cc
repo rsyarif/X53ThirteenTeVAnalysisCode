@@ -284,11 +284,14 @@ int main(int argc, char* argv[]){
     if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
-    bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->goodMuons,tr->goodElectrons);
+    bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
 
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
+
+    //quarkonia veto
+    if(dilepMass<=20) continue;
 
     float HT=0;
     for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
@@ -670,33 +673,43 @@ void printParticle(TLepton* l){
 bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
 
   bool veto=false;
+  float zmass=91.1;
 
   for(std::vector<TLepton*>::size_type ilep=0; ilep < leps.size(); ilep++){
-    //set up dummy mass and get lepton
-    float mass=999;
-    float zmass=91.1;
-    float diff=9999;
+    // get lepton
     TLepton* lep = leps.at(ilep);
+
     //if muon check to find mass w/ other muons
     if(lep->isMu){
       for(std::vector<TMuon*>::size_type imu=0; imu< muons.size(); imu++){
-	//skip where lepton is the muon we are looking at:
-	if(lep->pt==muons.at(imu)->pt) continue;
-	float difftemp =  getPairMass(lep,muons.at(imu)) - zmass;
-	if(fabs(difftemp) < fabs(diff)){
-	  diff = difftemp;
+	//skip if loose lepton has pt <= 15 GeV
+	if(muons.at(imu)->pt<=15) continue;
+
+	//skip if looking at any of the SS leptons:
+	bool skip=false;
+	for(std::vector<TLepton*>::size_type jlep =0; jlep<leps.size(); jlep++){
+	  if(leps.at(jlep)->pt==muons.at(imu)->pt && leps.at(jlep)->phi==muons.at(imu)->phi){skip=true; break;}
 	}
+	if(skip) continue; 
+
+	float diff =  getPairMass(lep,muons.at(imu)) - zmass;
 	if(fabs(diff) < 20){ veto=true; break;}
       }
     }
+    //else check mass w/ other electrons
     else{
-      for(std::vector<TMuon*>::size_type iel=0; iel< electrons.size(); iel++){
-	//skip where lepton is electron we are looking at
-	if(lep->pt==electrons.at(iel)->pt) continue;
-	float difftemp =  getPairMass(lep,electrons.at(iel)) - zmass;
-	if(fabs(difftemp) < fabs(diff)){
-	  diff = difftemp;
+      for(std::vector<TElectron*>::size_type iel=0; iel< electrons.size(); iel++){
+	//skip if loose electron pt <= 15 GeV
+	if(electrons.at(iel)->pt <= 15) continue;
+
+	//skip if looking at any of the SS leptons:
+	bool skip=false;
+	for(std::vector<TLepton*>::size_type jlep =0; jlep<leps.size(); jlep++){
+	  if(leps.at(jlep)->pt==electrons.at(iel)->pt && leps.at(jlep)->phi==electrons.at(iel)->phi){skip=true; break;}
 	}
+	if(skip) continue; 
+
+	float diff =  getPairMass(lep,electrons.at(iel)) - zmass;
 	if(fabs(diff) < 20){ veto=true; break;}
       }
     }
