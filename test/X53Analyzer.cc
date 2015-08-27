@@ -26,6 +26,7 @@ int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
 bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
+
 int main(int argc, char* argv[]){
 
   typedef std::map<std::string,std::string> StringMap;
@@ -314,6 +315,9 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
     else {nElEl+=1; elel=true;}
+
+    //now veto on dielectron events coming from Z bosons
+    if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
 
     //fill muon trigger histograms
     if(mumu){
