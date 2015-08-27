@@ -119,7 +119,7 @@ int main(int argc, char* argv[]){
     }//end loop over leptons
 
     //check that leptons are in Zpeak
-    bool zpeak= massDiff<20 ? true : false;
+    bool zpeak= massDiff<15 ? true : false;
 
     if(!zpeak) continue;
 

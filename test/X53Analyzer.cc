@@ -550,7 +550,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
   }
 
   if(minDiff!=99999){
-    if(minDiff>20) outsidePeak=true;
+    if(minDiff>15) outsidePeak=true;
     if(Lep1->charge != Lep2->charge) oppositeSign=true;
   }
 
@@ -697,7 +697,7 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 	if(skip) continue; 
 
 	float diff =  getPairMass(lep,muons.at(imu)) - zmass;
-	if(fabs(diff) < 20){ veto=true; break;}
+	if(fabs(diff) < 15){ veto=true; break;}
       }
     }
     //else check mass w/ other electrons
@@ -714,7 +714,7 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 	if(skip) continue; 
 
 	float diff =  getPairMass(lep,electrons.at(iel)) - zmass;
-	if(fabs(diff) < 20){ veto=true; break;}
+	if(fabs(diff) < 15){ veto=true; break;}
       }
     }
   }

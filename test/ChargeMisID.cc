@@ -113,7 +113,7 @@ int main(int argc, char* argv[]){
     }//end loop over leptons
 
     //check that leptons are in Zpeak
-    bool zpeak= fabs(massDiff)<20 ? true : false;
+    bool zpeak= fabs(massDiff)<15 ? true : false;
 
     massDenHist->Fill(zmass+massDiff);
 
