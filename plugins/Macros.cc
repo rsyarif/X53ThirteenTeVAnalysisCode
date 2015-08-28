@@ -331,7 +331,7 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts,int nMu)
     vCutsPretty.push_back(cutPretty);
   }
 
-  CutClass* c = new CutClass(s->name,vCutsPretty,vEvts);
+  CutClass* c = new CutClass(s->name,vCutsPretty,vEvts,s->xsec);
   return c;
 
 };
