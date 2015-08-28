@@ -20,7 +20,7 @@
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
 std::ofstream& printProcessNames(std::ofstream& outfile, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
 std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg, int nmu, std::string channel);
-std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
+std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu, bool theta);
 std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
 
 int main(int argc, char* argv[]){
@@ -29,8 +29,8 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //check ot make sure enough arguments have been passed
-  if(!argc==6){
-    std::cout<<"Need to supply 5 arguments: X53 Mass, Chirality, nMu, lep1 pt shift, lep2 pt shift, and HT shift! Exiting....."<<std::endl;
+  if(!argc==7){
+    std::cout<<"Need to supply 6 arguments: X53 Mass, Chirality, nMu, lep1 pt shift, lep2 pt shift, HT shift, and theta/higgs! Exiting....."<<std::endl;
     return 0;
   }
 
@@ -57,6 +57,9 @@ int main(int argc, char* argv[]){
   float HTshift=0;
   if(!(arg6>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg6>>HTshift;}
+  bool theta=false; //default to making higgs cards
+  std::string tool(argv[6]);
+  if(tool.find("theta")!=std::string::npos) theta=true;
 
   float lep1cut = 30.0 + lep1shift;
   float lep2cut = 30.0 + lep2shift;
@@ -73,7 +76,9 @@ int main(int argc, char* argv[]){
 
   //output file
   std::stringstream filename;
-  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<".txt";
+  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut;
+  if(theta) filename<<"_theta.txt";
+  else filename<<"_higgs.txt";
   std::string fstring = filename.str();
   std::ofstream outfile;
   outfile.open(fstring);
@@ -111,13 +116,14 @@ int main(int argc, char* argv[]){
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
   //write file header:
-  outfile<<"imax 1\n";
+  if(nMu>=0)  outfile<<"imax 1\n";
+  else   outfile<<"imax 3\n";
   outfile<<"jmax 7\n";
   outfile<<"kmax 1\n"; //dummy for flat systematic on background uncertainty
 
   //write observed - FOW NOW DUMMY
-  outfile<<"------------\n"<<"bin 1\n"<<"observation 0\n"<<"------------\n\n";
-  //need to write for every channel, -1 means all channels combined
+  if(nMu>0) outfile<<"------------\n"<<"bin "<<channel<<"\n"<<"observation 0\n"<<"------------\n\n";
+  else outfile<<"------------\n"<<"bin ee emu mumu\n"<<"observation 0 0 0\n"<<"------------\n\n";
   outfile<<"\n";
   //write bin labels
   outfile<<"bin \t\t";
@@ -139,7 +145,7 @@ int main(int argc, char* argv[]){
     
     // write events
     outfile<<"\n"<<"rate \t\t";
-    printEvents(outfile,cutSig,vCutBkg, nMu);
+    printEvents(outfile,cutSig,vCutBkg, nMu,theta);
   }
   else{
     for(int nmu=0; nmu<3;nmu++){
@@ -177,7 +183,7 @@ int main(int argc, char* argv[]){
       CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
       //get cut class vector for background
       std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
-      printEvents(outfile,cutSig,vCutBkg, nmu);
+      printEvents(outfile,cutSig,vCutBkg, nmu,theta);
     }
 
   }
@@ -227,13 +233,15 @@ std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vecto
 
 }
 
-std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
+std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu, bool theta){
   //set precision
   int old_prec = std::cout.precision();
-  //now write process numbers:
-  file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<"\t";
+  //now write process numbers, if using theta scale signal yield to 1pb xsec:
+  if(theta) file<<std::setprecision(4)<<(1.0/cSig->xsec)*(cSig->nEvents).at(0)<<"\t";
+  else file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<"\t";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<"\t";
+    if((vCBkg.at(i)->nEvents).at(0)==0)    file<<"0.001\t";
+    else file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<"\t";
   }
   std::cout<<std::setprecision(old_prec);
   return file;
