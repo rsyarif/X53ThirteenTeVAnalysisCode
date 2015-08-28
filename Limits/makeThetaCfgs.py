@@ -22,12 +22,14 @@ for card in cardfiles:
     filename = "X53X53_"
     filename += (card.split("_theta.txt")[0]).split("card_")[1]
     exptxt = filename+"_expected.txt"
+    obstxt = filename+"_observed.txt"
     htmlout = filename+"_html"
     filename+=".py"
     outfile= open(filename,'w')
     for line in template:
         line = line.replace('CARDFILE',card)
         line = line.replace('EXPTXTFILE',exptxt)
+        line = line.replace('OBSTXTFILE',obstxt)
         line = line.replace('HTMLOUT',htmlout)
         outfile.write(line)
     template.close()
