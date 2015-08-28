@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
   if(!(arg6>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg6>>HTshift;}
   bool theta=false; //default to making higgs cards
-  std::string tool(argv[6]);
+  std::string tool(argv[7]);
   if(tool.find("theta")!=std::string::npos) theta=true;
 
   float lep1cut = 30.0 + lep1shift;
