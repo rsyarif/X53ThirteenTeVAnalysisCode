@@ -61,11 +61,14 @@ int main(int argc, char* argv[]){
 
   //get correct file
   std::string filename;
-  if(argv1.find("Data")!=std::string::npos) filename="";
+  if(argv1.find("Data")!=std::string::npos) {
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_Mu.root";
+    else if(!MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_El.root";
+  }
   else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_QCD.root";
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str());
+  TreeReader* tr= new TreeReader(filename.c_str(),!data);
   TTree* t=tr->tree;
 
 
@@ -111,17 +114,17 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
-  fout->WriteTObject(ptNumHist);
-  fout->WriteTObject(ptDenHist);
-  fout->WriteTObject(etaNumHist);
-  fout->WriteTObject(etaDenHist);
+  fout->Append(ptNumHist);
+  fout->Append(ptDenHist);
+  fout->Append(etaNumHist);
+  fout->Append(etaDenHist);
 
   TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
 
-  fout->WriteTObject(ptgraph);
-  fout->WriteTObject(etagraph);
-
+  fout->Append(ptgraph);
+  fout->Append(etagraph);
+  fout->Write();
 }
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
