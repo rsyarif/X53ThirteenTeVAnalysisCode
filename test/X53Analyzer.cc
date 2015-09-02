@@ -25,6 +25,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
+bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
 
 int main(int argc, char* argv[]){
 
@@ -156,6 +157,9 @@ int main(int argc, char* argv[]){
   TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
+  //load eta weights in:
+  TFile* eWfile = new TFile("ChargeMisID_MC_Electrons.root");
+  std::vector<float> etaWeights = getEtaWeights(eWfile);
 
 
   //doGenPlots(fsig,t,tr);
@@ -181,11 +185,6 @@ int main(int argc, char* argv[]){
   float nMu23Ele12=0;
   float nMu8Ele23ORMu23Ele12=0;
 
-  //get etaWeights in DY events
-  std::vector<float> etaWeights;
-  if(outname.find("DYJets")!=std::string::npos){
-    etaWeights=getEtaWeights(tr,t,fsig);
-  }
 
 
 
@@ -285,8 +284,15 @@ int main(int argc, char* argv[]){
     //with vector now get weight for DY Events
     if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
+    //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
+    bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
+    if(secondaryZVeto) continue;
+
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
+
+    //quarkonia veto
+    if(dilepMass<=20) continue;
 
     float HT=0;
     for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
@@ -309,6 +315,9 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
     else {nElEl+=1; elel=true;}
+
+    //now veto on dielectron events coming from Z bosons
+    if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
 
     //fill muon trigger histograms
     if(mumu){
@@ -541,7 +550,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
   }
 
   if(minDiff!=99999){
-    if(minDiff>20) outsidePeak=true;
+    if(minDiff>15) outsidePeak=true;
     if(Lep1->charge != Lep2->charge) oppositeSign=true;
   }
 
@@ -664,3 +673,54 @@ void printParticle(TGenParticle* p){
 void printParticle(TLepton* l){
 	std::cout<<"charge "<<l->charge<<" pt: "<<l->pt<<" eta: "<<l->eta<<" phi: "<<l->phi<<std::endl;
 }
+
+bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
+
+  bool veto=false;
+  float zmass=91.1;
+
+  for(std::vector<TLepton*>::size_type ilep=0; ilep < leps.size(); ilep++){
+    // get lepton
+    TLepton* lep = leps.at(ilep);
+
+    //if muon check to find mass w/ other muons
+    if(lep->isMu){
+      for(std::vector<TMuon*>::size_type imu=0; imu< muons.size(); imu++){
+	//skip if loose lepton has pt <= 15 GeV
+	if(muons.at(imu)->pt<=15) continue;
+
+	//skip if looking at any of the SS leptons:
+	bool skip=false;
+	for(std::vector<TLepton*>::size_type jlep =0; jlep<leps.size(); jlep++){
+	  if(leps.at(jlep)->pt==muons.at(imu)->pt && leps.at(jlep)->phi==muons.at(imu)->phi){skip=true; break;}
+	}
+	if(skip) continue; 
+
+	float diff =  getPairMass(lep,muons.at(imu)) - zmass;
+	if(fabs(diff) < 15){ veto=true; break;}
+      }
+    }
+    //else check mass w/ other electrons
+    else{
+      for(std::vector<TElectron*>::size_type iel=0; iel< electrons.size(); iel++){
+	//skip if loose electron pt <= 15 GeV
+	if(electrons.at(iel)->pt <= 15) continue;
+
+	//skip if looking at any of the SS leptons:
+	bool skip=false;
+	for(std::vector<TLepton*>::size_type jlep =0; jlep<leps.size(); jlep++){
+	  if(leps.at(jlep)->pt==electrons.at(iel)->pt && leps.at(jlep)->phi==electrons.at(iel)->phi){skip=true; break;}
+	}
+	if(skip) continue; 
+
+	float diff =  getPairMass(lep,electrons.at(iel)) - zmass;
+	if(fabs(diff) < 15){ veto=true; break;}
+      }
+    }
+  }
+
+  return veto;
+
+}
+
+

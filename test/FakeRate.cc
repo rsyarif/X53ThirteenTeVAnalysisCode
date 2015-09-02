@@ -193,7 +193,7 @@ bool ZVetoCheck(TLepton* lep, std::vector<TJet*> jets){
   }
 
   bool veto=false;
-  if(diff<20) veto=true;
+  if(diff<15) veto=true;
 
   return veto;
 

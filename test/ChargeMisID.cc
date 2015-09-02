@@ -47,6 +47,7 @@ int main(int argc, char* argv[]){
   std::string filename;
   bool data;
   bool FiftyNS;
+
   if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
@@ -162,6 +163,7 @@ int main(int argc, char* argv[]){
   fout->Append(ptGraph);
   fout->Append(etaGraph);
   fout->Write();
+
 
 
 
