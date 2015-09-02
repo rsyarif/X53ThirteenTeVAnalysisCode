@@ -228,8 +228,8 @@ void DrawTriggerEff(Sample* s, TFile* outfile){
 
 
 void DrawChargeMisIDGraph(TFile* outfile){
-  TFile* f = new TFile("DYJets.root");
-  TGraphAsymmErrors* chargeMisIDGraph = (TGraphAsymmErrors*) f->Get("divide_h_ss_by_h_all");
+  TFile* f = new TFile("ChargeMisID_Data_Electrons.root");
+  TGraphAsymmErrors* chargeMisIDGraph = (TGraphAsymmErrors*) f->Get("divide_etaNumHist_by_etaDenHist");
 
   chargeMisIDGraph->SetTitle("Electron Charge MisID Rate");
 
@@ -243,6 +243,6 @@ void DrawChargeMisIDGraph(TFile* outfile){
   c3.Print("plots/ElectronChargeMisID.pdf");
   c3.Print("plots/ElectronChargeMisID.png");
 
-  outfile->WriteTObject(chargeMisIDGraph);
-
+  outfile->Append(chargeMisIDGraph);
+  outfile->Write();
 }
