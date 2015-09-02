@@ -47,7 +47,8 @@ int main(int argc, char* argv[]){
   std::string filename;
   bool data;
   bool FiftyNS;
-  if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/50ns/ljmet_tree_data.root"; data=true; FiftyNS=true;}
+
+  if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
   else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false; FiftyNS=false;}
@@ -69,7 +70,7 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str());
+  TreeReader* tr= new TreeReader(filename.c_str(),!data);
   TTree* t=tr->tree;
 
   //initialize needed histograms
@@ -149,18 +150,19 @@ int main(int argc, char* argv[]){
   ptNumHist->Scale(0.5);
 
   //write file now that histograms have been filled
-  fout->WriteTObject(ptNumHist);
-  fout->WriteTObject(ptDenHist);
-  fout->WriteTObject(etaNumHist);
-  fout->WriteTObject(etaDenHist);
-  fout->WriteTObject(massNumHist);
-  fout->WriteTObject(massDenHist);
+  fout->Append(ptNumHist);
+  fout->Append(ptDenHist);
+  fout->Append(etaNumHist);
+  fout->Append(etaDenHist);
+  fout->Append(massNumHist);
+  fout->Append(massDenHist);
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
   //write the tgraphs
-  fout->WriteTObject(ptGraph);
-  fout->WriteTObject(etaGraph);
+  fout->Append(ptGraph);
+  fout->Append(etaGraph);
+  fout->Write();
 
 
 

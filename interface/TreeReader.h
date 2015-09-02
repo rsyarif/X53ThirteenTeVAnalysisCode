@@ -19,8 +19,8 @@ class TreeReader{
  public:
 
   //constructor and desctructor
-  TreeReader(TTree *tree);
-  TreeReader(const TString &filename);
+  TreeReader(TTree *tree,bool mc);
+  TreeReader(const TString &filename,bool mc);
   virtual ~TreeReader();
 
   //high level collections
@@ -33,9 +33,11 @@ class TreeReader{
   //met
   double MET;
   TBranch* b_MET_DileptonCalc;
+  double MET_phi;
+  TBranch* b_MET_phi_DileptonCalc;
 
   TTree* tree;
-
+  bool isMc;
   //function to get the data
   Int_t GetEntry(Long64_t entry);
   //initialize the tree

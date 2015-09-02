@@ -8,6 +8,7 @@
 #include "../interface/TreeReader.h"
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 #include <map>
 #include <string>
 #include <sstream> 
@@ -61,11 +62,14 @@ int main(int argc, char* argv[]){
 
   //get correct file
   std::string filename;
-  if(argv1.find("Data")!=std::string::npos) filename="";
+  if(argv1.find("Data")!=std::string::npos) {
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_Mu.root";
+    else if(!MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_El.root";
+  }
   else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_QCD.root";
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str());
+  TreeReader* tr= new TreeReader(filename.c_str(),!data);
   TTree* t=tr->tree;
 
 
@@ -94,8 +98,16 @@ int main(int argc, char* argv[]){
     //make sure not much met in event to veto on leptons from Ws
     if(tr->MET > 25) continue;
     
-    //check transvers mass is less than 25 GeV
-    
+    //check transverse mass is less than 25 GeV
+
+    float et = tr->MET+lep->energy;
+    float pt1y = lep->pt*sin(lep->phi);
+    float pt1x = lep->pt*cos(lep->phi);
+    float pt2y = tr->MET*sin(tr->MET_phi);
+    float pt2x = tr->MET*cos(tr->MET_phi);
+    float mT = pow(et,2) - pow(lep->pt,2) - pow(tr->MET,2) - 2*(pt1y*pt2y - pt1x*pt2x);
+    mT = pow(mT, 0.5);
+    if(mT>25) continue;
 
     //search through jet collection to check for jet mass
     bool Zveto = ZVetoCheck(lep,tr->allAK4Jets);
@@ -111,17 +123,17 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
-  fout->WriteTObject(ptNumHist);
-  fout->WriteTObject(ptDenHist);
-  fout->WriteTObject(etaNumHist);
-  fout->WriteTObject(etaDenHist);
+  fout->Append(ptNumHist);
+  fout->Append(ptDenHist);
+  fout->Append(etaNumHist);
+  fout->Append(etaDenHist);
 
   TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
 
-  fout->WriteTObject(ptgraph);
-  fout->WriteTObject(etagraph);
-
+  fout->Append(ptgraph);
+  fout->Append(etagraph);
+  fout->Write();
 }
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){

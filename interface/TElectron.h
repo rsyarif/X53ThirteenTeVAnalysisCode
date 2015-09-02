@@ -29,6 +29,8 @@ public:
 
   bool cutBasedTight();
   bool cutBasedLoose();
+  bool cutBasedTightMay2015();
+  bool cutBasedLooseMay2015();
   bool cutBasedTightApr2015();
   bool cutBasedLooseApr2015();
   bool CMSDASTight();

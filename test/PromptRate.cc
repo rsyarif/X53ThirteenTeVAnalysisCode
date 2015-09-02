@@ -45,8 +45,8 @@ int main(int argc, char* argv[]){
   //get filename based on Data/MC
   std::string filename;
   bool data;
-  if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/ljmet_tree_data.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false;}
+  if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All.root"; data=true;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/50ns/ljmet_trees/ljmet_tree_DYJets.root"; data=false;}
 
   //get channel based on El/Mu
   bool MuonChannel;
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str());
+  TreeReader* tr= new TreeReader(filename.c_str(),!data);
   TTree* t=tr->tree;
 
   //initialize needed histograms
@@ -131,19 +131,22 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
-  //write file now that histograms have been filled
-  fout->WriteTObject(ptNumHist);
-  fout->WriteTObject(ptDenHist);
-  fout->WriteTObject(etaNumHist);
-  fout->WriteTObject(etaDenHist);
+  std::cout<<"Mean of num pt hist is: "<<ptNumHist->GetMean()<<std::endl;
+  std::cout<<"Mean of den pt hist is: "<<ptDenHist->GetMean()<<std::endl;
+  std::cout<<"Mean of num eta hist is: "<<etaNumHist->GetMean()<<std::endl;
+  std::cout<<"Mean of den eta hist is: "<<etaDenHist->GetMean()<<std::endl;
+
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
-  //write the tgraphs
-  fout->WriteTObject(ptGraph);
-  fout->WriteTObject(etaGraph);
-
-
+  //append everything to output file
+  fout->Append(ptNumHist);
+  fout->Append(ptDenHist);
+  fout->Append(etaNumHist);
+  fout->Append(etaDenHist);
+  fout->Append(ptGraph);
+  fout->Append(etaGraph);
+  fout->Write();
 
 
   return 0;

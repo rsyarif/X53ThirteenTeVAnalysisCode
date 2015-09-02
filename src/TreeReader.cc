@@ -1,16 +1,19 @@
 #include "../interface/TreeReader.h"
 
-TreeReader::TreeReader(const TString &filename)
+TreeReader::TreeReader(const TString &filename,bool mc)
 {
 
   TFile *f = new TFile(filename);
   f->cd();
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
+  isMc=mc;
   Init(treetemp);
+
 }
 
-TreeReader::TreeReader(TTree *treetemp)
+TreeReader::TreeReader(TTree *treetemp,bool mc)
 {
+  isMc=mc;
   Init(treetemp);
 }
 TreeReader::~TreeReader(){
@@ -22,8 +25,10 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i = 0;i<allMuons.size();++i ) delete allMuons[i];
   for (unsigned int i = 0;i<allElectrons.size();++i ) delete allElectrons[i];
   for (unsigned int i = 0;i<allAK4Jets.size();++i ) delete allAK4Jets[i];
-  for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
-  for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
+  if(isMc){
+    for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
+    for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
+  }
 
   allMuons.clear();
   goodMuons.clear();
@@ -32,8 +37,10 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   cmsdasElectrons.clear();
   allAK4Jets.clear();
   cleanedAK4Jets.clear();
-  genJets.clear();
-  genParticles.clear();
+  if(isMc){
+    genJets.clear();
+    genParticles.clear();
+  }
 
   //check to make sure not empty
   if (!tree) return 0;  
@@ -42,7 +49,6 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   unsigned int nMuons = muPt->size();
   unsigned int nElectrons = elPt->size();
   unsigned int nAK4Jets = AK4JetPt->size();
-  unsigned int ngenJets = genJetPt->size();
 
   for(unsigned int i=0; i<nElectrons;i++){
     allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elRelIso)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
@@ -61,14 +67,17 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     allAK4Jets.push_back(new TJet( (*AK4JetPt)[i], (*AK4JetEta)[i], (*AK4JetPhi)[i],(*AK4JetEnergy)[i]) );
   }
 
-  for (unsigned int i=0;i<ngenJets; i++){
-    genJets.push_back(new TJet( (*genJetPt)[i], (*genJetEta)[i], (*genJetPhi)[i],(*genJetEnergy)[i]) );
-  }
-
-
-  //make genparticle collection
-  for(unsigned int i=0; i< genPt->size() ; i++){
-    genParticles.push_back(new TGenParticle( (*genPt)[i], (*genEta)[i], (*genPhi)[i],(*genEnergy)[i],(*genStatus)[i], (*genId)[i], (*genMotherId)[i]));
+  if(isMc){
+    unsigned int ngenJets = genJetPt->size();
+    for (unsigned int i=0;i<ngenJets; i++){
+      genJets.push_back(new TJet( (*genJetPt)[i], (*genJetEta)[i], (*genJetPhi)[i],(*genJetEnergy)[i]) );
+    }
+    
+    
+    //make genparticle collection
+    for(unsigned int i=0; i< genPt->size() ; i++){
+      genParticles.push_back(new TGenParticle( (*genPt)[i], (*genEta)[i], (*genPhi)[i],(*genEnergy)[i],(*genStatus)[i], (*genId)[i], (*genMotherId)[i]));
+    }
   }
 
   //now from allMuons make goodMuons
@@ -179,11 +188,13 @@ void TreeReader::Init(TTree *treetemp)
   AK4JetPhi = 0;
   AK4JetPt = 0;
 
-  //gen jets
-  genJetEnergy = 0;
-  genJetEta = 0;
-  genJetPhi = 0;
-  genJetPt = 0;
+  if(isMc){
+    //gen jets
+    genJetEnergy = 0;
+    genJetEta = 0;
+    genJetPhi = 0;
+    genJetPt = 0;
+  }
 
   //Electrons                                                                                                                                                                                                     
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
@@ -232,27 +243,30 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("AK4JetPhi_DileptonCalc", &AK4JetPhi, &b_AK4JetPhi_DileptonCalc);
   tree->SetBranchAddress("AK4JetPt_DileptonCalc", &AK4JetPt, &b_AK4JetPt_DileptonCalc);
 
-  //gen jets
-  tree->SetBranchAddress("genJetEnergy_DileptonCalc", &genJetEnergy, &b_genJetEnergy_DileptonCalc);
-  tree->SetBranchAddress("genJetEta_DileptonCalc", &genJetEta, &b_genJetEta_DileptonCalc);
-  tree->SetBranchAddress("genJetPhi_DileptonCalc", &genJetPhi, &b_genJetPhi_DileptonCalc);
-  tree->SetBranchAddress("genJetPt_DileptonCalc", &genJetPt, &b_genJetPt_DileptonCalc);
-
-  //Gen Info                                                                                                                                                                                                      
-  tree->SetBranchAddress("genID_DileptonCalc", &genId, &b_genID_DileptonCalc);
-  tree->SetBranchAddress("genIndex_DileptonCalc", &genIndex, &b_genIndex_DileptonCalc);
-  tree->SetBranchAddress("genMotherID_DileptonCalc", &genMotherId, &b_genMotherID_DileptonCalc);
-  tree->SetBranchAddress("genMotherIndex_DileptonCalc", &genMotherIndex, &b_genMotherIndex_DileptonCalc);
-  tree->SetBranchAddress("genStatus_DileptonCalc", &genStatus, &b_genStatus_DileptonCalc);
-
-  tree->SetBranchAddress("genEnergy_DileptonCalc", &genEnergy, &b_genEnergy_DileptonCalc);
-  tree->SetBranchAddress("genEta_DileptonCalc", &genEta, &b_genEta_DileptonCalc);
-  tree->SetBranchAddress("genPhi_DileptonCalc", &genPhi, &b_genPhi_DileptonCalc);
-  tree->SetBranchAddress("genPt_DileptonCalc", &genPt, &b_genPt_DileptonCalc);
-  //  tree->SetBranchAddress("genCharge_DileptonCalc", &genCharge, &b_genCharge_DileptonCalc);
+  if(isMc){
+    //gen jets
+    tree->SetBranchAddress("genJetEnergy_DileptonCalc", &genJetEnergy, &b_genJetEnergy_DileptonCalc);
+    tree->SetBranchAddress("genJetEta_DileptonCalc", &genJetEta, &b_genJetEta_DileptonCalc);
+    tree->SetBranchAddress("genJetPhi_DileptonCalc", &genJetPhi, &b_genJetPhi_DileptonCalc);
+    tree->SetBranchAddress("genJetPt_DileptonCalc", &genJetPt, &b_genJetPt_DileptonCalc);
+    
+    //Gen Info                                                                                                                                                                                                      
+    tree->SetBranchAddress("genID_DileptonCalc", &genId, &b_genID_DileptonCalc);
+    tree->SetBranchAddress("genIndex_DileptonCalc", &genIndex, &b_genIndex_DileptonCalc);
+    tree->SetBranchAddress("genMotherID_DileptonCalc", &genMotherId, &b_genMotherID_DileptonCalc);
+    tree->SetBranchAddress("genMotherIndex_DileptonCalc", &genMotherIndex, &b_genMotherIndex_DileptonCalc);
+    tree->SetBranchAddress("genStatus_DileptonCalc", &genStatus, &b_genStatus_DileptonCalc);
+    
+    tree->SetBranchAddress("genEnergy_DileptonCalc", &genEnergy, &b_genEnergy_DileptonCalc);
+    tree->SetBranchAddress("genEta_DileptonCalc", &genEta, &b_genEta_DileptonCalc);
+    tree->SetBranchAddress("genPhi_DileptonCalc", &genPhi, &b_genPhi_DileptonCalc);
+    tree->SetBranchAddress("genPt_DileptonCalc", &genPt, &b_genPt_DileptonCalc);
+    //  tree->SetBranchAddress("genCharge_DileptonCalc", &genCharge, &b_genCharge_DileptonCalc);
+  }
 
   //met
   tree->SetBranchAddress("met_DileptonCalc", &MET, &b_MET_DileptonCalc);
+  tree->SetBranchAddress("met_phi_DileptonCalc", &MET_phi, &b_MET_phi_DileptonCalc);
 
 
   //trigger info
