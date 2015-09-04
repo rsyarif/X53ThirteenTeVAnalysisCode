@@ -66,12 +66,25 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("cleanAK4Jet2Phi",&cleanAK4Jet2Phi_);
   tree->Branch("cleanAK4Jet2Energy",&cleanAK4Jet2Energy_);  
 
+  //simple cleaned jets
+  tree->Branch("nSimpleCleanAK4Jets",&nSimpleCleanAK4Jets_);
+  tree->Branch("simpleCleanAK4HT",&simpleCleanAK4HT_);
+  tree->Branch("simpleCleanAK4Jet1Pt",&simpleCleanAK4Jet1Pt_);
+  tree->Branch("simpleCleanAK4Jet1Eta",&simpleCleanAK4Jet1Eta_);
+  tree->Branch("simpleCleanAK4Jet1Phi",&simpleCleanAK4Jet1Phi_);
+  tree->Branch("simpleCleanAK4Jet1Energy",&simpleCleanAK4Jet1Energy_);
+
+  tree->Branch("simpleCleanAK4Jet2Pt",&simpleCleanAK4Jet2Pt_);
+  tree->Branch("simpleCleanAK4Jet2Eta",&simpleCleanAK4Jet2Eta_);
+  tree->Branch("simpleCleanAK4Jet2Phi",&simpleCleanAK4Jet2Phi_);
+  tree->Branch("simpleCleanAK4Jet2Energy",&simpleCleanAK4Jet2Energy_);  
+
 
   tree->Branch("DilepMass",&DilepMass_);
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
 
   weight_=weight;
 
@@ -154,6 +167,40 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     cleanAK4Jet2Eta_=-999;
     cleanAK4Jet2Phi_=-999;
     cleanAK4Jet2Energy_=-999;
+  }
+
+  //cleaned jets
+  nSimpleCleanAK4Jets_ = simpleCleanAK4Jets.size();
+  simpleCleanAK4HT_=0;
+  for(int i=0; i<nSimpleCleanAK4Jets_;i++){
+    simpleCleanAK4HT_+=simpleCleanAK4Jets.at(i)->pt;
+  }
+
+  if(nSimpleCleanAK4Jets_ >0){
+    //std::cout<<"filling cleaned jet 0 "<<std::endl;
+    simpleCleanAK4Jet1Pt_=simpleCleanAK4Jets.at(0)->pt;    
+    simpleCleanAK4Jet1Eta_=simpleCleanAK4Jets.at(0)->eta;
+    simpleCleanAK4Jet1Phi_=simpleCleanAK4Jets.at(0)->phi;
+    simpleCleanAK4Jet1Energy_=simpleCleanAK4Jets.at(0)->energy;
+  }
+  else{
+    simpleCleanAK4Jet1Pt_=-999;
+    simpleCleanAK4Jet1Eta_=-999;
+    simpleCleanAK4Jet1Phi_=-999;
+    simpleCleanAK4Jet1Energy_=-999;
+  }
+
+  if(nSimpleCleanAK4Jets_>1){
+    simpleCleanAK4Jet2Pt_=simpleCleanAK4Jets.at(1)->pt;    
+    simpleCleanAK4Jet2Eta_=simpleCleanAK4Jets.at(1)->eta;
+    simpleCleanAK4Jet2Phi_=simpleCleanAK4Jets.at(1)->phi;
+    simpleCleanAK4Jet2Energy_=simpleCleanAK4Jets.at(1)->energy;
+  }
+  else{
+    simpleCleanAK4Jet2Pt_=-999;
+    simpleCleanAK4Jet2Eta_=-999;
+    simpleCleanAK4Jet2Phi_=-999;
+    simpleCleanAK4Jet2Energy_=-999;
   }
 
 
