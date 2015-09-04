@@ -161,6 +161,16 @@ class TreeReader{
   std::vector<double>  *AK4JetPt;
   TBranch        *b_AK4JetPt_DileptonCalc;
 
+  //get cleaned jets
+  std::vector<double>  *cleanedAK4JetEnergy;
+  TBranch        *b_cleanedAK4JetEnergy_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetEta;
+  TBranch        *b_cleanedAK4JetEta_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPhi;
+  TBranch        *b_cleanedAK4JetPhi_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPt;
+  TBranch        *b_cleanedAK4JetPt_DileptonCalc;
+
   //gen jets
   std::vector<double>  *genJetEnergy;
   TBranch        *b_genJetEnergy_DileptonCalc;
@@ -173,24 +183,42 @@ class TreeReader{
 
 
   // Trigger Info
+  //double electron
   bool HLT_DoubleEle33;
   TBranch* b_HLT_DoubleEle33_DileptonCalc;
   bool HLT_DoubleEle33_MW;
   TBranch* b_HLT_DoubleEle33_MW_DileptonCalc;
+  bool HLT_Ele17Ele12;
+  TBranch* b_HLT_Ele17Ele12_DileptonCalc;
+  //single electron
   bool HLT_Ele27WP85;
   TBranch* b_HLT_Ele27WP85_DileptonCalc;
+  //double muon
+  bool HLT_Mu27TkMu8;
+  TBranch* b_HLT_Mu27TkMu8_DileptonCalc;
   bool HLT_Mu30TkMu11;
   TBranch* b_HLT_Mu30TkMu11_DileptonCalc;
+  bool HLT_Mu40TkMu11;
+  TBranch* b_HLT_Mu40TkMu11_DileptonCalc;
+  bool HLT_DoubleMu33NoFiltersNoVtx;
+  TBranch* b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc;
+  //single muon
   bool HLT_Mu40;
   TBranch* b_HLT_Mu40_DileptonCalc;
   bool HLT_IsoTkMu24;
   TBranch* b_HLT_IsoTkMu24_DileptonCalc;
-  bool HLT_DoubleMu33NoFiltersNoVtx;
-  TBranch* b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc;
+  //cross triggers
+  bool HLT_Mu17Ele12;
+  TBranch* b_HLT_Mu17Ele12_DileptonCalc;
+  bool HLT_Mu8Ele17;
+  TBranch* b_HLT_Mu8Ele17_DileptonCalc;
   bool HLT_Mu23Ele12;
   TBranch* b_HLT_Mu23Ele12_DileptonCalc;
   bool HLT_Mu8Ele23;
   TBranch* b_HLT_Mu8Ele23_DileptonCalc;
+  bool HLT_Mu30Ele30;
+  TBranch* b_HLT_Mu30Ele30_DileptonCalc;
+  //hadronic triggers
   bool HLT_PFHT900;
   TBranch* b_HLT_PFHT900_DileptonCalc;
   bool HLT_AK8PFJet360TrimMass30;

@@ -49,11 +49,14 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   unsigned int nMuons = muPt->size();
   unsigned int nElectrons = elPt->size();
   unsigned int nAK4Jets = AK4JetPt->size();
+  unsigned int nCleanedAK4Jets = cleanedAK4JetPt->size();
 
+  //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
     allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elRelIso)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
   }
 
+  //make all muons
   for(unsigned int i=0; i<nMuons;i++){
     allMuons.push_back(new TMuon((*muPt)[i],
 				 (*muEta)[i], (*muPhi)[i], (*muEnergy)[i],(*muCharge)[i], (*muIsLoose)[i],(*muIsTight)[i],
@@ -61,10 +64,18 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 				 (*muDxy)[i], (*muDz)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i]));
   }
 
+  //make all jets
   for (unsigned int i=0;i<nAK4Jets; i++){
     //require jet to be greater than 30 GeV and eta less than 2.4
     if( ( (*AK4JetPt)[i]<30) || fabs((*AK4JetEta)[i])>2.4) continue;
     allAK4Jets.push_back(new TJet( (*AK4JetPt)[i], (*AK4JetEta)[i], (*AK4JetPhi)[i],(*AK4JetEnergy)[i]) );
+  }
+
+  //make cleaned jets
+  for (unsigned int i=0;i<nCleanedAK4Jets; i++){
+    //require jet to be greater than 30 GeV and eta less than 2.4
+    if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
+    allcleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
   }
 
   if(isMc){
@@ -95,6 +106,9 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     if(allElectrons.at(iel)->CMSDASTight()) cmsdasElectrons.push_back(allElectrons.at(iel));
   }
 
+
+
+  /* SWITCHING TO NEW REF BASED CLEANING
   //make clean jets collection
   for(unsigned int ijet=0; ijet<allAK4Jets.size();ijet++){
     TJet* jet = allAK4Jets.at(ijet);
@@ -115,7 +129,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
     cleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
 
-  }
+  }*/
 
 
   return stat;
@@ -188,6 +202,12 @@ void TreeReader::Init(TTree *treetemp)
   AK4JetPhi = 0;
   AK4JetPt = 0;
 
+  //ak4 jets
+  cleanedAK4JetEnergy = 0;
+  cleanedAK4JetEta = 0;
+  cleanedAK4JetPhi = 0;
+  cleanedAK4JetPt = 0;
+
   if(isMc){
     //gen jets
     genJetEnergy = 0;
@@ -243,6 +263,12 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("AK4JetPhi_DileptonCalc", &AK4JetPhi, &b_AK4JetPhi_DileptonCalc);
   tree->SetBranchAddress("AK4JetPt_DileptonCalc", &AK4JetPt, &b_AK4JetPt_DileptonCalc);
 
+  //cleaned ak4 jets
+  tree->SetBranchAddress("cleanedAK4JetEnergy_DileptonCalc", &cleanedAK4JetEnergy, &b_cleanedAK4JetEnergy_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetEta_DileptonCalc", &cleanedAK4JetEta, &b_cleanedAK4JetEta_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPhi_DileptonCalc", &cleanedAK4JetPhi, &b_cleanedAK4JetPhi_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPt_DileptonCalc", &cleanedAK4JetPt, &b_cleanedAK4JetPt_DileptonCalc);
+
   if(isMc){
     //gen jets
     tree->SetBranchAddress("genJetEnergy_DileptonCalc", &genJetEnergy, &b_genJetEnergy_DileptonCalc);
@@ -289,6 +315,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("HLT_Mu8Ele17_DileptonCalc",&HLT_Mu8Ele17,&b_HLT_Mu8Ele17_DileptonCalc);
   tree->SetBranchAddress("HLT_Mu23Ele12_DileptonCalc",&HLT_Mu23Ele12,&b_HLT_Mu23Ele12_DileptonCalc);
   tree->SetBranchAddress("HLT_Mu8Ele23_DileptonCalc",&HLT_Mu8Ele23,&b_HLT_Mu8Ele23_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu30Ele30_DileptonCalc",&HLT_Mu30Ele30,&b_HLT_Mu30Ele30_DileptonCalc);
   //hadronic triggers
   tree->SetBranchAddress("HLT_PFHT900_DileptonCalc",&HLT_PFHT900,&b_HLT_PFHT900_DileptonCalc);
   tree->SetBranchAddress("HLT_AK8PFJet360TrimMass30_DileptonCalc",&HLT_AK8PFJet360TrimMass30,&b_HLT_AK8PFJet360TrimMass30_DileptonCalc);
