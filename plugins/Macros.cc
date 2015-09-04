@@ -104,23 +104,23 @@ std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
 
   std::vector<Sample*> vSigSamples;
 
-  TFile* x53x53700Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700LH.root");
+  TFile* x53x53700Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700LH.root");
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
-  TFile* x53x53700Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700RH.root");
+  TFile* x53x53700Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700RH.root");
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
 
-  TFile* x53x531000Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000LH.root");
+  TFile* x53x531000Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000LH.root");
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
-  TFile* x53x531000Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000RH.root");
+  TFile* x53x531000Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000RH.root");
   Sample* x53x53m1000R = new Sample(vSigNames.at(3),x53x531000Rfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);
 
-  TFile* x53x531300Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300LH.root");
+  TFile* x53x531300Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300LH.root");
   Sample* x53x53m1300L = new Sample(vSigNames.at(4),x53x531300Lfile,vWeights.at(4),vXsec.at(4),cut,kBlue,2);
-  TFile* x53x531300Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300RH.root");
+  TFile* x53x531300Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300RH.root");
   Sample* x53x53m1300R = new Sample(vSigNames.at(5),x53x531300Rfile,vWeights.at(5),vXsec.at(5),cut,kBlue,1);
 
   return vSigSamples;
@@ -151,38 +151,38 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi){
 
   std::vector<Sample*> vSigSamples;
 
-  TFile* x53x53700Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700LH.root");
+  TFile* x53x53700Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700LH.root");
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
-  TFile* x53x53700Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700RH.root");
+  TFile* x53x53700Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m700RH.root");
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
 
-  TFile* x53x53900Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m900LH.root");
+  TFile* x53x53900Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m900LH.root");
   Sample* x53x53m900L = new Sample(vSigNames.at(2),x53x53900Lfile,vWeights.at(2),vXsec.at(2),cut,kGreen,2);
   vSigSamples.push_back(x53x53m900L);
-  TFile* x53x53900Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m900RH.root");
+  TFile* x53x53900Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m900RH.root");
   Sample* x53x53m900R = new Sample(vSigNames.at(3),x53x53900Rfile,vWeights.at(3),vXsec.at(3),cut,kGreen,1);
   vSigSamples.push_back(x53x53m900R);
 
-  TFile* x53x531000Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000LH.root");
+  TFile* x53x531000Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000LH.root");
   Sample* x53x53m1000L = new Sample(vSigNames.at(4),x53x531000Lfile,vWeights.at(4),vXsec.at(4),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
-  TFile* x53x531000Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000RH.root");
+  TFile* x53x531000Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1000RH.root");
   Sample* x53x53m1000R = new Sample(vSigNames.at(5),x53x531000Rfile,vWeights.at(5),vXsec.at(5),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);
 
-  TFile* x53x531100Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1100LH.root");
+  TFile* x53x531100Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1100LH.root");
   Sample* x53x53m1100L = new Sample(vSigNames.at(6),x53x531100Lfile,vWeights.at(6),vXsec.at(6),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1100L);
-  TFile* x53x531100Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1100RH.root");
+  TFile* x53x531100Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1100RH.root");
   Sample* x53x53m1100R = new Sample(vSigNames.at(7),x53x531100Rfile,vWeights.at(7),vXsec.at(7),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1100R);
 
-  TFile* x53x531300Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300LH.root");
+  TFile* x53x531300Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300LH.root");
   Sample* x53x53m1300L = new Sample(vSigNames.at(8),x53x531300Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1300L);
-  TFile* x53x531300Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300RH.root");
+  TFile* x53x531300Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/X53X53m1300RH.root");
   Sample* x53x53m1300R = new Sample(vSigNames.at(9),x53x531300Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1300R);
 
@@ -213,26 +213,26 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/TTbar.root");
+  TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/TTbar.root");
   Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   vSample.push_back(ttSample);
-  TFile* ttZfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/TTZ.root");
+  TFile* ttZfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/TTZ.root");
   Sample* ttZSample = new Sample(vBkgNames.at(1),ttZfile, vWeights.at(1),vXsec.at(1),cut,kRed);
   vSample.push_back(ttZSample);
-  TFile* ttwfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/TTW.root");
+  TFile* ttwfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/TTW.root");
   Sample* ttwSample = new Sample(vBkgNames.at(2),ttwfile, vWeights.at(2),vXsec.at(2),cut,kYellow-2);
   vSample.push_back(ttwSample);
-  TFile* wzfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/WZ.root");
+  TFile* wzfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/WZ.root");
   Sample* wzSample = new Sample(vBkgNames.at(3),wzfile, vWeights.at(3),vXsec.at(3),cut,kBlue-3);
   vSample.push_back(wzSample);
-  TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/WJets.root");
+  TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/WJets.root");
   Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   vSample.push_back(wjSample);
-  TFile* dyjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/DYJets.root");
+  TFile* dyjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/DYJets.root");
   Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
   //std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(dyjSample);
-  TFile* zzjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_3_0/src/AnalysisCode/ThirteenTeVX53/test/ZZ.root");
+  TFile* zzjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/ThirteenTeVX53/test/ZZ.root");
   Sample* zzjSample = new Sample(vBkgNames.at(6),zzjfile, vWeights.at(6),vXsec.at(6),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
