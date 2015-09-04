@@ -32,8 +32,10 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   allMuons.clear();
   goodMuons.clear();
+  looseMuons.clear();
   allElectrons.clear();
   goodElectrons.clear();
+  looseElectrons.clear();
   cmsdasElectrons.clear();
   allAK4Jets.clear();
   cleanedAK4Jets.clear();
@@ -76,7 +78,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
     //require jet to be greater than 30 GeV and eta less than 2.4
     if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
-    allcleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
+    cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
   }
 
   if(isMc){
@@ -98,9 +100,18 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     if(allMuons.at(imu)->cutBasedTight()) goodMuons.push_back(allMuons.at(imu));
   }
 
+  //make loose muons
+    for(unsigned int imu =0; imu<allMuons.size(); imu++){
+    if(allMuons.at(imu)->cutBasedLoose()) looseMuons.push_back(allMuons.at(imu));
+  }
+
   //now from allElectrons make goodElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->cutBasedTight()) goodElectrons.push_back(allElectrons.at(iel));
+  }
+  //now from allElectrons make looseElectrons
+  for(unsigned int iel=0; iel< allElectrons.size(); iel++){
+    if(allElectrons.at(iel)->cutBasedLoose()) looseElectrons.push_back(allElectrons.at(iel));
   }
   //now from allElectrons make cmsdasElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
@@ -116,13 +127,13 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     TLorentzVector cleanLV= jet->lv;
 
     //clean any tight electrons from the jet
-    for(unsigned int iel=0; iel<goodElectrons.size(); iel++){
+    for(unsigned int iel=0; iel<looseElectrons.size(); iel++){
       TElectron* el = goodElectrons.at(iel);
       float deltaR = pow( pow( jet->eta - el->eta,2) + pow( jet->phi - el->phi,2), 0.5);
       if(deltaR <0.4) cleanLV= cleanLV - el->lv;
     }
     //clean any tight muons from the jet
-    for(unsigned int imu=0; imu<goodMuons.size(); imu++){
+    for(unsigned int imu=0; imu<looseMuons.size(); imu++){
       TMuon* mu = goodMuons.at(imu);
       float deltaR = pow( pow( jet->eta - mu->eta,2) + pow( jet->phi - mu->phi,2), 0.5);
       if(deltaR <0.4) cleanLV= cleanLV - mu->lv;
