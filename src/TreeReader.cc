@@ -37,6 +37,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   cmsdasElectrons.clear();
   allAK4Jets.clear();
   cleanedAK4Jets.clear();
+  simpleCleanedAK4Jets.clear();
   if(isMc){
     genJets.clear();
     genParticles.clear();
@@ -108,7 +109,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
 
 
-  /* SWITCHING TO NEW REF BASED CLEANING
+
   //make clean jets collection
   for(unsigned int ijet=0; ijet<allAK4Jets.size();ijet++){
     TJet* jet = allAK4Jets.at(ijet);
@@ -127,9 +128,9 @@ Int_t TreeReader::GetEntry(Long64_t entry){
       if(deltaR <0.4) cleanLV= cleanLV - mu->lv;
     }
 
-    cleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
+    simpleCleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
 
-  }*/
+  }
 
 
   return stat;
