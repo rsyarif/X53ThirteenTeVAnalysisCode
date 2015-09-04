@@ -91,7 +91,7 @@ int main(int argc, char* argv[]){
   bool signal=false;
   bool bg_mc=false;
   //bool bg_dd=false;
-  //bool data=false;
+  bool data=false;
 
   //check usage
   bool correctusage=true;
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]){
   TreeMaker* tm = new TreeMaker();
   tm->InitTree("tEvts_ssdl");
 
-  TreeReader* tr= new TreeReader(filename.c_str());
+  TreeReader* tr= new TreeReader(filename.c_str(),!data);
   TTree* t=tr->tree;
 
   //histogram for cutflow
@@ -292,7 +292,7 @@ int main(int argc, char* argv[]){
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
 
     //quarkonia veto
-    if(dilepMass<=20) continue;
+    //if(dilepMass<=20) continue;
 
     float HT=0;
     for(unsigned int uijet=0; uijet<tr->allAK4Jets.size();uijet++){
@@ -317,7 +317,7 @@ int main(int argc, char* argv[]){
     else {nElEl+=1; elel=true;}
 
     //now veto on dielectron events coming from Z bosons
-    if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
+    //if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
 
     //fill muon trigger histograms
     if(mumu){
@@ -375,7 +375,7 @@ int main(int argc, char* argv[]){
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu30TkMu11 || tr->HLT_DoubleEle33) ) continue;
 
     //fill tree
-    tm->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
+    tm->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
   }//end event loop
 
   //write the tree
