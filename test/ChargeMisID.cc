@@ -14,7 +14,7 @@
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons);
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs);
 
 //A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
 
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
   if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
     if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     //make vector of leptons
-    std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons);
+    std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons,!data,FiftyNS);
 
     //skip if didn't find at least two tight leptons
     if(leptons.size()<2) continue;
@@ -171,7 +171,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons){
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs){
 
   std::vector<TLepton*> Leptons;
 
@@ -179,8 +179,20 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons){
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
     TElectron* iel = electrons.at(uiel);
     TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-    iLep->Tight=iel->cutBasedTight();
-    iLep->Loose=iel->cutBasedLoose();
+    if(mc){
+      if(FiftyNs){
+	iLep->Tight=iel->cutBasedTight();
+	iLep->Loose=iel->cutBasedLoose();
+      }
+      else{
+	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
+      }
+    }
+    else{
+      iLep->Tight=iel->cutBasedTight();
+      iLep->Loose=iel->cutBasedLoose();
+    }
     iLep->isMu = false;
     iLep->isEl = true;
     //only save if tight
