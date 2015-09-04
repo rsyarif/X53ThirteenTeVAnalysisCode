@@ -86,6 +86,76 @@ bool TElectron::cutBasedLoose(){
   }
   return true;
 }
+
+bool TElectron::cutBasedTight25nsSpring15MC(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
+    if(sigmaIetaIeta >= 0.0101) return false;
+    if(fabs(dEta) >= 0.00926)    return false;
+    if(fabs(dPhi) >= 0.0336)     return false;
+    if(hOverE >= 0.0597)        return false;
+    if(relIso > 0.0354)        return false;
+    if(ooEmooP >= 0.012) return false;
+    if(fabs(d0) >= 0.0111)      return false;
+    if(fabs(dZ) >= 0.0466)      return false;
+    if(mHits > 2)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
+    //    if(pt <30)                 return false;
+  }
+  //Endcap
+  else{
+    if(sigmaIetaIeta >= 0.0279) return false;
+    if(fabs(dEta) >= 0.00724)    return false;
+    if(fabs(dPhi) >= 0.0918)    return false;
+    if(hOverE >= 0.0615)        return false;
+    if(relIso >= 0.0646)        return false; 
+    if(ooEmooP >= 0.00999) return false;
+    if(fabs(d0) >= 0.0351)      return false;
+    if(fabs(dZ) >= 0.417)      return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
+    //    if(pt <30)                 return false;
+  }
+  return true;
+}
+
+bool TElectron::cutBasedLoose25nsSpring15MC(){
+  //Barrel
+  if(fabs(eta) <= 1.479){
+    if(sigmaIetaIeta >= 0.0103) return false;
+    if(fabs(dEta) >= 0.0105)    return false;
+    if(fabs(dPhi) >= 0.115)    return false;
+    if(hOverE >= 0.104)         return false;
+    if(relIso >= 0.0893)          return false;
+    if(ooEmooP >= 0.102) return false;
+    if(fabs(d0) >= 0.0261)      return false;
+    if(fabs(dZ) >= 0.41)     return false;
+    if(mHits > 2)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
+    //   if(pt <20)                 return false;
+  }
+  
+  //Endcap
+  else{
+    if(sigmaIetaIeta >= 0.0301)  return false;
+    if(fabs(dEta) >= 0.00814)    return false;
+    if(fabs(dPhi) >= 0.182)    return false;
+    if(hOverE >= 0.0897)        return false;
+    if(relIso >= 0.121)        return false;
+    if(ooEmooP >= 0.126) return false;
+    if(fabs(d0) >= 0.118)       return false;
+    if(fabs(dZ) >= 0.822)      return false;
+    if(mHits > 1)              return false;
+    if(chargeConsistency < 1)  return false;
+    if(!passConversion)        return false;
+    //    if(pt <20)                 return false;
+  }
+  return true;
+}
+
 bool TElectron::cutBasedTightMay2015(){
   //Barrel
   if(fabs(eta) <= 1.479){
