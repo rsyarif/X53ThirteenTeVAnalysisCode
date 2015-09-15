@@ -14,7 +14,7 @@ void TreeMaker::InitTree(std::string treename){
 
   //weight
   tree->Branch("ChargeMisIDWeight",&weight_);
-
+  tree->Branch("MCWeight",&MCWeight_);
   tree->Branch("Lep1Pt",&Lep1Pt_);
 
   tree->Branch("Lep1Eta",&Lep1Eta_);
@@ -35,6 +35,8 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Lep2Loose",&Lep2Loose_);
   tree->Branch("Lep2Tight",&Lep2Tight_);
 
+  //number of constiuents, cleaned ak4 jets and non ssdl leptons
+  tree->Branch("nConst",&nConst_);
 
   //tree->Branch("NTightLeptons",&NTightLeptons_);
   tree->Branch("nAK4Jets",&nAK4Jets_);
@@ -84,10 +86,13 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight){
 
   weight_=weight;
 
+  if(mcweight>0) MCWeight_=1;
+  else MCWeight_=-1;
+  
   assert(vSSLep.size()>1);
 
   Lep1Pt_=vSSLep.at(0)->pt;
@@ -105,6 +110,10 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
 
   AK4HT_=HTtemp;
+  AK4HT_+=Lep1Pt_+Lep2Pt_;
+  for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
+    AK4HT_+=vNonSSLep.at(ilep)->pt;
+  }
   MET_=METtemp;
 
   nAK4Jets_ = AK4Jets.size();
@@ -138,9 +147,12 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   //cleaned jets
   nCleanAK4Jets_ = cleanAK4Jets.size();
-  cleanAK4HT_=0;
+  cleanAK4HT_=Lep1Pt_+Lep2Pt_;
   for(int i=0; i<nCleanAK4Jets_;i++){
     cleanAK4HT_+=cleanAK4Jets.at(i)->pt;
+  }
+  for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
+    cleanAK4HT_+=vNonSSLep.at(ilep)->pt;
   }
 
   if(nCleanAK4Jets_>0){
@@ -171,9 +183,12 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   //cleaned jets
   nSimpleCleanAK4Jets_ = simpleCleanAK4Jets.size();
-  simpleCleanAK4HT_=0;
+  simpleCleanAK4HT_=Lep1Pt_+Lep2Pt_;
   for(int i=0; i<nSimpleCleanAK4Jets_;i++){
     simpleCleanAK4HT_+=simpleCleanAK4Jets.at(i)->pt;
+  }
+  for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
+    AK4HT_+=vNonSSLep.at(ilep)->pt;
   }
 
   if(nSimpleCleanAK4Jets_ >0){
@@ -205,7 +220,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
 
 
-
+  nConst_=nCleanAK4Jets_+vNonSSLep.size();
   DilepMass_ = DilepMasstemp;
   nMu_= nMu;
   tree->Fill();

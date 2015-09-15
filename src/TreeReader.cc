@@ -57,7 +57,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elRelIso)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
   }
 
   //make all muons
@@ -148,7 +148,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
       if(deltaR <0.4) cleanLV= cleanLV - mu->lv;
     }
     //std::cout<<"adding simple cleaned jet"<<std::endl;
-    simpleCleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
+    //only add if pt still greater than 30
+    if(cleanLV.Pt()>30) simpleCleanedAK4Jets.push_back(new TJet(cleanLV.Pt(),cleanLV.Eta(),cleanLV.Phi(),cleanLV.Energy()));
 
   }
 
@@ -177,7 +178,12 @@ void TreeReader::Init(TTree *treetemp)
   elOoemoop = 0;
   elPhi = 0;
   elPt = 0;
-  elRelIso = 0;
+  elchIso = 0;
+  elpuIso = 0;
+  elneutIso = 0;
+  elphotIso = 0;
+  elrhoIso = 0;
+  elAEff= 0;
   elSihih = 0;
   elChargeConsistent = 0;
   elCharge = 0;
@@ -256,7 +262,12 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elOoemoop_DileptonCalc", &elOoemoop, &b_elOoemoop_DileptonCalc);
   tree->SetBranchAddress("elPhi_DileptonCalc", &elPhi, &b_elPhi_DileptonCalc);
   tree->SetBranchAddress("elPt_DileptonCalc", &elPt, &b_elPt_DileptonCalc);
-  tree->SetBranchAddress("elRelIso_DileptonCalc", &elRelIso, &b_elRelIso_DileptonCalc);
+  tree->SetBranchAddress("elChIso_DileptonCalc", &elchIso, &b_elchIso_DileptonCalc);
+  tree->SetBranchAddress("elPUIso_DileptonCalc", &elpuIso, &b_elpuIso_DileptonCalc);
+  tree->SetBranchAddress("elNhIso_DileptonCalc", &elneutIso, &b_elneutIso_DileptonCalc);
+  tree->SetBranchAddress("elPhIso_DileptonCalc", &elphotIso, &b_elphotIso_DileptonCalc);
+  tree->SetBranchAddress("elRhoIso_DileptonCalc", &elrhoIso, &b_elrhoIso_DileptonCalc);
+  tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
 
   //Muons                                                                                                                                                                                                         
@@ -316,6 +327,8 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("met_DileptonCalc", &MET, &b_MET_DileptonCalc);
   tree->SetBranchAddress("met_phi_DileptonCalc", &MET_phi, &b_MET_phi_DileptonCalc);
 
+  //MC weight info
+  tree->SetBranchAddress("MCWeight",&MCWeight,&b_MCWeight_DileptonCalc);
 
   //trigger info
   //double electron

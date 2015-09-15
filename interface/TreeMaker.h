@@ -23,6 +23,7 @@ class TreeMaker {
 
   //weight
   float weight_;
+  int MCWeight_;
 
   //variables for tree
   float Lep1Pt_;
@@ -43,7 +44,7 @@ class TreeMaker {
   int Lep2Loose_;
   int Lep2Tight_;
 
-  //int NTightLeptons_;
+  int nConst_;
   int nAK4Jets_;
 
   float AK4HT_;
@@ -94,7 +95,7 @@ class TreeMaker {
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight);
 
 };
 

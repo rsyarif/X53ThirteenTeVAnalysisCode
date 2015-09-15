@@ -88,9 +88,19 @@ class TreeReader{
   TBranch        *b_elOoemoop_DileptonCalc; 
   std::vector<double>  *elSihih;
   TBranch        *b_elSihih_DileptonCalc;
-  //Isolation
-  std::vector<double>  *elRelIso;
-  TBranch        *b_elRelIso_DileptonCalc;
+  //Isolation Variables
+  std::vector<double>  *elchIso;
+  TBranch        *b_elchIso_DileptonCalc;
+  std::vector<double>  *elpuIso;
+  TBranch        *b_elpuIso_DileptonCalc;
+  std::vector<double>  *elneutIso;
+  TBranch        *b_elneutIso_DileptonCalc;
+  std::vector<double>  *elphotIso;
+  TBranch        *b_elphotIso_DileptonCalc;
+  std::vector<double>  *elrhoIso;
+  TBranch        *b_elrhoIso_DileptonCalc;
+  std::vector<double>  *elAEff;
+  TBranch        *b_elAEff_DileptonCalc;
 
   //Muons 
   std::vector<int>     *muCharge;
@@ -180,6 +190,10 @@ class TreeReader{
   TBranch        *b_genJetPhi_DileptonCalc;
   std::vector<double>  *genJetPt;
   TBranch        *b_genJetPt_DileptonCalc;
+
+  //MC weight info
+  float          MCWeight;
+  TBranch*    b_MCWeight_DileptonCalc;
 
 
   // Trigger Info
