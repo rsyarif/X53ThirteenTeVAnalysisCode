@@ -109,7 +109,7 @@ std::vector<Sample*> getSigSampleVec(std::string cut, float lumi){
   vSigNames.push_back("LH_X53X53_M-700"); vSigNames.push_back("RH_X53X53_M-700"); vSigNames.push_back("LH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1000"); vSigNames.push_back("RH_X53X53_M-1300"); vSigNames.push_back("RH_X53X53_M-1300");
   //make x-sec vector - NEED TO FIX THESE VALUES************************************************
   std::vector<float> vXsec;
-  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
+  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) OR BR(W->taunu) **2 where the square comes from AND requiring both to decay leptonically
   float BRssdl= 2*( pow((.1063 + .1071 + .1138),2));
   vXsec.push_back(0.442*BRssdl);vXsec.push_back(0.442*BRssdl);vXsec.push_back(0.0427*BRssdl);vXsec.push_back(0.0427*BRssdl);vXsec.push_back(0.00618*BRssdl);vXsec.push_back(0.00618*BRssdl);
   //FOR RUNNING ON INCLUSIVE DON'T APPLY BR TO SSDL!!
@@ -242,15 +242,15 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi){
 
 std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){  
 
-   //setup info for list of samples, xsec and events run
-  std::vector<std::string> vBkgNames;
-  vBkgNames.push_back("TTbar");vBkgNames.push_back("TTZ");vBkgNames.push_back("TTW");vBkgNames.push_back("WZ");vBkgNames.push_back("WJets");vBkgNames.push_back("DYJets");vBkgNames.push_back("ZZ");
-  //make vector of x-sec (in pb)
-  std::vector<float> vXsec;
-  vXsec.push_back(    831.76 );  vXsec.push_back( 0.2529); vXsec.push_back(    0.2043);  vXsec.push_back(4.42965); vXsec.push_back( 61526.7); vXsec.push_back( 6025.2);vXsec.push_back( 0.1853);
-  //make vector of actual number of events run
-  std::vector<int> vNEvts;
-  vNEvts.push_back( 42730273); vNEvts.push_back( 398000 ); vNEvts.push_back(  252908); vNEvts.push_back(1925000); vNEvts.push_back(24151270); vNEvts.push_back(28825132);vNEvts.push_back(6652512);
+   //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
+  std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
+  vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
+  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398000 * 0.464779);
+  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252908 * 0.513428);
+  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1925000 * 1);
+  vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
+  vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(0.1853);  vNEvts.push_back(6652512 * 0.689851);
 
   //now make vector to hold weights;
   std::vector<float> vWeights;
@@ -260,26 +260,26 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi){
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar_LooseIDLepJetCleaning.root");
+  TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar.root");
   Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   vSample.push_back(ttSample);
-  TFile* ttZfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTZ_LooseIDLepJetCleaning.root");
+  TFile* ttZfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTZ.root");
   Sample* ttZSample = new Sample(vBkgNames.at(1),ttZfile, vWeights.at(1),vXsec.at(1),cut,kRed);
   vSample.push_back(ttZSample);
-  TFile* ttwfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTW_LooseIDLepJetCleaning.root");
+  TFile* ttwfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTW.root");
   Sample* ttwSample = new Sample(vBkgNames.at(2),ttwfile, vWeights.at(2),vXsec.at(2),cut,kYellow-2);
   vSample.push_back(ttwSample);
-  TFile* wzfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZ_LooseIDLepJetCleaning.root");
+  TFile* wzfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZ.root");
   Sample* wzSample = new Sample(vBkgNames.at(3),wzfile, vWeights.at(3),vXsec.at(3),cut,kBlue-3);
   vSample.push_back(wzSample);
-  TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets_LooseIDLepJetCleaning.root");
+  TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets.root");
   Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   vSample.push_back(wjSample);
-  TFile* dyjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/DYJets_LooseIDLepJetCleaning.root");
+  TFile* dyjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/DYJets.root");
   Sample* dyjSample = new Sample(vBkgNames.at(5),dyjfile, vWeights.at(5),vXsec.at(5),cut,kMagenta+2);
   //std::cout<<"weight for DY is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(dyjSample);
-  TFile* zzjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ_LooseIDLepJetCleaning.root");
+  TFile* zzjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_10_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ.root");
   Sample* zzjSample = new Sample(vBkgNames.at(6),zzjfile, vWeights.at(6),vXsec.at(6),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
@@ -308,7 +308,7 @@ std::vector<std::string> getCutString(){
   std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 30)" ;
   vString.push_back(lep2pt);
   //Leading nJetscut
-  std::string nConstCut = "("+lep2pt+"&& nConst > 5)";
+  std::string nConstCut = "("+lep2pt+"&& nConst >= 5)";
   vString.push_back(nConstCut);
   //SubLeading Jet Pt
   //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
@@ -328,7 +328,7 @@ float getNumberEvents(Sample* s, std::string cut,int nMu){
   if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
   else  channel<<"";
 
-  std::string cutstring= "ChargeMisIDWeight * ( "+cut+channel.str()+")";
+  std::string cutstring= " MCWeight * ChargeMisIDWeight * ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
@@ -354,7 +354,7 @@ std::string getPrettyCutString(std::string cut){
 
   //now take the last of them since what we want is the cut applied to the right of the last &&
   if(positions.size()==0) return "SSDL";
-  else if(positions.size()==3) return "EE-ZVeto";
+  else if(positions.size()==2) return "EE-ZVeto";
   size_t last = positions.at(positions.size()-1);
   size_t length = cut.size() - last; //should give number of characters remaining in string
   length = length -3; //decrement by one to ignor final ')'
@@ -488,11 +488,13 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 std::vector<float> getEtaWeights(TFile* weightfile){
 
   TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
-
+  TH1F* h = (TH1F*) weightfile->Get("etaNumHist");
+  TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
+  h->Divide(den);
   std::vector<float> etaWeights;
 
-  for(int i=0; i< g->GetN(); i++){
-    etaWeights.push_back(g->GetY()[i]);
+  for(int i=1; i<= h->GetNbinsX(); i++){
+    etaWeights.push_back(h->GetBinContent(i));
   }
 
   return etaWeights;
