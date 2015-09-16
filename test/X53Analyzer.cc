@@ -26,45 +26,45 @@ int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
 bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
-
+std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps);
 int main(int argc, char* argv[]){
 
   typedef std::map<std::string,std::string> StringMap;
  
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTJets_LooseIDLepJetCleaning.root";
-  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTW_LooseIDLepJetCleaning.root";
-  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTZ_LooseIDLepJetCleaning.root";
-  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTWW_LooseIDLepJetCleaning.root";
-  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WW_LooseIDLepJetCleaning.root";
-  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WWW_LooseIDLepJetCleaning.root";
-  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WZ_LooseIDLepJetCleaning.root";
-  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_ZZ_LooseIDLepJetCleaning.root";
-  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WJets_LooseIDLepJetCleaning.root";
-  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets_LooseIDLepJetCleaning.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTW.root";
+  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTZ.root";
+  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTWW.root";
+  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WW.root";
+  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WWW.root";
+  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WZ.root";
+  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_ZZ.root";
+  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WJets.root";
+  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root";
   
   
-  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m900RH_LooseIDLepJetCleaning.root";
-  //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1000RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1100RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1200RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1300RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1400RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1500RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1600RH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m900LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1000LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1100LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1200LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1300LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1400LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1500LH_LooseIDLepJetCleaning.root";
-  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1600LH_LooseIDLepJetCleaning.root";
+  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700RH.root";
+  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800RH.root";
+  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m900RH.root";
+  //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1100RH.root";
+  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1200RH.root";
+  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1300RH.root";
+  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1400RH.root";
+  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1500RH.root";
+  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1600RH.root";
+  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700LH.root";
+  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800LH.root";
+  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m900LH.root";
+  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1000LH.root";
+  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1100LH.root";
+  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1200LH.root";
+  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1300LH.root";
+  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1400LH.root";
+  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1500LH.root";
+  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m1600LH.root";
   
   sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
   sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
   sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All_LooseIDLepJetCleaning.root";
+  data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All.root";
   
   bool signal=false;
   bool bg_mc=false;
@@ -123,7 +123,7 @@ int main(int argc, char* argv[]){
   std::cout<<"running file: "<<filename<<std::endl;
   //make output file
   std::stringstream outnamestream;
-  outnamestream<<argv[1]<<"_LooseIDLepJetCleaning.root";
+  outnamestream<<argv[1]<<".root";
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
 
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]){
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
   //load eta weights in:
-  TFile* eWfile = new TFile("ChargeMisID_MC_Electrons.root");
+  TFile* eWfile = new TFile("ChargeMisID_Data_Electrons.root");
   std::vector<float> etaWeights = getEtaWeights(eWfile);
 
 
@@ -185,11 +185,14 @@ int main(int argc, char* argv[]){
   float nMu40=0;
   float nIsoTkMu24=0;
   float nMu30TkMu11=0;
+  float nMu27TkMu8=0;
   float nEle27=0;
   float nDoubleEle33=0;
-  float nMu8Ele23=0;
-  float nMu23Ele12=0;
-  float nMu8Ele23ORMu23Ele12=0;
+  float nEle17Ele12=0;
+  float nMu30Ele30=0;
+  float nMu17Ele12=0;
+  float nMu8Ele17=0;
+  float nMu30Ele30ORMu17Ele12ORMu8Ele17=0;
 
 
 
@@ -289,6 +292,8 @@ int main(int argc, char* argv[]){
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
 
+    //now prune the goodleptons of the ssleptons
+    std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
     //with vector now get weight for DY Events
     if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
@@ -345,6 +350,7 @@ int main(int argc, char* argv[]){
 	h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
 	nMu30TkMu11+=1;
       }
+      if(tr->HLT_Mu27TkMu8) nMu27TkMu8+=1;
       //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
       h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
@@ -366,14 +372,16 @@ int main(int argc, char* argv[]){
       //HLT_DoubleEle33_MW - check vs subleading lepton
       h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
+      if(tr->HLT_Ele17Ele12) nEle17Ele12+=1;
     }
 
     //if cross channel
     if(elmu){
-      if(tr->HLT_Mu30Ele30) nMu8Ele23+=1;
-      if(tr->HLT_Mu17Ele12) nMu23Ele12+=1;
+      if(tr->HLT_Mu30Ele30) nMu30Ele30+=1;
+      if(tr->HLT_Mu17Ele12) nMu17Ele12+=1;
+      if(tr->HLT_Mu17Ele12) nMu8Ele17+=1;
       //also get OR
-      if( (tr->HLT_Mu8Ele23) || (tr->HLT_Mu23Ele12) ) nMu8Ele23ORMu23Ele12+=1;
+      if( (tr->HLT_Mu30Ele30) || (tr->HLT_Mu17Ele12) || (tr->HLT_Mu8Ele17) )nMu30Ele30ORMu17Ele12ORMu8Ele17+=1;
       
     }
 
@@ -381,12 +389,12 @@ int main(int argc, char* argv[]){
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12 ) ) continue;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight);
     
 
   }//end event loop
@@ -460,10 +468,17 @@ int main(int argc, char* argv[]){
   TH1F* hNMu30TkMu11Den = new TH1F("hNMu30TkMu11Den","",1,0,10000);
   for(int j =0; j<nMu30TkMu11;j++) hNMu30TkMu11Num->Fill(j);
   for(int j =0; j<nMuMu;j++) hNMu30TkMu11Den->Fill(j);
-  TGraphAsymmErrors* Mu30Tk11Graph = new TGraphAsymmErrors(hNMu30TkMu11Num,hNMu30TkMu11Den);
-  std::cout<<"Efficiency of Mu30TkMu11: "<<nMu30TkMu11/nMuMu<<" +"<<Mu30Tk11Graph->GetErrorYhigh(0)<<" -"<<Mu30Tk11Graph->GetErrorYlow(0)<<std::endl<<"\n";
+  TGraphAsymmErrors* Mu30TkMu11Graph = new TGraphAsymmErrors(hNMu30TkMu11Num,hNMu30TkMu11Den);
+  std::cout<<"Efficiency of Mu30TkMu11: "<<nMu30TkMu11/nMuMu<<" +"<<Mu30TkMu11Graph->GetErrorYhigh(0)<<" -"<<Mu30TkMu11Graph->GetErrorYlow(0)<<std::endl<<"\n";
   std::cout<<"Efficiency of Ele27 for ElEl: "<<nEle27/nElEl<<std::endl;
   std::cout<<"Efficiency of Ele27 for ElEl + ElMu: "<<nEle27/(nElMu +nElEl)<<std::endl;
+
+  TH1F* hNMu27TkMu8Num = new TH1F("hNMu27TkMu8Num","",1,0,10000);
+  TH1F* hNMu27TkMu8Den = new TH1F("hNMu27TkMu8Den","",1,0,10000);
+  for(int j =0; j<nMu27TkMu8;j++) hNMu27TkMu8Num->Fill(j);
+  for(int j =0; j<nMuMu;j++) hNMu27TkMu8Den->Fill(j);
+  TGraphAsymmErrors* Mu27TkMu8Graph = new TGraphAsymmErrors(hNMu27TkMu8Num,hNMu27TkMu8Den);
+  std::cout<<"Efficiency of Mu27TkMu8: "<<nMu27TkMu8/nMuMu<<" +"<<Mu27TkMu8Graph->GetErrorYhigh(0)<<" -"<<Mu27TkMu8Graph->GetErrorYlow(0)<<std::endl<<"\n";
 
   TH1F* hNDoubleEle33Num = new TH1F("hNDoubleEle33Num","",1,0,10000);
   TH1F* hNDoubleEle33Den = new TH1F("hNDoubleEle33Den","",1,0,10000);
@@ -472,21 +487,35 @@ int main(int argc, char* argv[]){
   TGraphAsymmErrors* DoubleEle33Graph = new TGraphAsymmErrors(hNDoubleEle33Num,hNDoubleEle33Den);
   std::cout<<"Efficiency of DoubleEle33: "<<nDoubleEle33/nElEl<<" +"<<DoubleEle33Graph->GetErrorYhigh(0)<<" -"<<DoubleEle33Graph->GetErrorYlow(0)<<std::endl<<"\n";
 
-  TH1F* hNMu8Ele23Num = new TH1F("hNMu8Ele23Num","",1,0,10000);
-  TH1F* hNMu8Ele23Den = new TH1F("hNMu8Ele23Den","",1,0,10000);
-  for(int j =0; j<nMu8Ele23;j++) hNMu8Ele23Num->Fill(j);
-  for(int j =0; j<nElMu;j++) hNMu8Ele23Den->Fill(j);
-  TGraphAsymmErrors* Mu8Ele23Graph = new TGraphAsymmErrors(hNMu8Ele23Num,hNMu8Ele23Den);
-  std::cout<<"Efficiency of Mu8Ele23: "<<nMu8Ele23/nElMu<<" +"<<Mu8Ele23Graph->GetErrorYhigh(0)<<" -"<<Mu8Ele23Graph->GetErrorYlow(0)<<std::endl<<"\n";
+  TH1F* hNEle17Ele12Num = new TH1F("hNEle17Ele12Num","",1,0,10000);
+  TH1F* hNEle17Ele12Den = new TH1F("hNEle17Ele12Den","",1,0,10000);
+  for(int j =0; j<nEle17Ele12;j++) hNEle17Ele12Num->Fill(j);
+  for(int j =0; j<nElEl;j++) hNEle17Ele12Den->Fill(j);
+  TGraphAsymmErrors* Ele17Ele12Graph = new TGraphAsymmErrors(hNEle17Ele12Num,hNEle17Ele12Den);
+  std::cout<<"Efficiency of Ele17Ele12: "<<nEle17Ele12/nElMu<<" +"<<Ele17Ele12Graph->GetErrorYhigh(0)<<" -"<<Ele17Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
+ 
+  TH1F* hNMu30Ele30Num = new TH1F("hNMu30Ele30Num","",1,0,10000);
+  TH1F* hNMu30Ele30Den = new TH1F("hNMu30Ele30Den","",1,0,10000);
+  for(int j =0; j<nMu30Ele30;j++) hNMu30Ele30Num->Fill(j);
+  for(int j =0; j<nElMu;j++) hNMu30Ele30Den->Fill(j);
+  TGraphAsymmErrors* Mu30Ele30Graph = new TGraphAsymmErrors(hNMu30Ele30Num,hNMu30Ele30Den);
+  std::cout<<"Efficiency of Mu30Ele30: "<<nMu30Ele30/nElMu<<" +"<<Mu30Ele30Graph->GetErrorYhigh(0)<<" -"<<Mu30Ele30Graph->GetErrorYlow(0)<<std::endl<<"\n";
 
-  TH1F* hNMu23Ele12Num = new TH1F("hNMu23Ele12Num","",1,0,10000);
-  TH1F* hNMu23Ele12Den = new TH1F("hNMu23Ele12Den","",1,0,10000);
-  for(int j =0; j<nMu23Ele12;j++) hNMu23Ele12Num->Fill(j);
-  for(int j =0; j<nElMu;j++) hNMu23Ele12Den->Fill(j);
-  TGraphAsymmErrors* Mu23Ele12Graph = new TGraphAsymmErrors(hNMu23Ele12Num,hNMu23Ele12Den);
-  std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<" +"<<Mu23Ele12Graph->GetErrorYhigh(0)<<" -"<<Mu23Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
-  std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<std::endl;
-  std::cout<<"Efficiency of Mu8Ele12 OR Mu23Ele12: "<<nMu8Ele23ORMu23Ele12/nElMu<<std::endl;
+  TH1F* hNMu8Ele17Num = new TH1F("hNMu8Ele17Num","",1,0,10000);
+  TH1F* hNMu8Ele17Den = new TH1F("hNMu8Ele17Den","",1,0,10000);
+  for(int j =0; j<nMu8Ele17;j++) hNMu8Ele17Num->Fill(j);
+  for(int j =0; j<nElMu;j++) hNMu8Ele17Den->Fill(j);
+  TGraphAsymmErrors* Mu8Ele17Graph = new TGraphAsymmErrors(hNMu8Ele17Num,hNMu8Ele17Den);
+  std::cout<<"Efficiency of Mu8Ele17: "<<nMu8Ele17/nElMu<<" +"<<Mu8Ele17Graph->GetErrorYhigh(0)<<" -"<<Mu8Ele17Graph->GetErrorYlow(0)<<std::endl<<"\n";
+
+  TH1F* hNMu17Ele12Num = new TH1F("hNMu17Ele12Num","",1,0,10000);
+  TH1F* hNMu17Ele12Den = new TH1F("hNMu17Ele12Den","",1,0,10000);
+  for(int j =0; j<nMu17Ele12;j++) hNMu17Ele12Num->Fill(j);
+  for(int j =0; j<nElMu;j++) hNMu17Ele12Den->Fill(j);
+  TGraphAsymmErrors* Mu17Ele12Graph = new TGraphAsymmErrors(hNMu17Ele12Num,hNMu17Ele12Den);
+  std::cout<<"Efficiency of Mu17Ele12: "<<nMu17Ele12/nElMu<<" +"<<Mu17Ele12Graph->GetErrorYhigh(0)<<" -"<<Mu17Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
+  std::cout<<"Efficiency of Mu17Ele12: "<<nMu17Ele12/nElMu<<std::endl;
+  std::cout<<"Efficiency of Mu30Ele30 OR Mu17Ele12 OR Mu8Ele17: "<<nMu30Ele30ORMu17Ele12ORMu8Ele17/nElMu<<std::endl;
 }
 
 
@@ -737,3 +766,17 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 }
 
 
+std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps){
+
+  std::vector<TLepton*> nonSSLeps=allLeps;
+
+  unsigned int remIndex=0;
+  for(std::vector<TLepton*>::size_type ilep=0; ilep<nonSSLeps.size();ilep++){
+    if( (nonSSLeps.at(ilep)->pt==ssLeps.at(0)->pt && nonSSLeps.at(ilep)->eta==ssLeps.at(0)->eta && nonSSLeps.at(ilep)->phi==ssLeps.at(0)->phi) || (nonSSLeps.at(ilep)->pt==ssLeps.at(1)->pt && nonSSLeps.at(ilep)->eta==ssLeps.at(1)->eta && nonSSLeps.at(ilep)->phi==ssLeps.at(1)->phi) ){
+      nonSSLeps.erase(nonSSLeps.begin()+remIndex);
+    }
+    remIndex++;
+  }
+
+  return nonSSLeps;
+}
