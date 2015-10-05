@@ -9,7 +9,7 @@ TMuon::TMuon(double pttemp,double etatemp,double phitemp, double energytemp, int
 }
 bool TMuon::cutBasedLoose(){
   //  if (pt < 20)              return false;
-  if (dxy > 2.0)            return false; //Cut relaxed from 0.2 to 2.0
+  if(!PFMuon)                return false;
   if(!(Tracker || Global))   return false;
   return true;
 }

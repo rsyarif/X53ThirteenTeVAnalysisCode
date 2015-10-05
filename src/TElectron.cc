@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double relIsotemp,int passConv, int chargeconsistencytemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),  
   dEta(dEtatemp),
   dPhi(dPhitemp),
@@ -11,11 +11,19 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   mHits(mHitstemp),
   ooEmooP(ooEmooPtemp),
   sigmaIetaIeta(sigmaIetaIetatemp),
-  relIso(relIsotemp),
+  chIso(chIsotemp),
+  puIso(puIsotemp),
+  neutIso(neuIsotemp),
+  photIso(photIsotemp),
+  rhoIso(rhoIsotemp),
+  AEff(AEfftemp),
   passConversion(passConv),
   chargeConsistency(chargeconsistencytemp)
 {
   setLV();
+
+  relIsoDB = (chIso + std::max(0.0, neutIso + photIso - 0.5*puIso) ) / pt;
+  relIsoEA = (chIso + std::max(0.0, neutIso + photIso - AEff*rhoIso) ) / pt; 
 }
 
 bool TElectron::cutBasedTight(){
@@ -25,7 +33,7 @@ bool TElectron::cutBasedTight(){
     if(fabs(dEta) >= 0.0095)    return false;
     if(fabs(dPhi) >= 0.0291)     return false;
     if(hOverE >= 0.0372)        return false;
-    if(relIso > 0.0468)        return false;
+    if(relIsoEA > 0.0468)        return false;
     if(ooEmooP >= 0.0174) return false;
     if(fabs(d0) >= 0.0144)      return false;
     if(fabs(dZ) >= 0.323)      return false;
@@ -40,7 +48,7 @@ bool TElectron::cutBasedTight(){
     if(fabs(dEta) >= 0.00762)    return false;
     if(fabs(dPhi) >= 0.0439)    return false;
     if(hOverE >= 0.0544)        return false;
-    if(relIso >= 0.0759)        return false; 
+    if(relIsoEA >= 0.0759)        return false; 
     if(ooEmooP >= 0.01) return false;
     if(fabs(d0) >= 0.0377)      return false;
     if(fabs(dZ) >= 0.571)      return false;
@@ -59,7 +67,7 @@ bool TElectron::cutBasedLoose(){
     if(fabs(dEta) >= 0.00976)    return false;
     if(fabs(dPhi) >= 0.0929)    return false;
     if(hOverE >= 0.0765)         return false;
-    if(relIso >= 0.118)          return false;
+    if(relIsoEA >= 0.118)          return false;
     if(ooEmooP >= 0.184) return false;
     if(fabs(d0) >= 0.0227)      return false;
     if(fabs(dZ) >= 0.379)     return false;
@@ -75,7 +83,7 @@ bool TElectron::cutBasedLoose(){
     if(fabs(dEta) >= 0.00952)    return false;
     if(fabs(dPhi) >= 0.181)    return false;
     if(hOverE >= 0.0824)        return false;
-    if(relIso >= 0.118)        return false;
+    if(relIsoEA >= 0.118)        return false;
     if(ooEmooP >= 0.125) return false;
     if(fabs(d0) >= 0.242)       return false;
     if(fabs(dZ) >= 0.921)      return false;
@@ -94,7 +102,7 @@ bool TElectron::cutBasedTight25nsSpring15MC(){
     if(fabs(dEta) >= 0.00926)    return false;
     if(fabs(dPhi) >= 0.0336)     return false;
     if(hOverE >= 0.0597)        return false;
-    if(relIso > 0.0354)        return false;
+    if(relIsoEA > 0.0354)        return false;
     if(ooEmooP >= 0.012) return false;
     if(fabs(d0) >= 0.0111)      return false;
     if(fabs(dZ) >= 0.0466)      return false;
@@ -109,7 +117,7 @@ bool TElectron::cutBasedTight25nsSpring15MC(){
     if(fabs(dEta) >= 0.00724)    return false;
     if(fabs(dPhi) >= 0.0918)    return false;
     if(hOverE >= 0.0615)        return false;
-    if(relIso >= 0.0646)        return false; 
+    if(relIsoEA >= 0.0646)        return false; 
     if(ooEmooP >= 0.00999) return false;
     if(fabs(d0) >= 0.0351)      return false;
     if(fabs(dZ) >= 0.417)      return false;
@@ -128,7 +136,7 @@ bool TElectron::cutBasedLoose25nsSpring15MC(){
     if(fabs(dEta) >= 0.0105)    return false;
     if(fabs(dPhi) >= 0.115)    return false;
     if(hOverE >= 0.104)         return false;
-    if(relIso >= 0.0893)          return false;
+    if(relIsoEA >= 0.0893)          return false;
     if(ooEmooP >= 0.102) return false;
     if(fabs(d0) >= 0.0261)      return false;
     if(fabs(dZ) >= 0.41)     return false;
@@ -144,7 +152,7 @@ bool TElectron::cutBasedLoose25nsSpring15MC(){
     if(fabs(dEta) >= 0.00814)    return false;
     if(fabs(dPhi) >= 0.182)    return false;
     if(hOverE >= 0.0897)        return false;
-    if(relIso >= 0.121)        return false;
+    if(relIsoEA >= 0.121)        return false;
     if(ooEmooP >= 0.126) return false;
     if(fabs(d0) >= 0.118)       return false;
     if(fabs(dZ) >= 0.822)      return false;
@@ -166,7 +174,7 @@ bool TElectron::cutBasedTightMay2015(){
     if(fabs(d0) >= 0.008790)      return false;
     if(fabs(dZ) >= 0.021226)      return false;
     if(ooEmooP >= 0.020118) return false;
-    if(relIso > 0.069537)        return false;
+    if(relIsoEA > 0.069537)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
@@ -181,7 +189,7 @@ bool TElectron::cutBasedTightMay2015(){
     if(fabs(d0) >= 0.027984)      return false;
     if(fabs(dZ) >= 0.133431)      return false;
     if(ooEmooP >= 0.098919) return false;
-    if(relIso >= 0.078265)        return false; 
+    if(relIsoEA >= 0.078265)        return false; 
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
@@ -200,7 +208,7 @@ bool TElectron::cutBasedLooseMay2015(){
     if(fabs(d0) >= 0.035904)      return false;
     if(fabs(dZ) >= 0.075496)     return false;
     if(ooEmooP >= 0.189968) return false;
-    if(relIso >= 0.130136)          return false;
+    if(relIsoEA >= 0.130136)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
@@ -216,7 +224,7 @@ bool TElectron::cutBasedLooseMay2015(){
     if(fabs(d0) >= 0.099266)       return false;
     if(fabs(dZ) >= 0.197897)      return false;
     if(ooEmooP >= 0.140662) return false;
-    if(relIso >= 0.163368)        return false;
+    if(relIsoEA >= 0.163368)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     if(!passConversion)        return false;
@@ -235,7 +243,7 @@ bool TElectron::cutBasedTightApr2015(){
     if(fabs(d0) >= 0.009924)      return false;
     if(fabs(dZ) >= 0.015310)      return false;
     if(ooEmooP >= 0.131191) return false;
-    if(relIso > 0.1649)        return false;
+    if(relIsoEA > 0.1649)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <30)                 return false;
@@ -249,7 +257,7 @@ bool TElectron::cutBasedTightApr2015(){
     if(fabs(d0) >= 0.0027261)      return false;
     if(fabs(dZ) >= 0.147154)      return false;
     if(ooEmooP >= 0.106055) return false;
-    if(relIso >= 0.090185)        return false;
+    if(relIsoEA >= 0.090185)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <30)                 return false;
@@ -267,7 +275,7 @@ bool TElectron::cutBasedLooseApr2015(){
     if(fabs(d0) >= 0.022664)      return false;
     if(fabs(dZ) >= 0.173670)     return false;
     if(ooEmooP >= 0.221803) return false;
-    if(relIso >= 0.120026)          return false;
+    if(relIsoEA >= 0.120026)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;
@@ -282,7 +290,7 @@ bool TElectron::cutBasedLooseApr2015(){
     if(fabs(d0) >= 0.097358)       return false;
     if(fabs(dZ) >= 0.198444)      return false;
     if(ooEmooP >= 0.142283) return false;
-    if(relIso >= 0.162914)        return false;
+    if(relIsoEA >= 0.162914)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;
@@ -300,7 +308,7 @@ bool TElectron::CMSDASTight(){
     if(fabs(d0) > 0.0126)      return false;
     if(fabs(dZ) > 0.0116)      return false;
     if(fabs(ooEmooP) > 0.0609) return false;
-    if(relIso > 0.1649)        return false;
+    if(relIsoEA > 0.1649)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;
@@ -314,7 +322,7 @@ bool TElectron::CMSDASTight(){
     if(fabs(d0) > 0.0163)      return false;
     if(fabs(dZ) > 0.5999)      return false;
     if(fabs(ooEmooP) > 0.1126) return false;
-    if(relIso > 0.2075)        return false;
+    if(relIsoEA > 0.2075)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;
@@ -332,7 +340,7 @@ bool TElectron::CMSDASLoose(){
     if(fabs(d0) > 0.0166)      return false;
     if(fabs(dZ) > 0.54342)     return false;
     if(fabs(ooEmooP) > 0.1353) return false;
-    if(relIso > 0.24)          return false;
+    if(relIsoEA > 0.24)          return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;
@@ -347,7 +355,7 @@ bool TElectron::CMSDASLoose(){
     if(fabs(d0) > 0.098)       return false;
     if(fabs(dZ) > 0.9187)      return false;
     if(fabs(ooEmooP) > 0.1443) return false;
-    if(relIso > 0.3529)        return false;
+    if(relIsoEA > 0.3529)        return false;
     if(mHits > 1)              return false;
     if(chargeConsistency < 1)  return false;
     //    if(pt <20)                 return false;

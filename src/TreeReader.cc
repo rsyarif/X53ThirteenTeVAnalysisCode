@@ -328,7 +328,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("met_phi_DileptonCalc", &MET_phi, &b_MET_phi_DileptonCalc);
 
   //MC weight info
-  tree->SetBranchAddress("MCWeight",&MCWeight,&b_MCWeight_DileptonCalc);
+  tree->SetBranchAddress("MCWeight_DileptonCalc",&MCWeight,&b_MCWeight_DileptonCalc);
 
   //trigger info
   //double electron
