@@ -33,11 +33,11 @@ void makePlots(){
   
  
   //desired lumi:
-  float lumi = 5.0; //fb^-1  
+  float lumi = 3.0; //fb^-1  
   std::vector<Variable*> vVariables = getVariableVec();
 
-  std::vector<Sample*> vBkgSamples = getBkgSampleVec("ssdl", lumi);
-  std::vector<Sample*> vSigSamples = getSigSampleVec("ssdl", lumi);
+  std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi);
+  std::vector<Sample*> vSigSamples = getSigSampleVec("sZVeto", lumi);
 
 
   for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
@@ -155,7 +155,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Simulation Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"5.0 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"3.0 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
@@ -172,8 +172,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(nMu==0) channel="ElEl";
   if(nMu==1) channel="ElMu";
   if(nMu==2) channel="MuMu";
-  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+".pdf";
-  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+".png";
+  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_LooseIDLepJetCleaning.pdf";
+  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_LooseIDLepJetCleaning.png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
@@ -213,8 +213,8 @@ void DrawTriggerEff(Sample* s, TFile* outfile){
 
     g->Draw("apl");
 
-    std::string pdfname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+".pdf";
-    std::string pngname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+".png";
+    std::string pdfname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+"_LooseIDLepJetCleaning.pdf";
+    std::string pngname = "plots/TrigEff_"+s->name+"HLT_"+vTrigNames.at(j)+"_LooseIDLepJetCleaning.png";
     c2->Print(pdfname.c_str());
     c2->Print(pngname.c_str());
 
@@ -240,8 +240,8 @@ void DrawChargeMisIDGraph(TFile* outfile){
 
   chargeMisIDGraph->Draw("apl");
   chargeMisIDGraph->GetYaxis()->SetLabelSize(0.02);
-  c3.Print("plots/ElectronChargeMisID.pdf");
-  c3.Print("plots/ElectronChargeMisID.png");
+  c3.Print("plots/ElectronChargeMisID_LooseIDLepJetCleaning.pdf");
+  c3.Print("plots/ElectronChargeMisID_LooseIDLepJetCleaning.png");
 
   outfile->Append(chargeMisIDGraph);
   outfile->Write();

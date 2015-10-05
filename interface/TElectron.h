@@ -6,7 +6,7 @@
 class TElectron : public TLepton{
 public:
   //cosntructor
-  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double relIsotemp,int passConv,int chargeconsitencytemp);
+  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp);
   //variables for tracking cuts
   double dEta; 
   double dPhi;
@@ -21,7 +21,14 @@ public:
   //shower shape
   double sigmaIetaIeta;
   //Isolation
-  double relIso;
+  double chIso;
+  double puIso;
+  double neutIso;
+  double photIso;
+  double rhoIso;
+  double AEff;
+  double relIsoDB;
+  double relIsoEA;
   //passed conversion cuts
   int passConversion;
   //charge consistency
@@ -54,7 +61,7 @@ public:
     mHits   =  100;
     ooEmooP = -100;
     
-    relIso = 100;
+    relIsoEA = 100;
     sigmaIetaIeta = -100;
     
     chargeConsistency = 0;

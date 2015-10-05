@@ -192,7 +192,7 @@ class TreeReader{
   TBranch        *b_genJetPt_DileptonCalc;
 
   //MC weight info
-  float          MCWeight;
+  double          MCWeight;
   TBranch*    b_MCWeight_DileptonCalc;
 
 
