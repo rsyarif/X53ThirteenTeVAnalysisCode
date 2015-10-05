@@ -292,7 +292,7 @@ void doBarrelElectronCutFlow(TFile* outFile, TTree* t, TreeReader* tr){
   TH1F* MatchedElBarrel_hOverE= new TH1F("MatchedElBarrel_hOverE","HoverE of loose OR tight electrons in same-sign events",20,0,.15);
   TH1F* MatchedElBarrel_mHits= new TH1F("MatchedElBarrel_mHits","N_{MissingHits} of loose OR tight electrons in same-sign events",10,0,10);
   TH1F* MatchedElBarrel_ooEmooP= new TH1F("MatchedElBarrel_ooEmooP","1/E - 1/P of loose OR tight electrons in same-sign events",20,0,0.1);
-  TH1F* MatchedElBarrel_relIso= new TH1F("MatchedElBarrel_relIso","RelIso of loose OR tight electrons in same-sign events",20,0,1);
+  TH1F* MatchedElBarrel_relIsoEA= new TH1F("MatchedElBarrel_relIsoEA","RelIso of loose OR tight electrons in same-sign events",20,0,1);
   TH1F* MatchedElBarrel_sigmaIetaIeta= new TH1F("MatchedElBarrel_sigmaIetaIeta","sigmaIetaIeta of loose OR tight electrons in same-sign events",25,0,.02);
   TH1F* MatchedElBarrel_chargeConsistency= new TH1F("MatchedElBarrel_chargeConsistency","charge consistency of loose OR tight electrons in same-sign events",3,-1.5,1.5);
 
@@ -305,7 +305,7 @@ void doBarrelElectronCutFlow(TFile* outFile, TTree* t, TreeReader* tr){
   TH1F* MatchedElBarrelSS_hOverE= new TH1F("MatchedElBarrelSS_hOverE","HoverE of loose OR tight electrons in same-sign events",20,0,.15);
   TH1F* MatchedElBarrelSS_mHits= new TH1F("MatchedElBarrelSS_mHits","N_{MissingHits} of loose OR tight electrons in same-sign events",10,0,10);
   TH1F* MatchedElBarrelSS_ooEmooP= new TH1F("MatchedElBarrelSS_ooEmooP","1/E - 1/P of loose OR tight electrons in same-sign events",20,0,0.1);
-  TH1F* MatchedElBarrelSS_relIso= new TH1F("MatchedElBarrelSS_relIso","RelIso of loose OR tight electrons in same-sign events",20,0,1);
+  TH1F* MatchedElBarrelSS_relIsoEA= new TH1F("MatchedElBarrelSS_relIsoEA","RelIso of loose OR tight electrons in same-sign events",20,0,1);
   TH1F* MatchedElBarrelSS_sigmaIetaIeta= new TH1F("MatchedElBarrelSS_sigmaIetaIeta","sigmaIetaIeta of loose OR tight electrons in same-sign events",25,0,.02);
   TH1F* MatchedElBarrelSS_chargeConsistency= new TH1F("MatchedElBarrelSS_chargeConsistency","charge consistency of loose OR tight electrons in same-sign events",3,-1.5,1.5);
 
@@ -403,8 +403,8 @@ void doBarrelElectronCutFlow(TFile* outFile, TTree* t, TreeReader* tr){
       MatchedElBarrel_mHits->Fill(matchedElectrons.at(iel)->mHits);
       if(matchedElectrons.at(iel)->mHits > 1) continue;
       nMatchedElBarrelmHitsCut+=1;
-      MatchedElBarrel_relIso->Fill(matchedElectrons.at(iel)->relIso);
-      if(matchedElectrons.at(iel)->relIso>0.1649) continue;
+      MatchedElBarrel_relIsoEA->Fill(matchedElectrons.at(iel)->relIsoEA);
+      if(matchedElectrons.at(iel)->relIsoEA>0.1649) continue;
       nMatchedElBarrelRelIsoCut+=1;
       MatchedElBarrel_chargeConsistency->Fill(matchedElectrons.at(iel)->chargeConsistency);
       if(matchedElectrons.at(iel)->chargeConsistency<1) continue;
@@ -463,8 +463,8 @@ void doBarrelElectronCutFlow(TFile* outFile, TTree* t, TreeReader* tr){
       MatchedElBarrelSS_mHits->Fill(matchedElectrons.at(iel)->mHits);
       if(matchedElectrons.at(iel)->mHits > 1) continue;
       nMatchedElBarrelSSmHitsCut+=1;
-      MatchedElBarrelSS_relIso->Fill(matchedElectrons.at(iel)->relIso);
-      if(matchedElectrons.at(iel)->relIso>0.1649) continue;
+      MatchedElBarrelSS_relIsoEA->Fill(matchedElectrons.at(iel)->relIsoEA);
+      if(matchedElectrons.at(iel)->relIsoEA>0.1649) continue;
       nMatchedElBarrelSSRelIsoCut+=1;
       MatchedElBarrelSS_chargeConsistency->Fill(matchedElectrons.at(iel)->chargeConsistency);
       if(matchedElectrons.at(iel)->chargeConsistency<1) continue;

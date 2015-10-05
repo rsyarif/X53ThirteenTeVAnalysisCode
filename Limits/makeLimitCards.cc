@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
 
   //check ot make sure enough arguments have been passed
   if(!argc==7){
-    std::cout<<"Need to supply 6 arguments: X53 Mass, Chirality, nMu, lep1 pt shift, lep2 pt shift, HT shift, and theta/higgs! Exiting....."<<std::endl;
+    std::cout<<"Need to supply 7 arguments: X53 Mass, Chirality, nMu, lep1 pt shift, lep2 pt shift, HT shift, nConst, and theta/higgs! Exiting....."<<std::endl;
     return 0;
   }
 
@@ -57,8 +57,13 @@ int main(int argc, char* argv[]){
   float HTshift=0;
   if(!(arg6>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg6>>HTshift;}
+  std::istringstream arg7(argv[7]);
+  int nConst=0;
+  if(!(arg7>>nConst)){ std::cout<<"Invalid number for Number of Constituents! "<<arg7.str()<<" Exiting..."<<std::endl; return 0;}
+  else{arg7>>nConst;}
+
   bool theta=false; //default to making higgs cards
-  std::string tool(argv[7]);
+  std::string tool(argv[8]);
   if(tool.find("theta")!=std::string::npos) theta=true;
 
   float lep1cut = 30.0 + lep1shift;
@@ -76,7 +81,7 @@ int main(int argc, char* argv[]){
 
   //output file
   std::stringstream filename;
-  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut;
+  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
   if(theta) filename<<"_theta.txt";
   else filename<<"_higgs.txt";
   std::string fstring = filename.str();
@@ -87,8 +92,8 @@ int main(int argc, char* argv[]){
   float lumi = 3.0; // fb^{-1}
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("ssdl",lumi);
-  std::vector<Sample*> vSig = getSigSampleVecForTable("ssdl",lumi);
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi);
+  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi);
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
@@ -110,7 +115,8 @@ int main(int argc, char* argv[]){
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
   std::stringstream cutSStream;
-  cutSStream<<" ChargeMisIDWeight * ( (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( AK4HT > "<<HTcut<<") )";
+  cutSStream<<" ( (Channel!=-0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
+  //cutSStream<<" ( (Channel!=-0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20)  && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( AK4HT > "<<HTcut<<")";
   vCutString.push_back(cutSStream.str());
 
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
@@ -119,7 +125,7 @@ int main(int argc, char* argv[]){
   if(nMu>=0)  outfile<<"imax 1\n";
   else   outfile<<"imax 3\n";
   outfile<<"jmax 7\n";
-  outfile<<"kmax 1\n"; //dummy for flat systematic on background uncertainty
+  outfile<<"kmax 3\n"; //currently ahve 3 systematics
 
   //write observed - FOW NOW DUMMY
   if(nMu>0) outfile<<"------------\n"<<"bin "<<channel<<"\n"<<"observation 0\n"<<"------------\n\n";
@@ -189,13 +195,35 @@ int main(int argc, char* argv[]){
   }
   
 
-  //write systematics - DUMMY
+  //write systematics
+  outfile<<"\n\n"<<"------------\n";
+  std::stringstream fakerate;
+  fakerate<<"- 1.50 - - - 1.50 - -";
   if(nMu>0){
-    outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
+    outfile<<"FakeRate \t lnN \t "<<fakerate.str()<<"\n";
   }
   else{
-    outfile<<"\n\n"<<"------------\n"<<"dummy \t lnN \t - 1.20 1.20 1.20 1.20 1.20 1.20 1.20 - 1.20 1.20 1.20 1.20 1.20 1.20 1.20 - 1.20 1.20 1.20 1.20 1.20 1.20 1.20\n";
+    outfile<<"FakeRate \t lnN \t "<<fakerate.str()<<" "<<fakerate.str()<<" "<<fakerate.str()<<"\n";
   }
+
+  std::stringstream qcdScale;
+  qcdScale<<"- - 1.30 1.30 1.30 - - 1.30";
+  if(nMu>0){
+    outfile<<"QCDScale \t lnN \t "<<qcdScale.str()<<"\n";
+  }
+  else{
+    outfile<<"QCDScale \t lnN \t "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
+  }
+
+  std::stringstream chargemisid;
+  chargemisid<<"- - - - - - 1.20 -";
+  if(nMu>0){
+    outfile<<"ChargeMisID \t lnN \t "<<chargemisid.str()<<"\n";
+  }
+  else{
+    outfile<<"ChargeMisID \t lnN \t "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
+  }
+
   return 0;
 }
 
