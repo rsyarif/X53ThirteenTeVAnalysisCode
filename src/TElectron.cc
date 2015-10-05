@@ -22,6 +22,16 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 {
   setLV();
 
+  //redo effective area
+  if( fabs(eta)<1.0) AEff=0.1752;
+  else if(fabs(eta)<1.479) AEff=0.1862;
+  else if(fabs(eta)<2.0) AEff=0.1411;
+  else if(fabs(eta)<2.2) AEff=0.1534;
+  else if(fabs(eta)<2.3) AEff=0.1903;
+  else if(fabs(eta)<2.4) AEff=0.2243;
+  else if(fabs(eta)<2.5) AEff=0.2687;
+
+
   relIsoDB = (chIso + std::max(0.0, neutIso + photIso - 0.5*puIso) ) / pt;
   relIsoEA = (chIso + std::max(0.0, neutIso + photIso - AEff*rhoIso) ) / pt; 
 }
