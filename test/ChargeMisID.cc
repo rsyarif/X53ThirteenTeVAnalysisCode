@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
 
   //make filename for output root file
   std::string outname;
-  if(data)outname="ChargeMisID_Data_Electrons.root"; 
+  if(data)outname="ChargeMisID_Data_Run2015B_Electrons.root"; 
   else outname="ChargeMisID_MC_Electrons.root"; 
 
 
@@ -76,6 +76,7 @@ int main(int argc, char* argv[]){
   //initialize needed histograms
   TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Same Sign Leptons",20,0,600);
   TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
+  TH1F* etaAllHist = new TH1F("etaAllHist","#eta of All Leptons",15,-3,3);
   TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Same Sign Leptons",15,-3,3);
   TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",15,-3,3);
   TH1F* massNumHist = new TH1F("massNumHist","M_{ll} of Same Sign Leptons",50,0,150);
@@ -88,6 +89,10 @@ int main(int argc, char* argv[]){
     tr->GetEntry(ient);
 
     if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+
+    for(std::vector<TElectron*>::size_type iel=0; iel<tr->goodElectrons.size();iel++){
+      etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta);
+    }
 
     //make vector of leptons
     std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons,!data,FiftyNS);
@@ -116,6 +121,7 @@ int main(int argc, char* argv[]){
     //check that leptons are in Zpeak
     bool zpeak= fabs(massDiff)<15 ? true : false;
 
+    //fill denominator
     massDenHist->Fill(zmass+massDiff);
 
     if(!zpeak) continue;
@@ -129,7 +135,7 @@ int main(int argc, char* argv[]){
       etaNumHist->Fill(lep2->eta);
     }
 
-    massDenHist->Fill(zmass+massDiff);
+    //fill denominator
     ptDenHist->Fill(lep1->pt);
     ptDenHist->Fill(lep2->pt);
     etaDenHist->Fill(lep1->eta);
@@ -137,7 +143,7 @@ int main(int argc, char* argv[]){
 
   }//end event loop
 
-  //save weights
+  //save weights 
   etaNumHist->Sumw2();
   etaDenHist->Sumw2();
   ptNumHist->Sumw2();
@@ -152,6 +158,7 @@ int main(int argc, char* argv[]){
   //write file now that histograms have been filled
   fout->Append(ptNumHist);
   fout->Append(ptDenHist);
+  fout->Append(etaAllHist);
   fout->Append(etaNumHist);
   fout->Append(etaDenHist);
   fout->Append(massNumHist);
@@ -162,6 +169,15 @@ int main(int argc, char* argv[]){
   //write the tgraphs
   fout->Append(ptGraph);
   fout->Append(etaGraph);
+
+  //make hists of rate
+  TH1F* rateEta = (TH1F*) etaNumHist->Clone();
+  rateEta->Divide(etaDenHist);
+  TH1F* ratePt = (TH1F*) ptNumHist->Clone();
+  ratePt->Divide(ptDenHist);
+  fout->Append(rateEta);
+  fout->Append(ratePt);
+
   fout->Write();
 
 

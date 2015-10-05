@@ -11,11 +11,13 @@
 #include <map>
 #include <string>
 #include <sstream> 
+#include <algorithm>
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, bool mc, bool FiftyNs);
 
+bool sortByPhi(TLepton* lep1, TLepton* lep2){return lep1->phi > lep2->phi;};
 //A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
 
 int main(int argc, char* argv[]){
@@ -46,8 +48,8 @@ int main(int argc, char* argv[]){
   std::string filename;
   bool data;
   if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/50ns/ljmet_trees/ljmet_tree_DYJets.root"; data=false;}
-
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets_LooseIDLepJetCleaning.root"; data=false;}
+  bool FiftyNs=data;
   //get channel based on El/Mu
   bool MuonChannel;
   if(argv2=="Mu") MuonChannel=true;
@@ -56,12 +58,12 @@ int main(int argc, char* argv[]){
   //make filename for output root file
   std::string outname;
   if(MuonChannel){
-    if(data)outname="PromptRate_Data_Muons.root"; 
-    else outname="PromptRate_MC_Muons.root"; 
+    if(data)outname="PromptRate_Data_Run2015B_Muons_SortByPhi.root"; 
+    else outname="PromptRate_MC_Muons_SortByPhi.root"; 
   }
   else{
-    if(data)outname="PromptRate_Data_Electrons.root"; 
-    else outname="PromptRate_MC_Electrons.root"; 
+    if(data)outname="PromptRate_Data_Run2015B_Electrons_SortByPhi.root"; 
+    else outname="PromptRate_MC_Electrons_SortByPhi.root"; 
   }
 
   //open output file
@@ -83,10 +85,10 @@ int main(int argc, char* argv[]){
 
     tr->GetEntry(ient);
 
-    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+    if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     //make vector of leptons
-    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs);
 
     //check for at least one tight lepton
     bool oneTight=false;
@@ -97,7 +99,7 @@ int main(int argc, char* argv[]){
       }
     }
 
-    //skip of not at least one tight and at least one other loose  
+    //skip if not at least one tight and at least one other loose  
     if(!oneTight || leptons.size()<2) continue;
 
     //get pair of leptons closest to z mass;
@@ -123,11 +125,21 @@ int main(int argc, char* argv[]){
 
     if(!zpeak) continue;
 
+    //now sort leptons based on phi (i.e. quasi-randomly)
+    std::vector<TLepton*> leps; leps.push_back(lep1); leps.push_back(lep2);
+    std::sort(leps.begin(),leps.end(),sortByPhi);
+
+    /* //revert to Aram's method
+    ptDenHist->Fill(0);
+    if(leps.at(0)->Tight && leps.at(1)->Tight) ptNumHist->Fill(0);
+    etaDenHist->Fill(0);
+    if(leps.at(0)->Tight && leps.at(1)->Tight) etaNumHist->Fill(0);*/
+    
     //now fill histograms
-    ptDenHist->Fill(lep2->pt);
-    if(lep2->Tight) ptNumHist->Fill(lep2->pt);
-    etaDenHist->Fill(lep2->eta);
-    if(lep2->Tight) etaNumHist->Fill(lep2->eta);
+    ptDenHist->Fill(leps.at(0)->pt);
+    if(leps.at(0)->Tight) ptNumHist->Fill(leps.at(0)->pt);
+    etaDenHist->Fill(leps.at(0)->eta);
+    if(leps.at(0)->Tight) etaNumHist->Fill(leps.at(0)->eta);
 
   }//end event loop
 
@@ -153,7 +165,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons,bool mc, bool FiftyNs){
 
   std::vector<TLepton*> Leptons;
 
@@ -173,13 +185,29 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       }
     }
   }
+
   else{
     //fill with  electrons
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
       TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-      iLep->Tight=iel->cutBasedTight();
-      iLep->Loose=iel->cutBasedLoose();
+
+
+      if(mc){
+	if(FiftyNs){
+	  iLep->Tight=iel->cutBasedTight();
+	  iLep->Loose=iel->cutBasedLoose();
+	}
+	else{
+	  iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+	  iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
+	}
+      }
+      else{
+	iLep->Tight=iel->cutBasedTight();
+	iLep->Loose=iel->cutBasedLoose();
+      }
+      
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if at least loose
