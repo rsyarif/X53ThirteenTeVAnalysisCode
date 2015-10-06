@@ -96,16 +96,18 @@ int main(int argc, char* argv[]){
   //print out efficiency
   std::cout<<"Efficiency for >30 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(11)<<std::endl;
   std::cout<<"Efficiency for >40 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(12)<<std::endl;
-
+  fout->cd();
   fout->Append(h_MuCutFlow);
   fout->Append(hPtNum_Mu);
   fout->Append(hPtDen_Mu);
   fout->Append(hEtaNum_Mu);
   fout->Append(hEtaDen_Mu);
-  std::cout<<"appended everything"<<std::endl;
+  std::cout<<"finished appending"<<std::endl;
   fout->Write();
   std::cout<<"wrote file"<<std::endl;
   fout->Close();
+  std::cout<<"closed file"<<std::endl;
+  delete fout;
   return 0;
 }
  
