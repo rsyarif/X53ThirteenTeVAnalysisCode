@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
   if(data)outname="LeptonEfficiency_Signal_Data_Run2015D.root"; 
   else outname="LeptonEfficiency_Signal_MC_"+mass+"_"+chirality+".root"; 
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
-  TFile* fout = new TFile(outname.c_str(),"RECREATE");
+
   //setup histograms
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",12,0,12);
   TH1F* hPtNum_Mu = new TH1F("hPtNum_Mu","p_{T} of Tight Muons",60,0,600);
