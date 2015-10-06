@@ -104,7 +104,8 @@ int main(int argc, char* argv[]){
   fout->Append(hEtaDen_Mu);
   std::cout<<"appended everything"<<std::endl;
   fout->Write();
-
+  std::cout<<"wrote file"<<std::endl;
+  fout->Close();
   return 0;
 }
  
