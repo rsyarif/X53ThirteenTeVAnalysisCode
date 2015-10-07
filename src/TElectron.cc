@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),  
   dEta(dEtatemp),
   dPhi(dPhitemp),
@@ -18,7 +18,8 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   rhoIso(rhoIsotemp),
   AEff(AEfftemp),
   passConversion(passConv),
-  chargeConsistency(chargeconsistencytemp)
+  chargeConsistency(chargeconsistencytemp),
+  mvaValue(mvatemp)
 {
   setLV();
 
@@ -34,6 +35,34 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 
   relIsoDB = (chIso + std::max(0.0, neutIso + photIso - 0.5*puIso) ) / pt;
   relIsoEA = (chIso + std::max(0.0, neutIso + photIso - AEff*rhoIso) ) / pt; 
+}
+
+bool TElectron::mvaLoose(){
+  if(fabs(eta)<0.8){
+    if(mvaValue>0.933) return true;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue>0.825) return true;
+  }
+  else if(fabs(eta)<2.5){
+    if(mvaValue>0.337) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
+}
+
+bool TElectron::mvaTight(){
+  if(fabs(eta)<0.8){
+    if(mvaValue>0.965) return true;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue>0.917) return true;
+  }
+  else if(fabs(eta)<2.5){
+    if(mvaValue>0.683) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
 }
 
 bool TElectron::cutBasedTight(){
