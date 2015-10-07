@@ -21,7 +21,8 @@ const double dM   = 15;             //Size of window around Z
 bool matchToGenLep(TMuon* mu, std::vector<TGenParticle*> genParticles);
 bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles);
 void doMuCutFlow(TH1F*& h, TMuon* mu);
-void doElCutFlow(TH1F*& h, TElectron* el);
+void doElCutFlow_Barrel(TH1F*& h, TElectron* el);
+void doElCutFlow_Endcap(TH1F*& h, TElectron* el);
 
 int main(int argc, char* argv[]){
 
@@ -52,12 +53,30 @@ int main(int argc, char* argv[]){
   else outname="LeptonEfficiency_Signal_MC_"+mass+"_"+chirality+".root"; 
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
 
-  //setup histograms
-  TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",12,0,12);
+  //setup histograms for muons
+  TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",13,0,13);
   TH1F* hPtNum_Mu = new TH1F("hPtNum_Mu","p_{T} of Tight Muons",60,0,600);
   TH1F* hPtDen_Mu = new TH1F("hPtDen_Mu","p_{T} of Loose Muons",60,0,600);
   TH1F* hEtaNum_Mu = new TH1F("hEtaNum_Mu","#eta of Tight Muons",15,-3,3);
   TH1F* hEtaDen_Mu = new TH1F("hEtaDen_Mu","#eta of Loose Muons",15,-3,3);
+
+  //setup histograms for electrons
+  TH1F* h_ElCutFlow_Barrel = new TH1F("h_ElCutFlow_Barrel","Electron Cut Flow",14,0,14);
+  TH1F* h_ElCutFlow_Endcap = new TH1F("h_ElCutFlow_Endcap","Electron Cut Flow",14,0,14);
+
+  TH1F* hPtNumCBIDL_El = new TH1F("hPtNumCBIDL_El","p_{T} of cutBasedLoose Electrons",60,0,600);
+  TH1F* hPtNumCBIDT_El = new TH1F("hPtNumCBIDT_El","p_{T} of cutBasedTight Electrons",60,0,600);
+  TH1F* hPtNumMVAIDL_El = new TH1F("hPtNumMVAIDL_El","p_{T} of MVA Loose Electrons",60,0,600);
+  TH1F* hPtNumMVAIDT_El = new TH1F("hPtNumMVAIDT_El","p_{T} of MVA Tight Electrons",60,0,600);
+  TH1F* hPtDen_El = new TH1F("hPtDen_El","p_{T} of All Electrons",60,0,600);
+
+  TH1F* hEtaNumCBIDL_El = new TH1F("hEtaNumCBIDL_El","#eta of cutBasedLoose Electrons",15,-3,3);
+  TH1F* hEtaNumCBIDT_El = new TH1F("hEtaNumCBIDT_El","#eta of cutBasedTight Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDL_El = new TH1F("hEtaNumMVAIDL_El","#eta of mva Loose Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDT_El = new TH1F("hEtaNumMVAIDT_El","#eta of mva Tight Electrons",15,-3,3);
+  TH1F* hEtaDen_El = new TH1F("hEtaDen_El","#eta of All Electrons",15,-3,3);
+
+
 
   //event loop
   for(int ient = 0; ient < nEntries; ient++){
@@ -69,39 +88,136 @@ int main(int argc, char* argv[]){
     if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) MuTrigFire=true;
 
     if(MuTrigFire){
-      for(std::vector<TMuon*>::size_type imu=0; imu<tr->looseMuons.size();imu++){
+      for(std::vector<TMuon*>::size_type i=0; i<tr->looseMuons.size();i++){
 	//increment to total number of loose muons so we can scale hist correctly at the end
 	nLooseMuons+=1;
 	//get muon
-	TMuon* mu = tr->looseMuons.at(imu);
-	//make sure muon is matched to a gen muon
-	bool matched = matchToGenLep(mu,tr->genParticles);
+	TMuon* imu = tr->looseMuons.at(i);
+	//if MC match to gen lepton
+	bool matched =false;
+	if(data) matched = true;
+	else{
+	  matched = matchToGenLep(imu,tr->genParticles);
+	}
 	if(!matched) continue;
 	//make pt and eta efficiency plots
-	hPtDen_Mu->Fill(mu->pt);
-	hEtaDen_Mu->Fill(mu->eta);
-	if(mu->cutBasedTight()){
-	  hPtNum_Mu->Fill(mu->pt);
-	  hEtaNum_Mu->Fill(mu->eta);
+	hPtDen_Mu->Fill(imu->pt);
+	hEtaDen_Mu->Fill(imu->eta);
+	if(imu->cutBasedTight()){
+	  hPtNum_Mu->Fill(imu->pt);
+	  hEtaNum_Mu->Fill(imu->eta);
 	}
 	//now do cutflow
-	doMuCutFlow(h_MuCutFlow, mu);
+	doMuCutFlow(h_MuCutFlow, imu);
       }
     }//end check of muon trigger firing
 
+    //only do electron cuts if electron trigger fired
+    bool ElTrigFire = false;
+    if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) ElTrigFire=true;
+
+    if(ElTrigFire){
+      //loop for cutBasedID
+      for(std::vector<TElectron*>::size_type i=0; i< tr->allElectrons.size(); i++){
+	
+	//get electron
+	TElectron* iel = tr->allElectrons.at(i);
+	//if MC match to gen lepton
+	bool matched =false;
+	if(data) matched = true;
+	else{
+	  matched = matchToGenLep(iel,tr->genParticles);
+	}
+	if(!matched) continue;
+	//fill denominator histograms
+	hPtDen_El->Fill(iel->pt);
+	hEtaDen_El->Fill(iel->eta);
+
+	//check if loose and fill numerator
+	if(iel->cutBasedLoose25nsSpring15MC()){
+	  hPtNumCBIDL_El->Fill(iel->pt);
+	  hEtaNumCBIDL_El->Fill(iel->eta);
+	}
+
+	//check if tight and fill numerator
+	if(iel->cutBasedTight25nsSpring15MC()){
+	  hPtNumCBIDT_El->Fill(iel->pt);
+	  hEtaNumCBIDT_El->Fill(iel->eta);
+	}
+	//check if loose and fill numerator
+	if(iel->mvaLoose()){
+	  hPtNumMVAIDL_El->Fill(iel->pt);
+	  hEtaNumMVAIDL_El->Fill(iel->eta);
+	}
+
+	//check if tight and fill numerator
+	if(iel->mvaTight()){
+	  hPtNumMVAIDT_El->Fill(iel->pt);
+	  hEtaNumMVAIDT_El->Fill(iel->eta);
+	}
+	//now do cut flow for electrons
+	if(fabs(iel->eta)<=1.479) doElCutFlow_Barrel(h_ElCutFlow_Barrel,iel);
+	else doElCutFlow_Endcap(h_ElCutFlow_Endcap,iel);
+
+      }//end loop over loose electrons for cut based id
+
+    }// end el trig check
+
   }//end event loop
   
-  h_MuCutFlow->Scale( 1 / nLooseMuons);
+  //scale cutflow diagrams
+  h_MuCutFlow->Scale( 1.0 / h_MuCutFlow->GetBinContent(1));
+  h_ElCutFlow_Barrel->Scale( 1.0 / h_ElCutFlow_Barrel->GetBinContent(1));
+  h_ElCutFlow_Endcap->Scale( 1.0 / h_ElCutFlow_Endcap->GetBinContent(1));
+
+  //write out bin labels
+  h_MuCutFlow->GetXaxis()->SetBinLabel(1,"All");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(2,"Global");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(3,"p_{T} > 30");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(4,"#eta <2.4");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(5,"#Chi^{2}<10");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(6,"dZ<0.5");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(7,"dXY <0.2");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(8,"nValHits >0");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(9,"nMatched Stations >1");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(10,"nValPixHits > 0");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(11,"nTrackLayers > 5");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(12,"RelIso <0.06");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(13,"p_{T} > 40 ");
+
+  //bin labels for electrons
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(1,"All");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(1,"All");
 
   //print out efficiency
-  std::cout<<"Efficiency for >30 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(11)<<std::endl;
-  std::cout<<"Efficiency for >40 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(12)<<std::endl;
+  std::cout<<"Efficiency for >30 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(12)<<std::endl;
+  std::cout<<"Efficiency for >40 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(13)<<std::endl;
+  //print out efficiency
+  std::cout<<"Barrel Efficiency for >30 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Barrel->GetBinContent(13)<<std::endl;
+  std::cout<<"Barrel Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Barrel->GetBinContent(14)<<std::endl;
+  std::cout<<"Endcap Efficiency for >30 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Endcap->GetBinContent(13)<<std::endl;
+  std::cout<<"Endcap Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Endcap->GetBinContent(14)<<std::endl;
+
   fout->cd();
+  //append muon histograms
   fout->Append(h_MuCutFlow);
   fout->Append(hPtNum_Mu);
   fout->Append(hPtDen_Mu);
   fout->Append(hEtaNum_Mu);
   fout->Append(hEtaDen_Mu);
+  //append electron histograms
+  fout->Append(h_ElCutFlow_Barrel);
+  fout->Append(h_ElCutFlow_Endcap);
+  fout->Append(hPtNumCBIDL_El);
+  fout->Append(hEtaNumCBIDL_El);
+  fout->Append(hPtNumCBIDT_El);
+  fout->Append(hEtaNumCBIDT_El);
+  fout->Append(hPtNumMVAIDL_El);
+  fout->Append(hEtaNumMVAIDL_El);
+  fout->Append(hPtNumMVAIDT_El);
+  fout->Append(hEtaNumMVAIDT_El);
+  fout->Append(hPtDen_El);
+  fout->Append(hEtaDen_El);
   std::cout<<"finished appending"<<std::endl;
   fout->Write();
   std::cout<<"wrote file"<<std::endl;
@@ -113,21 +229,160 @@ int main(int argc, char* argv[]){
  
 void doMuCutFlow(TH1F*& hist, TMuon* mu){
 
-  if(mu->Global) hist->AddBinContent(1);
-  if(mu->pt>30) hist->AddBinContent(2);
-  if(mu->eta<2.4)hist->AddBinContent(3) ;
-  if(mu->chi2 < 10) hist->AddBinContent(4);
-  if(mu->dz<0.5) hist->AddBinContent(5);
-  if(mu->dxy<0.2) hist->AddBinContent(6);
-  if(mu->nValMuHits > 1 ) hist->AddBinContent(7);
-  if(mu->nMatchedStations>2) hist->AddBinContent(8);
-  if(mu->nValPixelHits > 1) hist->AddBinContent(9);
-  if(mu->nTrackerLayers>6) hist->AddBinContent(10);
-  if(mu->relIso>0.06) hist->AddBinContent(11);
-  if(mu->pt>40) hist->AddBinContent(12);
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(mu->Global) {
+    hist->AddBinContent(2);
+  }
+  else return;
+
+  if(mu->pt>30) {
+    hist->AddBinContent(3);
+  }
+  else return;
+
+  if(mu->eta<2.4){
+    hist->AddBinContent(4) ;
+  }  
+  else return;
+
+  if(mu->chi2 < 10) {
+    hist->AddBinContent(5);
+  }
+  else return;
+  
+  if(mu->dz<0.5) {
+    hist->AddBinContent(6);
+  }
+  else return;
+
+  if(mu->dxy<0.2) {
+    hist->AddBinContent(7);
+  }
+  else return;
+
+  if(mu->nValMuHits > 0 ) {
+    hist->AddBinContent(8);
+  }
+  else return;
+
+  if(mu->nMatchedStations>1) {
+    hist->AddBinContent(9);
+  }
+  else return;
+
+  if(mu->nValPixelHits > 0) {
+    hist->AddBinContent(10);
+  }
+  else return;
+
+  if(mu->nTrackerLayers>5) {
+    hist->AddBinContent(11);
+  }
+  else return;
+
+  if(mu->relIso>0.06) {
+    hist->AddBinContent(12);
+  }
+  else return;
+
+  if(mu->pt>40) {
+    hist->AddBinContent(13);
+  }
 
 }
 
+void doElCutFlow_Barrel(TH1F*& hist, TElectron* el){
+
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(el->pt<30) return;
+  else hist->AddBinContent(2);
+
+  if(el->sigmaIetaIeta >= 0.0101)  return;
+  else hist->AddBinContent(3);
+
+  if(fabs(el->dEta) >= 0.00926)    return;
+  else hist->AddBinContent(4);
+
+  if(fabs(el->dPhi) >= 0.0336)     return;
+  else hist->AddBinContent(5);
+
+  if(el->hOverE >= 0.0597)         return;
+  else hist->AddBinContent(6);
+
+  if(el->relIsoEA > 0.0354)        return;
+  else hist->AddBinContent(7);
+
+  if(el->ooEmooP >= 0.012)         return;
+  else hist->AddBinContent(8);
+
+  if(fabs(el->d0) >= 0.0111)       return;
+  else hist->AddBinContent(9);
+
+  if(fabs(el->dZ) >= 0.0466)       return;
+  else hist->AddBinContent(10);
+
+  if(el->mHits > 2)                return;
+  else hist->AddBinContent(11);
+
+  if(!el->passConversion)          return;
+  else hist->AddBinContent(12);
+
+  if(el->chargeConsistency < 1)    return;
+  else hist->AddBinContent(13);
+
+  if(el->pt<40)                   return;
+  else hist->AddBinContent(14);
+}
+
+void doElCutFlow_Endcap(TH1F*& hist, TElectron* el){
+
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(el->pt<30) return;
+  else hist->AddBinContent(2);
+
+  if(el->sigmaIetaIeta >= 0.0279)  return;
+  else  hist->AddBinContent(3);
+
+  if(fabs(el->dEta) >= 0.00724)    return;
+  else  hist->AddBinContent(4);
+
+  if(fabs(el->dPhi) >= 0.0918)     return;
+  else  hist->AddBinContent(5);
+
+  if(el->hOverE >= 0.0615)         return;
+  else  hist->AddBinContent(6);
+
+  if(el->relIsoEA >= 0.0646)       return; 
+  else  hist->AddBinContent(7);
+
+  if(el->ooEmooP >= 0.00999)       return;
+  else  hist->AddBinContent(8);
+
+  if(fabs(el->d0) >= 0.0351)       return;
+  else  hist->AddBinContent(9);
+
+  if(fabs(el->dZ) >= 0.417)        return;
+  else  hist->AddBinContent(10);
+
+  if(el->mHits > 1)                return;
+  else  hist->AddBinContent(11);
+
+  if(!el->passConversion)          return;
+  else  hist->AddBinContent(12);
+
+  if(el->chargeConsistency < 1)    return;
+  else  hist->AddBinContent(13);
+
+  if(el->pt<40)                   return;
+  else hist->AddBinContent(14);
+
+}
 
 bool matchToGenLep(TMuon* mu, std::vector<TGenParticle*> genParticles){
 
@@ -146,6 +401,29 @@ bool matchToGenLep(TMuon* mu, std::vector<TGenParticle*> genParticles){
   }
 
   //now we have a min deltaR between our muon and all muons from hard scattering, if it is less than 0.15 let's consider it matched
+  if(dR <0.1) return true;
+  else return false;
+  
+}
+
+
+bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles){
+
+  float dR=999;
+  //run through gen particle collection:
+  for(unsigned int igen=0; igen<genParticles.size(); igen++){
+    TGenParticle* genParticle = genParticles.at(igen);
+    //only run over electrons from hard scattering
+    if( ! (fabs(genParticle->id)==11) ) continue;
+    if( ! (genParticle->status==23 || genParticle->status==1) ) continue;
+
+    float drtemp = pow( pow( el->eta - genParticle->eta, 2 ) + pow( el->phi - genParticle->phi, 2), 0.5);
+    if(drtemp < dR){
+      dR = drtemp;
+    }
+  }
+
+  //now we have a min deltaR between our electron and all electrons from hard scattering, if it is less than 0.15 let's consider it matched
   if(dR <0.1) return true;
   else return false;
   
