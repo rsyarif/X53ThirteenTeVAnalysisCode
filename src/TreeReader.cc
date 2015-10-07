@@ -37,7 +37,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   goodElectrons.clear();
   looseElectrons.clear();
   cmsdasElectrons.clear();
-  good25nsSpring15Electrons.clear();
+  good50nsElectrons.clear();
+  loose50nsElectrons.clear();
   allAK4Jets.clear();
   cleanedAK4Jets.clear();
   simpleCleanedAK4Jets.clear();
@@ -57,7 +58,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i]));
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i]) );
   }
 
   //make all muons
@@ -108,20 +109,24 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   //now from allElectrons make goodElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->cutBasedTight()) goodElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->cutBasedTight25nsSpring15MC()) goodElectrons.push_back(allElectrons.at(iel));
   }
   //std::cout<<"making loose electrons"<<std::endl;
   //now from allElectrons make looseElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->cutBasedLoose()) looseElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->cutBasedLoose25nsSpring15MC()) looseElectrons.push_back(allElectrons.at(iel));
   }
   //now from allElectrons make cmsdasElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->CMSDASTight()) cmsdasElectrons.push_back(allElectrons.at(iel));
   }
-  //now from allElectrons make good25nsSpring15MCElectrons
+  //now from allElectrons make good50nsElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->cutBasedTight25nsSpring15MC()) good25nsSpring15Electrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->cutBasedTight50ns()) good50nsElectrons.push_back(allElectrons.at(iel));
+  }
+  //now from allElectrons make loose50nsElectrons
+  for(unsigned int iel=0; iel< allElectrons.size(); iel++){
+    if(allElectrons.at(iel)->cutBasedLoose50ns()) loose50nsElectrons.push_back(allElectrons.at(iel));
   }
   //std::cout<<"made all lepton collections"<<std::endl;
 
@@ -192,6 +197,7 @@ void TreeReader::Init(TTree *treetemp)
   elPassConversionVeto = 0;
   elQuality = 0;
   elVtxFitConv = 0;
+  elMVA = 0;
 
   //gen particles
   genEnergy = 0;
@@ -269,6 +275,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elRhoIso_DileptonCalc", &elrhoIso, &b_elrhoIso_DileptonCalc);
   tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
+  tree->SetBranchAddress("elMVA_DileptonCalc", &elMVA, &b_elMVA_DileptonCalc);
 
   //Muons                                                                                                                                                                                                         
   tree->SetBranchAddress("muCharge_DileptonCalc", &muCharge, &b_muCharge_DileptonCalc);

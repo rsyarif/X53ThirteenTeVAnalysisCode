@@ -25,7 +25,7 @@ class TreeReader{
 
   //high level collections
   std::vector <TMuon*> allMuons, goodMuons,looseMuons;
-  std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons, good25nsSpring15Electrons;
+  std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons, loose50nsElectrons, good50nsElectrons;
   std::vector <TGenParticle*> genParticles;
   std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets;
   std::vector <TJet*> genJets;
@@ -101,6 +101,9 @@ class TreeReader{
   TBranch        *b_elrhoIso_DileptonCalc;
   std::vector<double>  *elAEff;
   TBranch        *b_elAEff_DileptonCalc;
+  //mva value
+  std::vector<double> *elMVA;
+  TBranch        *b_elMVA_DileptonCalc;
 
   //Muons 
   std::vector<int>     *muCharge;
