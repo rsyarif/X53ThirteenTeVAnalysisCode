@@ -65,7 +65,7 @@ bool TElectron::mvaTight(){
   return false;
 }
 
-bool TElectron::cutBasedTight(){
+bool TElectron::cutBasedTight50ns(){
   //Barrel
   if(fabs(eta) <= 1.479){
     if(sigmaIetaIeta >= 0.0101) return false;
@@ -99,7 +99,7 @@ bool TElectron::cutBasedTight(){
   return true;
 }
 
-bool TElectron::cutBasedLoose(){
+bool TElectron::cutBasedLoose50ns(){
   //Barrel
   if(fabs(eta) <= 1.479){
     if(sigmaIetaIeta >= 0.0105) return false;

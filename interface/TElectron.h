@@ -38,8 +38,8 @@ public:
   bool mvaTight();
   bool mvaLoose();
 
-  bool cutBasedTight();
-  bool cutBasedLoose();
+  bool cutBasedTight50ns();
+  bool cutBasedLoose50ns();
   bool cutBasedTight25nsSpring15MC();
   bool cutBasedLoose25nsSpring15MC();
   bool cutBasedTightMay2015();
