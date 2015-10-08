@@ -7,7 +7,6 @@
 #include "TChain.h"
 #include "../interface/TreeReader.h"
 #include <stdio.h>
-#include "LeptonAnalyzer.cc"
 #include "JetAnalyzer.cc"
 #include "GenAnalyzer.cc"
 #include "../interface/TreeMaker.h"
@@ -263,7 +262,7 @@ int main(int argc, char* argv[]){
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
     if(data) goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons,30.0);
-    else goodLeptons = makeLeptons(tr->goodMuons, tr->good25nsSpring15Electrons,30.0);
+    else goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons,30.0);
     bool samesign;
 
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
