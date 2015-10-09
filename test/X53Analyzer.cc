@@ -28,8 +28,11 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps);
 int main(int argc, char* argv[]){
 
+  if(argc!=2) return 0;
+  std::string argv1=argv[1];
+
   typedef std::map<std::string,std::string> StringMap;
- 
+  
   StringMap bg_samples, sig_samples,data_samples;
   bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTJets.root";
   bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTW.root";
@@ -41,7 +44,7 @@ int main(int argc, char* argv[]){
   bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_ZZ.root";
   bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WJets.root";
   bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root";
-  
+
   
   sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700RH.root";
   sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800RH.root";
@@ -91,12 +94,13 @@ int main(int argc, char* argv[]){
   
   bool signal=false;
   bool bg_mc=false;
+  bool bg_mc_dd = false; //bool to run over mc using tight loose method
   //bool bg_dd=false;
   bool data=false;
 
   //check usage
   bool correctusage=true;
-  if(argc!=2 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() ) ) correctusage=false;
+  if(argc!=2 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
   if(!correctusage){
     std::cout<<"Need to supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
@@ -107,18 +111,20 @@ int main(int argc, char* argv[]){
     for(std::map<std::string,std::string>::iterator iter=sig_samples.begin(); iter!= sig_samples.end(); iter++){
       std::cout<<iter->first<<std::endl;
     }  
+    std::cout<<"********* OR Specify \'NonPromptMC\' to run over MC using Data-Driven Method"<<std::endl;
     return 0;
   }
 
   if(bg_samples.find(argv[1])!=bg_samples.end()) bg_mc=true;
   if(sig_samples.find(argv[1])!=sig_samples.end()) signal=true;
   if(data_samples.find(argv[1])!=data_samples.end()) data=true;
-
+  
   //make TreeReader
   std::string filename;
   if(bg_mc) filename = bg_samples.find(argv[1])->second;
   if(signal) filename = sig_samples.find(argv[1])->second;
   if(data) filename = data_samples.find(argv[1])->second;
+  if(bg_mc_dd) filename = "NonPrompt";
   std::cout<<"running file: "<<filename<<std::endl;
   //make output file
   std::stringstream outnamestream;
@@ -131,7 +137,17 @@ int main(int argc, char* argv[]){
   TreeMaker* tm_sZVeto = new TreeMaker();
   tm_sZVeto->InitTree("tEvts_sZVeto");
 
-  TreeReader* tr= new TreeReader(filename.c_str(),!data);
+  TreeReader* tr;
+  TChain* chain; //chain used for nonPromptMC 
+  if(!bg_mc_dd){
+    tr = new TreeReader(filename.c_str(),!data);
+  }
+  else{
+    chain->Add("/eos/uscms/store/user/lpctlbsm/Spring15/25ns/Oct06/ljmet_trees/ljmet_TTJets.root");
+    chain->Add("/eos/uscms/store/user/lpctlbsm/Spring15/25ns/Oct06/ljmet_trees/ljmet_WJets.root");
+    tr = new TreeReader( (TTree*) chain, !data);
+  }
+
   TTree* t=tr->tree;
 
   //histogram for cutflow
