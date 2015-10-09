@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),  
   dEta(dEtatemp),
   dPhi(dPhitemp),
@@ -19,7 +19,8 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   AEff(AEfftemp),
   passConversion(passConv),
   chargeConsistency(chargeconsistencytemp),
-  mvaValue(mvatemp)
+  mvaValue(mvatemp),
+  miniIso(miniIsotemp)
 {
   setLV();
 

@@ -1,9 +1,9 @@
 #include "../interface/TMuon.h"
 
 
-TMuon::TMuon(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int isLtemp, int isTtemp,bool globaltemp,bool pftemp, bool trackertemp, double chi2temp, int nMuHtemp, int nMatchStattemp, double dxytemp, double dztemp, int ValPixtemp,int nTracktemp, double relIsotemp):
+TMuon::TMuon(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int isLtemp, int isTtemp,bool globaltemp,bool pftemp, bool trackertemp, double chi2temp, int nMuHtemp, int nMatchStattemp, double dxytemp, double dztemp, int ValPixtemp,int nTracktemp, double relIsotemp, double miniIsotemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),isLoose(isLtemp),isTight(isTtemp),Global(globaltemp),PFMuon(pftemp),Tracker(trackertemp),chi2(chi2temp),
-  nValMuHits(nMuHtemp), nMatchedStations(nMatchStattemp),dxy(dxytemp),dz(dztemp),nValPixelHits(ValPixtemp),nTrackerLayers(nTracktemp),relIso(relIsotemp)
+  nValMuHits(nMuHtemp), nMatchedStations(nMatchStattemp),dxy(dxytemp),dz(dztemp),nValPixelHits(ValPixtemp),nTrackerLayers(nTracktemp),relIso(relIsotemp),miniIso(miniIsotemp)
 {
   setLV();
 }
@@ -26,7 +26,7 @@ bool TMuon::cutBasedTight(){
   if (nMatchedStations < 2) return false;
   if (nValPixelHits < 1)    return false;
   if (nTrackerLayers < 6)   return false;
-  if (relIso > 0.06)        return false;
+  if (relIso > 0.2)        return false;
   
   return true;
 }

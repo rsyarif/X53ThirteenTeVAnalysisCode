@@ -99,6 +99,8 @@ class TreeReader{
   TBranch        *b_elphotIso_DileptonCalc;
   std::vector<double>  *elrhoIso;
   TBranch        *b_elrhoIso_DileptonCalc;
+  std::vector<double>  *elMiniIso;
+  TBranch        *b_elMiniIso_DileptonCalc;
   std::vector<double>  *elAEff;
   TBranch        *b_elAEff_DileptonCalc;
   //mva value
@@ -138,6 +140,8 @@ class TreeReader{
   TBranch        *b_muPt_DileptonCalc; 
   std::vector<double>  *muRelIso;
   TBranch        *b_muRelIso_DileptonCalc;
+  std::vector<double>  *muMiniIso;
+  TBranch        *b_muMiniIso_DileptonCalc;
   std::vector<int>     *muIsTight;
   TBranch        *b_muIsTight_DileptonCalc;
   std::vector<int>     *muIsLoose;

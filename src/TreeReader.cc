@@ -58,7 +58,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
   }
 
   //make all muons
@@ -66,7 +66,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     allMuons.push_back(new TMuon((*muPt)[i],
 				 (*muEta)[i], (*muPhi)[i], (*muEnergy)[i],(*muCharge)[i], (*muIsLoose)[i],(*muIsTight)[i],
 				 (*muGlobal)[i],(*muPF)[i],(*muTracker)[i],(*muChi2)[i], (*muNValMuHits)[i],  (*muNMatchedStations)[i],
-				 (*muDxy)[i], (*muDz)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i]));
+				 (*muDxy)[i], (*muDz)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i], (*muMiniIso)[i]));
   }
 
   //make all jets
@@ -188,6 +188,7 @@ void TreeReader::Init(TTree *treetemp)
   elneutIso = 0;
   elphotIso = 0;
   elrhoIso = 0;
+  elMiniIso = 0;
   elAEff= 0;
   elSihih = 0;
   elChargeConsistent = 0;
@@ -219,6 +220,7 @@ void TreeReader::Init(TTree *treetemp)
   muPhi = 0;
   muPt = 0;
   muRelIso = 0;
+  muMiniIso = 0;
   muCharge = 0;
   muGlobal = 0;
   muPF     = 0;
@@ -273,6 +275,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elNhIso_DileptonCalc", &elneutIso, &b_elneutIso_DileptonCalc);
   tree->SetBranchAddress("elPhIso_DileptonCalc", &elphotIso, &b_elphotIso_DileptonCalc);
   tree->SetBranchAddress("elRhoIso_DileptonCalc", &elrhoIso, &b_elrhoIso_DileptonCalc);
+  tree->SetBranchAddress("elMiniIso_DileptonCalc", &elMiniIso, &b_elMiniIso_DileptonCalc);
   tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
   tree->SetBranchAddress("elMVA_DileptonCalc", &elMVA, &b_elMVA_DileptonCalc);
@@ -294,6 +297,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("muPhi_DileptonCalc", &muPhi, &b_muPhi_DileptonCalc);
   tree->SetBranchAddress("muPt_DileptonCalc", &muPt, &b_muPt_DileptonCalc);
   tree->SetBranchAddress("muRelIso_DileptonCalc", &muRelIso, &b_muRelIso_DileptonCalc);
+  tree->SetBranchAddress("muMiniIso_DileptonCalc", &muMiniIso, &b_muMiniIso_DileptonCalc);
   tree->SetBranchAddress("muIsTight_DileptonCalc",&muIsTight,&b_muIsTight_DileptonCalc);
   tree->SetBranchAddress("muIsLoose_DileptonCalc",&muIsLoose,&b_muIsLoose_DileptonCalc);
 
