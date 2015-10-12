@@ -28,8 +28,10 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps);
 int main(int argc, char* argv[]){
 
-  if(argc!=2) return 0;
+  if(argc!=4) return 0;
   std::string argv1=argv[1];
+  std::string elID = argv[2];
+  std::string muID = argv[3];
 
   typedef std::map<std::string,std::string> StringMap;
   
@@ -100,9 +102,9 @@ int main(int argc, char* argv[]){
 
   //check usage
   bool correctusage=true;
-  if(argc!=2 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
+  if(argc!=4 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
   if(!correctusage){
-    std::cout<<"Need to supply argument for sample name of one of the following"<<std::endl;
+    std::cout<<"Need to specify electron and muon ID as well as supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
     for(std::map<std::string,std::string>::iterator iter=bg_samples.begin(); iter!= bg_samples.end(); iter++){
       std::cout<<iter->first<<std::endl;
@@ -112,12 +114,14 @@ int main(int argc, char* argv[]){
       std::cout<<iter->first<<std::endl;
     }  
     std::cout<<"********* OR Specify \'NonPromptMC\' to run over MC using Data-Driven Method"<<std::endl;
+    std::cout<<" Examples:\n       ./X53Analyzer.o TTJets CBTight CBMed\n       ./X53Analyzer.o NonPromptMC MVATight CBTight"<<std::endl;
     return 0;
   }
 
   if(bg_samples.find(argv[1])!=bg_samples.end()) bg_mc=true;
   if(sig_samples.find(argv[1])!=sig_samples.end()) signal=true;
   if(data_samples.find(argv[1])!=data_samples.end()) data=true;
+  
   
   //make TreeReader
   std::string filename;
@@ -138,7 +142,7 @@ int main(int argc, char* argv[]){
   tm_sZVeto->InitTree("tEvts_sZVeto");
 
   TreeReader* tr;
-  TChain* chain; //chain used for nonPromptMC 
+  TChain* chain = new TChain("ljmet"); //chain used for nonPromptMC 
   if(!bg_mc_dd){
     tr = new TreeReader(filename.c_str(),!data);
   }
@@ -182,6 +186,31 @@ int main(int argc, char* argv[]){
   TFile* eWfile = new TFile("ChargeMisID_Data_Electrons.root");
   std::vector<float> etaWeights = getEtaWeights(eWfile);
 
+  //get prompt rate
+  std::string elPRFilename;
+  if(elID=="CBTight") elPRFilename = "PromptRate_Data_Electrons_CBTight.root";
+  else if(elID=="CBLoose") elPRFilename = "PromptRate_Data_Electrons_CBLoose.root";
+  else if(elID=="MVATight") elPRFilename = "PromptRate_Data_Electrons_MVATight.root";
+  else if(elID=="MVALoose") elPRFilename = "PromptRate_Data_Electrons_MVALoose.root";
+  else{
+    std::cout<<"Electron ID not configured correctly! Please select one of the following: CBTight, CBLoose, MVATight, MVALoose. Exiting..."<<std::endl;
+    return 0;
+  }
+
+  TFile* elPRFile = new TFile(elPRFilename.c_str());
+
+  float elPrate = getPrate(elPRFile);
+
+  std::string muPRFilename;
+  if(muID=="CBTight") muPRFilename = "PromptRate_Data_Muons_CBTight.root";
+  else if(muID=="CBLoose") muPRFilename = "PromptRate_Data_Muons_CBLoose.root";
+  else{
+    std::cout<<"Muon ID not configured correctly! Please select one of the following: CBTight, CBLoose. Exiting..."<<std::endl;
+    return 0;
+  }
+  TFile* muPRFile = new TFile(muPRFilename.c_str());
+
+  float muPrate = getPrate(muPRFile);
 
   //doGenPlots(fsig,t,tr);
   //cd back to main directory after making gen plots
@@ -218,62 +247,8 @@ int main(int argc, char* argv[]){
     
     tr->GetEntry(ient);
     
-
-    //bool GenSamesign=false;
-    //std::vector<TGenParticle*> vSSGenLep;
-    //get number of generated same-sign dilepton events gen particle collection (second parameter is number of muons to search for)
-    nGenMuMu += getNSSDLGen(tr->genParticles, 2);
-    nGenElMu += getNSSDLGen(tr->genParticles, 1);
-    nGenElEl += getNSSDLGen(tr->genParticles, 0);
-
-  
-
-
-    //Muon CutFlow                                                                                                                                                                                               
-    for(unsigned int uimu=0; uimu<tr->allMuons.size();uimu++){
-      TMuon* imu = tr->allMuons.at(uimu);
-
-      //run through gen particle collection:                                                                                                                                                                      
-      float dR=999;
-      for(unsigned int igen=0; igen<tr->genParticles.size(); igen++){
-        //only run over muons from hard scattering                                                                                                     
-        if(!( ( fabs(tr->genParticles.at(igen)->id)==13) && (tr->genParticles.at(igen)->status==23 || tr->genParticles.at(igen)->status==1)) ) continue;
-        float drtemp = pow( pow( imu->eta - tr->genParticles.at(igen)->eta, 2 ) + pow( imu->phi - tr->genParticles.at(igen)->phi, 2), 0.5);
-        if(drtemp < dR){
-          dR = drtemp;
-        }
-      }
-
-      //now check to make sure the muon is matched by requiring deltaR be les than 0.15                                                                                                                           
-      if(dR >= 0.15) continue;
-
-      if(imu->PFMuon) h_MuCutFlow->Fill(0.5,1);
-      else continue;
-      if(imu->Global || imu->Tracker) h_MuCutFlow->Fill(1.5,1);
-      else continue;
-      if(imu->Global) h_MuCutFlow->Fill(2.5,1);
-      else continue;
-      if(imu->pt>30) h_MuCutFlow->Fill(3.5,1);
-      else continue;
-      if(imu->eta < 2.4) h_MuCutFlow->Fill(4.5,1);
-      else continue;
-      if(imu->chi2<10) h_MuCutFlow->Fill(5.5,1);
-      else continue;
-      if(imu->dz < 0.5) h_MuCutFlow->Fill(6.5,1);
-      else continue;
-      if(imu->dxy < 0.2) h_MuCutFlow->Fill(7.5,1);
-      else continue;
-      if(imu->nValMuHits>=1) h_MuCutFlow->Fill(8.5,1);
-      else continue;
-      if(imu->nMatchedStations >=2) h_MuCutFlow->Fill(9.5,1);
-      else continue;
-      if(imu->nValPixelHits >=1) h_MuCutFlow->Fill(10.5,1);
-      else continue;
-      if(imu->nTrackerLayers > 5) h_MuCutFlow->Fill(11.5,1);
-      else continue;
-      if(imu->relIso < 0.2) h_MuCutFlow->Fill(12.5,1);
-    }
-
+    //weight for non prompt method
+    float NPweight;
 
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
@@ -404,12 +379,12 @@ int main(int argc, char* argv[]){
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12 ) ) continue;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight);
     
 
   }//end event loop
@@ -418,26 +393,6 @@ int main(int argc, char* argv[]){
   tm_ssdl->tree->Write();
   tm_sZVeto->tree->Write();
 
-  //normalize cutflow to first bin                                                                                                                                                                                
-  h_MuCutFlow->Scale( 1. / h_MuCutFlow->GetBinContent(1) );
-
-  //set bin labels                                                                                                                                                                                                
-  h_MuCutFlow->GetXaxis()->SetBinLabel(1,"All Loose Muons");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(2,"is GlobalMuon");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(3,"is PF Muon");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(4,"p_{T} >30");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(5,"#eta <2.4");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(6,"#chi^{2} <10");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(7,"dZ<0.5");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(8,"dXY<0.2");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(9,"N_{ValidMuHits}>=1");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(10,"N_{MatchStations}>=2");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(11,"N_{ValidPixHits}>=1");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(12,"N_{TrackerLayer}>5");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(13,"RelIso <0.2");
-
-  //write the histograms
-  fsig->WriteTObject(h_MuCutFlow);
 
   fsig->WriteTObject(h_DoubleEle33Num); 
   fsig->WriteTObject(h_DoubleEle33_MWNum);
