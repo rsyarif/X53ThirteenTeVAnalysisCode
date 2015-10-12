@@ -601,4 +601,18 @@ float getPairMass(TElectron* el1, TElectron* el2){
   float mass = (el1->lv + el2->lv).M();
   return mass;
 }
-//  LocalWords:  dyjSample
+
+
+float getPrate(TFile* f){
+
+  TH1F* h1 = (TH1F*) f->Get("ptNumHist");
+  TH1F* h2 = (TH1F*) f->Get("ptDenHist");
+  
+  float rate = (float) h1->GetEntries();
+  rate = rate / h2->GetEntries();
+  return rate;
+
+}
+
+
+
