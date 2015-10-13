@@ -18,7 +18,9 @@
 TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool Muons,bool mc,bool FiftyNs,std::string ID);
 std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, bool mc, bool FiftyNs, std::string ID);
 std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes);
+std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool MuonChannel,bool mc,bool FiftyNs,std::string ID);
 bool sortByPhi(TLepton* lep1, TLepton* lep2){return lep1->phi > lep2->phi;};
+bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 //A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
 
@@ -100,6 +102,16 @@ int main(int argc, char* argv[]){
 
     tr->GetEntry(ient);
 
+    //if muon channel require muon triggers
+    bool passTrig=false;
+    if(MuonChannel){
+      if(tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) passTrig=true;
+    }
+    else{
+      if(tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) passTrig=true;
+    }
+    if(!passTrig) continue;
+
     if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     //make tag lepton
@@ -116,11 +128,21 @@ int main(int argc, char* argv[]){
     pairMassHist_all->Fill(pairMass);
 
     //revert to Aram's method
-    ptDenHist_Aram->Fill(0);
-    if(leptons.at(0)->Tight && leptons.at(1)->Tight) ptNumHist_Aram->Fill(0);
-    etaDenHist_Aram->Fill(0);
-    if(leptons.at(0)->Tight && leptons.at(1)->Tight) etaNumHist_Aram->Fill(0);
-    
+    std::vector<TLepton*> AramLeptons = makeAramLeptons(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
+    //make sure we got at least two leptons
+    if(AramLeptons.size()>=2){
+      //make sure at least one is tight
+      if(AramLeptons.at(0)->Tight || AramLeptons.at(1)->Tight){
+	//make sure mass is with Z mass window
+	float AramPairMass = (AramLeptons.at(0)->lv + AramLeptons.at(1)->lv).M();
+	if(AramPairMass > 81 && AramPairMass<101){
+	  ptDenHist_Aram->Fill(0);
+	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) ptNumHist_Aram->Fill(0);
+	  etaDenHist_Aram->Fill(0);
+	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) etaNumHist_Aram->Fill(0);
+	}//end check on mass
+      }//end check on at least one tight
+    }//end checl on number of Aram Leptons
 
     //now fill histograms, tag lepton will always be first so get element 1 for probe
     ptDenHist->Fill(leptons.at(1)->pt);
@@ -172,6 +194,8 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
       //skip if same as tag
       if(imu->pt==tag->pt && imu->eta==tag->eta && imu->phi==tag->eta) continue;
+      //skip if probe has same sign charge as tag
+      if(imu->charge == tag->charge) continue;
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
@@ -351,4 +375,94 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
   return tag;
   
  
+}
+
+
+
+std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool MuonChannel,bool mc,bool FiftyNs,std::string ID){
+  std::vector<TLepton*> Leptons;
+
+  if(MuonChannel){
+    //fill with  muons
+    for(unsigned int uimu=0; uimu<muons.size(); uimu++){
+      TMuon* imu = muons.at(uimu);
+      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+
+      if(ID=="CBTight"){
+	iLep->Tight=imu->cutBasedTight();
+	iLep->Loose=imu->cutBasedLoose();
+      }
+      else if(ID=="CBLoose"){
+	iLep->Tight=imu->cutBasedLoose();
+	iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
+      }
+      iLep->isMu = true;
+      iLep->isEl = false;
+      //only save if at least loose
+      if(iLep->Loose){
+	//apply pt cut
+	if(iLep->pt>30) Leptons.push_back(iLep);
+      }
+    }
+  }
+
+  else{
+    //fill with  electrons
+    for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
+      TElectron* iel = electrons.at(uiel);
+      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+      if(ID=="CBTight"){
+	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
+      }
+      else if(ID=="CBLoose"){
+	iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVATight"){
+	iLep->Tight=iel->mvaTightIso();
+	iLep->Loose=iel->mvaLooseIso();
+      }
+      else if(ID=="MVATightNoIso"){
+	iLep->Tight=iel->mvaTight();
+	iLep->Loose=iel->mvaLoose();
+      }
+      else if(ID=="MVALoose"){
+	iLep->Tight=iel->mvaLooseIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseNoIso"){
+	iLep->Tight=iel->mvaLoose();
+	iLep->Loose=true;
+      }
+      
+      iLep->isMu = false;
+      iLep->isEl = true;
+      //save if loose
+      if(iLep->Loose){
+	//apply pt cut
+	if(iLep->pt>30) Leptons.push_back(iLep);
+      }
+    }
+  }
+
+  //sort by pt
+  std::sort(Leptons.begin(), Leptons.end(), sortByPt);
+
+  //now just take highest pt opposite charge pair
+  std::vector<TLepton*> AramLeptons;
+  bool found = false;
+  for(std::vector<TLepton*>::size_type ilep=0; ilep<Leptons.size(); ilep++){
+    for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<Leptons.size(); jlep++){
+      if(Leptons.at(ilep)->charge != Leptons.at(jlep)->charge){
+	AramLeptons.push_back(Leptons.at(ilep));AramLeptons.push_back(Leptons.at(jlep));
+	found=true;
+	break;
+      }
+    }//end inner lepton loop
+    if(found) break;
+  }//end outer lepton loop
+  return AramLeptons;
+
+
 }
