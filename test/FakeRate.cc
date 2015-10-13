@@ -46,94 +46,126 @@ int main(int argc, char* argv[]){
 
 
   //make output file
-  std::string outname;
+  std::vector<std::string> outname;
   if(data){
-    if(MuonChannel) outname = "FakeRate_Data_Muons.root";
-    else outname = "FakeRate_Data_Electrons.root";
+    if(MuonChannel) outname.push_back("FakeRate_Data_Muons.root");
+    else outname.push_back("FakeRate_Data_Electrons.root");
   }
 
   else{
-    if(MuonChannel) outname = "FakeRate_MC_Muons.root";
-    else outname = "FakeRate_MC_Electrons.root";
+    if(MuonChannel){
+      outname.push_back("FakeRate_MC_Muons_HT100To200.root");
+      outname.push_back("FakeRate_MC_Muons_HT200To300.root");
+      outname.push_back("FakeRate_MC_Muons_HT300To500.root");
+      outname.push_back("FakeRate_MC_Muons_HT500To700.root");
+      outname.push_back("FakeRate_MC_Muons_HT700To1000.root");
+      outname.push_back("FakeRate_MC_Muons_HT1000To1500.root");
+      outname.push_back("FakeRate_MC_Muons_HT1500To2000.root");
+      outname.push_back("FakeRate_MC_Muons_HT2000ToInf.root");
+    }
+    else{
+      outname.push_back("FakeRate_MC_Electrons_HT100To200.root");
+      outname.push_back("FakeRate_MC_Electrons_HT200To300.root");
+      outname.push_back("FakeRate_MC_Electrons_HT300To500.root");
+      outname.push_back("FakeRate_MC_Electrons_HT500To700.root");
+      outname.push_back("FakeRate_MC_Electrons_HT700To1000.root");
+      outname.push_back("FakeRate_MC_Electrons_HT1000To1500.root");
+      outname.push_back("FakeRate_MC_Electrons_HT1500To2000.root");
+      outname.push_back("FakeRate_MC_Electrons_HT2000ToInf.root");
+    }
   }
 
 
-  TFile* fout = new TFile(outname.c_str(),"RECREATE");
+
 
   //get correct file
-  std::string filename;
+  std::vector<std::string> filenames;
   if(argv1.find("Data")!=std::string::npos) {
-    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_Mu.root";
-    else if(!MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_El.root";
+    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_Mu.root");
+    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_El.root");
   }
-  else filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/Inclusive_Decays/PU20/ljmet_trees/ljmet_tree_QCD.root";
+  else{
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT100To200.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT200To300.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT300To500.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT500To700.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT700To1000.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT1000To1500.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT1500To2000.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT2000ToInf.root");
+  }
 
-  //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str(),!data);
-  TTree* t=tr->tree;
-
-
-  //initialize needed histograms
-  TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
-  TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
-  TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
-  TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
-
-  //get number of entries and start event loop
-  int nEntries = t->GetEntries();
-  for(int ient=0; ient<nEntries; ient++){
-
-    tr->GetEntry(ient);
-
-    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
-
-    //make vector of leptons
-    std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
-
-    //veto on events with more than one lepton or no leptons
-    if((leptons.size()==0) || (leptons.size() >1) ) continue;
-    //now just take the lepton remaining
-    TLepton* lep = leptons.at(0);
-
-    //make sure not much met in event to veto on leptons from Ws
-    if(tr->MET > 25) continue;
+  for(unsigned int i =0; i<filenames.size(); i++){
     
-    //check transverse mass is less than 25 GeV
-
-    float et = tr->MET+lep->energy;
-    float pt1y = lep->pt*sin(lep->phi);
-    float pt1x = lep->pt*cos(lep->phi);
-    float pt2y = tr->MET*sin(tr->MET_phi);
-    float pt2x = tr->MET*cos(tr->MET_phi);
-    float mT = pow(et,2) - pow(lep->pt,2) - pow(tr->MET,2) - 2*(pt1y*pt2y - pt1x*pt2x);
-    mT = pow(mT, 0.5);
-    if(mT>25) continue;
-
-    //search through jet collection to check for jet mass
-    bool Zveto = ZVetoCheck(lep,tr->allAK4Jets);
-    if(Zveto) continue;
-
-    //check for away jet
-    bool awayJet = AwayJetCheck(lep,tr->allAK4Jets);
-    if(!awayJet) continue;
-
-    //Now just fill histograms
-    etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
-    if(lep->Tight){etaNumHist->Fill(lep->eta);ptNumHist->Fill(lep->pt);}
-
-  }//end event loop
-
-  fout->Append(ptNumHist);
-  fout->Append(ptDenHist);
-  fout->Append(etaNumHist);
-  fout->Append(etaDenHist);
-
-  TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
-  TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
-
-  fout->Append(ptgraph);
-  fout->Append(etagraph);
-  fout->Write();
+    TFile* fout = new TFile(outname.at(i).c_str(),"RECREATE");
+    //get tree reader to read in data
+    TreeReader* tr= new TreeReader(filenames.at(i).c_str(),!data);
+    TTree* t=tr->tree;
+    
+    
+    //initialize needed histograms
+    TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
+    TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of All Leptons",20,0,600);
+    TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
+    TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
+    
+    //get number of entries and start event loop
+    int nEntries = t->GetEntries();
+    for(int ient=0; ient<nEntries; ient++){
+      
+      tr->GetEntry(ient);
+      
+      if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+      
+      //make vector of leptons
+      std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+	
+      //veto on events with more than one lepton or no leptons
+      if((leptons.size()==0) || (leptons.size() >1) ) continue;
+      //now just take the lepton remaining
+      TLepton* lep = leptons.at(0);
+      
+      //make sure not much met in event to veto on leptons from Ws
+      if(tr->MET > 25) continue;
+      
+      //check transverse mass is less than 25 GeV
+      
+      float et = tr->MET+lep->energy;
+      float pt1y = lep->pt*sin(lep->phi);
+      float pt1x = lep->pt*cos(lep->phi);
+      float pt2y = tr->MET*sin(tr->MET_phi);
+      float pt2x = tr->MET*cos(tr->MET_phi);
+      float mT = pow(et,2) - pow(lep->pt,2) - pow(tr->MET,2) - 2*(pt1y*pt2y - pt1x*pt2x);
+      mT = pow(mT, 0.5);
+      if(mT>25) continue;
+      
+      //search through jet collection to check for jet mass
+      bool Zveto = ZVetoCheck(lep,tr->allAK4Jets);
+      if(Zveto) continue;
+      
+      //check for away jet
+      bool awayJet = AwayJetCheck(lep,tr->allAK4Jets);
+      if(!awayJet) continue;
+      
+      //Now just fill histograms
+      etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
+      if(lep->Tight){etaNumHist->Fill(lep->eta);ptNumHist->Fill(lep->pt);}
+	
+    }//end event loop
+    
+    fout->Append(ptNumHist);
+    fout->Append(ptDenHist);
+    fout->Append(etaNumHist);
+    fout->Append(etaDenHist);
+    
+    TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
+    TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
+    
+    fout->Append(ptgraph);
+    fout->Append(etagraph);
+    fout->Write();
+    fout->Close();
+  }//end loop over filenames
 }
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
