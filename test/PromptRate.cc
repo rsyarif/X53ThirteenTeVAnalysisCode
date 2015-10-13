@@ -155,7 +155,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeProbeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons,bool mc, bool FiftyNs, std::string ID){
+std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons,bool mc, bool FiftyNs, std::string ID){
 
   std::vector<TLepton*> Leptons;
 
@@ -164,6 +164,8 @@ std::vector<TLepton*> makeProbeLeptons(std::vector<TMuon*> muons, std::vector<TE
     for(unsigned int uimu=0; uimu<muons.size(); uimu++){
       TMuon* imu = muons.at(uimu);
       TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+      //skip if same as tag
+      if(imu->pt==tag->pt && imu->eta==tag->eta && imu->phi==tag->eta) continue
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
@@ -175,7 +177,7 @@ std::vector<TLepton*> makeProbeLeptons(std::vector<TMuon*> muons, std::vector<TE
       iLep->isMu = true;
       iLep->isEl = false;
       //only save if at least loose
-      if(iLep->Tight || iLep->Loose){
+      if(iLep->Loose){
 	//apply pt cut
 	if(iLep->pt>30) Leptons.push_back(iLep);
       }
@@ -187,7 +189,8 @@ std::vector<TLepton*> makeProbeLeptons(std::vector<TMuon*> muons, std::vector<TE
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
       TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-
+      //skip if same as tag
+      if(iel->pt==tag->pt && iel->eta==tag->eta && iel->phi==tag->eta) continue
       if(ID=="CBTight"){
 	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
 	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
@@ -215,8 +218,8 @@ std::vector<TLepton*> makeProbeLeptons(std::vector<TMuon*> muons, std::vector<TE
       
       iLep->isMu = false;
       iLep->isEl = true;
-      //only save if at least loose
-      if(iLep->Tight || iLep->Loose){
+      //save if loose
+      if(iLep->Loose){
 	//apply pt cut
 	if(iLep->pt>30) Leptons.push_back(iLep);
       }
