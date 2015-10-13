@@ -17,6 +17,7 @@
 //helper functions
 TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool Muons,bool mc,bool FiftyNs,std::string ID);
 std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, bool mc, bool FiftyNs, std::string ID);
+std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes);
 bool sortByPhi(TLepton* lep1, TLepton* lep2){return lep1->phi > lep2->phi;};
 
 //A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
@@ -105,13 +106,13 @@ int main(int argc, char* argv[]){
     TLepton* tagLepton = makeTagLepton(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
     //if no tag lepton found in the event a dummy is returned with pt==-999 so skip event if it is this value (i.e. if no tag lepton found in event)
     if(tagLepton->pt==-999) continue;
-    std::vector<TLepton*> probeLeptons = makeProbeLeptons(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
+    std::vector<TLepton*> probeLeptons = makeProbeLeptons(tagLepton,tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
 
     std::vector<TLepton*> leptons = findBestPair(tagLepton,probeLeptons); //only returns two leptons if a pair is found within z window
     if(leptons.size()!=2) continue; //skip if no good pair found
 
     //get pair mass
-    float pairMass = (leptons.at(0)->lv + leptons.at(1)).M();
+    float pairMass = (leptons.at(0)->lv + leptons.at(1)->lv).M();
     pairMassHist_all->Fill(pairMass);
 
     //revert to Aram's method
@@ -170,7 +171,7 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       TMuon* imu = muons.at(uimu);
       TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
       //skip if same as tag
-      if(imu->pt==tag->pt && imu->eta==tag->eta && imu->phi==tag->eta) continue
+      if(imu->pt==tag->pt && imu->eta==tag->eta && imu->phi==tag->eta) continue;
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
@@ -195,7 +196,7 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       TElectron* iel = electrons.at(uiel);
       TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
       //skip if same as tag
-      if(iel->pt==tag->pt && iel->eta==tag->eta && iel->phi==tag->eta) continue
+      if(iel->pt==tag->pt && iel->eta==tag->eta && iel->phi==tag->eta) continue;
       if(ID=="CBTight"){
 	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
 	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
@@ -235,7 +236,7 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 
 }
 
-std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLeptons*> probes){
+std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes){
 
   std::vector<TLepton*> leps;
 
@@ -264,7 +265,7 @@ std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLeptons*> probes){
   TLepton* probe = probes.at(index);
   
   if(zpeak){
-    leps.push_pack(tag);leps.push_back(probe);
+    leps.push_back(tag);leps.push_back(probe);
   }
   
   return leps;
@@ -344,7 +345,7 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
   if(Leptons.size()==0) return dummy;
 
   //if at least one tight sort the leptons by phi
-  std::sort(leptons.begin(),leptons.end(),sortByPhi);
+  std::sort(Leptons.begin(),Leptons.end(),sortByPhi);
   //return the leading-in-phi lepton
   TLepton* tag = Leptons.at(0);
   return tag;
