@@ -54,14 +54,18 @@ int main(int argc, char* argv[]){
   //get filename based on Data/MC
   std::string filename;
   bool data;
-  if(argv1=="Data") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_All.root"; data=true;}
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_DYJets.root"; data=false;}
-  bool FiftyNs=data;
+
   //get channel based on El/Mu
   bool MuonChannel;
   if(argv2=="Mu") MuonChannel=true;
   else MuonChannel=false;
-
+  if(argv1=="Data") {
+    data=true;
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_MuMu.root";
+    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_ElEl.root";
+  }
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_DYJets.root"; data=false;}
+  bool FiftyNs=data;
   //make filename for output root file
   std::string outname;
   if(MuonChannel){
@@ -104,29 +108,34 @@ int main(int argc, char* argv[]){
 
     //if muon channel require muon triggers
     bool passTrig=false;
-    if(MuonChannel){
-      if(tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) passTrig=true;
-    }
+    if(data) passTrig=true;
     else{
+      if(MuonChannel){
+	if(tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) passTrig=true;
+      }
+      else{
       if(tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) passTrig=true;
+      }
     }
     if(!passTrig) continue;
 
-    if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+    if(ient % 100000==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     //make tag lepton
     TLepton* tagLepton = makeTagLepton(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
+    
     //if no tag lepton found in the event a dummy is returned with pt==-999 so skip event if it is this value (i.e. if no tag lepton found in event)
     if(tagLepton->pt==-999) continue;
     std::vector<TLepton*> probeLeptons = makeProbeLeptons(tagLepton,tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
-
+    
     std::vector<TLepton*> leptons = findBestPair(tagLepton,probeLeptons); //only returns two leptons if a pair is found within z window
+    
     if(leptons.size()!=2) continue; //skip if no good pair found
 
     //get pair mass
     float pairMass = (leptons.at(0)->lv + leptons.at(1)->lv).M();
     pairMassHist_all->Fill(pairMass);
-
+    
     //revert to Aram's method
     std::vector<TLepton*> AramLeptons = makeAramLeptons(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
     //make sure we got at least two leptons
@@ -273,22 +282,24 @@ std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes){
   int dummy = 0;
 
   for(std::vector<TLepton*>::size_type jlep=0; jlep<probes.size(); jlep++){
-	pairmass = (tag->lv + probes.at(jlep)->lv).M();
-	if(fabs(zmass-pairmass)<massDiff){
-	  massDiff = fabs(zmass-pairmass);
-	  index=dummy;
-	}
-	//iterate dummy index
-	dummy++;
-    }//end loop over probes
+    
+    pairmass = (tag->lv + probes.at(jlep)->lv).M();
+   
+    if(fabs(zmass-pairmass)<massDiff){
+      massDiff = fabs(zmass-pairmass);
+      index=dummy;
+    }
+    //iterate dummy index
+    dummy++;
+  }//end loop over probes
   
   
   //check that leptons are in Zpeak
-  bool zpeak= massDiff<15 ? true : false;
+  bool zpeak= fabs(massDiff)<15 ? true : false;
 
-  TLepton* probe = probes.at(index);
   
   if(zpeak){
+    TLepton* probe = probes.at(index);
     leps.push_back(tag);leps.push_back(probe);
   }
   
@@ -367,11 +378,12 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
   //make sure there is at least one tight lepton in the event or return dummy
   TLepton* dummy = new TLepton(-999,-999,-999,-999,-999);
   if(Leptons.size()==0) return dummy;
-
+  
   //if at least one tight sort the leptons by phi
   std::sort(Leptons.begin(),Leptons.end(),sortByPhi);
   //return the leading-in-phi lepton
   TLepton* tag = Leptons.at(0);
+  
   return tag;
   
  
