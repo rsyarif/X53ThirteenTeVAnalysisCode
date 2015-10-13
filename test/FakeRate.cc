@@ -15,7 +15,7 @@
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons);
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, std::string ID);
 bool ZVetoCheck(TLepton* lepton, std::vector<TJet*> jets);
 bool AwayJetCheck(TLepton* lepton, std::vector<TJet*> jets);
 
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]){
       if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
       
       //make vector of leptons
-      std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel);
+      std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel, ID);
 	
       //veto on events with more than one lepton or no leptons
       if((leptons.size()==0) || (leptons.size() >1) ) continue;
@@ -168,7 +168,7 @@ int main(int argc, char* argv[]){
   }//end loop over filenames
 }
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons){
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, std::string ID){
 
   std::vector<TLepton*> Leptons;
 
@@ -177,8 +177,14 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     for(unsigned int uimu=0; uimu<muons.size(); uimu++){
       TMuon* imu = muons.at(uimu);
       TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
-      iLep->Tight=imu->cutBasedTight();
-      iLep->Loose=imu->cutBasedLoose();
+      if(ID=="CBTight"){
+	iLep->Tight=imu->cutBasedTight();
+	iLep->Loose=imu->cutBasedLoose();
+      }
+      else if(ID=="CBLoose"){
+	iLep->Tight=imu->cutBasedLoose();
+	iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
+      }
       iLep->isMu = true;
       iLep->isEl = false;
       //only save if at least loose
@@ -194,8 +200,30 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
       TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-      iLep->Tight=iel->cutBasedTight();
-      iLep->Loose=iel->cutBasedLoose();
+      if(ID=="CBTight"){
+	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
+      }
+      else if(ID=="CBLoose"){
+	iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVATight"){
+	iLep->Tight=iel->mvaTightIso();
+	iLep->Loose=iel->mvaLooseIso();
+      }
+      else if(ID=="MVATightNoIso"){
+	iLep->Tight=iel->mvaTight();
+	iLep->Loose=iel->mvaLoose();
+      }
+      else if(ID=="MVALoose"){
+	iLep->Tight=iel->mvaLooseIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseNoIso"){
+	iLep->Tight=iel->mvaLoose();
+	iLep->Loose=true;
+      }
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if at least loose
