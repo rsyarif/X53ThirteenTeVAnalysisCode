@@ -45,25 +45,36 @@ bool TElectron::mvaLoose(){
   else if(fabs(eta)<1.479){
     if(mvaValue>0.825) return true;
   }
-  else if(fabs(eta)<2.5){
+  else if(fabs(eta)<2.4){
     if(mvaValue>0.337) return true;
   }
   //if none of the above conditions is met return false
-  return false;
+  else return false;
 }
 
 bool TElectron::mvaTight(){
+
   if(fabs(eta)<0.8){
     if(mvaValue>0.965) return true;
   }
   else if(fabs(eta)<1.479){
     if(mvaValue>0.917) return true;
   }
-  else if(fabs(eta)<2.5){
+  else if(fabs(eta)<2.4){
     if(mvaValue>0.683) return true;
   }
   //if none of the above conditions is met return false
-  return false;
+  else return false;
+}
+
+bool TElectron::mvaTightIso(){
+  bool pass = mvaTight() && miniIso<0.1;
+  return pass;
+}
+
+bool TElectron::mvaLooseIso(){
+  bool pass = mvaLoose() && miniIso<0.1;
+  return pass;
 }
 
 bool TElectron::cutBasedTight50ns(){
@@ -84,6 +95,7 @@ bool TElectron::cutBasedTight50ns(){
   }
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(sigmaIetaIeta >= 0.0287) return false;
     if(fabs(dEta) >= 0.00762)    return false;
     if(fabs(dPhi) >= 0.0439)    return false;
@@ -97,6 +109,7 @@ bool TElectron::cutBasedTight50ns(){
     if(!passConversion)        return false;
     //    if(pt <30)                 return false;
   }
+
   return true;
 }
 
@@ -119,6 +132,7 @@ bool TElectron::cutBasedLoose50ns(){
   
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(sigmaIetaIeta >= 0.0318)  return false;
     if(fabs(dEta) >= 0.00952)    return false;
     if(fabs(dPhi) >= 0.181)    return false;
@@ -153,6 +167,7 @@ bool TElectron::cutBasedTight25nsSpring15MC(){
   }
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(sigmaIetaIeta >= 0.0279) return false;
     if(fabs(dEta) >= 0.00724)    return false;
     if(fabs(dPhi) >= 0.0918)    return false;
@@ -188,6 +203,7 @@ bool TElectron::cutBasedLoose25nsSpring15MC(){
   
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(sigmaIetaIeta >= 0.0301)  return false;
     if(fabs(dEta) >= 0.00814)    return false;
     if(fabs(dPhi) >= 0.182)    return false;
@@ -222,6 +238,7 @@ bool TElectron::cutBasedTightMay2015(){
   }
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) >= 0.007057)    return false;
     if(fabs(dPhi) >= 0.030159)    return false;
     if(sigmaIetaIeta >= 0.028237) return false;
@@ -257,6 +274,7 @@ bool TElectron::cutBasedLooseMay2015(){
   
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) >= 0.009833)    return false;
     if(fabs(dPhi) >= 0.149934)    return false;
     if(sigmaIetaIeta >= 0.031838)  return false;
@@ -290,6 +308,7 @@ bool TElectron::cutBasedTightApr2015(){
   }
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) >= 0.005681)    return false;
     if(fabs(dPhi) >= 0.032046)    return false;
     if(sigmaIetaIeta >= 0.028766) return false;
@@ -323,6 +342,7 @@ bool TElectron::cutBasedLooseApr2015(){
   
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) >= 0.010654)    return false;
     if(fabs(dPhi) >= 0.145129)    return false;
     if(sigmaIetaIeta >= 0.032602)  return false;
@@ -355,6 +375,7 @@ bool TElectron::CMSDASTight(){
   }
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) > 0.0106)    return false;
     if(fabs(dPhi) > 0.0359)    return false;
     if(sigmaIetaIeta > 0.0305) return false;
@@ -388,6 +409,7 @@ bool TElectron::CMSDASLoose(){
 
   //Endcap
   else{
+    if(fabs(eta)>2.4)           return false;
     if(fabs(dEta) > 0.0124)    return false;
     if(fabs(dPhi) > 0.0642)    return false;
     if(sigmaIetaIeta > 0.035)  return false;

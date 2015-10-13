@@ -9,12 +9,14 @@ TMuon::TMuon(double pttemp,double etatemp,double phitemp, double energytemp, int
 }
 bool TMuon::cutBasedLoose(){
   //  if (pt < 20)              return false;
+  if(fabs(eta)>2.4)          return false;
   if(!PFMuon)                return false;
   if(!(Tracker || Global))   return false;
   return true;
 }
 
 bool TMuon::cutBasedTight(){
+  if(fabs(eta)>2.4)         return false;
   if(!Global)               return false;
   if(!PFMuon)               return false;
   //  if (pt < 30)              return false;
