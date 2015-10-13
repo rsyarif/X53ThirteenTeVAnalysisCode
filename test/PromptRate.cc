@@ -141,11 +141,16 @@ int main(int argc, char* argv[]){
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
+
   //append everything to output file
   fout->Append(ptNumHist);
   fout->Append(ptDenHist);
   fout->Append(etaNumHist);
   fout->Append(etaDenHist);
+  fout->Append(ptNumHist_Aram);
+  fout->Append(ptDenHist_Aram);
+  fout->Append(etaNumHist_Aram);
+  fout->Append(etaDenHist_Aram);
   fout->Append(ptGraph);
   fout->Append(etaGraph);
   fout->Write();
@@ -230,31 +235,40 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 
 }
 
-std::vector<TLepton*> findBestPair(){
+std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLeptons*> probes){
+
+  std::vector<TLepton*> leps;
 
   //get pair of leptons closest to z mass;
   float zmass = 91.1;
   float massDiff=9999;
-  TLepton* lep1;
-  TLepton* lep2;
   float pairmass=-9999;
-  for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
-    //loop over remaining leptons
-    for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<leptons.size(); jlep++){
-	pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
+
+  int index = 0;
+  int dummy = 0;
+
+  for(std::vector<TLepton*>::size_type jlep=0; jlep<probes.size(); jlep++){
+	pairmass = (tag->lv + probes.at(jlep)->lv).M();
 	if(fabs(zmass-pairmass)<massDiff){
 	  massDiff = fabs(zmass-pairmass);
-	  lep1=leptons.at(ilep);
-	  lep2=leptons.at(jlep);
+	  index=dummy;
 	}
-    }//end second loop over leptons
-  }//end loop over leptons
+	//iterate dummy index
+	dummy++;
+    }//end loop over probes
+  
   
   //check that leptons are in Zpeak
   bool zpeak= massDiff<15 ? true : false;
+
+  TLepton* probe = probes.at(index);
   
-  if(!zpeak) continue;
+  if(zpeak){
+    leps.push_pack(tag);leps.push_back(probe);
+  }
   
+  return leps;
+
 }
 
 TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool Muons,bool mc,bool FiftyNs,std::string ID){
