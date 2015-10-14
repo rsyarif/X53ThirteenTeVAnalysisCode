@@ -8,7 +8,7 @@ TreeReader::TreeReader(const TString &filename,bool mc)
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
   isMc=mc;
   Init(treetemp);
-
+  delete f;
 }
 
 TreeReader::TreeReader(TTree *treetemp,bool mc)
@@ -25,6 +25,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i = 0;i<allMuons.size();++i ) delete allMuons[i];
   for (unsigned int i = 0;i<allElectrons.size();++i ) delete allElectrons[i];
   for (unsigned int i = 0;i<allAK4Jets.size();++i ) delete allAK4Jets[i];
+  for (unsigned int i = 0;i<cleanedAK4Jets.size();++i ) delete cleanedAK4Jets[i];
+  for (unsigned int i = 0;i<simpleCleanedAK4Jets.size();++i ) delete simpleCleanedAK4Jets[i];
   if(isMc){
     for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
     for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
@@ -128,7 +130,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->cutBasedLoose50ns()) loose50nsElectrons.push_back(allElectrons.at(iel));
   }
-  //std::cout<<"made all lepton collections"<<std::endl;
+
 
 
 
