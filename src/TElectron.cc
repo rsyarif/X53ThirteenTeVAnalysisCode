@@ -49,7 +49,7 @@ bool TElectron::mvaLoose(){
     if(mvaValue>0.337) return true;
   }
   //if none of the above conditions is met return false
-  else return false;
+  return false;
 }
 
 bool TElectron::mvaTight(){
@@ -64,7 +64,7 @@ bool TElectron::mvaTight(){
     if(mvaValue>0.683) return true;
   }
   //if none of the above conditions is met return false
-  else return false;
+  return false;
 }
 
 bool TElectron::mvaTightIso(){
