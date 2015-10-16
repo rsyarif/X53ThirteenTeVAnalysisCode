@@ -23,14 +23,14 @@ int main(int argc, char* argv[]){
 
   //example usage: ./FakeRate.o Data Electrons
 
-  if(argc!=3){
-    std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option as well as electrons or muons"<<std::endl;
+  if(argc!=4){
+    std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option as well as electrons or muons and the ID used"<<std::endl;
     return 0;
   }
 
   std::string argv1 = argv[1];
   std::string argv2 = argv[2];
-
+  std::string ID = argv[3];
   if(argv1.find("Data")==std::string::npos && argv1.find("MC")==std::string::npos){
     std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option"<<std::endl;
     return 0;
@@ -48,30 +48,30 @@ int main(int argc, char* argv[]){
   //make output file
   std::vector<std::string> outname;
   if(data){
-    if(MuonChannel) outname.push_back("FakeRate_Data_Muons.root");
-    else outname.push_back("FakeRate_Data_Electrons.root");
+    if(MuonChannel) outname.push_back("FakeRate_Data_Muons_"+ID+".root");
+    else outname.push_back("FakeRate_Data_Electrons_"+ID+".root");
   }
 
   else{
     if(MuonChannel){
-      outname.push_back("FakeRate_MC_Muons_HT100To200.root");
-      outname.push_back("FakeRate_MC_Muons_HT200To300.root");
-      outname.push_back("FakeRate_MC_Muons_HT300To500.root");
-      outname.push_back("FakeRate_MC_Muons_HT500To700.root");
-      outname.push_back("FakeRate_MC_Muons_HT700To1000.root");
-      outname.push_back("FakeRate_MC_Muons_HT1000To1500.root");
-      outname.push_back("FakeRate_MC_Muons_HT1500To2000.root");
-      outname.push_back("FakeRate_MC_Muons_HT2000ToInf.root");
+      //outname.push_back("FakeRate_MC_Muons_HT100To200_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Muons_HT200To300_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Muons_HT300To500_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Muons_HT500To700_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Muons_HT700To1000_"+ID+".root");
+      outname.push_back("FakeRate_MC_Muons_HT1000To1500_"+ID+".root");
+      //      outname.push_back("FakeRate_MC_Muons_HT1500To2000_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Muons_HT2000ToInf_"+ID+".root");
     }
     else{
-      outname.push_back("FakeRate_MC_Electrons_HT100To200.root");
-      outname.push_back("FakeRate_MC_Electrons_HT200To300.root");
-      outname.push_back("FakeRate_MC_Electrons_HT300To500.root");
-      outname.push_back("FakeRate_MC_Electrons_HT500To700.root");
-      outname.push_back("FakeRate_MC_Electrons_HT700To1000.root");
-      outname.push_back("FakeRate_MC_Electrons_HT1000To1500.root");
-      outname.push_back("FakeRate_MC_Electrons_HT1500To2000.root");
-      outname.push_back("FakeRate_MC_Electrons_HT2000ToInf.root");
+      //outname.push_back("FakeRate_MC_Electrons_HT100To200_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT200To300_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT300To500_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT500To700_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT700To1000_"+ID+".root");
+      outname.push_back("FakeRate_MC_Electrons_HT1000To1500_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT1500To2000_"+ID+".root");
+      //outname.push_back("FakeRate_MC_Electrons_HT2000ToInf_"+ID+".root");
     }
   }
 
@@ -85,14 +85,14 @@ int main(int argc, char* argv[]){
     else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015B/FakeRateTrees/ljmet_trees/ljmet_FakeRate_El.root");
   }
   else{
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT100To200.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT200To300.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT300To500.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT500To700.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT700To1000.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT1000To1500.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT1500To2000.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct08/FakeRate/ljmet_trees/ljmet_tree_QCDHT2000ToInf.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT100To200.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT200To300.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT300To500.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT500To700.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT700To1000.root");
+    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT1000To1500.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT1500To2000.root");
+    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT2000ToInf.root");
   }
 
   for(unsigned int i =0; i<filenames.size(); i++){
@@ -115,7 +115,7 @@ int main(int argc, char* argv[]){
       
       tr->GetEntry(ient);
       
-      if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+      if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
       
       //make vector of leptons
       std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel, ID);
@@ -150,7 +150,11 @@ int main(int argc, char* argv[]){
       //Now just fill histograms
       etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
       if(lep->Tight){etaNumHist->Fill(lep->eta);ptNumHist->Fill(lep->pt);}
-	
+      //delete lep and leptons
+      for(std::vector<TLepton*>::size_type j=0; j<leptons.size(); j++){
+	delete leptons[j];
+      }
+      leptons.clear();
     }//end event loop
     
     fout->Append(ptNumHist);
@@ -165,6 +169,10 @@ int main(int argc, char* argv[]){
     fout->Append(etagraph);
     fout->Write();
     fout->Close();
+
+    //delete tree reader to free up space
+    delete tr;
+
   }//end loop over filenames
 }
 
@@ -224,6 +232,23 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
 	iLep->Tight=iel->mvaLoose();
 	iLep->Loose=true;
       }
+      else if(ID=="MVATightCC"){
+	iLep->Tight=iel->mvaTightCCIso();
+	iLep->Loose=iel->mvaLooseCCIso();
+      }
+      else if(ID=="MVATightCCNoIso"){
+	iLep->Tight=iel->mvaTightCC();
+	iLep->Loose=iel->mvaLooseCC();
+      }
+      else if(ID=="MVALooseCC"){
+	iLep->Tight=iel->mvaLooseCCIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseCCNoIso"){
+	iLep->Tight=iel->mvaLooseCC();
+	iLep->Loose=true;
+      }
+
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if at least loose

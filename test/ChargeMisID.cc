@@ -14,32 +14,33 @@
 #include "../plugins/Macros.cc"
 
 //helper functions
-std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs);
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs, std::string ID);
 
 //A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
 
 int main(int argc, char* argv[]){
 
-  if(argc!=3){
-    std::cout<<"Need to specify whether running on Data or MC and whether 25 or 50ns. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data 50ns \n"
-	     <<"./ChargeMisID.o Data 25ns \n"
-	     <<"./ChargeMisID.o MC 50ns \n"
-	     <<"./ChargeMisID.o MC 25ns \n";
+  if(argc!=4){
+    std::cout<<"Need to specify whether running on Data or MC and whether 25 or 50ns as well as the ID. The four possible ways of running are\n"
+	     <<"./ChargeMisID.o Data 50ns ID \n"
+	     <<"./ChargeMisID.o Data 25ns ID \n"
+	     <<"./ChargeMisID.o MC 50ns ID \n"
+	     <<"./ChargeMisID.o MC 25ns ID \n";
     return 0;
   }
 
   std::string argv1 = argv[1];
   std::string argv2 = argv[2];
+  std::string ID = argv[3];
 
   bool correctusage=false;
-  if(argc==3 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("25ns")!=std::string::npos || argv2.find("50ns")!=std::string::npos) ) correctusage=true;
+  if(argc==4 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("25ns")!=std::string::npos || argv2.find("50ns")!=std::string::npos) ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data 50ns \n"
-	     <<"./ChargeMisID.o Data 25ns \n"
-	     <<"./ChargeMisID.o MC 50ns \n"
-	     <<"./ChargeMisID.o MC 25ns \n";
+	     <<"./ChargeMisID.o Data 50ns ID \n"
+	     <<"./ChargeMisID.o Data 25ns ID \n"
+	     <<"./ChargeMisID.o MC 50ns ID \n"
+	     <<"./ChargeMisID.o MC 25ns ID \n";
     return 0;
   }
 
@@ -49,9 +50,9 @@ int main(int argc, char* argv[]){
   bool FiftyNS;
 
   if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
-  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Data/25ns/ljmet_tree_data.root"; data=true; FiftyNS=false;}
+  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -62,8 +63,8 @@ int main(int argc, char* argv[]){
 
   //make filename for output root file
   std::string outname;
-  if(data)outname="ChargeMisID_Data_Run2015B_Electrons.root"; 
-  else outname="ChargeMisID_MC_Electrons.root"; 
+  if(data)outname="ChargeMisID_Data_Run2015D_Electrons_"+ID+".root"; 
+  else outname="ChargeMisID_MC_Electrons_"+ID+".root"; 
 
 
   //open output file
@@ -95,7 +96,7 @@ int main(int argc, char* argv[]){
     }
 
     //make vector of leptons
-    std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons,!data,FiftyNS);
+    std::vector<TLepton*> leptons = makeLeptons(tr->allElectrons,!data,FiftyNS,ID);
 
     //skip if didn't find at least two tight leptons
     if(leptons.size()<2) continue;
@@ -187,7 +188,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs){
+std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs, std::string ID){
 
   std::vector<TLepton*> Leptons;
 
@@ -195,20 +196,47 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
     TElectron* iel = electrons.at(uiel);
     TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
-    if(mc){
-      if(FiftyNs){
-	iLep->Tight=iel->cutBasedTight();
-	iLep->Loose=iel->cutBasedLoose();
-      }
-      else{
-	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
-	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
-      }
+
+    if(ID=="CBTight"){
+      iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+      iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
     }
-    else{
-      iLep->Tight=iel->cutBasedTight();
-      iLep->Loose=iel->cutBasedLoose();
+    else if(ID=="CBLoose"){
+      iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
+      iLep->Loose=true;
     }
+    else if(ID=="MVATight"){
+      iLep->Tight=iel->mvaTightIso();
+      iLep->Loose=iel->mvaLooseIso();
+    }
+    else if(ID=="MVATightNoIso"){
+      iLep->Tight=iel->mvaTight();
+      iLep->Loose=iel->mvaLoose();
+    }
+    else if(ID=="MVALoose"){
+      iLep->Tight=iel->mvaLooseIso();
+      iLep->Loose=true;
+    }
+    else if(ID=="MVALooseNoIso"){
+      iLep->Tight=iel->mvaLoose();
+      iLep->Loose=true;
+    }
+    else if(ID=="MVATightCC"){
+      iLep->Tight=iel->mvaTightCCIso();
+      iLep->Loose=iel->mvaLooseCCIso();
+    }
+    else if(ID=="MVATightCCNoIso"){
+      iLep->Tight=iel->mvaTightCC();
+      iLep->Loose=iel->mvaLooseCC();
+    }
+    else if(ID=="MVALooseCC"){
+      iLep->Tight=iel->mvaLooseCCIso();
+      iLep->Loose=true;
+    }
+    else if(ID=="MVALooseNoIso"){
+      iLep->Tight=iel->mvaLoose();
+      iLep->Loose=true;
+    }  
     iLep->isMu = false;
     iLep->isEl = true;
     //only save if tight
