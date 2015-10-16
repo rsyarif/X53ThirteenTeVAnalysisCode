@@ -1,11 +1,8 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),
-  gsfCharge(gsfCharget),
-  ctfCharge(ctfCharget),
-  scpixCharge(scpixCharget),
   dEta(dEtatemp),
   dPhi(dPhitemp),
   dZ(dZtemp),
@@ -36,7 +33,9 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   else if(fabs(eta)<2.4) AEff=0.2243;
   else if(fabs(eta)<2.5) AEff=0.2687;
 
-
+  gsfCharge = charge;
+  ctfCharge = charge;
+  scpixCharge = charge;
   relIsoDB = (chIso + std::max(0.0, neutIso + photIso - 0.5*puIso) ) / pt;
   relIsoEA = (chIso + std::max(0.0, neutIso + photIso - AEff*rhoIso) ) / pt; 
 }

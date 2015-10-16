@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 
   std::string filename;
   if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
+  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
 
   //load in tree reader
   TreeReader* tr = new TreeReader(filename.c_str(),!data);
