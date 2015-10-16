@@ -13,3 +13,5 @@ TJet::TJet(const TJet &jet){
   energy=jet.energy;
   setLV();
 }
+
+TJet::~TJet(){}

@@ -15,7 +15,7 @@ class TJet{
   double energy;
 
   TJet(const TJet& jet);
-
+  ~TJet();
   TLorentzVector lv;
 
   void setLV(){

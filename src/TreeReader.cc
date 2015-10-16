@@ -261,7 +261,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
   tree->SetBranchAddress("elCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);
   tree->SetBranchAddress("elGsfCharge_DileptonCalc", &elGsfCharge, &b_elGsfCharge_DileptonCalc);
-  tree->SetBranchAddress("elCtfCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);
+  tree->SetBranchAddress("elCtfCharge_DileptonCalc", &elCtfCharge, &b_elCtfCharge_DileptonCalc);
   tree->SetBranchAddress("elScPixCharge_DileptonCalc", &elScpixCharge, &b_elScpixCharge_DileptonCalc);
   tree->SetBranchAddress("elIsEBEE_DileptonCalc", &elIsEBEE, &b_elIsEBEE_DileptonCalc);
   tree->SetBranchAddress("elMHits_DileptonCalc", &elMHits, &b_elMHits_DileptonCalc);

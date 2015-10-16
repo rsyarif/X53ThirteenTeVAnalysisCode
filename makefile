@@ -11,11 +11,11 @@ ROOTLIBS      = $(shell root-config --libs)
 # Linux with egcs                                                                                                                                                                                                  
 DEFINES       = -DNO_ORCA_CLASSES
 CXX           = g++
-CXXFLAGS        = -O -Wall -fPIC $(DEFINES)
+CXXFLAGS        = -O -Wall -fPIC $(DEFINES) -g -DDEBUG
 
 
 LD              = g++
-LDFLAGS         = -g -O -Wall -fPIC
+LDFLAGS         = -g -O -Wall -fPIC -DDEBUG
 SOFLAGS         = -shared
 
 CXXFLAGS        += $(ROOTCFLAGS)
