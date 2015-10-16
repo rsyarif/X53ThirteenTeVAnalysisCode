@@ -40,6 +40,9 @@ public:
   bool mvaTight();
   bool mvaLoose();
 
+  bool mvaTightIso();
+  bool mvaLooseIso();
+
   bool cutBasedTight50ns();
   bool cutBasedLoose50ns();
   bool cutBasedTight25nsSpring15MC();
