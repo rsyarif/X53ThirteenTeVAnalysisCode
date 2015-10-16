@@ -58,7 +58,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i], (*elMVA)[i], (*elMiniIso)[i]) );
   }
 
   //make all muons
@@ -193,6 +193,9 @@ void TreeReader::Init(TTree *treetemp)
   elSihih = 0;
   elChargeConsistent = 0;
   elCharge = 0;
+  elGsfCharge = 0;
+  elCtfCharge = 0;
+  elScPixCharge = 0;
   elIsEBEE = 0;
   elMHits = 0;
   elPassConversionVeto = 0;
@@ -255,6 +258,9 @@ void TreeReader::Init(TTree *treetemp)
   //Electrons                                                                                                                                                                                                     
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
   tree->SetBranchAddress("elCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);
+  tree->SetBranchAddress("elGsfCharge_DileptonCalc", &elGsfCharge, &b_elGsfCharge_DileptonCalc);
+  tree->SetBranchAddress("elCtfCharge_DileptonCalc", &elCtfCharge, &b_elCtfCharge_DileptonCalc);
+  tree->SetBranchAddress("elScPixCharge_DileptonCalc", &elScPixCharge, &b_elScPixCharge_DileptonCalc);
   tree->SetBranchAddress("elIsEBEE_DileptonCalc", &elIsEBEE, &b_elIsEBEE_DileptonCalc);
   tree->SetBranchAddress("elMHits_DileptonCalc", &elMHits, &b_elMHits_DileptonCalc);
   tree->SetBranchAddress("elVtxFitConv_DileptonCalc", &elPassConversionVeto, &b_elPassConversionVeto_DileptonCalc);

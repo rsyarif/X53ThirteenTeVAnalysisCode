@@ -60,6 +60,12 @@ class TreeReader{
   TBranch        *b_elChargeConsistent_DileptonCalc;
   std::vector<int>     *elCharge;
   TBranch        *b_elCharge_DileptonCalc;
+  std::vector<int>     *elGsfCharge;
+  TBranch        *b_elGsfCharge_DileptonCalc;
+  std::vector<int>     *elCtfCharge;
+  TBranch        *b_elCtfCharge_DileptonCalc;
+  std::vector<int>     *elScPixCharge;
+  TBranch        *b_elScPixCharge_DileptonCalc;
   std::vector<int>     *elIsEBEE;
   TBranch        *b_elIsEBEE_DileptonCalc;
   std::vector<int>     *elMHits;
