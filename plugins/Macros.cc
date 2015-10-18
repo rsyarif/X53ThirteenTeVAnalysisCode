@@ -615,4 +615,36 @@ float getPrate(TFile* f){
 }
 
 
+//functions to get weights for tight/loose method
+float getMuFakeRate(std::string ID){
 
+  if(ID=="CBTight") return 0.15;
+  else return 0.15;
+}
+
+float getMuPromptRate(std::string ID){
+
+  if(ID=="CBTight") return 0.90;
+  else return 0.90;
+		      
+}
+
+float getElFakeRate(std::string ID){
+
+  if(ID=="CBTight") return 0.15;
+  else if(ID=="MVATight") return 0.5;
+  else if(ID=="MVATightCC") return 0.5;
+  else if(ID=="SusyID") return 0.5;
+  else return 0.15;
+
+}
+
+float getElPromptRate(std::string ID){
+
+if(ID=="CBTight") return 0.15;
+  else if(ID=="MVATight") return 0.5;
+  else if(ID=="MVATightCC") return 0.5;
+  else if(ID=="SusyID") return 0.5;
+  else return 0.15;
+
+}  
