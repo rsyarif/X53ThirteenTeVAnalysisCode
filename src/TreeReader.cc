@@ -8,7 +8,7 @@ TreeReader::TreeReader(const TString &filename,bool mc)
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
   isMc=mc;
   Init(treetemp);
-
+  delete f;
 }
 
 TreeReader::TreeReader(TTree *treetemp,bool mc)
@@ -25,6 +25,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i = 0;i<allMuons.size();++i ) delete allMuons[i];
   for (unsigned int i = 0;i<allElectrons.size();++i ) delete allElectrons[i];
   for (unsigned int i = 0;i<allAK4Jets.size();++i ) delete allAK4Jets[i];
+  for (unsigned int i = 0;i<cleanedAK4Jets.size();++i ) delete cleanedAK4Jets[i];
+  for (unsigned int i = 0;i<simpleCleanedAK4Jets.size();++i ) delete simpleCleanedAK4Jets[i];
   if(isMc){
     for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
     for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
@@ -58,7 +60,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i], (*elMVA)[i], (*elMiniIso)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
+
   }
 
   //make all muons
@@ -128,7 +131,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
     if(allElectrons.at(iel)->cutBasedLoose50ns()) loose50nsElectrons.push_back(allElectrons.at(iel));
   }
-  //std::cout<<"made all lepton collections"<<std::endl;
+
 
 
 
@@ -196,6 +199,7 @@ void TreeReader::Init(TTree *treetemp)
   elGsfCharge = 0;
   elCtfCharge = 0;
   elScPixCharge = 0;
+
   elIsEBEE = 0;
   elMHits = 0;
   elPassConversionVeto = 0;

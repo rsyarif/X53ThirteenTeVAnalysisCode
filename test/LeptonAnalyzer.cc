@@ -36,13 +36,18 @@ int main(int argc, char* argv[]){
   std::string chirality(argv[2]);
   std::string mass(argv[3]);
 
+
   TString filename;
-  if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct06/ljmet_trees/ljmet_Data_All.root";
+
+  std::string filename;
+  if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
   else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
 
   //load in tree reader
-  TreeReader* tr = new TreeReader(filename,!data);
+  TreeReader* tr = new TreeReader(filename.c_str(),!data);
+
   TTree* t = tr->tree;
+
   int nEntries = t->GetEntries();
 
   //counter for number of loose muons
@@ -68,15 +73,59 @@ int main(int argc, char* argv[]){
   TH1F* hPtNumCBIDL_El = new TH1F("hPtNumCBIDL_El","p_{T} of cutBasedLoose Electrons",60,0,600);
   TH1F* hPtNumCBIDT_El = new TH1F("hPtNumCBIDT_El","p_{T} of cutBasedTight Electrons",60,0,600);
   TH1F* hPtNumMVAIDL_El = new TH1F("hPtNumMVAIDL_El","p_{T} of MVA Loose Electrons",60,0,600);
+  TH1F* hPtNumMVAIDL_CC_El = new TH1F("hPtNumMVAIDL_CC_El","p_{T} of MVA Loose CC Electrons",60,0,600);
   TH1F* hPtNumMVAIDT_El = new TH1F("hPtNumMVAIDT_El","p_{T} of MVA Tight Electrons",60,0,600);
+  TH1F* hPtNumMVAIDT_CC_El = new TH1F("hPtNumMVAIDT_CC_El","p_{T} of MVA Tight CC Electrons",60,0,600);
+
+  TH1F* hPtNumMVAIDLIso_El = new TH1F("hPtNumMVAIDLIso_El","p_{T} of MVA Loose + Iso Electrons",60,0,600);
+  TH1F* hPtNumMVAIDLIso_CC_El = new TH1F("hPtNumMVAIDLIso_CC_El","p_{T} of MVA Loose + Iso CC Electrons",60,0,600);
+  TH1F* hPtNumMVAIDTIso_El = new TH1F("hPtNumMVAIDTIso_El","p_{T} of MVA Tight + Iso Electrons",60,0,600);
+  TH1F* hPtNumMVAIDTIso_CC_El = new TH1F("hPtNumMVAIDTIso_CC_El","p_{T} of MVA Tight + Iso CC Electrons",60,0,600);
+
   TH1F* hPtDen_El = new TH1F("hPtDen_El","p_{T} of All Electrons",60,0,600);
 
   TH1F* hEtaNumCBIDL_El = new TH1F("hEtaNumCBIDL_El","#eta of cutBasedLoose Electrons",15,-3,3);
   TH1F* hEtaNumCBIDT_El = new TH1F("hEtaNumCBIDT_El","#eta of cutBasedTight Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDL_El = new TH1F("hEtaNumMVAIDL_El","#eta of mva Loose Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDL_CC_El = new TH1F("hEtaNumMVAIDL_CC_El","#eta of mva Loose CC Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDT_El = new TH1F("hEtaNumMVAIDT_El","#eta of mva Tight Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDT_CC_El = new TH1F("hEtaNumMVAIDT_CC_El","#eta of mva Tight CC Electrons",15,-3,3);
+
+  TH1F* hEtaNumMVAIDLIso_El = new TH1F("hEtaNumMVAIDLIso_El","#eta of mva Loose + Iso Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDLIso_CC_El = new TH1F("hEtaNumMVAIDLIso_CC_El","#eta of mva Loose + Iso CC Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDTIso_El = new TH1F("hEtaNumMVAIDTIso_El","#eta of mva Tight + Iso Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDTIso_CC_El = new TH1F("hEtaNumMVAIDTIso_CC_El","#eta of mva Tight + Iso CC Electrons",15,-3,3);
+
   TH1F* hEtaDen_El = new TH1F("hEtaDen_El","#eta of All Electrons",15,-3,3);
 
+  //histograms for charge checks
+  TH1F* h_relGsf_PtNum = new TH1F("h_relGsf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relGsf_PtDen = new TH1F("h_relGsf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_relCtf_PtNum = new TH1F("h_relCtf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relCtf_PtDen = new TH1F("h_relCtf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_relScPix_PtNum = new TH1F("h_relScPix_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relScPix_PtDen = new TH1F("h_relScPix_PtDen"," GSF relative agreement",60,0,600);
+
+  TH1F* h_relGsf_EtaNum = new TH1F("h_relGsf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relGsf_EtaDen = new TH1F("h_relGsf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_relCtf_EtaNum = new TH1F("h_relCtf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relCtf_EtaDen = new TH1F("h_relCtf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_relScPix_EtaNum = new TH1F("h_relScPix_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relScPix_EtaDen = new TH1F("h_relScPix_EtaDen"," GSF relative agreement",15,-3,3);
+
+  TH1F* h_accGsf_PtNum = new TH1F("h_accGsf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accGsf_PtDen = new TH1F("h_accGsf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_accCtf_PtNum = new TH1F("h_accCtf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accCtf_PtDen = new TH1F("h_accCtf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_accScPix_PtNum = new TH1F("h_accScPix_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accScPix_PtDen = new TH1F("h_accScPix_PtDen"," GSF relative agreement",60,0,600);
+
+  TH1F* h_accGsf_EtaNum = new TH1F("h_accGsf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accGsf_EtaDen = new TH1F("h_accGsf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_accCtf_EtaNum = new TH1F("h_accCtf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accCtf_EtaDen = new TH1F("h_accCtf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_accScPix_EtaNum = new TH1F("h_accScPix_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accScPix_EtaDen = new TH1F("h_accScPix_EtaDen"," GSF relative agreement",15,-3,3);
 
   //histograms for charge checks
   TH1F* h_relGsf_PtNum = new TH1F("h_relGsf_PtNum"," GSF relative agreement",60,0,600);
@@ -179,12 +228,46 @@ int main(int argc, char* argv[]){
 	  hPtNumMVAIDL_El->Fill(iel->pt);
 	  hEtaNumMVAIDL_El->Fill(iel->eta);
 	}
+	if(iel->mvaLoose() && !(iel->chargeConsistency <1)){
+	  hPtNumMVAIDL_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDL_CC_El->Fill(iel->eta);
+	}
+	//check if loose and fill numerator
+	if(iel->mvaLooseIso()){
+	  hPtNumMVAIDLIso_El->Fill(iel->pt);
+	  hEtaNumMVAIDLIso_El->Fill(iel->eta);
+	}
+	if(iel->mvaLooseIso() && !(iel->chargeConsistency <1)){
+	  hPtNumMVAIDLIso_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDLIso_CC_El->Fill(iel->eta);
+	}
+
 
 	//check if tight and fill numerator
 	if(iel->mvaTight()){
 	  hPtNumMVAIDT_El->Fill(iel->pt);
 	  hEtaNumMVAIDT_El->Fill(iel->eta);
 	}
+
+	//check if tight and fill numerator
+	if(iel->mvaTight() && !(iel->chargeConsistency<1)){
+	  hPtNumMVAIDT_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDT_CC_El->Fill(iel->eta);
+	}
+
+
+	//check if tight and fill numerator
+	if(iel->mvaTightIso()){
+	  hPtNumMVAIDTIso_El->Fill(iel->pt);
+	  hEtaNumMVAIDTIso_El->Fill(iel->eta);
+	}
+
+	//check if tight and fill numerator
+	if(iel->mvaTight() && !(iel->chargeConsistency<1)){
+	  hPtNumMVAIDTIso_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDTIso_CC_El->Fill(iel->eta);
+	}
+
 	//now do cut flow for electrons
 	if(fabs(iel->eta)<=1.479) doElCutFlow_Barrel(h_ElCutFlow_Barrel,iel);
 	else doElCutFlow_Endcap(h_ElCutFlow_Endcap,iel);
@@ -250,6 +333,7 @@ int main(int argc, char* argv[]){
       h_accScPix_EtaDen->Fill(iel->eta);
       if(gP->charge == iel->scpixCharge){ h_accScPix_PtNum->Fill(iel->pt); h_accScPix_EtaNum->Fill(iel->eta);}
 
+      
     }//end loop over electrons
 
 
@@ -262,9 +346,9 @@ int main(int argc, char* argv[]){
 
   //write out bin labels
   h_MuCutFlow->GetXaxis()->SetBinLabel(1,"All");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(2,"Global");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(3,"p_{T} > 30");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(4,"#eta <2.4");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(3,"#eta <2.4");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(4,"Global");
   h_MuCutFlow->GetXaxis()->SetBinLabel(5,"#Chi^{2}<10");
   h_MuCutFlow->GetXaxis()->SetBinLabel(6,"dZ<0.5");
   h_MuCutFlow->GetXaxis()->SetBinLabel(7,"dXY <0.2");
@@ -272,12 +356,42 @@ int main(int argc, char* argv[]){
   h_MuCutFlow->GetXaxis()->SetBinLabel(9,"nMatched Stations >1");
   h_MuCutFlow->GetXaxis()->SetBinLabel(10,"nValPixHits > 0");
   h_MuCutFlow->GetXaxis()->SetBinLabel(11,"nTrackLayers > 5");
-  h_MuCutFlow->GetXaxis()->SetBinLabel(12,"RelIso <0.06");
+  h_MuCutFlow->GetXaxis()->SetBinLabel(12,"RelIso <0.2");
   h_MuCutFlow->GetXaxis()->SetBinLabel(13,"p_{T} > 40 ");
 
   //bin labels for electrons
   h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(1,"All");
-  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(1,"All");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(3,"#eta < 2.4");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(4,"sigmaIetaIeta < 0.0101");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(5,"dEta < 0.00926");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(6,"dPhi<0.0336");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(7,"H/E<0.0597");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(8,"1/E - 1/P < 0.012");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(9,"d0 < 0.0111");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(10,"dZ < 0.0466");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(11,"mHits <= 2");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(12,"conversionVeto");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(13,"relIso < 0.0354");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(14,"chargeConsistent");
+  h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(15,"p_{T} > 40");
+  //endcap
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(1,"All");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(3,"#eta < 2.4");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(4,"sigmaIetaIeta < 0.0279");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(5,"dEta < 0.00724");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(6,"dPhi < 0.0918");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(7,"H/E < 0.0615");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(8,"1/E - 1/P < 0.00999");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(9,"d0 < 0.0351");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(10,"dZ < 0.417");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(11,"mHits <= 1");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(12,"conversionVeto");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(13,"relIso < 0.0646");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(14,"chargeConsistent");
+  h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(15,"p_{T} > 40");
+
 
   //print out efficiency
   std::cout<<"Efficiency for >30 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(12)<<std::endl;
@@ -304,8 +418,22 @@ int main(int argc, char* argv[]){
   fout->Append(hEtaNumCBIDT_El);
   fout->Append(hPtNumMVAIDL_El);
   fout->Append(hEtaNumMVAIDL_El);
+  fout->Append(hPtNumMVAIDL_CC_El);
+  fout->Append(hEtaNumMVAIDL_CC_El);
   fout->Append(hPtNumMVAIDT_El);
   fout->Append(hEtaNumMVAIDT_El);
+  fout->Append(hPtNumMVAIDT_CC_El);
+  fout->Append(hEtaNumMVAIDT_CC_El);
+
+  fout->Append(hPtNumMVAIDLIso_El);
+  fout->Append(hEtaNumMVAIDLIso_El);
+  fout->Append(hPtNumMVAIDLIso_CC_El);
+  fout->Append(hEtaNumMVAIDLIso_CC_El);
+  fout->Append(hPtNumMVAIDTIso_El);
+  fout->Append(hEtaNumMVAIDTIso_El);
+  fout->Append(hPtNumMVAIDTIso_CC_El);
+  fout->Append(hEtaNumMVAIDTIso_CC_El);
+
   fout->Append(hPtDen_El);
   fout->Append(hEtaDen_El);*/
   std::cout<<"finished appending"<<std::endl;
@@ -322,65 +450,30 @@ void doMuCutFlow(TH1F*& hist, TMuon* mu){
   //increment first bin so that it represents 'null' cut
   hist->AddBinContent(1);
 
-  if(mu->Global) {
-    hist->AddBinContent(2);
-  }
-  else return;
-
-  if(mu->pt>30) {
-    hist->AddBinContent(3);
-  }
-  else return;
-
-  if(mu->eta<2.4){
-    hist->AddBinContent(4) ;
-  }  
-  else return;
-
-  if(mu->chi2 < 10) {
-    hist->AddBinContent(5);
-  }
-  else return;
-  
-  if(mu->dz<0.5) {
-    hist->AddBinContent(6);
-  }
-  else return;
-
-  if(mu->dxy<0.2) {
-    hist->AddBinContent(7);
-  }
-  else return;
-
-  if(mu->nValMuHits > 0 ) {
-    hist->AddBinContent(8);
-  }
-  else return;
-
-  if(mu->nMatchedStations>1) {
-    hist->AddBinContent(9);
-  }
-  else return;
-
-  if(mu->nValPixelHits > 0) {
-    hist->AddBinContent(10);
-  }
-  else return;
-
-  if(mu->nTrackerLayers>5) {
-    hist->AddBinContent(11);
-  }
-  else return;
-
-  if(mu->relIso>0.06) {
-    hist->AddBinContent(12);
-  }
-  else return;
-
-  if(mu->pt>40) {
-    hist->AddBinContent(13);
-  }
-
+  if(mu->pt<30)                return;
+  else hist->AddBinContent(2);
+  if(mu->eta>2.4)              return;
+  else hist->AddBinContent(3);
+  if(!mu->Global)              return;
+  else hist->AddBinContent(4);
+  if(mu->chi2 > 10)            return;
+  else hist->AddBinContent(5);
+  if(mu->dz > 0.5)             return;
+  else hist->AddBinContent(6);
+  if(mu->dxy > 0.2)            return;
+  else hist->AddBinContent(7);
+  if(mu->nValMuHits < 1)       return;
+  else hist->AddBinContent(8);
+  if(mu->nMatchedStations < 2) return;
+  else hist->AddBinContent(9);
+  if(mu->nValPixelHits < 1)    return;
+  else hist->AddBinContent(10);
+  if(mu->nTrackerLayers < 6)   return;
+  else hist->AddBinContent(11);
+  if(mu->relIso > 0.2)         return;
+  else hist->AddBinContent(12);
+  if(mu->pt<40)                return;
+  else hist->AddBinContent(13);
 }
 
 void doElCutFlow_Barrel(TH1F*& hist, TElectron* el){
@@ -391,19 +484,19 @@ void doElCutFlow_Barrel(TH1F*& hist, TElectron* el){
   if(el->pt<30) return;
   else hist->AddBinContent(2);
 
-  if(el->sigmaIetaIeta >= 0.0101)  return;
+  if(el->eta>2.4) return;
   else hist->AddBinContent(3);
 
-  if(fabs(el->dEta) >= 0.00926)    return;
+  if(el->sigmaIetaIeta >= 0.0101)  return;
   else hist->AddBinContent(4);
 
-  if(fabs(el->dPhi) >= 0.0336)     return;
+  if(fabs(el->dEta) >= 0.00926)    return;
   else hist->AddBinContent(5);
 
-  if(el->hOverE >= 0.0597)         return;
+  if(fabs(el->dPhi) >= 0.0336)     return;
   else hist->AddBinContent(6);
 
-  if(el->relIsoEA > 0.0354)        return;
+  if(el->hOverE >= 0.0597)         return;
   else hist->AddBinContent(7);
 
   if(el->ooEmooP >= 0.012)         return;
@@ -421,11 +514,14 @@ void doElCutFlow_Barrel(TH1F*& hist, TElectron* el){
   if(!el->passConversion)          return;
   else hist->AddBinContent(12);
 
-  if(el->chargeConsistency < 1)    return;
+  if(el->relIsoEA > 0.0354)        return;
   else hist->AddBinContent(13);
 
-  if(el->pt<40)                   return;
+  if(el->chargeConsistency < 1)    return;
   else hist->AddBinContent(14);
+
+  if(el->pt<40)                   return;
+  else hist->AddBinContent(15);
 }
 
 void doElCutFlow_Endcap(TH1F*& hist, TElectron* el){
@@ -436,19 +532,19 @@ void doElCutFlow_Endcap(TH1F*& hist, TElectron* el){
   if(el->pt<30) return;
   else hist->AddBinContent(2);
 
-  if(el->sigmaIetaIeta >= 0.0279)  return;
-  else  hist->AddBinContent(3);
+  if(el->eta>2.4) return;
+  else hist->AddBinContent(3);
 
-  if(fabs(el->dEta) >= 0.00724)    return;
+  if(el->sigmaIetaIeta >= 0.0279)  return;
   else  hist->AddBinContent(4);
 
-  if(fabs(el->dPhi) >= 0.0918)     return;
+  if(fabs(el->dEta) >= 0.00724)    return;
   else  hist->AddBinContent(5);
 
-  if(el->hOverE >= 0.0615)         return;
+  if(fabs(el->dPhi) >= 0.0918)     return;
   else  hist->AddBinContent(6);
 
-  if(el->relIsoEA >= 0.0646)       return; 
+  if(el->hOverE >= 0.0615)         return;
   else  hist->AddBinContent(7);
 
   if(el->ooEmooP >= 0.00999)       return;
@@ -466,11 +562,14 @@ void doElCutFlow_Endcap(TH1F*& hist, TElectron* el){
   if(!el->passConversion)          return;
   else  hist->AddBinContent(12);
 
-  if(el->chargeConsistency < 1)    return;
+  if(el->relIsoEA >= 0.0646)       return; 
   else  hist->AddBinContent(13);
 
+  if(el->chargeConsistency < 1)    return;
+  else  hist->AddBinContent(14);
+
   if(el->pt<40)                   return;
-  else hist->AddBinContent(14);
+  else hist->AddBinContent(15);;
 
 }
 
@@ -521,7 +620,9 @@ bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles){
     
 TGenParticle* getMatchedGenParticle(TElectron* el, std::vector<TGenParticle*> genParticles){
 
+
   TGenParticle* gp=0;
+
 
   float dR=999;
   //run through gen particle collection:

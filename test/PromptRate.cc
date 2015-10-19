@@ -254,6 +254,22 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Tight=iel->mvaLoose();
 	iLep->Loose=true;
       }
+      else if(ID=="MVATightCC"){
+	iLep->Tight=iel->mvaTightCCIso();
+	iLep->Loose=iel->mvaLooseCCIso();
+      }
+      else if(ID=="MVATightCCNoIso"){
+	iLep->Tight=iel->mvaTightCC();
+	iLep->Loose=iel->mvaLooseCC();
+      }
+      else if(ID=="MVALooseCC"){
+	iLep->Tight=iel->mvaLooseCCIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseNoIso"){
+	iLep->Tight=iel->mvaLoose();
+	iLep->Loose=true;
+      }
       
       iLep->isMu = false;
       iLep->isEl = true;
@@ -364,6 +380,22 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
 	iLep->Tight=iel->mvaLoose();
 	iLep->Loose=true;
       }
+      else if(ID=="MVATightCC"){
+	iLep->Tight=iel->mvaTightCCIso();
+	iLep->Loose=iel->mvaLooseCCIso();
+      }
+      else if(ID=="MVATightCCNoIso"){
+	iLep->Tight=iel->mvaTightCC();
+	iLep->Loose=iel->mvaLooseCC();
+      }
+      else if(ID=="MVALooseCC"){
+	iLep->Tight=iel->mvaLooseCCIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseCCNoIso"){
+	iLep->Tight=iel->mvaLooseCC();
+	iLep->Loose=true;
+      }
       
       iLep->isMu = false;
       iLep->isEl = true;
@@ -445,6 +477,22 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
       }
       else if(ID=="MVALooseNoIso"){
 	iLep->Tight=iel->mvaLoose();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVATightCC"){
+	iLep->Tight=iel->mvaTightCCIso();
+	iLep->Loose=iel->mvaLooseCCIso();
+      }
+      else if(ID=="MVATightCCNoIso"){
+	iLep->Tight=iel->mvaTightCC();
+	iLep->Loose=iel->mvaLooseCC();
+      }
+      else if(ID=="MVALooseCC"){
+	iLep->Tight=iel->mvaLooseCCIso();
+	iLep->Loose=true;
+      }
+      else if(ID=="MVALooseCCNoIso"){
+	iLep->Tight=iel->mvaLooseCC();
 	iLep->Loose=true;
       }
       

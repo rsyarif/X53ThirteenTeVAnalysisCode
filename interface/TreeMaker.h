@@ -24,6 +24,8 @@ class TreeMaker {
   //weight
   float weight_;
   int MCWeight_;
+  //non prompt weight from tight/loos method;
+  float NPWeight_;
 
   //variables for tree
   float Lep1Pt_;
@@ -92,10 +94,11 @@ class TreeMaker {
 
   int nMu_; //the number of same-sign dileptons which are muons acts as standin for channel
 
+
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight, float NpWeighttemp);
 
 };
 

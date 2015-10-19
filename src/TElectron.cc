@@ -1,8 +1,11 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, int gsftemp, int ctftemp, int scpixtemp, double mvatemp, double miniIsotemp):
-  TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),  
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
+  TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),
+  gsfCharge(gsfCharget),
+  ctfCharge(ctfCharget),
+  scpixCharge(scpixCharget),
   dEta(dEtatemp),
   dPhi(dPhitemp),
   dZ(dZtemp),
@@ -77,6 +80,30 @@ bool TElectron::mvaTightIso(){
 
 bool TElectron::mvaLooseIso(){
   bool pass = mvaLoose() && miniIso<0.1;
+  return pass;
+}
+
+bool TElectron::mvaLooseCC(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaLoose() && cc;
+  return pass;
+}
+
+bool TElectron::mvaTightCC(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaTight() && cc;
+  return pass;
+}
+
+bool TElectron::mvaLooseCCIso(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaLooseIso() && cc;
+  return pass;
+}
+
+bool TElectron::mvaTightCCIso(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaTightIso() && cc;
   return pass;
 }
 
