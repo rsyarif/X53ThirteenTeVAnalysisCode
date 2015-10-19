@@ -41,6 +41,8 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   relIsoEA = (chIso + std::max(0.0, neutIso + photIso - AEff*rhoIso) ) / pt; 
 }
 
+
+/// *********************** MVA IDs ************************
 bool TElectron::mvaLoose(){
   if(fabs(eta)<0.8){
     if(mvaValue>0.933) return true;
@@ -120,6 +122,90 @@ bool TElectron::mvaTightRCIso(){
   return pass;
 }
 
+///************** SUSY IDs*****************************
+//  THESE ARE INCOMPLETE BECAUSE OF MISSING SIP3D INFO!!!!!!!
+bool TElectron::susyTight(){
+
+  if(fabs(eta)<0.8){
+    if(mvaValue < 0.73) return false;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue < 0.57) return false;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvaValue < 0.05) return false;
+  }
+  else return false; //return false if electron above 2.4
+  
+  //now that it has survived mva value cuts apply other susy cuts
+  if(fabs(d0) < 0.05) return false;
+  if(fabs(dZ) < 0.1) return false;
+  if(!passConversion) return false;
+  if(mHits>0) return false;
+  if(chargeConsistency <1) return false;
+  if(miniIso <0.1) return false;
+  return true;
+
+}
+
+bool TElectron::susyLoose(){
+
+  if(fabs(eta)<0.8){
+    if(mvaValue < -0.11) return false;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue < -0.35) return false;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvaValue < -0.55) return false;
+  }
+  else return false; //return false if electron above 2.4
+  
+  //now that it has survived mva value cuts apply other susy cuts
+  if(fabs(d0) < 0.05) return false;
+  if(fabs(dZ) < 0.1) return false;
+  if(!passConversion) return false;
+  if(mHits>1) return false;
+  if(miniIso <0.4) return false;
+  return true;
+
+}
+
+bool TElectron::susyTightRC(){
+
+  if(fabs(eta)<0.8){
+    if(mvaValue < 0.73) return false;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue < 0.57) return false;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvaValue < 0.05) return false;
+  }
+  else return false; //return false if electron above 2.4
+  
+  //now that it has survived mva value cuts apply other susy cuts
+  if(fabs(d0) < 0.05) return false;
+  if(fabs(dZ) < 0.1) return false;
+  if(!passConversion) return false;
+  if(mHits>0) return false;
+  if(pt<100){
+    if(chargeConsistency <1) return false;
+  }
+  else{
+    if(gsfCharge!=ctfCharge) return false;
+  }
+  if(miniIso <0.1) return false;
+  return true;
+
+}
+
+bool TElectron::susyLooseRC(){
+  //right now just regular susy loose since it looks like they don't require charge consistency for loos leptons
+  return susyLoose();
+}
+
+/// ************ Cut Based IDs ************************
 bool TElectron::cutBasedTight50ns(){
   //Barrel
   if(fabs(eta) <= 1.479){

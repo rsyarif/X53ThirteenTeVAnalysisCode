@@ -54,6 +54,11 @@ public:
   bool mvaTightRCIso();
   bool mvaLooseRCIso();
 
+  //susy ids
+  bool susyTight();
+  bool susyLoose();
+  bool susyTightRC();
+  bool susyLooseRC();
 
   bool cutBasedTight50ns();
   bool cutBasedLoose50ns();
