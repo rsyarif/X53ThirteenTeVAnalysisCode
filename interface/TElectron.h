@@ -5,7 +5,7 @@
 
 class TElectron : public TLepton{
 public:
-  //cosntructor
+  //constructor
   TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double miniIsotemp);
   //varibles for charge
   int gsfCharge;
@@ -37,6 +37,10 @@ public:
   int passConversion;
   //charge consistency
   int    chargeConsistency;
+  int gsfCharge;
+  int ctfCharge;
+  int scpixCharge;
+
   // mvaID value and ID flags
   double mvaValue;
   double miniIso;
@@ -51,6 +55,9 @@ public:
   bool mvaTightCCIso();
   bool mvaLooseCCIso();
 
+
+  bool mvaTightIso();
+  bool mvaLooseIso();
 
   bool cutBasedTight50ns();
   bool cutBasedLoose50ns();
