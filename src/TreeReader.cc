@@ -8,7 +8,7 @@ TreeReader::TreeReader(const TString &filename,bool mc)
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
   isMc=mc;
   Init(treetemp);
-  delete f;
+  
 }
 
 TreeReader::TreeReader(TTree *treetemp,bool mc)
