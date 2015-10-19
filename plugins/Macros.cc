@@ -648,3 +648,48 @@ if(ID=="CBTight") return 0.15;
   else return 0.15;
 
 }  
+
+//method weights
+//same flavor
+float WeightSF_PP(float pr, float fr){
+  float weight= (pr*pr) / (pow( (pr -fr),2) );
+  return weight;
+}
+
+float WeightSF_PF(float pr, float fr){
+  float weight= (fr*pr) / (pow( (pr -fr),2) );
+  return weight;
+}
+
+float WeightSF_FF(float pr, float fr){
+  float weight= (fr*fr) / (pow( (pr -fr),2) );
+  return weight;
+}
+
+
+//opposite flavor
+float WeightOF_PP(float elpr, float elfr, float mupr, float mufr){
+  float weight = (1.0 / (elpr - elfr)) * (1.0 / (mupr - mufr));
+  weight = weight * elpr * mupr;
+  return weight;
+}
+
+float WeightOF_PF(float elpr, float elfr, float mupr, float mufr){
+
+  float weight = ( 1.0 / (elpr - elfr) ) * (1.0 / (mupr - mufr) );
+  weight = weight * elpr * mufr;
+  return weight;
+
+}
+
+float WeightOF_FP(float elpr, float elfr, float mupr, float mufr){
+  float weight = (1.0 / (elpr- elfr)) * (1.0 / (mupr-mufr));
+  weight = weight * elfr * mupr;
+  return weight;
+}
+
+float WeightOF_FF(float elpr, float elfr, float mupr, float mufr){
+  float weight = (1.0 / (elpr-elfr)) * (1.0/(mupr-mufr));
+  weight = weight*elfr*mufr;
+  return weight;
+}
