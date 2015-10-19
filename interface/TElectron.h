@@ -51,12 +51,16 @@ public:
   bool mvaLooseCC();
   bool mvaTightCCIso();
   bool mvaLooseCCIso();
+  bool mvaTightRCIso();
+  bool mvaLooseRCIso();
 
 
   bool cutBasedTight50ns();
   bool cutBasedLoose50ns();
   bool cutBasedTight25nsSpring15MC();
   bool cutBasedLoose25nsSpring15MC();
+  bool cutBasedTight25nsSpring15MCRC();
+  bool cutBasedLoose25nsSpring15MCRC();
   bool cutBasedTightMay2015();
   bool cutBasedLooseMay2015();
   bool cutBasedTightApr2015();
