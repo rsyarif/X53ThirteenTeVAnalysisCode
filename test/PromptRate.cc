@@ -396,7 +396,26 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
 	iLep->Tight=iel->mvaLooseCC();
 	iLep->Loose=true;
       }
-      
+      else if(ID=="MVATightRC"){
+	iLep->Tight=iel->mvaTightRCIso();
+	iLep->Loose=iel->mvaLooseRCIso();
+      }
+      else if(ID=="MVALooseRC"){
+	iLep->Tight=iel->mvaLooseRCIso();
+	iLep->Loose=iel->true;
+      }
+      else if(ID=="SUSYTight"){
+	iLep->Tight=iel->susyTight();
+	iLep->Loose=iel->susyLoose();
+      }
+      else if(ID=="SUSYLoose"){
+	iLep->Tight=iel->susyLoose();
+	iLep->Loose=true;
+      }
+      else if(ID=="SUSYTightRC"){
+	iLep->Tight=iel->susyTightRC();
+	iLep->Loose=iel->susyLooseRC();
+      }      
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if tight
@@ -495,6 +514,26 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
 	iLep->Tight=iel->mvaLooseCC();
 	iLep->Loose=true;
       }
+      else if(ID=="MVATightRC"){
+	iLep->Tight=iel->mvaTightRCIso();
+	iLep->Loose=iel->mvaLooseRCIso();
+      }
+      else if(ID=="MVALooseRC"){
+	iLep->Tight=iel->mvaLooseRCIso();
+	iLep->Loose=iel->true;
+      }
+      else if(ID=="SUSYTight"){
+	iLep->Tight=iel->susyTight();
+	iLep->Loose=iel->susyLoose();
+      }
+      else if(ID=="SUSYLoose"){
+	iLep->Tight=iel->susyLoose();
+	iLep->Loose=true;
+      }
+      else if(ID=="SUSYTightRC"){
+	iLep->Tight=iel->susyTightRC();
+	iLep->Loose=iel->susyLooseRC();
+      }      
       
       iLep->isMu = false;
       iLep->isEl = true;
