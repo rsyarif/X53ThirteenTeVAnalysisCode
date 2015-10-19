@@ -37,9 +37,6 @@ public:
   int passConversion;
   //charge consistency
   int    chargeConsistency;
-  int gsfCharge;
-  int ctfCharge;
-  int scpixCharge;
 
   // mvaID value and ID flags
   double mvaValue;
@@ -55,9 +52,6 @@ public:
   bool mvaTightCCIso();
   bool mvaLooseCCIso();
 
-
-  bool mvaTightIso();
-  bool mvaLooseIso();
 
   bool cutBasedTight50ns();
   bool cutBasedLoose50ns();

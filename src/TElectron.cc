@@ -22,9 +22,6 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   AEff(AEfftemp),
   passConversion(passConv),
   chargeConsistency(chargeconsistencytemp),
-  gsfCharge(gsftemp),
-  ctfCharge(ctftemp),
-  scpixCharge(scpixtemp),
   mvaValue(mvatemp),
   miniIso(miniIsotemp)
 {
