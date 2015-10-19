@@ -23,6 +23,7 @@ bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles);
 void doMuCutFlow(TH1F*& h, TMuon* mu);
 void doElCutFlow_Barrel(TH1F*& h, TElectron* el);
 void doElCutFlow_Endcap(TH1F*& h, TElectron* el);
+TGenParticle* getMatchedGenParticle(TElectron* el, std::vector<TGenParticle*> genParticles);
 
 int main(int argc, char* argv[]){
 
@@ -37,7 +38,7 @@ int main(int argc, char* argv[]){
 
   TString filename;
   if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct06/ljmet_trees/ljmet_Data_All.root";
-  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
+  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
 
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -76,6 +77,35 @@ int main(int argc, char* argv[]){
   TH1F* hEtaNumMVAIDT_El = new TH1F("hEtaNumMVAIDT_El","#eta of mva Tight Electrons",15,-3,3);
   TH1F* hEtaDen_El = new TH1F("hEtaDen_El","#eta of All Electrons",15,-3,3);
 
+
+  //histograms for charge checks
+  TH1F* h_relGsf_PtNum = new TH1F("h_relGsf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relGsf_PtDen = new TH1F("h_relGsf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_relCtf_PtNum = new TH1F("h_relCtf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relCtf_PtDen = new TH1F("h_relCtf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_relScPix_PtNum = new TH1F("h_relScPix_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_relScPix_PtDen = new TH1F("h_relScPix_PtDen"," GSF relative agreement",60,0,600);
+
+  TH1F* h_relGsf_EtaNum = new TH1F("h_relGsf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relGsf_EtaDen = new TH1F("h_relGsf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_relCtf_EtaNum = new TH1F("h_relCtf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relCtf_EtaDen = new TH1F("h_relCtf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_relScPix_EtaNum = new TH1F("h_relScPix_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_relScPix_EtaDen = new TH1F("h_relScPix_EtaDen"," GSF relative agreement",15,-3,3);
+
+  TH1F* h_accGsf_PtNum = new TH1F("h_accGsf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accGsf_PtDen = new TH1F("h_accGsf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_accCtf_PtNum = new TH1F("h_accCtf_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accCtf_PtDen = new TH1F("h_accCtf_PtDen"," GSF relative agreement",60,0,600);
+  TH1F* h_accScPix_PtNum = new TH1F("h_accScPix_PtNum"," GSF relative agreement",60,0,600);
+  TH1F* h_accScPix_PtDen = new TH1F("h_accScPix_PtDen"," GSF relative agreement",60,0,600);
+
+  TH1F* h_accGsf_EtaNum = new TH1F("h_accGsf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accGsf_EtaDen = new TH1F("h_accGsf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_accCtf_EtaNum = new TH1F("h_accCtf_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accCtf_EtaDen = new TH1F("h_accCtf_EtaDen"," GSF relative agreement",15,-3,3);
+  TH1F* h_accScPix_EtaNum = new TH1F("h_accScPix_EtaNum"," GSF relative agreement",15,-3,3);
+  TH1F* h_accScPix_EtaDen = new TH1F("h_accScPix_EtaDen"," GSF relative agreement",15,-3,3);
 
 
   //event loop
@@ -163,6 +193,66 @@ int main(int argc, char* argv[]){
 
     }// end el trig check
 
+    //now check charge info for electrons
+    for(std::vector<TLepton*>::size_type i =0; i<tr->allElectrons.size(); i++){
+
+      TElectron* iel = tr->allElectrons.at(i);
+
+      bool matched = matchToGenLep(iel,tr->genParticles);
+      if(!matched) continue;
+      //get gen particle matched to reco electron
+      TGenParticle* gP = getMatchedGenParticle(iel,tr->genParticles);
+
+      //make bools for majority agreement - i.e. 2 out of 3 methods
+      bool gsfctfCons = iel->gsfCharge==iel->ctfCharge ? true : false;
+      bool gsfscpixCons = iel->gsfCharge==iel->scpixCharge ? true : false;
+      bool ctfscpixCons = iel->ctfCharge==iel->scpixCharge ? true : false;
+
+
+      //get relative agreement of scpix charge
+      if(gsfctfCons){
+	h_relScPix_PtDen->Fill(iel->pt);
+	h_relScPix_EtaDen->Fill(iel->eta);
+	if(! (iel->chargeConsistency<1)){//if fully consistent means scpix charge agrees with other two
+	  h_relScPix_PtNum->Fill(iel->pt);
+	  h_relScPix_EtaNum->Fill(iel->eta);
+	}
+      }
+
+      //get relative agreement of ctf charge
+      if(gsfscpixCons){
+	h_relCtf_PtDen->Fill(iel->pt);
+	h_relCtf_EtaDen->Fill(iel->eta);
+	if(! (iel->chargeConsistency<1)){//if fully consistent means ctf charge agrees with other two
+	  h_relCtf_PtNum->Fill(iel->pt);
+	  h_relCtf_EtaNum->Fill(iel->eta);
+	}
+      }
+
+      //get relative agreement of gsf charge
+      if(ctfscpixCons){
+	h_relGsf_PtDen->Fill(iel->pt);
+	h_relGsf_EtaDen->Fill(iel->eta);
+	if(! (iel->chargeConsistency<1)){//if fully consistent means gsf charge agrees with other two
+	  h_relGsf_PtNum->Fill(iel->pt);
+	  h_relGsf_EtaNum->Fill(iel->eta);
+	}
+      }
+
+      //now check accuracy of each method
+      h_accGsf_PtDen->Fill(iel->pt);
+      h_accGsf_EtaDen->Fill(iel->eta);
+      if(gP->charge == iel->gsfCharge) {h_accGsf_PtNum->Fill(iel->pt);h_accGsf_EtaNum->Fill(iel->eta);}
+      h_accCtf_PtDen->Fill(iel->pt);
+      h_accCtf_EtaDen->Fill(iel->eta);
+      if(gP->charge == iel->ctfCharge){ h_accCtf_PtNum->Fill(iel->pt); h_accCtf_EtaNum->Fill(iel->eta);}
+      h_accScPix_PtDen->Fill(iel->pt);
+      h_accScPix_EtaDen->Fill(iel->eta);
+      if(gP->charge == iel->scpixCharge){ h_accScPix_PtNum->Fill(iel->pt); h_accScPix_EtaNum->Fill(iel->eta);}
+
+    }//end loop over electrons
+
+
   }//end event loop
   
   //scale cutflow diagrams
@@ -200,7 +290,7 @@ int main(int argc, char* argv[]){
 
   fout->cd();
   //append muon histograms
-  fout->Append(h_MuCutFlow);
+  /*  fout->Append(h_MuCutFlow);
   fout->Append(hPtNum_Mu);
   fout->Append(hPtDen_Mu);
   fout->Append(hEtaNum_Mu);
@@ -217,7 +307,7 @@ int main(int argc, char* argv[]){
   fout->Append(hPtNumMVAIDT_El);
   fout->Append(hEtaNumMVAIDT_El);
   fout->Append(hPtDen_El);
-  fout->Append(hEtaDen_El);
+  fout->Append(hEtaDen_El);*/
   std::cout<<"finished appending"<<std::endl;
   fout->Write();
   std::cout<<"wrote file"<<std::endl;
@@ -429,3 +519,24 @@ bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles){
   
 }
     
+TGenParticle* getMatchedGenParticle(TElectron* el, std::vector<TGenParticle*> genParticles){
+
+  TGenParticle* gp=0;
+
+  float dR=999;
+  //run through gen particle collection:
+  for(unsigned int igen=0; igen<genParticles.size(); igen++){
+    TGenParticle* genParticle = genParticles.at(igen);
+    //only run over electrons from hard scattering
+    if( ! (fabs(genParticle->id)==11) ) continue;
+    if( ! (genParticle->status==23 || genParticle->status==1) ) continue;
+
+    float drtemp = pow( pow( el->eta - genParticle->eta, 2 ) + pow( el->phi - genParticle->phi, 2), 0.5);
+    if(drtemp < dR){
+      dR = drtemp;
+      gp=genParticle;
+    }
+  }
+
+  return gp;
+}
