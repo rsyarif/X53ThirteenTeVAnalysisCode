@@ -243,15 +243,15 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
     }
     else if(ID=="MVALooseRC"){
       iLep->Tight=iel->mvaLooseRCIso();
-      iLep->Loose=iel->true;
+      iLep->Loose=true;
     }
     else if(ID=="SUSYTight"){
       iLep->Tight=iel->susyTight();
       iLep->Loose=iel->susyLoose();
     }
     else if(ID=="SUSYLoose"){
-      iLep->Tight=iel->susyLoose();
-      iLep->Loose=true;
+	iLep->Tight=iel->susyLoose();
+	iLep->Loose=true;
     }
     else if(ID=="SUSYTightRC"){
       iLep->Tight=iel->susyTightRC();

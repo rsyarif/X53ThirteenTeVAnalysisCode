@@ -402,7 +402,7 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
       }
       else if(ID=="MVALooseRC"){
 	iLep->Tight=iel->mvaLooseRCIso();
-	iLep->Loose=iel->true;
+	iLep->Loose=true;
       }
       else if(ID=="SUSYTight"){
 	iLep->Tight=iel->susyTight();
@@ -520,7 +520,7 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
       }
       else if(ID=="MVALooseRC"){
 	iLep->Tight=iel->mvaLooseRCIso();
-	iLep->Loose=iel->true;
+	iLep->Loose=true;
       }
       else if(ID=="SUSYTight"){
 	iLep->Tight=iel->susyTight();
