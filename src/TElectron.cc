@@ -94,6 +94,22 @@ bool TElectron::mvaTightCC(){
   return pass;
 }
 
+bool TElectron::mvaLooseRC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaLoose() && cc;
+  return pass;
+}
+
+bool TElectron::mvaTightRC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaTight() && cc;
+  return pass;
+}
+
 bool TElectron::mvaLooseCCIso(){
   bool cc = chargeConsistency< 1 ? false : true;
   bool pass = mvaLooseIso() && cc;
@@ -135,15 +151,15 @@ bool TElectron::susyTight(){
   else if(fabs(eta)<2.4){
     if(mvaValue < 0.05) return false;
   }
-  else return false; //return false if electron above 2.4
+  else if(fabs(eta)>2.4) return false; //return false if electron above 2.4
   
   //now that it has survived mva value cuts apply other susy cuts
-  if(fabs(d0) < 0.05) return false;
-  if(fabs(dZ) < 0.1) return false;
+  if(fabs(d0) > 0.05) return false;
+  if(fabs(dZ) > 0.1) return false;
   if(!passConversion) return false;
   if(mHits>0) return false;
   if(chargeConsistency <1) return false;
-  if(miniIso <0.1) return false;
+  if(miniIso >0.1) return false;
   return true;
 
 }
@@ -159,14 +175,14 @@ bool TElectron::susyLoose(){
   else if(fabs(eta)<2.4){
     if(mvaValue < -0.55) return false;
   }
-  else return false; //return false if electron above 2.4
-  
+  else if(fabs(eta)>2.4) return false; //return false if electron above 2.4
   //now that it has survived mva value cuts apply other susy cuts
-  if(fabs(d0) < 0.05) return false;
-  if(fabs(dZ) < 0.1) return false;
+  if(fabs(d0) > 0.05) return false;
+  if(fabs(dZ) > 0.1) return false;
   if(!passConversion) return false;
   if(mHits>1) return false;
-  if(miniIso <0.4) return false;
+  if(miniIso >0.4) return false;
+
   return true;
 
 }
@@ -182,11 +198,11 @@ bool TElectron::susyTightRC(){
   else if(fabs(eta)<2.4){
     if(mvaValue < 0.05) return false;
   }
-  else return false; //return false if electron above 2.4
+  else if(fabs(eta)>2.4) return false; //return false if electron above 2.4
   
   //now that it has survived mva value cuts apply other susy cuts
-  if(fabs(d0) < 0.05) return false;
-  if(fabs(dZ) < 0.1) return false;
+  if(fabs(d0) > 0.05) return false;
+  if(fabs(dZ) > 0.1) return false;
   if(!passConversion) return false;
   if(mHits>0) return false;
   if(pt<100){
@@ -195,7 +211,7 @@ bool TElectron::susyTightRC(){
   else{
     if(gsfCharge!=ctfCharge) return false;
   }
-  if(miniIso <0.1) return false;
+  if(miniIso >0.1) return false;
   return true;
 
 }
