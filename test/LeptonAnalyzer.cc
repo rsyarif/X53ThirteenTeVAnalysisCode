@@ -23,6 +23,9 @@ bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles);
 void doMuCutFlow(TH1F*& h, TMuon* mu);
 void doElCutFlow_Barrel(TH1F*& h, TElectron* el);
 void doElCutFlow_Endcap(TH1F*& h, TElectron* el);
+void doRCElCutFlow_Barrel(TH1F*& h, TElectron* el);
+void doRCElCutFlow_Endcap(TH1F*& h, TElectron* el);
+void doSUSYElCutFlow(TH1F*& h, TElectron* el);
 TGenParticle* getMatchedGenParticle(TElectron* el, std::vector<TGenParticle*> genParticles);
 
 int main(int argc, char* argv[]){
@@ -38,13 +41,11 @@ int main(int argc, char* argv[]){
 
 
   TString filename;
-
-  std::string filename;
   if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
   else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
 
   //load in tree reader
-  TreeReader* tr = new TreeReader(filename.c_str(),!data);
+  TreeReader* tr = new TreeReader(filename,!data);
 
   TTree* t = tr->tree;
 
@@ -69,32 +70,47 @@ int main(int argc, char* argv[]){
   //setup histograms for electrons
   TH1F* h_ElCutFlow_Barrel = new TH1F("h_ElCutFlow_Barrel","Electron Cut Flow",14,0,14);
   TH1F* h_ElCutFlow_Endcap = new TH1F("h_ElCutFlow_Endcap","Electron Cut Flow",14,0,14);
+  TH1F* h_ElCutFlow_RC_Barrel = new TH1F("h_ElCutFlow_RC_Barrel","Electron RC Cut Flow",14,0,14);
+  TH1F* h_ElCutFlow_RC_Endcap = new TH1F("h_ElCutFlow_RC_Endcap","Electron RC Cut Flow",14,0,14);
+  TH1F* h_ElCutFlow_SUSY = new TH1F("h_ElCutFlow_SUSY","Electron SUSY Cut Flow",14,0,14);
 
   TH1F* hPtNumCBIDL_El = new TH1F("hPtNumCBIDL_El","p_{T} of cutBasedLoose Electrons",60,0,600);
   TH1F* hPtNumCBIDT_El = new TH1F("hPtNumCBIDT_El","p_{T} of cutBasedTight Electrons",60,0,600);
+  TH1F* hPtNumCBIDL_RC_El = new TH1F("hPtNumCBIDL_RC_El","p_{T} of cutBasedLoose RC Electrons",60,0,600);
+  TH1F* hPtNumCBIDT_RC_El = new TH1F("hPtNumCBIDT_RC_El","p_{T} of cutBasedTight RC Electrons",60,0,600);
   TH1F* hPtNumMVAIDL_El = new TH1F("hPtNumMVAIDL_El","p_{T} of MVA Loose Electrons",60,0,600);
   TH1F* hPtNumMVAIDL_CC_El = new TH1F("hPtNumMVAIDL_CC_El","p_{T} of MVA Loose CC Electrons",60,0,600);
+  TH1F* hPtNumMVAIDL_RC_El = new TH1F("hPtNumMVAIDL_RC_El","p_{T} of MVA Loose RC Electrons",60,0,600);
   TH1F* hPtNumMVAIDT_El = new TH1F("hPtNumMVAIDT_El","p_{T} of MVA Tight Electrons",60,0,600);
   TH1F* hPtNumMVAIDT_CC_El = new TH1F("hPtNumMVAIDT_CC_El","p_{T} of MVA Tight CC Electrons",60,0,600);
+  TH1F* hPtNumMVAIDT_RC_El = new TH1F("hPtNumMVAIDT_RC_El","p_{T} of MVA Tight RC Electrons",60,0,600);
 
   TH1F* hPtNumMVAIDLIso_El = new TH1F("hPtNumMVAIDLIso_El","p_{T} of MVA Loose + Iso Electrons",60,0,600);
   TH1F* hPtNumMVAIDLIso_CC_El = new TH1F("hPtNumMVAIDLIso_CC_El","p_{T} of MVA Loose + Iso CC Electrons",60,0,600);
+  TH1F* hPtNumMVAIDLIso_RC_El = new TH1F("hPtNumMVAIDLIso_RC_El","p_{T} of MVA Loose + Iso RC Electrons",60,0,600);
   TH1F* hPtNumMVAIDTIso_El = new TH1F("hPtNumMVAIDTIso_El","p_{T} of MVA Tight + Iso Electrons",60,0,600);
   TH1F* hPtNumMVAIDTIso_CC_El = new TH1F("hPtNumMVAIDTIso_CC_El","p_{T} of MVA Tight + Iso CC Electrons",60,0,600);
+  TH1F* hPtNumMVAIDTIso_RC_El = new TH1F("hPtNumMVAIDTIso_RC_El","p_{T} of MVA Tight + Iso RC Electrons",60,0,600);
 
   TH1F* hPtDen_El = new TH1F("hPtDen_El","p_{T} of All Electrons",60,0,600);
 
   TH1F* hEtaNumCBIDL_El = new TH1F("hEtaNumCBIDL_El","#eta of cutBasedLoose Electrons",15,-3,3);
   TH1F* hEtaNumCBIDT_El = new TH1F("hEtaNumCBIDT_El","#eta of cutBasedTight Electrons",15,-3,3);
+  TH1F* hEtaNumCBIDL_RC_El = new TH1F("hEtaNumCBIDL_RC_El","#eta of cutBasedLoose RC Electrons",15,-3,3);
+  TH1F* hEtaNumCBIDT_RC_El = new TH1F("hEtaNumCBIDT_RC_El","#eta of cutBasedTight RC Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDL_El = new TH1F("hEtaNumMVAIDL_El","#eta of mva Loose Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDL_CC_El = new TH1F("hEtaNumMVAIDL_CC_El","#eta of mva Loose CC Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDL_RC_El = new TH1F("hEtaNumMVAIDL_RC_El","#eta of mva Loose RC Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDT_El = new TH1F("hEtaNumMVAIDT_El","#eta of mva Tight Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDT_CC_El = new TH1F("hEtaNumMVAIDT_CC_El","#eta of mva Tight CC Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDT_RC_El = new TH1F("hEtaNumMVAIDT_RC_El","#eta of mva Tight RC Electrons",15,-3,3);
 
   TH1F* hEtaNumMVAIDLIso_El = new TH1F("hEtaNumMVAIDLIso_El","#eta of mva Loose + Iso Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDLIso_CC_El = new TH1F("hEtaNumMVAIDLIso_CC_El","#eta of mva Loose + Iso CC Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDLIso_RC_El = new TH1F("hEtaNumMVAIDLIso_RC_El","#eta of mva Loose + Iso RC Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDTIso_El = new TH1F("hEtaNumMVAIDTIso_El","#eta of mva Tight + Iso Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDTIso_CC_El = new TH1F("hEtaNumMVAIDTIso_CC_El","#eta of mva Tight + Iso CC Electrons",15,-3,3);
+  TH1F* hEtaNumMVAIDTIso_RC_El = new TH1F("hEtaNumMVAIDTIso_RC_El","#eta of mva Tight + Iso RC Electrons",15,-3,3);
 
   TH1F* hEtaDen_El = new TH1F("hEtaDen_El","#eta of All Electrons",15,-3,3);
 
@@ -127,34 +143,6 @@ int main(int argc, char* argv[]){
   TH1F* h_accScPix_EtaNum = new TH1F("h_accScPix_EtaNum"," GSF relative agreement",15,-3,3);
   TH1F* h_accScPix_EtaDen = new TH1F("h_accScPix_EtaDen"," GSF relative agreement",15,-3,3);
 
-  //histograms for charge checks
-  TH1F* h_relGsf_PtNum = new TH1F("h_relGsf_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_relGsf_PtDen = new TH1F("h_relGsf_PtDen"," GSF relative agreement",60,0,600);
-  TH1F* h_relCtf_PtNum = new TH1F("h_relCtf_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_relCtf_PtDen = new TH1F("h_relCtf_PtDen"," GSF relative agreement",60,0,600);
-  TH1F* h_relScPix_PtNum = new TH1F("h_relScPix_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_relScPix_PtDen = new TH1F("h_relScPix_PtDen"," GSF relative agreement",60,0,600);
-
-  TH1F* h_relGsf_EtaNum = new TH1F("h_relGsf_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_relGsf_EtaDen = new TH1F("h_relGsf_EtaDen"," GSF relative agreement",15,-3,3);
-  TH1F* h_relCtf_EtaNum = new TH1F("h_relCtf_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_relCtf_EtaDen = new TH1F("h_relCtf_EtaDen"," GSF relative agreement",15,-3,3);
-  TH1F* h_relScPix_EtaNum = new TH1F("h_relScPix_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_relScPix_EtaDen = new TH1F("h_relScPix_EtaDen"," GSF relative agreement",15,-3,3);
-
-  TH1F* h_accGsf_PtNum = new TH1F("h_accGsf_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_accGsf_PtDen = new TH1F("h_accGsf_PtDen"," GSF relative agreement",60,0,600);
-  TH1F* h_accCtf_PtNum = new TH1F("h_accCtf_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_accCtf_PtDen = new TH1F("h_accCtf_PtDen"," GSF relative agreement",60,0,600);
-  TH1F* h_accScPix_PtNum = new TH1F("h_accScPix_PtNum"," GSF relative agreement",60,0,600);
-  TH1F* h_accScPix_PtDen = new TH1F("h_accScPix_PtDen"," GSF relative agreement",60,0,600);
-
-  TH1F* h_accGsf_EtaNum = new TH1F("h_accGsf_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_accGsf_EtaDen = new TH1F("h_accGsf_EtaDen"," GSF relative agreement",15,-3,3);
-  TH1F* h_accCtf_EtaNum = new TH1F("h_accCtf_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_accCtf_EtaDen = new TH1F("h_accCtf_EtaDen"," GSF relative agreement",15,-3,3);
-  TH1F* h_accScPix_EtaNum = new TH1F("h_accScPix_EtaNum"," GSF relative agreement",15,-3,3);
-  TH1F* h_accScPix_EtaDen = new TH1F("h_accScPix_EtaDen"," GSF relative agreement",15,-3,3);
 
 
   //event loop
@@ -212,10 +200,18 @@ int main(int argc, char* argv[]){
 	hPtDen_El->Fill(iel->pt);
 	hEtaDen_El->Fill(iel->eta);
 
+	/////**************** cut based IDs*************************
+
 	//check if loose and fill numerator
 	if(iel->cutBasedLoose25nsSpring15MC()){
 	  hPtNumCBIDL_El->Fill(iel->pt);
 	  hEtaNumCBIDL_El->Fill(iel->eta);
+	}
+
+	//check if loose and fill numerator
+	if(iel->cutBasedLoose25nsSpring15MCRC()){
+	  hPtNumCBIDL_RC_El->Fill(iel->pt);
+	  hEtaNumCBIDL_RC_El->Fill(iel->eta);
 	}
 
 	//check if tight and fill numerator
@@ -223,55 +219,88 @@ int main(int argc, char* argv[]){
 	  hPtNumCBIDT_El->Fill(iel->pt);
 	  hEtaNumCBIDT_El->Fill(iel->eta);
 	}
-	//check if loose and fill numerator
+
+	//check if tight and fill numerator
+	if(iel->cutBasedTight25nsSpring15MCRC()){
+	  hPtNumCBIDT_RC_El->Fill(iel->pt);
+	  hEtaNumCBIDT_RC_El->Fill(iel->eta);
+	}
+
+	/////**************** mva IDs*************************
+
+
+	/// ********non-Isolated*****
+
 	if(iel->mvaLoose()){
 	  hPtNumMVAIDL_El->Fill(iel->pt);
 	  hEtaNumMVAIDL_El->Fill(iel->eta);
 	}
-	if(iel->mvaLoose() && !(iel->chargeConsistency <1)){
-	  hPtNumMVAIDL_CC_El->Fill(iel->pt);
-	  hEtaNumMVAIDL_CC_El->Fill(iel->eta);
-	}
-	//check if loose and fill numerator
-	if(iel->mvaLooseIso()){
-	  hPtNumMVAIDLIso_El->Fill(iel->pt);
-	  hEtaNumMVAIDLIso_El->Fill(iel->eta);
-	}
-	if(iel->mvaLooseIso() && !(iel->chargeConsistency <1)){
-	  hPtNumMVAIDLIso_CC_El->Fill(iel->pt);
-	  hEtaNumMVAIDLIso_CC_El->Fill(iel->eta);
-	}
 
 
-	//check if tight and fill numerator
 	if(iel->mvaTight()){
 	  hPtNumMVAIDT_El->Fill(iel->pt);
 	  hEtaNumMVAIDT_El->Fill(iel->eta);
 	}
 
-	//check if tight and fill numerator
-	if(iel->mvaTight() && !(iel->chargeConsistency<1)){
+
+	if(iel->mvaTightCC()){
 	  hPtNumMVAIDT_CC_El->Fill(iel->pt);
 	  hEtaNumMVAIDT_CC_El->Fill(iel->eta);
 	}
 
+	if(iel->mvaLooseCC()){
+	  hPtNumMVAIDL_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDL_CC_El->Fill(iel->eta);
+	}
 
-	//check if tight and fill numerator
+	if(iel->mvaTightRC()){
+	  hPtNumMVAIDT_RC_El->Fill(iel->pt);
+	  hEtaNumMVAIDT_RC_El->Fill(iel->eta);
+	}
+
+	if(iel->mvaLooseRC()){
+	  hPtNumMVAIDL_RC_El->Fill(iel->pt);
+	  hEtaNumMVAIDL_RC_El->Fill(iel->eta);
+	}
+
+
+	/// ********Isolated*****
+
+	if(iel->mvaLooseIso()){
+	  hPtNumMVAIDLIso_El->Fill(iel->pt);
+	  hEtaNumMVAIDLIso_El->Fill(iel->eta);
+	}
+
 	if(iel->mvaTightIso()){
 	  hPtNumMVAIDTIso_El->Fill(iel->pt);
 	  hEtaNumMVAIDTIso_El->Fill(iel->eta);
 	}
 
-	//check if tight and fill numerator
-	if(iel->mvaTight() && !(iel->chargeConsistency<1)){
+	if(iel->mvaLooseCCIso()){
+	  hPtNumMVAIDLIso_CC_El->Fill(iel->pt);
+	  hEtaNumMVAIDLIso_CC_El->Fill(iel->eta);
+	}
+
+	if(iel->mvaTightCCIso()){
 	  hPtNumMVAIDTIso_CC_El->Fill(iel->pt);
 	  hEtaNumMVAIDTIso_CC_El->Fill(iel->eta);
 	}
 
-	//now do cut flow for electrons
-	if(fabs(iel->eta)<=1.479) doElCutFlow_Barrel(h_ElCutFlow_Barrel,iel);
-	else doElCutFlow_Endcap(h_ElCutFlow_Endcap,iel);
 
+	if(iel->mvaLooseRCIso()){
+	  hPtNumMVAIDLIso_RC_El->Fill(iel->pt);
+	  hEtaNumMVAIDLIso_RC_El->Fill(iel->eta);
+	}
+
+	if(iel->mvaTightRCIso()){
+	  hPtNumMVAIDTIso_RC_El->Fill(iel->pt);
+	  hEtaNumMVAIDTIso_RC_El->Fill(iel->eta);
+	}
+
+	//now do cut flow for electrons
+	if(fabs(iel->eta)<=1.479) {doElCutFlow_Barrel(h_ElCutFlow_Barrel,iel); doRCElCutFlow_Barrel(h_ElCutFlow_RC_Barrel,iel); }
+	else {doElCutFlow_Endcap(h_ElCutFlow_Endcap,iel); doRCElCutFlow_Endcap(h_ElCutFlow_RC_Endcap,iel);}
+	doSUSYElCutFlow(h_ElCutFlow_SUSY,iel);
       }//end loop over loose electrons for cut based id
 
     }// end el trig check
@@ -343,6 +372,8 @@ int main(int argc, char* argv[]){
   h_MuCutFlow->Scale( 1.0 / h_MuCutFlow->GetBinContent(1));
   h_ElCutFlow_Barrel->Scale( 1.0 / h_ElCutFlow_Barrel->GetBinContent(1));
   h_ElCutFlow_Endcap->Scale( 1.0 / h_ElCutFlow_Endcap->GetBinContent(1));
+  h_ElCutFlow_RC_Barrel->Scale( 1.0 / h_ElCutFlow_RC_Barrel->GetBinContent(1));
+  h_ElCutFlow_RC_Endcap->Scale( 1.0 / h_ElCutFlow_RC_Endcap->GetBinContent(1));
 
   //write out bin labels
   h_MuCutFlow->GetXaxis()->SetBinLabel(1,"All");
@@ -392,6 +423,39 @@ int main(int argc, char* argv[]){
   h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(14,"chargeConsistent");
   h_ElCutFlow_Endcap->GetXaxis()->SetBinLabel(15,"p_{T} > 40");
 
+  //bin labels for electrons
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(1,"All");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(3,"#eta < 2.4");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(4,"sigmaIetaIeta < 0.0101");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(5,"dEta < 0.00926");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(6,"dPhi<0.0336");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(7,"H/E<0.0597");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(8,"1/E - 1/P < 0.012");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(9,"d0 < 0.0111");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(10,"dZ < 0.0466");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(11,"mHits <= 2");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(12,"conversionVeto");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(13,"relIso < 0.0354");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(14,"RC");
+  h_ElCutFlow_RC_Barrel->GetXaxis()->SetBinLabel(15,"p_{T} > 40");
+  //endcap
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(1,"All");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(3,"#eta < 2.4");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(4,"sigmaIetaIeta < 0.0279");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(5,"dEta < 0.00724");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(6,"dPhi < 0.0918");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(7,"H/E < 0.0615");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(8,"1/E - 1/P < 0.00999");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(9,"d0 < 0.0351");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(10,"dZ < 0.417");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(11,"mHits <= 1");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(12,"conversionVeto");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(13,"relIso < 0.0646");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(14,"RC");
+  h_ElCutFlow_RC_Endcap->GetXaxis()->SetBinLabel(15,"p_{T} > 40");
+
 
   //print out efficiency
   std::cout<<"Efficiency for >30 GeV Loose Muons from "<<mass<<" GeV X53 becoming tight: "<<h_MuCutFlow->GetBinContent(12)<<std::endl;
@@ -401,6 +465,11 @@ int main(int argc, char* argv[]){
   std::cout<<"Barrel Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Barrel->GetBinContent(14)<<std::endl;
   std::cout<<"Endcap Efficiency for >30 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Endcap->GetBinContent(13)<<std::endl;
   std::cout<<"Endcap Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_Endcap->GetBinContent(14)<<std::endl;
+  //print out efficiency
+  std::cout<<"Barrel RC Efficiency for >30 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_RC_Barrel->GetBinContent(13)<<std::endl;
+  std::cout<<"Barrel RC Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_RC_Barrel->GetBinContent(14)<<std::endl;
+  std::cout<<"Endcap RC Efficiency for >30 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_RC_Endcap->GetBinContent(13)<<std::endl;
+  std::cout<<"Endcap RC Efficiency for >40 GeV Loose Electrons from "<<mass<<" GeV X53 becoming tight: "<<h_ElCutFlow_RC_Endcap->GetBinContent(14)<<std::endl;
 
   fout->cd();
   //append muon histograms
@@ -573,6 +642,117 @@ void doElCutFlow_Endcap(TH1F*& hist, TElectron* el){
 
 }
 
+void doRCElCutFlow_Barrel(TH1F*& hist, TElectron* el){
+
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(el->pt<30) return;
+  else hist->AddBinContent(2);
+
+  if(el->eta>2.4) return;
+  else hist->AddBinContent(3);
+
+  if(el->sigmaIetaIeta >= 0.0101)  return;
+  else hist->AddBinContent(4);
+
+  if(fabs(el->dEta) >= 0.00926)    return;
+  else hist->AddBinContent(5);
+
+  if(fabs(el->dPhi) >= 0.0336)     return;
+  else hist->AddBinContent(6);
+
+  if(el->hOverE >= 0.0597)         return;
+  else hist->AddBinContent(7);
+
+  if(el->ooEmooP >= 0.012)         return;
+  else hist->AddBinContent(8);
+
+  if(fabs(el->d0) >= 0.0111)       return;
+  else hist->AddBinContent(9);
+
+  if(fabs(el->dZ) >= 0.0466)       return;
+  else hist->AddBinContent(10);
+
+  if(el->mHits > 2)                return;
+  else hist->AddBinContent(11);
+
+  if(!el->passConversion)          return;
+  else hist->AddBinContent(12);
+
+  if(el->relIsoEA > 0.0354)        return;
+  else hist->AddBinContent(13);
+
+  if(el->pt<100){
+    if(el->chargeConsistency < 1)    return;
+    else hist->AddBinContent(14);
+  }
+  else{
+    if(el->gsfCharge!=el->ctfCharge) return;
+    else hist->AddBinContent(14);
+  }
+
+
+  if(el->pt<40)                   return;
+  else hist->AddBinContent(15);
+}
+
+void doRCElCutFlow_Endcap(TH1F*& hist, TElectron* el){
+
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(el->pt<30) return;
+  else hist->AddBinContent(2);
+
+  if(el->eta>2.4) return;
+  else hist->AddBinContent(3);
+
+  if(el->sigmaIetaIeta >= 0.0279)  return;
+  else  hist->AddBinContent(4);
+
+  if(fabs(el->dEta) >= 0.00724)    return;
+  else  hist->AddBinContent(5);
+
+  if(fabs(el->dPhi) >= 0.0918)     return;
+  else  hist->AddBinContent(6);
+
+  if(el->hOverE >= 0.0615)         return;
+  else  hist->AddBinContent(7);
+
+  if(el->ooEmooP >= 0.00999)       return;
+  else  hist->AddBinContent(8);
+
+  if(fabs(el->d0) >= 0.0351)       return;
+  else  hist->AddBinContent(9);
+
+  if(fabs(el->dZ) >= 0.417)        return;
+  else  hist->AddBinContent(10);
+
+  if(el->mHits > 1)                return;
+  else  hist->AddBinContent(11);
+
+  if(!el->passConversion)          return;
+  else  hist->AddBinContent(12);
+
+  if(el->relIsoEA >= 0.0646)       return; 
+  else  hist->AddBinContent(13);
+
+  if(el->pt>100){
+      if(el->chargeConsistency < 1)    return;
+      else  hist->AddBinContent(14);
+  }
+  else{
+    if(el->gsfCharge!=el->ctfCharge) return;
+    else hist->AddBinContent(14);
+  }
+  if(el->pt<40)                   return;
+  else hist->AddBinContent(15);;
+
+}
+
+
+
 bool matchToGenLep(TMuon* mu, std::vector<TGenParticle*> genParticles){
 
   float dR=999;
@@ -640,4 +820,40 @@ TGenParticle* getMatchedGenParticle(TElectron* el, std::vector<TGenParticle*> ge
   }
 
   return gp;
+}
+
+void doSUSYElCutFlow(TH1F*& h, TElectron* el){
+
+  h->AddBinContent(1);  
+
+  if(fabs(el->eta)<0.8){
+    if(el->mvaValue < 0.73) return;
+    else h->AddBinContent(2);
+  }
+  else if(fabs(el->eta)<1.479){
+    if(el->mvaValue < 0.57) return;
+    else h->AddBinContent(2);
+  }
+  else if(fabs(el->eta)<2.4){
+    if(el->mvaValue < 0.05) return;
+    else h->AddBinContent(2);
+  }
+  else if(fabs(el->eta)>2.4) return; //return if electron above 2.4
+  
+  //now that it has survived mva value cuts apply other susy cuts
+  if(fabs(el->d0) > 0.05) return;
+  else h->AddBinContent(3); 
+  if(fabs(el->dZ) > 0.1) return;
+  else h->AddBinContent(4);
+  if(!el->passConversion) return;
+  else h->AddBinContent(5);
+  if(el->mHits>0) return;
+  else h->AddBinContent(6);
+  if(el->chargeConsistency <1) return;
+  else h->AddBinContent(7);
+  if(el->miniIso <0.1) return;
+  else h->AddBinContent(8);
+
+
+
 }

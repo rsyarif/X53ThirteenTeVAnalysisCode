@@ -50,9 +50,9 @@ int main(int argc, char* argv[]){
   bool FiftyNS;
 
   if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
-  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=false;}
+  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]){
 
     tr->GetEntry(ient);
 
-    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+    if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     for(std::vector<TElectron*>::size_type iel=0; iel<tr->goodElectrons.size();iel++){
       etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta);
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]){
     }//end loop over leptons
 
     //check that leptons are in Zpeak
-    bool zpeak= fabs(massDiff)<15 ? true : false;
+    bool zpeak= fabs(massDiff)<10 ? true : false;
 
     //fill denominator
     massDenHist->Fill(zmass+massDiff);
@@ -203,6 +203,14 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
     }
     else if(ID=="CBLoose"){
       iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
+      iLep->Loose=true;
+    }
+    if(ID=="CBTightRC"){
+      iLep->Tight=iel->cutBasedTight25nsSpring15MCRC();
+      iLep->Loose=iel->cutBasedLoose25nsSpring15MCRC();
+    }
+    else if(ID=="CBLooseRC"){
+      iLep->Tight=iel->cutBasedLoose25nsSpring15MCRC();
       iLep->Loose=true;
     }
     else if(ID=="MVATight"){

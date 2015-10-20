@@ -61,10 +61,10 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_MuMu.root";
-    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct08/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_MuMu.root";
+    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_ElEl.root";
   }
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct06/ljmet_trees/ljmet_DYJets.root"; data=false;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
   //make filename for output root file
   std::string outname;
@@ -270,6 +270,10 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Tight=iel->mvaLoose();
 	iLep->Loose=true;
       }
+      else if(ID=="SUSYTight"){
+	iLep->Tight=iel->susyTight();
+	iLep->Loose=iel->susyLoose();
+      }
       
       iLep->isMu = false;
       iLep->isEl = true;
@@ -311,7 +315,7 @@ std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes){
   
   
   //check that leptons are in Zpeak
-  bool zpeak= fabs(massDiff)<15 ? true : false;
+  bool zpeak= fabs(massDiff)<10 ? true : false;
 
   
   if(zpeak){
