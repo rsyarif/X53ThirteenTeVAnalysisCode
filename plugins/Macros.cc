@@ -504,10 +504,10 @@ std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
 std::vector<float> getEtaWeights(TFile* weightfile){
 
-  TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
+  //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist");
-  TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
-  h->Divide(den);
+  //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
+  //h->Divide(den);
   std::vector<float> etaWeights;
 
   for(int i=1; i<= h->GetNbinsX(); i++){
