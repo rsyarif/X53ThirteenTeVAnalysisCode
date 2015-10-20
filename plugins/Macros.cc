@@ -651,45 +651,44 @@ if(ID=="CBTight") return 0.15;
 
 //method weights
 //same flavor
-float WeightSF_PP(float pr, float fr){
-  float weight= (pr*pr) / (pow( (pr -fr),2) );
+float WeightSF_T0(float pr, float fr){
+  float weight = (-1.0)*( pow( fr*pr,2)) / (pow( pr - fr, 2));
   return weight;
 }
 
-float WeightSF_PF(float pr, float fr){
-  float weight= (fr*pr) / (pow( (pr -fr),2) );
+float WeightSF_T1(float pr, float fr){
+  float weight= (pr*pr * (fr - fr*fr) ) / (pow( (pr -fr),2) );
   return weight;
 }
 
-float WeightSF_FF(float pr, float fr){
-  float weight= (fr*fr) / (pow( (pr -fr),2) );
+float WeightSF_T2(float pr, float fr){
+  float weight= ( (fr) / (pow( (pr -fr),2)) ) * ( fr*(pow(1.0-pr,2)) - 2.0*pr*(1.0-pr)*(1.0-fr) ) ;
   return weight;
 }
 
 
 //opposite flavor
-float WeightOF_PP(float elpr, float elfr, float mupr, float mufr){
-  float weight = (1.0 / (elpr - elfr)) * (1.0 / (mupr - mufr));
-  weight = weight * elpr * mupr;
+float WeightOF_T00(float elpr, float elfr, float mupr, float mufr){
+  float weight = (-1.0 * elfr * elpr * mufr * mupr);
+  weight = weight * ( 1.0 / ( (elpr - elfr)*(mupr-mufr)) );
   return weight;
 }
 
-float WeightOF_PF(float elpr, float elfr, float mupr, float mufr){
-
-  float weight = ( 1.0 / (elpr - elfr) ) * (1.0 / (mupr - mufr) );
-  weight = weight * elpr * mufr;
+float WeightOF_T10(float elpr, float elfr, float mupr, float mufr){
+  float weight = elpr * ( 1.0 - elfr) * mupr * mufr;
+  weight = weight * ( 1.0 / ( (elpr - elfr)*(mupr-mufr)) );
   return weight;
 
 }
 
-float WeightOF_FP(float elpr, float elfr, float mupr, float mufr){
-  float weight = (1.0 / (elpr- elfr)) * (1.0 / (mupr-mufr));
-  weight = weight * elfr * mupr;
+float WeightOF_T01(float elpr, float elfr, float mupr, float mufr){
+  float weight = elpr * elfr * mupr * (1.0 - mufr);
+  weight = weight * ( 1.0 / ( (elpr - elfr)*(mupr-mufr)) );
   return weight;
 }
 
-float WeightOF_FF(float elpr, float elfr, float mupr, float mufr){
-  float weight = (1.0 / (elpr-elfr)) * (1.0/(mupr-mufr));
-  weight = weight*elfr*mufr;
+float WeightOF_T11(float elpr, float elfr, float mupr, float mufr){
+  float weight = ( elfr*(1.0-elpr)*mufr*(1.0-mupr) ) - ( elfr*(1.0-elpr)*mupr*(1.0-mufr) )  - ( elpr*(1.0-elfr)*mufr*(1.0-mupr) ) ;
+  weight = weight * ( 1.0 / ( (elpr - elfr)*(mupr-mufr)) );
   return weight;
 }
