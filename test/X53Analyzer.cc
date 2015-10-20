@@ -16,7 +16,7 @@
 #include <sstream> 
 #include "../plugins/Macros.cc"
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float);
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float, std::string, std::string, bool);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
 std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*>);
 bool checkSameSignLeptons(std::vector<TLepton*>);
@@ -47,6 +47,9 @@ int main(int argc, char* argv[]){
   bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WJets.root";
   bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_DYJets.root";
 
+  //nonoPrompt versions
+  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_WJets.root";
   
   sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m700RH.root";
   sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ljmet_trees/ljmet_X53X53m800RH.root";
@@ -93,10 +96,11 @@ int main(int argc, char* argv[]){
 
   //data samples
   data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_All.root";
   
   bool signal=false;
   bool bg_mc=false;
-  bool bg_mc_dd = false; //bool to run over mc using tight loose method
+  bool bg_np = false; //bool to run  using tight loose method to get non prompt background
   //bool bg_dd=false;
   bool data=false;
 
@@ -121,18 +125,25 @@ int main(int argc, char* argv[]){
   if(bg_samples.find(argv[1])!=bg_samples.end()) bg_mc=true;
   if(sig_samples.find(argv[1])!=sig_samples.end()) signal=true;
   if(data_samples.find(argv[1])!=data_samples.end()) data=true;
-  
+  std::string sample = argv[1];
+  if(sample.find("NonPrompt")!=std::string::npos) bg_np = true;
   
   //make TreeReader
   std::string filename;
   if(bg_mc) filename = bg_samples.find(argv[1])->second;
   if(signal) filename = sig_samples.find(argv[1])->second;
   if(data) filename = data_samples.find(argv[1])->second;
-  if(bg_mc_dd) filename = "NonPrompt";
-  std::cout<<"running file: "<<filename<<std::endl;
+  if(bg_np)  std::cout<<"running NonPrompt on  file: "<<filename<<std::endl;
+  else  std::cout<<"running RegularMethod  on  file: "<<filename<<std::endl;
+
   //make output file
   std::stringstream outnamestream;
-  outnamestream<<argv[1]<<".root";
+  if(bg_np){
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_NonPrompt.root";
+  }
+  else{
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
+  }
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
 
@@ -142,16 +153,8 @@ int main(int argc, char* argv[]){
   tm_sZVeto->InitTree("tEvts_sZVeto");
 
   TreeReader* tr;
-  TChain* chain = new TChain("ljmet"); //chain used for nonPromptMC 
-  if(!bg_mc_dd){
-    tr = new TreeReader(filename.c_str(),!data);
-  }
-  else{
-    chain->Add("/eos/uscms/store/user/lpctlbsm/Spring15/25ns/Oct06/ljmet_trees/ljmet_TTJets.root");
-    chain->Add("/eos/uscms/store/user/lpctlbsm/Spring15/25ns/Oct06/ljmet_trees/ljmet_WJets.root");
-    tr = new TreeReader( (TTree*) chain, !data);
-  }
-
+  tr = new TreeReader(filename.c_str(),!data);
+  
   TTree* t=tr->tree;
 
   //histogram for cutflow
@@ -186,31 +189,29 @@ int main(int argc, char* argv[]){
   TFile* eWfile = new TFile("ChargeMisID_Data_Electrons.root");
   std::vector<float> etaWeights = getEtaWeights(eWfile);
 
-  //get prompt rate
-  std::string elPRFilename;
-  if(elID=="CBTight") elPRFilename = "PromptRate_Data_Electrons_CBTight.root";
-  else if(elID=="CBLoose") elPRFilename = "PromptRate_Data_Electrons_CBLoose.root";
-  else if(elID=="MVATight") elPRFilename = "PromptRate_Data_Electrons_MVATight.root";
-  else if(elID=="MVALoose") elPRFilename = "PromptRate_Data_Electrons_MVALoose.root";
-  else{
-    std::cout<<"Electron ID not configured correctly! Please select one of the following: CBTight, CBLoose, MVATight, MVALoose. Exiting..."<<std::endl;
-    return 0;
-  }
+  //get fake rate according to ID
+  float muPromptRate;
+  if(muID=="CBTight") muPromptRate=0.9311;
+  else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
-  TFile* elPRFile = new TFile(elPRFilename.c_str());
+  //get electron fake rate
+  float elPromptRate;
+  if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.9215;
+  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
+  else{std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
-  float elPrate = getPrate(elPRFile);
+  //get fake rate according to ID
+  float muFakeRate;
+  if(muID=="CBTight") muFakeRate=0.049;
+  else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
-  std::string muPRFilename;
-  if(muID=="CBTight") muPRFilename = "PromptRate_Data_Muons_CBTight.root";
-  else if(muID=="CBLoose") muPRFilename = "PromptRate_Data_Muons_CBLoose.root";
-  else{
-    std::cout<<"Muon ID not configured correctly! Please select one of the following: CBTight, CBLoose. Exiting..."<<std::endl;
-    return 0;
-  }
-  TFile* muPRFile = new TFile(muPRFilename.c_str());
-
-  float muPrate = getPrate(muPRFile);
+  //get electron fake rate
+  float elFakeRate;
+  if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.84;
+  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
+  else{std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //doGenPlots(fsig,t,tr);
   //cd back to main directory after making gen plots
@@ -252,8 +253,8 @@ int main(int argc, char* argv[]){
 
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
-    if(data) goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons,30.0);
-    else goodLeptons = makeLeptons(tr->goodMuons, tr->goodElectrons,30.0);
+    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
+    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
     bool samesign;
 
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
@@ -273,8 +274,7 @@ int main(int argc, char* argv[]){
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
-    if(outname.find("DYJets")!=std::string::npos){
-      
+    if(outname.find("DYJets")!=std::string::npos){      
       vSSLep = makeOSLeptonsForDY(goodLeptons);
     }
     else vSSLep = makeSSLeptons(goodLeptons);
@@ -309,7 +309,6 @@ int main(int argc, char* argv[]){
     bool mumu=false;
     bool elmu=false;
     bool elel=false;
-
 
     //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
 
@@ -378,6 +377,27 @@ int main(int argc, char* argv[]){
     //require OR of triggers
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12 ) ) continue;
 
+    //now need to calculate nonPropmtWeight
+    if(!bg_np) NPweight=1.0;
+    else{
+      if(mumu){//muon channel
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightSF_T2(muPromptRate,muFakeRate); //both tight
+	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) NPweight = WeightSF_T1(muPromptRate,muFakeRate); //one tight
+	else NPweight = WeightSF_T0(muPromptRate,muFakeRate); //both loose
+      }
+      else if(elel){//electron channel
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightSF_T2(elPromptRate,elFakeRate); //both tight
+	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) NPweight = WeightSF_T1(elPromptRate,elFakeRate); //one tight
+	else NPweight = WeightSF_T0(elPromptRate,elFakeRate); //both loose
+      }
+      else{ //cross channel
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //both tight
+	else if ( vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //if electron is tight, muon must be loose or we would be on line above
+	else if ( vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //if electron is tight, muon must be loose or we would be on tight-tight line
+	else NPweight = WeightOF_T00(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //otherwise both are loose
+      }
+    }
+      
     //fill tree for post ssdl cut since that is all that we've applied so far
     tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
@@ -489,7 +509,7 @@ int main(int argc, char* argv[]){
 }
 
 
-std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, float ptCut){
+std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, float ptCut, std::string elID, std::string muID, bool doFakes){
 
   std::vector<TLepton*> Leptons;
 
@@ -497,12 +517,28 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   for(unsigned int uimu=0; uimu<muons.size(); uimu++){
     TMuon* imu = muons.at(uimu);
     TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+
+    if(muID=="CBTight"){
+      iLep->Tight=imu->cutBasedTight();
+      iLep->Loose=imu->cutBasedLoose();
+    }
+    else if(muID=="CBLoose"){
+      iLep->Tight=imu->cutBasedLoose();
+      iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
+    }
     iLep->isMu = true;
     iLep->isEl = false;
+    //skip for smaller than pT cut
     if(iLep->pt<ptCut) continue;
-    Leptons.push_back(iLep);
- 
+    //now save based on ID requirments if 'normal' running then require tight, else save if loose
+    if(!doFakes){
+      if(iLep->Tight) Leptons.push_back(iLep);
+    } 
+    else{ //if doing fake estimate save if loose
+      if(iLep->Loose) Leptons.push_back(iLep);
+    }
   }
+  
   
   //fill with  electrons
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
@@ -510,8 +546,83 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
     iLep->isMu = false;
     iLep->isEl = true;
+    if(elID=="CBTight"){
+      iLep->Tight=iel->cutBasedTight25nsSpring15MC();
+      iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
+    }
+    else if(elID=="CBLoose"){
+      iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
+      iLep->Loose=true;
+    }
+    if(elID=="CBTightRC"){
+      iLep->Tight=iel->cutBasedTight25nsSpring15MCRC();
+      iLep->Loose=iel->cutBasedLoose25nsSpring15MCRC();
+    }
+    else if(elID=="CBLooseRC"){
+      iLep->Tight=iel->cutBasedLoose25nsSpring15MCRC();
+      iLep->Loose=true;
+    }
+    else if(elID=="MVATight"){
+      iLep->Tight=iel->mvaTightIso();
+      iLep->Loose=iel->mvaLooseIso();
+    }
+    else if(elID=="MVATightNoIso"){
+      iLep->Tight=iel->mvaTight();
+      iLep->Loose=iel->mvaLoose();
+    }
+    else if(elID=="MVALoose"){
+      iLep->Tight=iel->mvaLooseIso();
+      iLep->Loose=true;
+    }
+    else if(elID=="MVALooseNoIso"){
+      iLep->Tight=iel->mvaLoose();
+      iLep->Loose=true;
+    }
+    else if(elID=="MVATightCC"){
+      iLep->Tight=iel->mvaTightCCIso();
+      iLep->Loose=iel->mvaLooseCCIso();
+    }
+    else if(elID=="MVATightCCNoIso"){
+      iLep->Tight=iel->mvaTightCC();
+      iLep->Loose=iel->mvaLooseCC();
+    }
+    else if(elID=="MVALooseCC"){
+      iLep->Tight=iel->mvaLooseCCIso();
+      iLep->Loose=true;
+    }
+    else if(elID=="MVALooseNoIso"){
+      iLep->Tight=iel->mvaLoose();
+      iLep->Loose=true;
+    }  
+    else if(elID=="MVATightRC"){
+      iLep->Tight=iel->mvaTightRCIso();
+      iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(elID=="MVALooseRC"){
+      iLep->Tight=iel->mvaLooseRCIso();
+      iLep->Loose=true;
+    }
+    else if(elID=="SUSYTight"){
+      iLep->Tight=iel->susyTight();
+      iLep->Loose=iel->susyLoose();
+    }
+    else if(elID=="SUSYLoose"){
+	iLep->Tight=iel->susyLoose();
+	iLep->Loose=true;
+    }
+    else if(elID=="SUSYTightRC"){
+      iLep->Tight=iel->susyTightRC();
+      iLep->Loose=iel->susyLooseRC();
+    }      
     if(iLep->pt<ptCut) continue;
-    Leptons.push_back(iLep);
+    //now save based on elID requirments if 'normal' running then require tight, else save if loose
+    if(!doFakes){
+      if(iLep->Tight) Leptons.push_back(iLep);
+    } 
+    else{ //if doing fake estimate save if loose
+      if(iLep->Loose) Leptons.push_back(iLep);
+    }
+
  
   }
   
