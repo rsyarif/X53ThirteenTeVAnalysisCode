@@ -16,6 +16,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("ChargeMisIDWeight",&weight_);
   tree->Branch("MCWeight",&MCWeight_);
   tree->Branch("NPWeight",&NPWeight_);
+  tree->Branch("nTL",&nTL_);
   tree->Branch("Lep1Pt",&Lep1Pt_);
 
   tree->Branch("Lep1Eta",&Lep1Eta_);
@@ -87,10 +88,11 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
+  nTL_ = nTLtemp;
   if(mcweight>0) MCWeight_=1;
   else MCWeight_=-1;
   
