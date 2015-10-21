@@ -251,7 +251,7 @@ int main(int argc, char* argv[]){
     
     //weight for non prompt method
     float NPweight;
-
+    int TL;
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
     if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
@@ -379,33 +379,33 @@ int main(int argc, char* argv[]){
     if(! ( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12 ) ) continue;
 
     //now need to calculate nonPropmtWeight
-    if(!bg_np) NPweight=1.0;
+    if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
       if(mumu){//muon channel
-	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightSF_T2(muPromptRate,muFakeRate); //both tight
-	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) NPweight = WeightSF_T1(muPromptRate,muFakeRate); //one tight
-	else NPweight = WeightSF_T0(muPromptRate,muFakeRate); //both loose
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(muPromptRate,muFakeRate); TL = 3;}//both tight
+	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(muPromptRate,muFakeRate); TL=2;}//one tight
+	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose
       }
       else if(elel){//electron channel
-	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightSF_T2(elPromptRate,elFakeRate); //both tight
-	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) NPweight = WeightSF_T1(elPromptRate,elFakeRate); //one tight
-	else NPweight = WeightSF_T0(elPromptRate,elFakeRate); //both loose
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(elPromptRate,elFakeRate); TL=3;}//both tight
+	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(elPromptRate,elFakeRate); TL=1;}//one tight
+	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
       }
       else{ //cross channel
-	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //both tight
-	else if ( vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //if electron is tight, muon must be loose or we would be on line above
-	else if ( vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //if electron is tight, muon must be loose or we would be on tight-tight line
-	else NPweight = WeightOF_T00(elPromptRate,elFakeRate,muPromptRate,muFakeRate); //otherwise both are loose
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=3;} //both tight
+	else if ( vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) {NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate);TL=2;} //if electron is tight, muon must be loose or we would be on line above
+	else if ( vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) {NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line
+	else {NPweight = WeightOF_T00(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=0;}//otherwise both are loose
       }
     }
       
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL);
     
 
   }//end event loop
