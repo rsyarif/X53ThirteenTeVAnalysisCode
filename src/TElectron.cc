@@ -72,13 +72,14 @@ bool TElectron::mvaTight(){
   return false;
 }
 
+//standard plus ISO
 bool TElectron::mvaTightIso(){
   bool pass = mvaTight() && miniIso<0.1;
   return pass;
 }
 
 bool TElectron::mvaLooseIso(){
-  bool pass = mvaLoose() && miniIso<0.1;
+  bool pass = mvaLoose() && miniIso<0.4;
   return pass;
 }
 
@@ -94,6 +95,123 @@ bool TElectron::mvaTightCC(){
   return pass;
 }
 
+
+//**********New IDS defined by me and Aram
+bool TElectron::mvaTightNew(){
+  //check basic mva value and miniIso first
+  bool pass = mvaTight() && miniIso< 0.1;
+  if(!pass) return false;
+
+  //add track cuts from cutbasedID
+  if(fabs(eta) <= 1.479){
+    if(fabs(d0) >= 0.0111)      return false;
+    if(fabs(dZ) >= 0.0466)      return false;
+    if(mHits > 2)              return false;
+    if(!passConversion)        return false;
+    //    if(pt <30)                 return false;
+  }
+  //Endcap
+  else{
+    if(fabs(eta)>2.4)           return false;
+    if(fabs(d0) >= 0.0351)      return false;
+    if(fabs(dZ) >= 0.417)      return false;
+    if(mHits > 1)              return false;
+    if(!passConversion)        return false;
+  }
+
+  //charge consistency cut
+  if(chargeConsistency <1) return false;
+  return true;
+}
+
+bool TElectron::mvaLooseNew(){
+  bool mvaloose = mvaLoose() && miniIso<0.4;
+  if(!mvaloose) return false;
+
+  //since it passed mva cuts apply loose cuts on track from cutbasedID
+  if(fabs(eta) <= 1.479){
+    if(fabs(d0) >= 0.0261)      return false;
+    if(fabs(dZ) >= 0.41)     return false;
+    if(mHits > 2)              return false;
+    if(!passConversion)        return false;
+  }
+  //Endcap
+  else{
+    if(fabs(eta)>2.4)           return false;
+    if(fabs(d0) >= 0.118)       return false;
+    if(fabs(dZ) >= 0.822)      return false;
+    if(mHits > 1)              return false;
+    if(!passConversion)        return false;
+  }
+
+  //charge consistency
+  bool cc =  chargeConsistency< 1 ? false : true;
+  if(!cc) return false;
+
+  return true;
+}
+
+bool TElectron::mvaTightNewRC(){
+
+  bool pass = mvaTight() && miniIso< 0.1;
+  if(!pass) return false;
+
+  //add track cuts from cutbasedID
+  if(fabs(eta) <= 1.479){
+    if(fabs(d0) >= 0.0111)      return false;
+    if(fabs(dZ) >= 0.0466)      return false;
+    if(mHits > 2)              return false;
+    if(!passConversion)        return false;
+    //    if(pt <30)                 return false;
+  }
+  //Endcap
+  else{
+    if(fabs(eta)>2.4)           return false;
+    if(fabs(d0) >= 0.0351)      return false;
+    if(fabs(dZ) >= 0.417)      return false;
+    if(mHits > 1)              return false;
+    if(!passConversion)        return false;
+  }
+
+  //relaxed charge consistency cut
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  if(!cc) return false;
+
+  return true;
+}
+
+bool TElectron::mvaLooseNewRC(){
+  bool mvaloose = mvaLoose() && miniIso<0.4;
+  if(!mvaloose) return false;
+
+  //since it passed mva cuts apply loose cuts on track from cutbasedID
+  if(fabs(eta) <= 1.479){
+    if(fabs(d0) >= 0.0261)      return false;
+    if(fabs(dZ) >= 0.41)     return false;
+    if(mHits > 2)              return false;
+    if(!passConversion)        return false;
+  }
+  //Endcap
+  else{
+    if(fabs(eta)>2.4)           return false;
+    if(fabs(d0) >= 0.118)       return false;
+    if(fabs(dZ) >= 0.822)      return false;
+    if(mHits > 1)              return false;
+    if(!passConversion)        return false;
+  }
+
+  //relaxed charge consistency cut
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  if(!cc) return false;
+
+  return true;
+}
+
+//standard with relaxed charge
 bool TElectron::mvaLooseRC(){
   bool cc;
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
@@ -107,18 +225,6 @@ bool TElectron::mvaTightRC(){
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mvaTight() && cc;
-  return pass;
-}
-
-bool TElectron::mvaLooseCCIso(){
-  bool cc = chargeConsistency< 1 ? false : true;
-  bool pass = mvaLooseIso() && cc;
-  return pass;
-}
-
-bool TElectron::mvaTightCCIso(){
-  bool cc = chargeConsistency< 1 ? false : true;
-  bool pass = mvaTightIso() && cc;
   return pass;
 }
 
@@ -137,6 +243,20 @@ bool TElectron::mvaTightRCIso(){
   bool pass = mvaTightIso() && cc;
   return pass;
 }
+
+//standard with tight charge consistency
+bool TElectron::mvaLooseCCIso(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaLooseIso() && cc;
+  return pass;
+}
+
+bool TElectron::mvaTightCCIso(){
+  bool cc = chargeConsistency< 1 ? false : true;
+  bool pass = mvaTightIso() && cc;
+  return pass;
+}
+
 
 ///************** SUSY IDs*****************************
 //  THESE ARE INCOMPLETE BECAUSE OF MISSING SIP3D INFO!!!!!!!

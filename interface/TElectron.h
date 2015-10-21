@@ -47,6 +47,12 @@ public:
   bool mvaTightIso();
   bool mvaLooseIso();
 
+  bool mvaTightNew();
+  bool mvaLooseNew();
+  bool mvaTightNewRC();
+  bool mvaLooseNewRC();
+
+
   bool mvaTightRC();
   bool mvaLooseRC();
   bool mvaTightCC();
