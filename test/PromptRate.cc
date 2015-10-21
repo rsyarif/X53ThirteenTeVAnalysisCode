@@ -238,6 +238,14 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
 	iLep->Loose=true;
       }
+      else if(ID=="MVATightNew"){
+	iLep->Tight=iel->mvaTightNew();
+	iLep->Loose=iel->mvaLooseNew();
+      }
+      else if(ID=="MVATightNewRC"){
+	iLep->Tight=iel->mvaTightNewRC();
+	iLep->Loose=iel->mvaLooseNewRC();
+      }
       else if(ID=="MVATight"){
 	iLep->Tight=iel->mvaTightIso();
 	iLep->Loose=iel->mvaLooseIso();
@@ -367,6 +375,14 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
       else if(ID=="CBLoose"){
 	iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
 	iLep->Loose=true;
+      }
+      else if(ID=="MVATightNew"){
+	iLep->Tight=iel->mvaTightNew();
+	iLep->Loose=iel->mvaLooseNew();
+      }
+      else if(ID=="MVATightNewRC"){
+	iLep->Tight=iel->mvaTightNewRC();
+	iLep->Loose=iel->mvaLooseNewRC();
       }
       else if(ID=="MVATight"){
 	iLep->Tight=iel->mvaTightIso();
