@@ -102,7 +102,7 @@ int main(int argc, char* argv[]){
   //data samples
   data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
   data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  data_samples["ChargeMisIDData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -272,7 +272,7 @@ int main(int argc, char* argv[]){
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
     bool zLeps = true;
     float weight;
-    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos){
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){
       samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons outside Zpeak (71-111GeV)
     }
     //now that we have good leptons, if it's not DY sample just check for two with same-sign charge and assign weight of 1
@@ -286,7 +286,7 @@ int main(int argc, char* argv[]){
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
-    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos){      
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){      
       vSSLep = makeOSLeptonsForDY(goodLeptons);
     }
     else vSSLep = makeSSLeptons(goodLeptons);
@@ -297,7 +297,7 @@ int main(int argc, char* argv[]){
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
     //with vector now get weight for DY Events
-    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
 
     //now get dilepton mass
