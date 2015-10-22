@@ -12,6 +12,8 @@ bool TMuon::cutBasedLoose(){
   if(fabs(eta)>2.4)          return false;
   if(!PFMuon)                return false;
   if(!(Tracker || Global))   return false;
+  //added iso cut
+  if(relIso > 0.4)           return false;
   return true;
 }
 
