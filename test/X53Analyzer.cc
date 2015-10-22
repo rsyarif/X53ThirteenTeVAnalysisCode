@@ -144,10 +144,10 @@ int main(int argc, char* argv[]){
   //make output file
   std::stringstream outnamestream;
   if(bg_np){
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_NonPromptSortByPt.root";
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
   }
   else{
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_SortByPt.root";
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
   }
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
@@ -252,7 +252,7 @@ int main(int argc, char* argv[]){
 
   for(int ient=0; ient<nEntries; ient++){
 
-    if(ient % 1000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
+    if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
     
     tr->GetEntry(ient);
     
@@ -397,10 +397,7 @@ int main(int argc, char* argv[]){
 	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose
       }
       else if(elel){//electron channel
-	if(vSSLep.at(0)->Tight) std::cout<<"leading el is tight"<<std::endl;
-	if(vSSLep.at(1)->Tight) std::cout<<"subleading el is tight"<<std::endl;
-	if(vSSLep.at(0)->Loose) std::cout<<"leading el is loose"<<std::endl;
-	if(vSSLep.at(1)->Loose) std::cout<<"subleading el is loose"<<std::endl;
+
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(elPromptRate,elFakeRate); TL=3;}//both tight
 	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(elPromptRate,elFakeRate); TL=1;}//one tight
 	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
