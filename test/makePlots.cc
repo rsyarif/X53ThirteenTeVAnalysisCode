@@ -19,7 +19,7 @@
 #include "TGraphAsymmErrors.h"
 
 
-void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1);
+void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu=-1, int cutIndex=0);
 void DrawTriggerEff(Sample* s, TFile* outfile);
 void DrawChargeMisIDGraph(TFile* outfile);
 
@@ -40,15 +40,16 @@ void makePlots(){
   std::vector<Sample*> vSigSamples = getSigSampleVec("sZVeto", lumi);
 
 
-  for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
-    //    std::vector<TH1F*> vBkgHist = getHistVector(v);
-    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,-1);
-    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,0);
-    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,1);
-    DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,2);
-    gROOT->Reset();
+  for(int j=0; j <3; j++){
+    for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
+      //    std::vector<TH1F*> vBkgHist = getHistVector(v);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,-1,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,0),j;
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,1,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples, fout,2,j);
+      gROOT->Reset();
+    }
   }
-
   //trigger plots - only for signal
   for(size_t i=0; i<vSigSamples.size();i++){
     DrawTriggerEff(vSigSamples.at(i),fout);
@@ -63,15 +64,23 @@ void makePlots(){
 
 
 
-void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu){
+void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, TFile* outfile, int nMu, int cutIndex){
 
   TCanvas* c1 = new TCanvas("c1","c1");
 
   c1->SetLogy();
 
   std::stringstream cutstring;
-  if(nMu>=0)  cutstring<<"(( ChargeMisIDWeight) * (Channel=="<<nMu<<") )";
-  else cutstring<<"ChargeMisIDWeight"; //just chargeMisID if no channel
+  if(nMu>=0){
+    if(cutIndex==0){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
+    else if(cutIndex==1){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=-) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+  }
+  else {
+    if(cutIndex==0){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ))";}
+    else if(cutIndex==1){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && ((Channel!=-) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"(( ChargeMisIDWeight) * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && (Channel!=-) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+  }
 
   THStack* tStack = new THStack("tStack","");
   TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);
@@ -155,7 +164,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Simulation Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"3.0 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"0.59 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
@@ -172,8 +181,12 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(nMu==0) channel="ElEl";
   if(nMu==1) channel="ElMu";
   if(nMu==2) channel="MuMu";
-  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_LooseIDLepJetCleaning.pdf";
-  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_LooseIDLepJetCleaning.png";
+  std::string cutname;
+  if(cutIndex==0) cutname =  "sZVeto";
+  if(cutIndex==1) cutname =  "QuarkoniaVeto";
+  if(cutIndex==2) cutname =  "TwoJets";
+  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+".pdf";
+  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
