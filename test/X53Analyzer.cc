@@ -102,7 +102,8 @@ int main(int argc, char* argv[]){
   //data samples
   data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
   data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  
+  data_samples["ChargeMisIDData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
+
   bool signal=false;
   bool bg_mc=false;
   bool bg_np = false; //bool to run  using tight loose method to get non prompt background
@@ -271,7 +272,7 @@ int main(int argc, char* argv[]){
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
     bool zLeps = true;
     float weight;
-    if(outname.find("DYJets")!=std::string::npos){
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos){
       samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons outside Zpeak (71-111GeV)
     }
     //now that we have good leptons, if it's not DY sample just check for two with same-sign charge and assign weight of 1
@@ -285,7 +286,7 @@ int main(int argc, char* argv[]){
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
-    if(outname.find("DYJets")!=std::string::npos){      
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos){      
       vSSLep = makeOSLeptonsForDY(goodLeptons);
     }
     else vSSLep = makeSSLeptons(goodLeptons);
@@ -296,7 +297,7 @@ int main(int argc, char* argv[]){
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
     //with vector now get weight for DY Events
-    if(outname.find("DYJets")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisIDData")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
 
 
     //now get dilepton mass
@@ -736,19 +737,15 @@ std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
     TLepton* lep1 = leptons.at(uilep);
     for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
       TLepton* lep2 = leptons.at(ujlep);
-      float m = (lep1->lv + lep2->lv).M();
-      float diff = fabs(91.1 - m);
-      if( diff< minDiff){
-	minDiff=diff;
-	pairMass=m;
-	Lep1=lep1;
-	Lep2=lep2;
+      //if both are muons don't save pair
+      if(lep1->isMu && lep2->isMu) continue;
+      if(lep1->charge != lep2->charge){
+	vSSLep.push_back(Lep1);
+	vSSLep.push_back(Lep2);
       }
     }
   }
 
-  vSSLep.push_back(Lep1);
-  vSSLep.push_back(Lep2);
 
 
   return vSSLep;
