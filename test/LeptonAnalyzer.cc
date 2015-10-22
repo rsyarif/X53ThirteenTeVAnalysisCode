@@ -36,9 +36,10 @@ int main(int argc, char* argv[]){
   if(argv1.find("Data")!=std::string::npos) data=true;
   else data=false;
 
-  std::string chirality(argv[2]);
-  std::string mass(argv[3]);
-
+  if(!data){ 
+      std::string chirality(argv[2]);
+      std::string mass(argv[3]);
+  }
 
   TString filename;
   if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
