@@ -37,7 +37,7 @@ void makePlots(){
   std::vector<Variable*> vVariables = getVariableVec();
 
   std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi);
-  std::vector<Sample*> vSigSamples = getSigSampleVec("sZVeto", lumi);
+  std::vector<Sample*> vSigSamples = getSigSampleVecForPlots("sZVeto", lumi);
 
 
   for(int j=0; j <3; j++){
@@ -93,8 +93,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
-    //scale by weight
-    h->Scale(s->weight);
+    //scale by weight - don't scale for data
+    if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("MC")==std::string::npos) ) { }
+    else  nEvts = nEvts * s->weight;
     //aesthetics
     h->SetFillColor(s->color);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
