@@ -21,8 +21,8 @@ bool AwayJetCheck(TLepton* lepton, std::vector<TJet*> jets);
 
 int main(int argc, char* argv[]){
 
-  //example usage: ./FakeRate.o Data Electrons
-
+  //example usage: ./FakeRate.o Data Electrons <ID>
+  std::cout<<"dummy"<<std::endl;
   if(argc!=4){
     std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option as well as electrons or muons and the ID used"<<std::endl;
     return 0;
