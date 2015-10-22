@@ -1,19 +1,22 @@
 #include <iostream>
-#include "TFile.h"
-#include "TTree.h"
-#include "TH1.h"
-#include <vector>
-#include "TLorentzVector.h"
-#include "TChain.h"
-#include "../interface/TreeReader.h"
 #include <stdio.h>
-#include "JetAnalyzer.cc"
-#include "GenAnalyzer.cc"
-#include "../interface/TreeMaker.h"
 #include <assert.h>
 #include <map>
 #include <string>
 #include <sstream> 
+#include <algorithm>
+#include <vector>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TH1.h"
+#include "TLorentzVector.h"
+#include "TChain.h"
+
+#include "../interface/TreeReader.h"
+#include "JetAnalyzer.cc"
+#include "GenAnalyzer.cc"
+#include "../interface/TreeMaker.h"
 #include "../plugins/Macros.cc"
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float, std::string, std::string, bool);
@@ -26,6 +29,8 @@ void printParticle(TGenParticle*);
 void printParticle(TLepton*);
 bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
 std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps);
+bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
+
 int main(int argc, char* argv[]){
 
   if(argc!=4) return 0;
@@ -36,7 +41,7 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTJets.root";
   bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTW.root";
   bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTZ.root";
   bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTWW.root";
@@ -139,10 +144,10 @@ int main(int argc, char* argv[]){
   //make output file
   std::stringstream outnamestream;
   if(bg_np){
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_NonPrompt.root";
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_NonPromptSortByPt.root";
   }
   else{
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
+    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_SortByPt.root";
   }
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
@@ -186,33 +191,35 @@ int main(int argc, char* argv[]){
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
   //load eta weights in:
-  std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
+  std::string cmidFilename = "./TreesChargeMisID/ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights = getEtaWeights(eWfile);
 
   //get fake rate according to ID
   float muPromptRate;
-  if(muID=="CBTight") muPromptRate=0.9311;
+  if(muID=="CBTight") muPromptRate=0.9396;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elPromptRate;
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.9215;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.8941;
+  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
-  else{std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
+  else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //get fake rate according to ID
   float muFakeRate;
-  if(muID=="CBTight") muFakeRate=0.049;
+  if(muID=="CBTight") muFakeRate=0.354;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.84;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.32;
+  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
-  else{std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
+  else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //doGenPlots(fsig,t,tr);
   //cd back to main directory after making gen plots
@@ -256,6 +263,9 @@ int main(int argc, char* argv[]){
     std::vector<TLepton*> goodLeptons;
     if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
     else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
+
+    //reorder the leptons by pt to remove flavor ordering
+    std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
     bool samesign;
 
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
@@ -387,6 +397,10 @@ int main(int argc, char* argv[]){
 	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose
       }
       else if(elel){//electron channel
+	if(vSSLep.at(0)->Tight) std::cout<<"leading el is tight"<<std::endl;
+	if(vSSLep.at(1)->Tight) std::cout<<"subleading el is tight"<<std::endl;
+	if(vSSLep.at(0)->Loose) std::cout<<"leading el is loose"<<std::endl;
+	if(vSSLep.at(1)->Loose) std::cout<<"subleading el is loose"<<std::endl;
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(elPromptRate,elFakeRate); TL=3;}//both tight
 	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(elPromptRate,elFakeRate); TL=1;}//one tight
 	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
@@ -566,6 +580,14 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     else if(elID=="MVATight"){
       iLep->Tight=iel->mvaTightIso();
       iLep->Loose=iel->mvaLooseIso();
+    }
+    else if(elID=="MVATightNew"){
+      iLep->Tight=iel->mvaTightNew();
+      iLep->Loose=iel->mvaLooseNew();
+    }
+    else if(elID=="MVATightNewRC"){
+      iLep->Tight=iel->mvaTightNewRC();
+      iLep->Loose=iel->mvaLooseNewRC();
     }
     else if(elID=="MVATightNoIso"){
       iLep->Tight=iel->mvaTight();
