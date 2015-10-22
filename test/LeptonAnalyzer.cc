@@ -36,9 +36,11 @@ int main(int argc, char* argv[]){
   if(argv1.find("Data")!=std::string::npos) data=true;
   else data=false;
 
+  std::string mass;
+  std::string chirality;
   if(!data){ 
-      std::string chirality(argv[2]);
-      std::string mass(argv[3]);
+      chirality = argv[2];
+      mass =argv[3] ;
   }
 
   TString filename;
