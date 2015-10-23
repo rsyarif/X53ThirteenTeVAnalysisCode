@@ -100,9 +100,9 @@ int main(int argc, char* argv[]){
   sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
+  data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct22/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct22/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct22/ljmet_trees/ljmet_Data_All.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -269,11 +269,14 @@ int main(int argc, char* argv[]){
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
     bool samesign;
 
+
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
     bool zLeps = true;
     float weight;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){
-      samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons outside Zpeak (71-111GeV)
+      
+      samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons not in mu-mu channel
+      
     }
     //now that we have good leptons, if it's not DY sample just check for two with same-sign charge and assign weight of 1
     else{
@@ -675,8 +678,8 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
   float minDiff=99999;
   float pairMass=91.1;
 
-  TLepton* Lep1;
-  TLepton* Lep2;
+  TLepton* Lep1=0;
+  TLepton* Lep2=0;
 
   for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
     TLepton* lep1 = leptons.at(uilep);
@@ -698,7 +701,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
     if(Lep1->charge != Lep2->charge) oppositeSign=true;
   }
 
-  if(! ( outsidePeak && oppositeSign) ) return false;
+  if(! oppositeSign ) return false;
   else if( Lep1->isMu && Lep2->isMu) return false; //don't allow mumu events to pass
   else return true;
 
@@ -730,8 +733,6 @@ std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
   float minDiff=99999;
   float pairMass=91.1;
 
-  TLepton* Lep1;
-  TLepton* Lep2;
 
   for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
     TLepton* lep1 = leptons.at(uilep);
@@ -740,8 +741,8 @@ std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
       //if both are muons don't save pair
       if(lep1->isMu && lep2->isMu) continue;
       if(lep1->charge != lep2->charge){
-	vSSLep.push_back(Lep1);
-	vSSLep.push_back(Lep2);
+	vSSLep.push_back(lep1);
+	vSSLep.push_back(lep2);
       }
     }
   }
