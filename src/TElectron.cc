@@ -45,13 +45,13 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 /// *********************** MVA IDs ************************
 bool TElectron::mvaLoose(){
   if(fabs(eta)<0.8){
-    if(mvaValue>0.933) return true;
+    if(mvaValue>0.913286) return true;
   }
   else if(fabs(eta)<1.479){
-    if(mvaValue>0.825) return true;
+    if(mvaValue>0.805013) return true;
   }
   else if(fabs(eta)<2.4){
-    if(mvaValue>0.337) return true;
+    if(mvaValue>0.358969) return true;
   }
   //if none of the above conditions is met return false
   return false;
@@ -60,13 +60,13 @@ bool TElectron::mvaLoose(){
 bool TElectron::mvaTight(){
 
   if(fabs(eta)<0.8){
-    if(mvaValue>0.965) return true;
+    if(mvaValue>0.967083) return true;
   }
   else if(fabs(eta)<1.479){
-    if(mvaValue>0.917) return true;
+    if(mvaValue>0.929117) return true;
   }
   else if(fabs(eta)<2.4){
-    if(mvaValue>0.683) return true;
+    if(mvaValue>0.726311) return true;
   }
   //if none of the above conditions is met return false
   return false;
