@@ -31,19 +31,19 @@ void setTDRStyle() {
   tdrStyle->SetFrameLineWidth(1);
 
   // For the histo:
-  tdrStyle->SetHistFillColor(63);
+  /*  tdrStyle->SetHistFillColor(63);
   // tdrStyle->SetHistFillStyle(0);
   tdrStyle->SetHistLineColor(1);
   tdrStyle->SetHistLineStyle(0);
   tdrStyle->SetHistLineWidth(1);
   // tdrStyle->SetLegoInnerR(Float_t rad = 0.5);
   // tdrStyle->SetNumberContours(Int_t number = 20);
-
+  */
   //  tdrStyle->SetEndErrorSize(0);
-  tdrStyle->SetErrorX(0.);
+  //tdrStyle->SetErrorX(0.);
   //  tdrStyle->SetErrorMarker(20);
   
-  tdrStyle->SetMarkerStyle(20);
+  //tdrStyle->SetMarkerStyle(20);
 
   //For the fit/function:
   tdrStyle->SetOptFit(1);
