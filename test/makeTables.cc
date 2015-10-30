@@ -5,6 +5,7 @@
 #include "../plugins/Macros.cc"
 #include "TFile.h"
 #include "TTree.h"
+#include "TGraphErrors.h"
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c, std::string caption);
 std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
@@ -17,13 +18,13 @@ void makeTables(){
   outfile.open("table.txt");
 
   //set desired luminosity
-  float lumi = 3.0; //fb^-1
+  float lumi = 1.28; //fb^-1
 
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi);
+  std::vector<Sample*> vSig = getSigSampleVecForPlots("sZVeto",lumi,"MVATightRC","CBTight");
 
   //get vector of background samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi);
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
 
   //now get vector of cuts
   std::vector<string> vCutString = getCutString();
@@ -137,12 +138,12 @@ std::stringstream& printChargeMisIDTable(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Electrons.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist");
   TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
-  h->Divide(den);
-  TGraph* g = new TGraph(h);
+  //h->Divide(den);
+  TGraphErrors* g = new TGraphErrors(h);
   for(unsigned int j=0; j< g->GetN(); j++){
     std::cout<<"making point: "<<j<<" x bin: "<<g->GetX()[j]<<"+/-"<<g->GetErrorX(j)<<" and y value: "<<g->GetY()[j]<<std::endl;
     float xlow = g->GetX()[j] - g->GetErrorX(j);
