@@ -61,10 +61,10 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_MuMu.root";
-    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_MuMu.root";
+    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_ElEl.root";
   }
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_DYJets.root"; data=false;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
   //make filename for output root file
   std::string outname;
@@ -89,6 +89,10 @@ int main(int argc, char* argv[]){
   TH1F* ptDenHist_Aram = new TH1F("ptDenHist_Aram","p_{T} of Loose Leptons",20,0,600);
   TH1F* etaNumHist_Aram = new TH1F("etaNumHist_Aram","#eta of Tight Leptons",12,-5,5);
   TH1F* etaDenHist_Aram = new TH1F("etaDenHist_Aram","#eta of Loose Leptons",12,-5,5);
+
+  //pt bins
+  float ptbins[11] = {30,50,70,100,130,160,200,250,300,400,600};
+
 
   //initialize needed histograms
   TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of Tight Leptons",20,0,600);
@@ -134,7 +138,7 @@ int main(int argc, char* argv[]){
 
     //get pair mass
     float pairMass = (leptons.at(0)->lv + leptons.at(1)->lv).M();
-    pairMassHist_all->Fill(pairMass);
+    pairMassHist_all->Fill(pairMass,tr->MCWeight);
     
     //revert to Aram's method
     std::vector<TLepton*> AramLeptons = makeAramLeptons(tr->allMuons,tr->allElectrons,MuonChannel,!data,FiftyNs, ID);
@@ -145,23 +149,23 @@ int main(int argc, char* argv[]){
 	//make sure mass is with Z mass window
 	float AramPairMass = (AramLeptons.at(0)->lv + AramLeptons.at(1)->lv).M();
 	if(AramPairMass > 81 && AramPairMass<101){
-	  ptDenHist_Aram->Fill(0);
-	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) ptNumHist_Aram->Fill(0);
-	  etaDenHist_Aram->Fill(0);
-	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) etaNumHist_Aram->Fill(0);
+	  ptDenHist_Aram->Fill(0.,tr->MCWeight);
+	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) ptNumHist_Aram->Fill(0.,tr->MCWeight);
+	  etaDenHist_Aram->Fill(0.,tr->MCWeight);
+	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) etaNumHist_Aram->Fill(0.,tr->MCWeight);
 	}//end check on mass
       }//end check on at least one tight
     }//end checl on number of Aram Leptons
 
     //now fill histograms, tag lepton will always be first so get element 1 for probe
-    ptDenHist->Fill(leptons.at(1)->pt);
+    ptDenHist->Fill(leptons.at(1)->pt,tr->MCWeight);
     if(leptons.at(1)->Tight){
-      ptNumHist->Fill(leptons.at(1)->pt);
-      pairMassHist_pass->Fill(pairMass);
+      ptNumHist->Fill(leptons.at(1)->pt,tr->MCWeight);
+      pairMassHist_pass->Fill(pairMass,tr->MCWeight);
     }
-    else pairMassHist_fail->Fill(pairMass);
-    etaDenHist->Fill(leptons.at(1)->eta);
-    if(leptons.at(1)->Tight) etaNumHist->Fill(leptons.at(1)->eta);
+    else pairMassHist_fail->Fill(pairMass,tr->MCWeight);
+    etaDenHist->Fill(leptons.at(1)->eta,tr->MCWeight);
+    if(leptons.at(1)->Tight) etaNumHist->Fill(leptons.at(1)->eta,tr->MCWeight);
 
   }//end event loop
 
@@ -234,6 +238,10 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
 	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();
       }
+      else if(ID=="CBTightRC"){
+	iLep->Tight=iel->cutBasedTight25nsSpring15MCRC();
+	iLep->Loose=iel->cutBasedLoose25nsSpring15MCRC();
+      }
       else if(ID=="CBLoose"){
 	iLep->Tight=iel->cutBasedLoose25nsSpring15MC();
 	iLep->Loose=true;
@@ -249,6 +257,10 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       else if(ID=="MVATight"){
 	iLep->Tight=iel->mvaTightIso();
 	iLep->Loose=iel->mvaLooseIso();
+      }
+      else if(ID=="MVATightRC"){
+	iLep->Tight=iel->mvaTightRCIso();
+	iLep->Loose=iel->mvaLooseRCIso();
       }
       else if(ID=="MVATightNoIso"){
 	iLep->Tight=iel->mvaTight();

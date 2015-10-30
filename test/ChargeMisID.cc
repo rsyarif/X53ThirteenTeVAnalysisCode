@@ -50,9 +50,9 @@ int main(int argc, char* argv[]){
   bool FiftyNS;
 
   if(argv1=="Data" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
-  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=false;}
+  else  if(argv1=="Data" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=false;}
   else if(argv1=="MC" && argv2=="50ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -80,6 +80,13 @@ int main(int argc, char* argv[]){
   TH1F* etaAllHist = new TH1F("etaAllHist","#eta of All Leptons",15,-3,3);
   TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Same Sign Leptons",15,-3,3);
   TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",15,-3,3);
+
+  TH1F* etaNumHist_lpt = new TH1F("etaNumHist_lpt","#eta of low pT Same Sign Leptons",15,-3,3);
+  TH1F* etaDenHist_lpt = new TH1F("etaDenHist_lpt","#eta of low pT Leptons",15,-3,3);
+
+  TH1F* etaNumHist_hpt = new TH1F("etaNumHist_hpt","#eta of High pT Same Sign Leptons",15,-3,3);
+  TH1F* etaDenHist_hpt = new TH1F("etaDenHist_hpt","#eta of High pT Leptons",15,-3,3);
+
   TH1F* massNumHist = new TH1F("massNumHist","M_{ll} of Same Sign Leptons",50,0,150);
   TH1F* massDenHist = new TH1F("massDenHist","M_ll} of All Leptons",50,0,150);
 
@@ -92,7 +99,7 @@ int main(int argc, char* argv[]){
     if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     for(std::vector<TElectron*>::size_type iel=0; iel<tr->goodElectrons.size();iel++){
-      etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta);
+      etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta,tr->MCWeight);
     }
 
     //make vector of leptons
@@ -123,30 +130,47 @@ int main(int argc, char* argv[]){
     bool zpeak= fabs(massDiff)<10 ? true : false;
 
     //fill denominator
-    massDenHist->Fill(zmass+massDiff);
+    massDenHist->Fill(zmass+massDiff,tr->MCWeight);
 
     if(!zpeak) continue;
 
     //now fill histograms
     if(lep1->charge == lep2->charge){
-      massNumHist->Fill(zmass+massDiff);
-      ptNumHist->Fill(lep1->pt);
-      ptNumHist->Fill(lep2->pt);
-      etaNumHist->Fill(lep1->eta);
-      etaNumHist->Fill(lep2->eta);
+      massNumHist->Fill(zmass+massDiff,tr->MCWeight);
+      ptNumHist->Fill(lep1->pt,tr->MCWeight);
+      ptNumHist->Fill(lep2->pt,tr->MCWeight);
+      etaNumHist->Fill(lep1->eta,tr->MCWeight);
+      etaNumHist->Fill(lep2->eta,tr->MCWeight);
+      if(lep1->pt>100 || lep2->pt>100){
+	etaNumHist_hpt->Fill(lep1->eta,tr->MCWeight);
+	etaNumHist_hpt->Fill(lep2->eta,tr->MCWeight);
+      }
+      else{
+	etaNumHist_lpt->Fill(lep1->eta,tr->MCWeight);
+	etaNumHist_lpt->Fill(lep2->eta,tr->MCWeight);
+      }
     }
 
     //fill denominator
-    ptDenHist->Fill(lep1->pt);
-    ptDenHist->Fill(lep2->pt);
-    etaDenHist->Fill(lep1->eta);
-    etaDenHist->Fill(lep2->eta);
-
+    ptDenHist->Fill(lep1->pt,tr->MCWeight);
+    ptDenHist->Fill(lep2->pt,tr->MCWeight);
+    etaDenHist->Fill(lep1->eta,tr->MCWeight);
+    etaDenHist->Fill(lep2->eta,tr->MCWeight);
+    if(lep1->pt>100 || lep2->pt>100){
+      etaDenHist_hpt->Fill(lep1->eta,tr->MCWeight);
+      etaDenHist_hpt->Fill(lep2->eta,tr->MCWeight);
+    }
+    else{
+      etaDenHist_lpt->Fill(lep1->eta,tr->MCWeight);
+      etaDenHist_lpt->Fill(lep2->eta,tr->MCWeight);
+    }
   }//end event loop
 
   //save weights 
   etaNumHist->Sumw2();
   etaDenHist->Sumw2();
+  etaNumHist_hpt->Sumw2();
+  etaDenHist_hpt->Sumw2();
   ptNumHist->Sumw2();
   ptDenHist->Sumw2();
   massNumHist->Sumw2();
@@ -154,6 +178,8 @@ int main(int argc, char* argv[]){
 
   //scale num hists by 1/2 (except mass)
   etaNumHist->Scale(0.5);
+  etaNumHist_lpt->Scale(0.5);
+  etaNumHist_hpt->Scale(0.5);
   ptNumHist->Scale(0.5);
 
   //write file now that histograms have been filled
@@ -162,6 +188,10 @@ int main(int argc, char* argv[]){
   fout->Append(etaAllHist);
   fout->Append(etaNumHist);
   fout->Append(etaDenHist);
+  fout->Append(etaNumHist_hpt);
+  fout->Append(etaDenHist_hpt);
+  fout->Append(etaNumHist_lpt);
+  fout->Append(etaDenHist_lpt);
   fout->Append(massNumHist);
   fout->Append(massDenHist);
   //make tgraphs for promptrate
@@ -176,7 +206,13 @@ int main(int argc, char* argv[]){
   rateEta->Divide(etaDenHist);
   TH1F* ratePt = (TH1F*) ptNumHist->Clone();
   ratePt->Divide(ptDenHist);
+  TH1F* rateEta_lpt = (TH1F*)etaNumHist_lpt->Clone();
+  rateEta_lpt->Divide(etaDenHist_lpt);
+  TH1F* rateEta_hpt = (TH1F*)etaNumHist_hpt->Clone();
+  rateEta_hpt->Divide(etaDenHist_hpt);
   fout->Append(rateEta);
+  fout->Append(rateEta_lpt);
+  fout->Append(rateEta_hpt);
   fout->Append(ratePt);
 
   fout->Write();
