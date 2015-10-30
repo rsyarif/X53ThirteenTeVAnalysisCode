@@ -44,9 +44,15 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
 
-  //histos fro dy
+  //histos eta all
   TH1F* etaNumHist = new TH1F("etaNumHist","#eta of electrons",15,-3,3);
   TH1F* etaDenHist = new TH1F("etaDenHist","#eta of electrons",15,-3,3);
+  //histos eta low pt
+  TH1F* etaNumHist_lpt = new TH1F("etaNumHist_lpt","#eta of electrons",15,-3,3);
+  TH1F* etaDenHist_lpt = new TH1F("etaDenHist_lpt","#eta of electrons",15,-3,3);
+  //histos for hight pt eta
+  TH1F* etaNumHist_hpt = new TH1F("etaNumHist_hpt","#eta of electrons",15,-3,3);
+  TH1F* etaDenHist_hpt = new TH1F("etaDenHist_hpt","#eta of electrons",15,-3,3);
 
   TH1F* ptNumHist = new TH1F("ptNumHist","p_{T} of electrons",20,0,600);
   TH1F* ptDenHist = new TH1F("ptDenHist","p_{T} of electrons",20,0,600);
@@ -83,8 +89,12 @@ int main(int argc, char* argv[]){
       //fill numerator if charges aren't equal
       if(iel->charge != gp->charge){
 	etaNumHist->Fill(iel->eta,tr->MCWeight);
-	ptNumHist->Fill(iel->pt,tr->MCWeight);
+	ptNumHist->Fill(iel->eta,tr->MCWeight);
+	if(iel->pt >100) etaNumHist_hpt->Fill(iel->eta,tr->MCWeight);
+       	else 	         etaNumHist_lpt->Fill(iel->eta,tr->MCWeight);
       }
+      if(iel->pt >100) etaDenHist_hpt->Fill(iel->eta,tr->MCWeight);
+      else 	       etaDenHist_lpt->Fill(iel->eta,tr->MCWeight);
       
     }//end loop over electrons
   }// end event loop
