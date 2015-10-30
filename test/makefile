@@ -33,3 +33,6 @@ IsoAnalyzer:
 LeptonAnalyzer:
 	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o LeptonAnalyzer.o LeptonAnalyzer.cc
 
+Systematics_ChargeMisID:
+	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o Systematics_ChargeMisID.o Systematics_ChargeMisID.cc
+
