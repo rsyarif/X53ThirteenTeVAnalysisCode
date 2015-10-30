@@ -44,8 +44,8 @@ int main(int argc, char* argv[]){
   }
 
   TString filename;
-  if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Oct15v2/ljmet_trees/ljmet_Data_All.root";
-  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
+  if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
+  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
 
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
