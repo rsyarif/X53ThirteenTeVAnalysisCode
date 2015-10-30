@@ -825,7 +825,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
   if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel, return 1 for now
     sf = 1.0;
   }
-  else if(vLep.at(0)->isel && vLep.at(1)->isEl){//dielectron channel
+  else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
     sf = 0.97;
   }
   else{ //cross channel
@@ -954,7 +954,7 @@ float getLepIDSF(TLepton* lep){
       else if(lep->pt>40)  sf = 0.9849;
       else if(lep->pt>30)  sf = 0.9945;
     }
-    else if(lep->eta > -1.566) sf = 0 //same dummy protection against gap as above
+    else if(lep->eta > -1.566) sf = 0; //same dummy protection against gap as above
     else if(lep->eta>-2.4){
       if(lep->pt>250)      sf = 0.9205;
       else if(lep->pt>180) sf = 0.9118;
