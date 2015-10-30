@@ -19,6 +19,11 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("nTL",&nTL_);
   tree->Branch("Lep1Pt",&Lep1Pt_);
 
+  //scalefactors
+  tree->Branch("trigSF",&trigSF_);
+  tree->Branch("IDSF",&IDSF_);
+  tree->Branch("IsoSF",&IsoSF_);
+
   tree->Branch("Lep1Eta",&Lep1Eta_);
   tree->Branch("Lep1Phi",&Lep1Phi_);
   tree->Branch("Lep1Energy",&Lep1Energy_);
@@ -88,14 +93,18 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
   nTL_ = nTLtemp;
   if(mcweight>0) MCWeight_=1;
   else MCWeight_=-1;
-  
+
+  trigSF_=trSF;
+  IDSF_ = idSF;
+  IsoSF_ = isoSF;
+
   assert(vSSLep.size()>1);
 
   Lep1Pt_=vSSLep.at(0)->pt;
@@ -110,7 +119,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   Lep2Energy_=vSSLep.at(1)->energy;
   vSSLep.at(1)->isMu ? Lep2Flavor_=1 : Lep2Flavor_=0;
 
-  if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
+  //if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
 
   AK4HT_=HTtemp;
   AK4HT_+=Lep1Pt_+Lep2Pt_;
