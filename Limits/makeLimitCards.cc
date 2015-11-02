@@ -89,11 +89,11 @@ int main(int argc, char* argv[]){
   outfile.open(fstring);
 
   //set desired lumi
-  float lumi = 3.0; // fb^{-1}
+  float lumi = 1.28; // fb^{-1}
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi);
-  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi);
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
@@ -125,7 +125,7 @@ int main(int argc, char* argv[]){
   if(nMu>=0)  outfile<<"imax 1\n";
   else   outfile<<"imax 3\n";
   outfile<<"jmax 7\n";
-  outfile<<"kmax 3\n"; //currently ahve 3 systematics
+  outfile<<"kmax 7\n"; //currently have 3 systematics
 
   //write observed - FOW NOW DUMMY
   if(nMu>0) outfile<<"------------\n"<<"bin "<<channel<<"\n"<<"observation 0\n"<<"------------\n\n";
@@ -198,32 +198,72 @@ int main(int argc, char* argv[]){
   //write systematics
   outfile<<"\n\n"<<"------------\n";
   std::stringstream fakerate;
-  fakerate<<"- 1.50 - - - 1.50 - -";
+  fakerate<<"- - - - - - - 1.50 -";
   if(nMu>0){
-    outfile<<"FakeRate \t lnN \t "<<fakerate.str()<<"\n";
+    outfile<<"FakeRate lnN "<<fakerate.str()<<"\n";
   }
   else{
-    outfile<<"FakeRate \t lnN \t "<<fakerate.str()<<" "<<fakerate.str()<<" "<<fakerate.str()<<"\n";
+    outfile<<"FakeRate lnN "<<fakerate.str()<<" "<<fakerate.str()<<" "<<fakerate.str()<<"\n";
   }
 
   std::stringstream qcdScale;
-  qcdScale<<"- - 1.30 1.30 1.30 - - 1.30";
+  qcdScale<<"- 1.12 1.135 1.50 1.50 1.50 1.50 - -";
   if(nMu>0){
-    outfile<<"QCDScale \t lnN \t "<<qcdScale.str()<<"\n";
+    outfile<<"MCNorm lnN "<<qcdScale.str()<<"\n";
   }
   else{
-    outfile<<"QCDScale \t lnN \t "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
+    outfile<<"QCDNorm lnN "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
   }
-
+  std::stringstream jes;
+  jes<<"- 1.04 1.03 1.05 1.04 1.04 1.04 - -";
+  if(nMu>0){
+    outfile<<"JES lnN "<<jes.str()<<"\n";
+  }
+  else{
+    outfile<<"JES lnN "<<jes.str()<<" "<<jes.str()<<" "<<jes.str()<<"\n";
+  }
   std::stringstream chargemisid;
-  chargemisid<<"- - - - - - 1.20 -";
+  chargemisid<<"- - - - - - - - 1.20";
   if(nMu>0){
-    outfile<<"ChargeMisID \t lnN \t "<<chargemisid.str()<<"\n";
+    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<"\n";
   }
   else{
-    outfile<<"ChargeMisID \t lnN \t "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
+    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
   }
 
+  std::stringstream lumisys;
+  lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
+  if(nMu>0){
+    outfile<<"LUMISYS lnN "<<lumisys.str()<<"\n";
+  }
+  else{
+    outfile<<"LUMISYS lnN "<<lumisys.str()<<" "<<lumisys.str()<<" "<<lumisys.str()<<"\n";
+  }
+
+  std::stringstream lepID;
+  if(nMu==0) lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else if(nMu==1) lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else if (nMu==2)lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  outfile<<"LepID lnN "<<lepID.str()<<"\n";
+  
+  std::stringstream lepISO;
+  if(nMu==0) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else if(nMu==1) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else if (nMu==2)lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+  else lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
+
+  outfile<<"LepISO lnN "<<lepISO.str()<<"\n";
+  
+
+  std::stringstream Trig;
+  if(nMu==0) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
+  else if(nMu==1) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
+  else if (nMu==2)Trig<<"1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
+  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
+
+  outfile<<"Trig lnN "<<Trig.str()<<"\n";
+  
   return 0;
 }
 
