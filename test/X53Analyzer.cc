@@ -194,9 +194,10 @@ int main(int argc, char* argv[]){
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
 
   //load eta weights in:
-  std::string cmidFilename = "./TreesChargeMisID/ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
+  std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
   TFile* eWfile = new TFile(cmidFilename.c_str());
-  std::vector<float> etaWeights = getEtaWeights(eWfile);
+  std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
+  std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
 
   //get fake rate according to ID
   float muPromptRate;
@@ -304,8 +305,12 @@ int main(int argc, char* argv[]){
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
     //with vector now get weight for DY Events
-    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos) weight = getEtaWeight(etaWeights,vSSLep);
-
+    if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos) {
+      if( vSSLep.at(0)->pt >100 || vSSLep.at(1)->pt >100){ //high pt case
+	weight = getEtaWeight(etaWeights_hpt,vSSLep);
+      }
+      else weight = getEtaWeight(etaWeights_lpt,vSSLep); //low pt case
+    }
 
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
