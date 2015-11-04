@@ -176,6 +176,17 @@ class TreeReader{
   TBranch        *b_genPhi_DileptonCalc;
   std::vector<double>  *genPt;
   TBranch        *b_genPt_DileptonCalc; 
+  std::vector<bool> *genIsFromPromptTau;
+  TBranch        *b_genIsFromPromptTau_DileptonCalc;
+  std::vector<bool> *genIsPrompt;
+  TBranch        *b_genIsPrompt_DileptonCalc;
+  std::vector<bool> *genPMotherHasC;
+  TBranch        *b_genPMotherHasC_DileptonCalc;
+  std::vector<bool> *genPMotherHasB;
+  TBranch        *b_genPMotherHasB_DileptonCalc;
+  std::vector<int> *genPMother;
+  TBranch        *b_genPMother_DileptonCalc;
+
   //std::vector<double> *genCharge;
   //TBranch        *b_genCharge_DileptonCalc;
   //ak4 jets

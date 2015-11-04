@@ -95,7 +95,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     
     //make genparticle collection
     for(unsigned int i=0; i< genPt->size() ; i++){
-      genParticles.push_back(new TGenParticle( (*genPt)[i], (*genEta)[i], (*genPhi)[i],(*genEnergy)[i],(*genStatus)[i], (*genId)[i], (*genMotherId)[i]));
+      genParticles.push_back(new TGenParticle( (*genPt)[i], (*genEta)[i], (*genPhi)[i],(*genEnergy)[i],(*genStatus)[i], (*genId)[i], (*genMotherId)[i], (*genIsPrompt)[i],(*genIsFromPromptTau)[i], (*genPMotherHasC)[i], (*genPMotherHasB)[i], (*genPMother)[i] ));
     }
   }
 
@@ -218,6 +218,11 @@ void TreeReader::Init(TTree *treetemp)
   genMotherId = 0;
   genMotherIndex = 0;
   genStatus = 0;
+  genIsFromPromptTau = 0;
+  genIsPrompt = 0;
+  genPMotherHasC = 0;
+  genPMotherHasB = 0;
+  genPMother = 0;
 
   //muons
   muChi2 = 0;
@@ -340,7 +345,12 @@ void TreeReader::Init(TTree *treetemp)
     tree->SetBranchAddress("genMotherID_DileptonCalc", &genMotherId, &b_genMotherID_DileptonCalc);
     tree->SetBranchAddress("genMotherIndex_DileptonCalc", &genMotherIndex, &b_genMotherIndex_DileptonCalc);
     tree->SetBranchAddress("genStatus_DileptonCalc", &genStatus, &b_genStatus_DileptonCalc);
-    
+    tree->SetBranchAddress("genIsFromPromptTau_DileptonCalc",&genIsFromPromptTau,&b_genIsFromPromptTau_DileptonCalc);
+    tree->SetBranchAddress("genIsPrompt_DileptonCalc",&genIsPrompt,&b_genIsPrompt_DileptonCalc);
+    tree->SetBranchAddress("genPMotherHasC_DileptonCalc",&genPMotherHasC,&b_genPMotherHasC_DileptonCalc);
+    tree->SetBranchAddress("genPMotherHasB_DileptonCalc",&genPMotherHasB,&b_genPMotherHasB_DileptonCalc);
+    tree->SetBranchAddress("genPMother",&genPMother,&b_genPMother_DileptonCalc);
+
     tree->SetBranchAddress("genEnergy_DileptonCalc", &genEnergy, &b_genEnergy_DileptonCalc);
     tree->SetBranchAddress("genEta_DileptonCalc", &genEta, &b_genEta_DileptonCalc);
     tree->SetBranchAddress("genPhi_DileptonCalc", &genPhi, &b_genPhi_DileptonCalc);
