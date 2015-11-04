@@ -3,8 +3,8 @@
 TGenParticle::TGenParticle(){
 }
 
-TGenParticle::TGenParticle(double pttemp, double etatemp, double phitemp, double energytemp, int statustemp, int idtemp, int motherIdtemp) :
-  pt(pttemp), eta(etatemp), phi(phitemp), energy(energytemp), status(statustemp), id(idtemp), motherId(motherIdtemp)
+TGenParticle::TGenParticle(double pttemp, double etatemp, double phitemp, double energytemp, int statustemp, int idtemp, int motherIdtemp, bool prompt, bool tauInfo, bool fromC, bool fromB, int pmother) :
+  pt(pttemp), eta(etatemp), phi(phitemp), energy(energytemp), status(statustemp), id(idtemp), motherId(motherIdtemp), isPrompt(prompt), isFromPromptTau(tauInfo), PromptMotherHasC(fromC), PromptMotherHasB(fromB), PromptMotherId(pmother)
 {
 
   if( (id==11) || (id==13) || (id==15)) charge =-1;
