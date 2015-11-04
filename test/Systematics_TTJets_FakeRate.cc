@@ -43,21 +43,33 @@ int main(int argc, char* argv[]){
 
   TFile* outfile = new TFile("FakeRate_TTJets_MCTruth.root","RECREATE");
 
-  TH1F* elNumHist_lpt = new TH1F("elNumHist_lpt","elNumHist_lpt",4,0,4);
-  TH1F* elDenHist_lpt = new TH1F("elDenHist_lpt","elDenHist_lpt",4,0,4);
-  TH1F* elNumHist_hpt = new TH1F("elNumHist_hpt","elNumHist_hpt",4,0,4);
-  TH1F* elDenHist_hpt = new TH1F("elDenHist_hpt","elDenHist_hpt",4,0,4);
-  TH1F* elNumHist_all = new TH1F("elNumHist_all","elNumHist_all",4,0,4);
-  TH1F* elDenHist_all = new TH1F("elDenHist_all","elDenHist_all",4,0,4);
+  TH1F* elNumHist_lpt = new TH1F("elNumHist_lpt","elNumHist_lpt",5,0,5);
+  TH1F* elDenHist_lpt = new TH1F("elDenHist_lpt","elDenHist_lpt",5,0,5);
+  TH1F* elNumHist_hpt = new TH1F("elNumHist_hpt","elNumHist_hpt",5,0,5);
+  TH1F* elDenHist_hpt = new TH1F("elDenHist_hpt","elDenHist_hpt",5,0,5);
+  TH1F* elNumHist_all = new TH1F("elNumHist_all","elNumHist_all",5,0,5);
+  TH1F* elDenHist_all = new TH1F("elDenHist_all","elDenHist_all",5,0,5);
 
-  TH1F* muNumHist_lpt = new TH1F("muNumHist_lpt","muNumHist_lpt",4,0,4);
-  TH1F* muDenHist_lpt = new TH1F("muDenHist_lpt","muDenHist_lpt",4,0,4);
-  TH1F* muNumHist_hpt = new TH1F("muNumHist_hpt","muNumHist_hpt",4,0,4);
-  TH1F* muDenHist_hpt = new TH1F("muDenHist_hpt","muDenHist_hpt",4,0,4);
-  TH1F* muNumHist_all = new TH1F("muNumHist_all","muNumHist_all",4,0,4);
-  TH1F* muDenHist_all = new TH1F("muDenHist_all","muDenHist_all",4,0,4);
+  TH1F* muNumHist_lpt = new TH1F("muNumHist_lpt","muNumHist_lpt",5,0,5);
+  TH1F* muDenHist_lpt = new TH1F("muDenHist_lpt","muDenHist_lpt",5,0,5);
+  TH1F* muNumHist_hpt = new TH1F("muNumHist_hpt","muNumHist_hpt",5,0,5);
+  TH1F* muDenHist_hpt = new TH1F("muDenHist_hpt","muDenHist_hpt",5,0,5);
+  TH1F* muNumHist_all = new TH1F("muNumHist_all","muNumHist_all",5,0,5);
+  TH1F* muDenHist_all = new TH1F("muDenHist_all","muDenHist_all",5,0,5);
 
 
+  //set bin labels
+  elNumHist_lpt->GetXaxis()->SetBinLabel(1,"Light Quarks");elNumHist_hpt->GetXaxis()->SetBinLabel(1,"Light Quarks");elNumHist_all->GetXaxis()->SetBinLabel(1,"Light Quarks");
+  elNumHist_lpt->GetXaxis()->SetBinLabel(2,"Charm Quarks");elNumHist_hpt->GetXaxis()->SetBinLabel(2,"Charm Quarks");elNumHist_all->GetXaxis()->SetBinLabel(2,"Charm Quarks");
+  elNumHist_lpt->GetXaxis()->SetBinLabel(3,"Bottom Quarks");elNumHist_hpt->GetXaxis()->SetBinLabel(3,"Bottom Quarks");elNumHist_all->GetXaxis()->SetBinLabel(3,"Bottom Quarks");
+  elNumHist_lpt->GetXaxis()->SetBinLabel(4,"Misc.");elNumHist_hpt->GetXaxis()->SetBinLabel(4,"Misc.");elNumHist_all->GetXaxis()->SetBinLabel(4,"Misc.");
+  elNumHist_lpt->GetXaxis()->SetBinLabel(5,"Unmatched");elNumHist_hpt->GetXaxis()->SetBinLabel(5,"Unmatched");elNumHist_all->GetXaxis()->SetBinLabel(5,"Unmatched");
+
+  muNumHist_lpt->GetXaxis()->SetBinLabel(1,"Light Quarks");muNumHist_hpt->GetXaxis()->SetBinLabel(1,"Light Quarks");muNumHist_all->GetXaxis()->SetBinLabel(1,"Light Quarks");
+  muNumHist_lpt->GetXaxis()->SetBinLabel(2,"Charm Quarks");muNumHist_hpt->GetXaxis()->SetBinLabel(2,"Charm Quarks");muNumHist_all->GetXaxis()->SetBinLabel(2,"Charm Quarks");
+  muNumHist_lpt->GetXaxis()->SetBinLabel(3,"Bottom Quarks");muNumHist_hpt->GetXaxis()->SetBinLabel(3,"Bottom Quarks");muNumHist_all->GetXaxis()->SetBinLabel(3,"Bottom Quarks");
+  muNumHist_lpt->GetXaxis()->SetBinLabel(4,"Misc.");muNumHist_hpt->GetXaxis()->SetBinLabel(4,"Misc.");muNumHist_all->GetXaxis()->SetBinLabel(4,"Misc.");
+  muNumHist_lpt->GetXaxis()->SetBinLabel(5,"Unmatched");muNumHist_hpt->GetXaxis()->SetBinLabel(5,"Unmatched");muNumHist_all->GetXaxis()->SetBinLabel(5,"Unmatched");
 
   int nEntries = t->GetEntries();
 
@@ -84,7 +96,7 @@ int main(int argc, char* argv[]){
       }
 
       //skip any with pt below 25 GeV
-      if(iel->pT<25) continue;
+      if(iel->pt<25) continue;
       //skip if not at least loose
       if(!loose) continue;
 
@@ -97,18 +109,18 @@ int main(int argc, char* argv[]){
       std::cout<<"Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<std::endl;
       if(tight) std::cout<<"Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
       if(dR>0.3){//unmatched
-	elDenHist_all->Fill(3.5);
-	if(iel->pt>35) elDenHist_hpt->Fill(3.5);
-	else elDenHist_lpt->Fill(3.5);
+	elDenHist_all->Fill(4.5);
+	if(iel->pt>35) elDenHist_hpt->Fill(4.5);
+	else elDenHist_lpt->Fill(4.5);
 	if(tight){
-	  elNumHist_all->Fill(3.5);
-	  if(iel->pt>35) elNumHist_hpt->Fill(3.5);
-	  else elNumHist_lpt->Fill(3.5);
+	  elNumHist_all->Fill(4.5);
+	  if(iel->pt>35) elNumHist_hpt->Fill(4.5);
+	  else elNumHist_lpt->Fill(4.5);
 	}
       
       }//end if about unmatched
-      else{
-	if(fabs(gp->pdgID)==1 || fabs(gp->pdgID)==2 || fabs(pdgID)==3){
+      else{ 
+	if(fabs(gp->id)==1 || fabs(gp->id)==2 || fabs(gp->id)==3){
 	  elDenHist_all->Fill(0.5);	   
 	  if(iel->pt>35) elDenHist_hpt->Fill(0.5);
 	  else elDenHist_lpt->Fill(0.5);
@@ -118,7 +130,7 @@ int main(int argc, char* argv[]){
 	    else elNumHist_lpt->Fill(0.5);
 	  }
 	}/// end light quarks
-	if(fabs(gp->pdgID)==4){
+	else if(fabs(gp->id)==4){
 	  elDenHist_all->Fill(1.5);	   
 	  if(iel->pt>35) elDenHist_hpt->Fill(1.5);
 	  else elDenHist_lpt->Fill(1.5);
@@ -129,7 +141,7 @@ int main(int argc, char* argv[]){
 	  }
 	}//end check on charm quarks
 
-	if(fabs(gp->pdgID)==5){
+	else if(fabs(gp->id)==5){
 	  elDenHist_all->Fill(2.5);	   
 	  if(iel->pt>35) elDenHist_hpt->Fill(2.5);
 	  else elDenHist_lpt->Fill(2.5);
@@ -139,6 +151,18 @@ int main(int argc, char* argv[]){
 	    else elNumHist_lpt->Fill(2.5);
 	  }
 	}//end check on bottom quarks
+	else {
+	  elDenHist_all->Fill(3.5);	   
+	  if(iel->pt>35) elDenHist_hpt->Fill(3.5);
+	  else elDenHist_lpt->Fill(3.5);
+	  if(tight){
+	    elNumHist_all->Fill(3.5);
+	    if(iel->pt>35) elNumHist_hpt->Fill(3.5);
+	    else elNumHist_lpt->Fill(3.5);
+	  }
+	}//end misc
+
+
 
 
 
@@ -159,35 +183,81 @@ int main(int argc, char* argv[]){
 	std::cout<<"Muon ID selected not the one used in analysis! Are you sure?? Exiting to let you think about it..."<<std::endl;
 	return 0;
       }
+
+      //skip any with pt below 25 GeV
+      if(imu->pt<25) continue;
+      //skip if not at least loose
+      if(!loose) continue;
+
+      //make sure it is not matched to a gen electron
+      bool matched = matchToGenLep(imu, tr->genParticles);
+      if(matched) continue;
+      TGenParticle* gp = getMatchedGenParticle(imu,tr->genParticles);	
       
-      if(loose){
-	if(imu->pt>25){
-	//make sure it is not matched to a gen muon
-	bool matched = matchToGenLep(imu, tr->genParticles);
-	if(matched) continue;
-	TGenParticle* gp = getMatchedGenParticle(imu,tr->genParticles);	
-	if(gp){
-	  float dR = pow( pow(gp->eta - imu->eta,2) + pow(gp->phi - imu->phi,2), 0.5);
-	  std::cout<<"Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<std::endl;
-	  if(tight) std::cout<<"Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
-	  h_gpID->Fill(fabs(gp->id));
+      float dR = pow( pow(gp->eta - imu->eta,2) + pow(gp->phi - imu->phi,2), 0.5);
+      std::cout<<"Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<std::endl;
+      if(tight) std::cout<<"Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
+      if(dR>0.3){//unmatched
+	muDenHist_all->Fill(4.5);
+	if(imu->pt>35) muDenHist_hpt->Fill(4.5);
+	else muDenHist_lpt->Fill(4.5);
+	if(tight){
+	  muNumHist_all->Fill(4.5);
+	  if(imu->pt>35) muNumHist_hpt->Fill(4.5);
+	  else muNumHist_lpt->Fill(4.5);
 	}
-
-
-	  muDenHist_all->Fill(0);
-	  if(tight) muNumHist_all->Fill(0);
-	  if(imu->pt<35){
-	    muDenHist_lpt->Fill(0);
-	    if(tight) muNumHist_lpt->Fill(0);
+      
+      }//end if about unmatched
+      else{
+	if(fabs(gp->id)==1 || fabs(gp->id)==2 || fabs(gp->id)==3){
+	  muDenHist_all->Fill(0.5);	   
+	  if(imu->pt>35) muDenHist_hpt->Fill(0.5);
+	  else muDenHist_lpt->Fill(0.5);
+	  if(tight){
+	    muNumHist_all->Fill(0.5);
+	    if(imu->pt>35) muNumHist_hpt->Fill(0.5);
+	    else muNumHist_lpt->Fill(0.5);
 	  }
-	  else{
-	    muDenHist_hpt->Fill(0);
-	    if(tight) muNumHist_hpt->Fill(0);
-
+	}/// end light quarks
+	else if(fabs(gp->id)==4){
+	  muDenHist_all->Fill(1.5);	   
+	  if(imu->pt>35) muDenHist_hpt->Fill(1.5);
+	  else muDenHist_lpt->Fill(1.5);
+	  if(tight){
+	    muNumHist_all->Fill(1.5);
+	    if(imu->pt>35) muNumHist_hpt->Fill(1.5);
+	    else muNumHist_lpt->Fill(1.5);
 	  }
-	}
-      }//end check on loose
-    }//end muon loop
+	}//end check on charm quarks
+
+	else if(fabs(gp->id)==5){
+	  muDenHist_all->Fill(2.5);	   
+	  if(imu->pt>35) muDenHist_hpt->Fill(2.5);
+	  else muDenHist_lpt->Fill(2.5);
+	  if(tight){
+	    muNumHist_all->Fill(2.5);
+	    if(imu->pt>35) muNumHist_hpt->Fill(2.5);
+	    else muNumHist_lpt->Fill(2.5);
+	  }
+	}//end check on bottom quarks
+
+	else{
+	  muDenHist_all->Fill(3.5);	   
+	  if(imu->pt>35) muDenHist_hpt->Fill(3.5);
+	  else muDenHist_lpt->Fill(3.5);
+	  if(tight){
+	    muNumHist_all->Fill(3.5);
+	    if(imu->pt>35) muNumHist_hpt->Fill(3.5);
+	    else muNumHist_lpt->Fill(3.5);
+	  }
+	}//end misc
+
+
+
+      }//end check on matched
+    }//muon loop
+
+      
 
   }//end event loop
 
@@ -233,7 +303,7 @@ int main(int argc, char* argv[]){
   outfile->Append(muDenHist_lpt);
   outfile->Append(muDenHist_hpt);
   outfile->Append(muDenHist_all);
-  outfile->Append(h_gpID);
+ 
   outfile->Write();
 
   return 0;
