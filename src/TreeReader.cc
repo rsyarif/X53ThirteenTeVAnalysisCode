@@ -349,7 +349,7 @@ void TreeReader::Init(TTree *treetemp)
     tree->SetBranchAddress("genIsPrompt_DileptonCalc",&genIsPrompt,&b_genIsPrompt_DileptonCalc);
     tree->SetBranchAddress("genPMotherHasC_DileptonCalc",&genPMotherHasC,&b_genPMotherHasC_DileptonCalc);
     tree->SetBranchAddress("genPMotherHasB_DileptonCalc",&genPMotherHasB,&b_genPMotherHasB_DileptonCalc);
-    tree->SetBranchAddress("genPMother",&genPMother,&b_genPMother_DileptonCalc);
+    tree->SetBranchAddress("genPMother_DileptonCalc",&genPMother,&b_genPMother_DileptonCalc);
 
     tree->SetBranchAddress("genEnergy_DileptonCalc", &genEnergy, &b_genEnergy_DileptonCalc);
     tree->SetBranchAddress("genEta_DileptonCalc", &genEta, &b_genEta_DileptonCalc);
