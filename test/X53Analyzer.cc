@@ -33,6 +33,7 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
+
   if(argc!=4) return 0;
   std::string argv1=argv[1];
   std::string elID = argv[2];
@@ -192,6 +193,12 @@ int main(int argc, char* argv[]){
   TH1F* h_Mu8Ele23Den = new TH1F("h_Mu8Ele23Den","",60,0,600);
   TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
   TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
+
+  //get vector of histograms for nonprompt
+  std::vector<TH1F*> npHistos_all  = getNPHistos(-1);
+  std::vector<TH1F*> npHistos_ee   = getNPHistos(0);
+  std::vector<TH1F*> npHistos_emu  = getNPHistos(1);
+  std::vector<TH1F*> npHistos_mumu = getNPHistos(2);
 
   //load eta weights in:
   std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
@@ -449,7 +456,59 @@ int main(int argc, char* argv[]){
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
     tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF);
+
+
+    float st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
+    for(unsigned int j=0; j < vNonSSLep.size(); j++){
+      st = st + vNonSSLep.at(j)->pt;
+    }
+    for(unsigned int j=0; j <tr->cleanedAK4Jets.size();j++){
+      st = st + tr->cleanedAK4Jets.at(j)->pt;
+    }
+    //skip events in dielectron which reconstruct to z
+    if(elel){
+      if(dilepMass < 106 && dilepMass>76) continue;
+    }
+
+    //quarkonia veto
+    if(!(dilepMass>20)) continue;
+
+    if(vSSLep.at(0)->pt<40) continue; //skip events with leading lepton pt less than 40
     
+    int nconst = tr->cleanedAK4Jets.size() + vNonSSLep.size();
+    if(nconst<5) continue; //nconst cutl
+
+    float mcweight;
+    if(tr->MCWeight>0) mcweight=1.0;
+    else mcweight=-1.0;
+
+    //now fill nonprompt histos for later use
+    if(bg_np){
+
+	if(TL==0) npHistos_all.at(0)->Fill(st,mcweight);
+	if(TL==1) npHistos_all.at(1)->Fill(st,mcweight);
+	if(TL==2) npHistos_all.at(2)->Fill(st,mcweight);
+	if(TL==3) npHistos_all.at(3)->Fill(st,mcweight);
+      
+      if(elel){
+	if(TL==0) npHistos_ee.at(0)->Fill(st,mcweight);
+	if(TL==1) npHistos_ee.at(1)->Fill(st,mcweight);
+	if(TL==2) npHistos_ee.at(2)->Fill(st,mcweight);
+	if(TL==3) npHistos_ee.at(3)->Fill(st,mcweight);
+      }
+      if(elmu){
+	if(TL==0) npHistos_emu.at(0)->Fill(st,mcweight);
+	if(TL==1) npHistos_emu.at(1)->Fill(st,mcweight);
+	if(TL==2) npHistos_emu.at(2)->Fill(st,mcweight);
+	if(TL==3) npHistos_emu.at(3)->Fill(st,mcweight);
+      }
+      if(mumu){
+	if(TL==0) npHistos_mumu.at(0)->Fill(st,mcweight);
+	if(TL==1) npHistos_mumu.at(1)->Fill(st,mcweight);
+	if(TL==2) npHistos_mumu.at(2)->Fill(st,mcweight);
+	if(TL==3) npHistos_mumu.at(3)->Fill(st,mcweight);
+      }
+    }//end filling of nphistos
 
   }//end event loop
 
@@ -457,7 +516,13 @@ int main(int argc, char* argv[]){
   tm_ssdl->tree->Write();
   tm_sZVeto->tree->Write();
 
-
+  //write the nonprompt histograms
+  for(unsigned int j=0; j<4; j++){
+    fsig->WriteTObject(npHistos_all.at(j));
+    fsig->WriteTObject(npHistos_ee.at(j));
+    fsig->WriteTObject(npHistos_emu.at(j));
+    fsig->WriteTObject(npHistos_mumu.at(j));
+  }
   fsig->WriteTObject(h_DoubleEle33Num); 
   fsig->WriteTObject(h_DoubleEle33_MWNum);
   fsig->WriteTObject(h_Ele27WP85Num); 
