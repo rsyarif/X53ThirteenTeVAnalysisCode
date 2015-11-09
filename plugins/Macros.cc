@@ -103,6 +103,81 @@ std::vector<Variable*> getVariableVec(){
 
 }
 
+std::vector<Variable*> getVariablesForClosureTest(){
+
+  std::vector<Variable*> vVar;
+
+  Variable* lep1pt = new Variable("Lep1Pt",15,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
+  vVar.push_back(lep1pt);
+  /*Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
+  vVar.push_back(lep1eta);
+  Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
+  vVar.push_back(lep1phi);*/
+
+  Variable* lep2pt = new Variable("Lep2Pt",15,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
+  vVar.push_back(lep2pt);
+  /*Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
+  vVar.push_back(lep2eta);
+  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
+  vVar.push_back(lep2phi);*/
+
+  //cleaned jet variables
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4jet1pt);
+  /*Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+  vVar.push_back(cleanak4jet1eta);
+  Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+  vVar.push_back(cleanak4jet1phi);*/
+
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4jet2pt);
+  /*Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+  vVar.push_back(cleanak4jet2eta);
+  Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+  vVar.push_back(cleanak4jet2phi);*/
+
+
+  Variable* cleanak4ht = new Variable("cleanAK4HT",20,0,3000,"H_{T} (GeV)","N_{Events}");
+  vVar.push_back(cleanak4ht);
+  Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
+  vVar.push_back(ncleanak4jets);
+
+  //Variable* nConst = new Variable("nConst",17,0,17,"N_{Const}","N_{Events}");
+  //vVar.push_back(nConst);
+
+  //Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
+  //vVar.push_back(met);
+  Variable* dilepMass = new Variable("DilepMass",60,0,600,"Dilepton Mass (GeV)", "N_{Events}");
+  vVar.push_back(dilepMass);
+  return vVar;
+
+}
+
+
+std::vector<TH1F*> getNPHistos(int nMu){
+
+  std::vector<TH1F*> hists;
+  std::string channel;
+  if(nMu==-1) channel="All";
+  if(nMu==0) channel="ElEl";
+  if(nMu==1) channel="ElMu";
+  if(nMu==2) channel="MuMu";
+
+  std::string nt00 = channel+"_HT_nConstCut_NT00";
+  std::string nt01 = channel+"_HT_nConstCut_NT01";
+  std::string nt10 = channel+"_HT_nConstCut_NT10";
+  std::string nt11 = channel+"_HT_nConstCut_NT11";
+
+  //10 gev bins sot hat later I can use bin number ask cut
+  hists.push_back(new TH1F(nt00.c_str(),nt00.c_str(),1000,0,10000) );
+  hists.push_back(new TH1F(nt01.c_str(),nt01.c_str(),1000,0,10000) );
+  hists.push_back(new TH1F(nt10.c_str(),nt10.c_str(),1000,0,10000) );
+  hists.push_back(new TH1F(nt11.c_str(),nt11.c_str(),1000,0,10000) );
+
+  return hists;
+}
+
+
 Sample* getDataSample(std::string cut,std::string elID, std::string muID){
 
   std::string filename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/Data_Mu"+muID+"_El"+elID+".root";
@@ -288,7 +363,32 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi, std::s
 }
 
 
+std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::string elID, std::string muID){  
+  std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
+  vBkgNames.push_back("TTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
+  vBkgNames.push_back("NonPromptTTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
 
+  //now make vector to hold weights;
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(ui) / vNEvts.at(ui) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+
+
+  std::vector<Sample*> vSample;
+  std::string tt = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTJets_Mu"+muID+"_El"+elID+".root";
+  TFile* ttfile = new TFile(tt.c_str());
+  Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
+  vSample.push_back(ttSample);
+
+
+  std::string nptt = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
+  TFile* npttfile = new TFile(nptt.c_str());
+  Sample* npttSample = new Sample(vBkgNames.at(1),npttfile, vWeights.at(1),vXsec.at(1),cut,kBlue+2);
+  vSample.push_back(npttSample);
+
+  return vSample;
+}
 
 std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID){  
 
@@ -303,7 +403,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1925000 * 1);
   //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
   //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
-  vBkgNames.push_back("ZZ");     vXsec.push_back(0.1853);  vNEvts.push_back(6652512 * 0.689851);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6652512 * 0.689851);
   vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 140224* 1);
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
 
@@ -419,10 +519,10 @@ std::vector<std::string> getCutString(){
   return vString;
 }
 
-float getNumberEvents(Sample* s, std::string cut,int nMu){
-
+std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, bool scale_){
+  bool scale = scale_;
   TTree* t = s->tree;
-  TH1F* hdummy = new TH1F("hdummy","hdummy",100,0,10000);
+  TH1F* hdummy = new TH1F("hdummy","hdummy",1,0,10000);
   //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work also apply chargeMisIDWeight
   std::stringstream channel;
   if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
@@ -432,15 +532,21 @@ float getNumberEvents(Sample* s, std::string cut,int nMu){
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
-  float nEvts = hdummy->Integral();
+  
   //std::cout<<"Sample: "<<s->name<<" and cut: "<<cutstring<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
   //now weight properly - for Data don't apply
-  if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("MC")==std::string::npos) ) { }
-  else if( ( (s->name).find("ChargeMisID")!=std::string::npos) && ((s->name).find("MC")==std::string::npos) ) { }
-  else  nEvts = nEvts * s->weight;
+  if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("TTJets")==std::string::npos) ) { scale=false; }
+  else if( ( (s->name).find("ChargeMisID")!=std::string::npos) && ((s->name).find("MC")==std::string::npos) ) { scale=false; }
+  if(scale) hdummy->Scale(s->weight);
+  float nEvts = hdummy->Integral(1,hdummy->GetNbinsX()+1);
+  double_t err;
+  hdummy->IntegralAndError(1,hdummy->GetNbinsX()+1,err);
   delete hdummy;
-  return nEvts;
+  std::pair<float,float> nEvtsAndError(nEvts,(float)err);
+  return nEvtsAndError;
 };
+
+
 
 std::string getPrettyCutString(std::string cut){
 
@@ -472,21 +578,23 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts,int nMu)
 {
 
 
-  std::vector<float> vEvts;
+  std::vector<float> vEvts,vErr;
   std::vector<std::string> vCutsPretty;
 
   for(size_t j=0; j < vCuts.size(); j++){
     
     //get number of events and save to vector - IMPORTANT TO DO THIS WITH THE FULL CUT STRING AND NOT A PRETTY VERSION
-    float n = getNumberEvents(s, vCuts.at(j), nMu);
-    vEvts.push_back(n);
+    bool scale = true; //helper function will set to false if need be
+    std::pair<float,float> evtsAndErr = getNEvtsAndError(s, vCuts.at(j), nMu, scale);
+    vEvts.push_back(evtsAndErr.first);
+    vErr.push_back(evtsAndErr.second);
     //now trim the cuts string to write prettily
     
     std::string cutPretty = getPrettyCutString(vCuts.at(j));
     vCutsPretty.push_back(cutPretty);
   }
 
-  CutClass* c = new CutClass(s->name,vCutsPretty,vEvts,s->xsec);
+  CutClass* c = new CutClass(s->name,vCutsPretty,vEvts,vErr,s->xsec);
   return c;
 
 };
@@ -601,7 +709,7 @@ std::vector<float> getEtaWeights_lpt(TFile* weightfile){
   
   return etaWeights;
   
-}
+};
 
 std::vector<float> getEtaWeights_hpt(TFile* weightfile){
   
@@ -617,7 +725,7 @@ std::vector<float> getEtaWeights_hpt(TFile* weightfile){
   
   return etaWeights;
   
-}
+};
 
 float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons){
 
@@ -674,7 +782,7 @@ float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons)
 
   return weight;
 
-}
+};
 
 float getPairMass(TLepton* lep1, TLepton* lep2){
 
@@ -719,34 +827,34 @@ float getPrate(TFile* f){
 //functions to get weights for tight/loose method
 float getMuFakeRate(std::string ID){
 
-  if(ID=="CBTight") return 0.354;
-  else return 0.354;
+  if(ID=="CBTight") return 0.347;
+  else return 0.347;
 }
 
 float getMuPromptRate(std::string ID){
 
-  if(ID=="CBTight") return 0.9396;
-  else return 0.9396;
+  if(ID=="CBTight") return 0.94;
+  else return 0.94;
 		      
 }
 
 float getElFakeRate(std::string ID){
 
   if(ID=="CBTight") return 0.43;
-  else if(ID=="MVATightRC") return 0.32;
-  else if(ID=="MVATightCC") return 0.32;
+  else if(ID=="MVATightRC") return 0.288;
+  else if(ID=="MVATightCC") return 0.288;
   else if(ID=="CBTightRC") return 0.43;
-  else return 0.32;
+  else return 0.288;
 
 }
 
 float getElPromptRate(std::string ID){
 
   if(ID=="CBTight") return 0.7259;
-  else if(ID=="MVATightRC") return 0.8941;
-  else if(ID=="MVATightCC") return 0.8941;
+  else if(ID=="MVATightRC") return 0.87;
+  else if(ID=="MVATightCC") return 0.87;
   else if(ID=="CBTightRC") return 0.7259;
-  else return 0.8941;
+  else return 0.87;
 
 }  
 
@@ -1053,4 +1161,87 @@ float getLepIsoSF(std::vector<TLepton*> leps){
   float sf = sf1* sf2;
   return sf;
 
+}
+
+std::pair<float,float> getFakeRateByFlavor (std::string flavor){
+
+  float mufr;
+  float elfr;
+
+  if(flavor=="data"){
+    mufr=0.347;
+    elfr=0.288;
+  }
+
+  if(flavor=="light"){
+    mufr = 0.333;
+    elfr = 0.261;
+  }
+
+  if(flavor=="charm"){
+    mufr=0.367;
+    elfr=0.212;
+  }
+
+  if(flavor=="bottom"){
+    mufr=0.284;
+    elfr=0.181;
+  }
+  if(flavor=="fakes"){
+    mufr=0.119;
+    elfr=0.277;
+  }
+  if(flavor=="average"){
+    mufr=0.282;
+    elfr=0.204;
+  }
+
+
+
+
+  std::pair<float,float> fr(mufr,elfr);
+  return fr;
+}
+
+std::vector<float> weights_elel(std::string flavor){
+
+  std::vector<float> weights;
+  float elfr = getFakeRateByFlavor(flavor).second;
+  float elpr = getElPromptRate("MVATightRC");
+  //dielectron channel so only same flavor weights, order is 0: nt00, 1: nt01, 2: nt10, 3: nt11
+  weights.push_back(WeightSF_T0(elpr,elfr));
+  weights.push_back(WeightSF_T1(elpr,elfr));
+  weights.push_back(WeightSF_T1(elpr,elfr));
+  weights.push_back(WeightSF_T2(elpr,elfr));
+  return weights;
+}
+
+std::vector<float> weights_elmu(std::string flavor){
+
+  std::vector<float> weights;
+  float elfr = getFakeRateByFlavor(flavor).second;
+  float elpr = getElPromptRate("MVATightRC");
+  float mufr = getFakeRateByFlavor(flavor).first;
+  float mupr = getMuPromptRate("CBTight");
+
+  //cross channel, but order remains the same
+  weights.push_back(WeightOF_T00(elpr,elfr,mupr,mufr));
+  weights.push_back(WeightOF_T01(elpr,elfr,mupr,mufr));
+  weights.push_back(WeightOF_T10(elpr,elfr,mupr,mufr));
+  weights.push_back(WeightOF_T11(elpr,elfr,mupr,mufr));
+
+  return weights;
+}
+
+std::vector<float> weights_mumu(std::string flavor){
+
+  std::vector<float> weights;
+  float mufr = getFakeRateByFlavor(flavor).second;
+  float mupr = getMuPromptRate("MVATightRC");
+  //dimuectron channel so only same flavor weights, order is 0: nt00, 1: nt01, 2: nt10, 3: nt11
+  weights.push_back(WeightSF_T0(mupr,mufr));
+  weights.push_back(WeightSF_T1(mupr,mufr));
+  weights.push_back(WeightSF_T1(mupr,mufr));
+  weights.push_back(WeightSF_T2(mupr,mufr));
+  return weights;
 }
