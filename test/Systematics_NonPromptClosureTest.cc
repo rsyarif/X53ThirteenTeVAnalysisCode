@@ -12,14 +12,19 @@
 #include <map>
 #include <string>
 #include <sstream> 
-#include "../plugins/Macros.cc"
+#include <iomanip>
+#include <iostream>
+//#include "../plugins/Macros.cc"
 #include "../plugins/SetTDRStyle.cc"
 #include "TCanvas.h"
 #include "TLegend.h"
 #include "TLatex.h"
+#include "makeTables.cc"
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vSamples, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0);
 TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu, std::string elID, std::string muID, int cutIndex);
+std::stringstream& printRegEvtsAndError(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS);
+std::stringstream& printClosureEvtsAndError(std::stringstream& tablestring,std::vector<Sample*> vS, std::string FRflavor, int nmu);
 
 int main(int argc, char* argv[]){
 
@@ -41,13 +46,56 @@ int main(int argc, char* argv[]){
 
   for(unsigned int i=0; i< vVariables.size(); i++){
     for(unsigned int j =0; j<5; j++){
-      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,-1,j);
-      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,0,j);
-      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,1,j);
-      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,2,j);
+      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,-1,j);
+      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,0,j);
+      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,1,j);
+      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,2,j);
       
     }
   }
+
+  //check closure in terms of number of events
+  std::ofstream outfile;
+  outfile.open("table_closureTest.txt");
+
+  //now get vector of cuts
+  std::vector<std::string> vCutString = getCutString();
+
+  for(size_t i =0; i<vCutString.size();i++){
+    std::cout<<vCutString.at(i)<<std::endl;
+  }
+  std::stringstream tables;
+  tables<<std::fixed<<std::setprecision(2);
+  bool Bkg=false;
+  std::vector<std::string> flavors; flavors.push_back("data"); flavors.push_back("light"); flavors.push_back("charm");flavors.push_back("bottom");flavors.push_back("fakes");flavors.push_back("average");
+  for(int nmu=-1; nmu<3; nmu++){
+    //channel header
+    std::string chan;
+    if(nmu==-1) chan = "\\multicolumn{3}{|c|}{All Channels Combined}\\\\\n";
+    if(nmu==0) chan = "\\multicolumn{3}{|c|}{Di-electron Channel}\\\\\n";
+    if(nmu==1) chan = "\\multicolumn{3}{|c|}{Electron-muon Channel}\\\\\n";
+    if(nmu==2) chan = "\\multicolumn{3}{|c|}{Di-muon Channel}\\\\\n";
+ 
+    std::string header = "Sample & FakeRate Source & Events\\\\\n\hline\n";
+    tables<<chan<<header;
+    //now make a vector of cutClass for bkg
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vSamples,vCutString,nmu);
+    //print line for regular method
+    printRegEvtsAndError(tables,vCutBkg,vCutString);
+    //print lines for nonprompt with different fake rates
+    for(unsigned int f=0; f<flavors.size();f++){
+      std::string flav=flavors.at(f);
+      printClosureEvtsAndError(tables,vSamples,flav,nmu);
+    }
+    tables<<"\n\\hline\n";
+
+  }
+  
+  
+
+  outfile<<tables.str();
+
+  outfile.close();
 
 
   fout->Write();
@@ -56,6 +104,15 @@ int main(int argc, char* argv[]){
 }
 
 void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex){
+
+
+  //rename plots by channel
+  std::string channel;
+  if(nMu==-1) channel="All";
+  if(nMu==0) channel="ElEl";
+  if(nMu==1) channel="ElMu";
+  if(nMu==2) channel="MuMu";
+
 
   TCanvas* c1 = new TCanvas("c1","c1");
 
@@ -84,14 +141,15 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
   TH1F* h_err = getNPErrorHisto(vSamples,var,nMu,elID,muID, cutIndex);
   for(unsigned int i=0; i< vSamples.size();i++){
     Sample* s = vSamples.at(i);
-    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     
+    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);    
     TTree* t = s->tree;
     
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
     //scale by weight
     h->Scale(s->weight);
     //aesthetics
+    h->SetTitle("");
     h->SetFillStyle(0);
     h->SetLineColor(s->color);
     h->SetLineWidth(2);
@@ -101,8 +159,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
     std::cout<<"Sample: "<<s->name<<" and bin 3 content: "<<h->GetBinContent(3)<<" h_Err bin 3 content: "<<h_err->GetBinContent(3)<<std::endl;
     //add to legend
     leg->AddEntry(h,(s->name).c_str(),"l");
-    if(i==0) h->Draw("hist");
-    else h->Draw("hist same");
+    if(i==0) h->Draw("hist e");
+    else { h->Draw("hist same");}
+    
   }
     
     
@@ -111,7 +170,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
   //draw errors
   h_err->SetFillStyle(3344);
   h_err->SetFillColor(1);
-  h_err->Draw("SAME E2");
+  //h_err->Draw("SAME E2");
   
   //latex
   TLatex* cmstex = new TLatex();
@@ -137,12 +196,6 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
   if(nMu==1) chantex->DrawLatex(0.25,0.8,"#bf{e#mu}");
   if(nMu==2) chantex->DrawLatex(0.25,0.8,"#bf{#mu#mu}");
 
-  //rename plots by channel
-  std::string channel;
-  if(nMu==-1) channel="All";
-  if(nMu==0) channel="ElEl";
-  if(nMu==1) channel="ElMu";
-  if(nMu==2) channel="MuMu";
   std::string cutname;
   if(cutIndex==0) cutname =  "sZVeto";
   if(cutIndex==1) cutname =  "QuarkoniaAndElElZVeto";
@@ -151,13 +204,14 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
   if(cutIndex==4) cutname =  "LeadingLepPt100";
   std::string pdfname = "./plots/ClosureTest_"+(var->name)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
   std::string pngname = "./plots/ClosureTest_"+(var->name)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
-
+  
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
   outfile->WriteTObject(c1);
   delete c1;
   delete cmstex;
   delete lumitex;
+  delete h_err;
 }
 
 TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu,std::string elID, std::string muID, int cutIndex){
@@ -184,7 +238,7 @@ TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu,std::strin
     if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nconst >=5) )";}
+    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
     else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt >100) )";}
   }
   //now add ntl requirement
@@ -199,6 +253,7 @@ TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu,std::strin
     Sample* s= vS.at(nt);
     //skip if not non prompt
     if( (s->name).find("NonPromptTTJets")==std::string::npos) continue;
+    std::cout<<"adding errors for sample: "<<s->name<<std::endl;
     //get tree
     TTree* tdummy = s->tree;
     //fill histograms
@@ -233,5 +288,45 @@ TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu,std::strin
   }//end loop over samples
 
   return h_err;
+
+}
+
+
+std::stringstream& printRegEvtsAndError(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS){
+
+  int index = vCC.at(0)->nEvents.size();
+  CutClass* cc = vCC.at(0);
+  tablestring<<"Observed Events (MC) & N/A &"<< cc->nEvents.at(index-1)<<"$\\pm$"<<cc->vErr.at(index-1)<<"\\\\"<<std::endl;
+
+
+}
+
+std::stringstream& printClosureEvtsAndError(std::stringstream& tablestring,std::vector<Sample*> vS, std::string FRflavor, int nmu){
+
+  for(unsigned int i=0; i < vS.size(); i++){
+    Sample* s = vS.at(i);    
+    if( (s->name).find("NonPromptTTJets")==std::string::npos) continue;
+    TH1F* h; 
+    if( nmu==0) {h = s->SetNPCombinedHisto(s->hists_elel,weights_elel(FRflavor));h->Sumw2();}
+    if( nmu==1) {h = s->SetNPCombinedHisto(s->hists_elmu,weights_elmu(FRflavor));h->Sumw2();}
+    if( nmu==2) {h = s->SetNPCombinedHisto(s->hists_mumu,weights_mumu(FRflavor));h->Sumw2();}
+    if(nmu==-1){
+      h = s->SetNPCombinedHisto(s->hists_elel,weights_elel(FRflavor));
+      h->Sumw2();
+      h->Add(s->SetNPCombinedHisto(s->hists_elmu,weights_elmu(FRflavor)));
+      h->Add(s->SetNPCombinedHisto(s->hists_mumu,weights_mumu(FRflavor)));
+    }
+
+    //scale by weight
+    h->Scale(s->weight);
+
+    double_t err;
+    h->IntegralAndError(101,1001,err);
+    //std::cout<<"itegrating from: "<<h->GetBinCenter(100)<<" to "<<h->GetBinCenter(1000)<<std::endl;
+    float nEvts = h->Integral(101,1001);
+    tablestring<<"Predicted Events & "<<FRflavor<<" & "<<nEvts<<"$\\pm$"<<err<<"\\\\"<<std::endl;
+
+  }
+
 
 }
