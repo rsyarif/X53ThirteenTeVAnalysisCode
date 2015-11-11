@@ -18,6 +18,9 @@
 #include "GenAnalyzer.cc"
 #include "../interface/TreeMaker.h"
 #include "../plugins/Macros.cc"
+#include "../plugins/EventFilterFromFile_MuonEG.cc"
+#include "../plugins/EventFilterFromFile_DoubleMu.cc"
+#include "../plugins/EventFilterFromFile_DoubleEG.cc"
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float, std::string, std::string, bool);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
@@ -43,6 +46,9 @@ int main(int argc, char* argv[]){
   
   StringMap bg_samples, sig_samples,data_samples;
   bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
   bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTW.root";
   bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTZ.root";
   bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTWW.root";
@@ -58,6 +64,10 @@ int main(int argc, char* argv[]){
   //nonoPrompt versions
   bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTJets.root";
   bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WJets.root";
+  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+
   
   sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m700RH.root";
   sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m800RH.root";
@@ -299,6 +309,14 @@ int main(int argc, char* argv[]){
 
     if(!zLeps || !samesign) continue;
 
+
+    //now veto on bad events from met scanners
+    bool badEvent = false;
+    if(data){
+      badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event) || EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event) || EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+    }
+    if(badEvent) continue;
+
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){      
@@ -341,8 +359,9 @@ int main(int argc, char* argv[]){
     bool elmu=false;
     bool elel=false;
 
-    //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
 
+
+    //ok at this point only have events with same-sign leptons, now let's do simple check to see how many of each channel we have:
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
     else {nElEl+=1; elel=true;}
