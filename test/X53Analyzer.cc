@@ -213,6 +213,8 @@ int main(int argc, char* argv[]){
 
   //histogram for pdf uncertainties
   TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
+  //histogram for pdf uncertainties
+  TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties",500,0,5,30,0,3000);
 
   //load eta weights in:
   std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
@@ -510,6 +512,9 @@ int main(int argc, char* argv[]){
     std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
     for(int i=0; i< pdfweightIDs.size(); i++){
       int ID = pdfweightIDs.at(i);
+      if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
+	hist_scaleHT->Fill(pdfweights.at(i),st);
+      }
       if(!(ID>2000 && i<2101)) continue;
       hist_pdfHT->Fill(pdfweights.at(i),st);
     }
