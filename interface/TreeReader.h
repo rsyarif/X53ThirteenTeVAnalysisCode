@@ -53,6 +53,10 @@ class TreeReader{
   int event;
   TBranch* b_event_CommonCalc;
 
+  //pileup
+  int nPU;
+  TBranch* b_nTrueInteractions_PileupCalc;
+
   //Electrons
   //kinematics
   std::vector<double>  *elPt;

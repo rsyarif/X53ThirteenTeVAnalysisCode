@@ -275,6 +275,9 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("lumi_CommonCalc",&lumi,&b_lumi_CommonCalc);
   tree->SetBranchAddress("event_CommonCalc",&event,&b_event_CommonCalc);
 
+  //pileup
+  tree->SetBranchAddress("nTrueInteractions_PileupCalc",&nPU,&b_nTrueInteractions_PileupCalc);
+
   //Electrons                                                                                                                                                                                                     
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
   tree->SetBranchAddress("elCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);

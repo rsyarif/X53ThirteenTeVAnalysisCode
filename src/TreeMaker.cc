@@ -24,6 +24,8 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("IDSF",&IDSF_);
   tree->Branch("IsoSF",&IsoSF_);
 
+  tree->Branch("PUWeight",&puweight_);
+
   tree->Branch("Lep1Eta",&Lep1Eta_);
   tree->Branch("Lep1Phi",&Lep1Phi_);
   tree->Branch("Lep1Energy",&Lep1Energy_);
@@ -93,7 +95,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
@@ -104,6 +106,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   trigSF_=trSF;
   IDSF_ = idSF;
   IsoSF_ = isoSF;
+  puweight_=puwtemp;
 
   assert(vSSLep.size()>1);
 
