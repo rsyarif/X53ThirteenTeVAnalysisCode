@@ -504,20 +504,26 @@ int main(int argc, char* argv[]){
     if(nconst<5) continue; //nconst cutl
 
     float mcweight;
-    if(tr->MCWeight>0) mcweight=1.0;
-    else mcweight=-1.0;
-
-    //now fill ppdf weight histogram
-    std::vector<double> pdfweights = (*tr->LHEWeights);
-    std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
-    for(int i=0; i< pdfweightIDs.size(); i++){
-      int ID = pdfweightIDs.at(i);
-      if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
-	hist_scaleHT->Fill(pdfweights.at(i),st);
-      }
-      if(!(ID>2000 && i<2101)) continue;
-      hist_pdfHT->Fill(pdfweights.at(i),st);
+    if(data) mcweight = 1;
+    else{
+      if(tr->MCWeight>0) mcweight=1.0;
+      else mcweight=-1.0;
     }
+
+    if(!data){
+      //now fill ppdf weight histogram
+      std::vector<double> pdfweights = (*tr->LHEWeights);
+      std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
+      for(int i=0; i< pdfweightIDs.size(); i++){
+	int ID = pdfweightIDs.at(i);
+	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
+	  hist_scaleHT->Fill(pdfweights.at(i),st);
+	}
+	if(!(ID>2000 && i<2101)) continue;
+	hist_pdfHT->Fill(pdfweights.at(i),st);
+      }
+    }
+
     //now fill nonprompt histos for later use
     if(bg_np){
 
@@ -584,6 +590,7 @@ int main(int argc, char* argv[]){
   //fsig->WriteTObject(h_AK8PFJet360TrimMass30Den);
   
   fsig->WriteTObject(hist_pdfHT);
+  fsig->WriteTObject(hist_scaleHT);
 
   fsig->Write();
   fsig->Close();
