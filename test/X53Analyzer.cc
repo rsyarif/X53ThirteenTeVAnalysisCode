@@ -10,6 +10,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
+#include "TH2F.h"
 #include "TLorentzVector.h"
 #include "TChain.h"
 
@@ -209,6 +210,9 @@ int main(int argc, char* argv[]){
   std::vector<TH1F*> npHistos_ee   = getNPHistos(0);
   std::vector<TH1F*> npHistos_emu  = getNPHistos(1);
   std::vector<TH1F*> npHistos_mumu = getNPHistos(2);
+
+  //histogram for pdf uncertainties
+  TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
 
   //load eta weights in:
   std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
@@ -501,6 +505,14 @@ int main(int argc, char* argv[]){
     if(tr->MCWeight>0) mcweight=1.0;
     else mcweight=-1.0;
 
+    //now fill ppdf weight histogram
+    std::vector<double> pdfweights = (*tr->LHEWeights);
+    std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
+    for(int i=0; i< pdfweightIDs.size(); i++){
+      int ID = pdfweightIDs.at(i);
+      if(!(ID>2000 && i<2101)) continue;
+      hist_pdfHT->Fill(pdfweights.at(i),st);
+    }
     //now fill nonprompt histos for later use
     if(bg_np){
 
@@ -566,7 +578,7 @@ int main(int argc, char* argv[]){
   //fsig->WriteTObject(h_PFHT900Den);
   //fsig->WriteTObject(h_AK8PFJet360TrimMass30Den);
   
-
+  fsig->WriteTObject(hist_pdfHT);
 
   fsig->Write();
   fsig->Close();
