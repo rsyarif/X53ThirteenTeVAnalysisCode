@@ -175,6 +175,7 @@ void TreeReader::Init(TTree *treetemp)
   tree=treetemp;
 
   //intialize vectors to 0 because ROOT
+
   elD0 = 0;
   elDZ = 0;
   elDeta = 0;
@@ -224,6 +225,9 @@ void TreeReader::Init(TTree *treetemp)
   genPMotherHasB = 0;
   genPMother = 0;
 
+  LHEWeights = 0;
+  LHEWeightIDs = 0;
+
   //muons
   muChi2 = 0;
   muDxy = 0;
@@ -265,6 +269,11 @@ void TreeReader::Init(TTree *treetemp)
     genJetPhi = 0;
     genJetPt = 0;
   }
+
+  //common
+  tree->SetBranchAddress("run_CommonCalc",&run,&b_run_CommonCalc);
+  tree->SetBranchAddress("lumi_CommonCalc",&lumi,&b_lumi_CommonCalc);
+  tree->SetBranchAddress("event_CommonCalc",&event,&b_event_CommonCalc);
 
   //Electrons                                                                                                                                                                                                     
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
@@ -364,7 +373,10 @@ void TreeReader::Init(TTree *treetemp)
 
   //MC weight info
   tree->SetBranchAddress("MCWeight_DileptonCalc",&MCWeight,&b_MCWeight_DileptonCalc);
+  tree->SetBranchAddress("LHEWeights_DileptonCalc",&LHEWeights,&b_LHEWeights_DileptonCalc);
+  tree->SetBranchAddress("LHEWeightIDs_DileptonCalc",&LHEWeightIDs,&b_LHEWeightIDs_DileptonCalc);
 
+ 
   //trigger info
   //double electron
   tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc", &HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);

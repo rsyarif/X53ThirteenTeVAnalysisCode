@@ -45,6 +45,14 @@ class TreeReader{
 
   /*collections to get from ljmet trees AND their corresponding branches*/
 
+  //run,lumi,event
+  int run;
+  TBranch* b_run_CommonCalc;
+  int lumi;
+  TBranch* b_lumi_CommonCalc;
+  int event;
+  TBranch* b_event_CommonCalc;
+
   //Electrons
   //kinematics
   std::vector<double>  *elPt;
@@ -222,6 +230,12 @@ class TreeReader{
   //MC weight info
   double          MCWeight;
   TBranch*    b_MCWeight_DileptonCalc;
+
+  //pdf weights
+  std::vector<double> *LHEWeights;
+  TBranch*            b_LHEWeights_DileptonCalc;
+  std::vector<int>    *LHEWeightIDs;
+  TBranch*            b_LHEWeightIDs_DileptonCalc;
 
 
   // Trigger Info
