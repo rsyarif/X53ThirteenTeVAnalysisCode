@@ -55,7 +55,7 @@ class TreeReader{
 
   //pileup
   int nPU;
-  TBranch* b_nTrueInteractions_PileupCalc;
+  TBranch* b_nTrueInteractions_PileUpCalc;
 
   //Electrons
   //kinematics
