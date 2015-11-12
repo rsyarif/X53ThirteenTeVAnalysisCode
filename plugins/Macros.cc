@@ -367,6 +367,8 @@ std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
   vBkgNames.push_back("TTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("NonPromptTTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
+  vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(115091972);
+  vBkgNames.push_back("NonPromptTTbar");  vXsec.push_back(831.76);  vNEvts.push_back(115091972);
 
   //now make vector to hold weights;
   std::vector<float> vWeights;
@@ -386,6 +388,16 @@ std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::
   TFile* npttfile = new TFile(nptt.c_str());
   Sample* npttSample = new Sample(vBkgNames.at(1),npttfile, vWeights.at(1),vXsec.at(1),cut,kBlue+2);
   vSample.push_back(npttSample);
+
+  std::string ttb = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar-powheg_Mu"+muID+"_El"+elID+".root";
+  TFile* ttbfile = new TFile(ttb.c_str());
+  Sample* ttbSample = new Sample(vBkgNames.at(2),ttbfile, vWeights.at(2),vXsec.at(2),cut,kBlue+2);
+  vSample.push_back(ttbSample);
+
+  std::string npttb = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptTTbar-powheg_Mu"+muID+"_El"+elID+".root";
+  TFile* npttbfile = new TFile(npttb.c_str());
+  Sample* npttbSample = new Sample(vBkgNames.at(3),npttbfile, vWeights.at(3),vXsec.at(3),cut,kBlue+2);
+  vSample.push_back(npttbSample);
 
   return vSample;
 }
@@ -975,9 +987,48 @@ float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
 
-  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel, return 1 for now
-    sf = 1.0;
+  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel
+    
+    float eta1 = fabs(vLep.at(0)->eta);
+    float eta2 = fabs(vLep.at(1)->eta);
+    
+    if(eta1 > 2.1){
+      if(eta2>2.1) sf=0.955;
+      else if(eta2>1.2) sf=0.958;
+      else if(eta2>0.9) sf=0.962;
+      else if(eta2>0.4) sf=0.979;
+      else sf=0.991;
+    }
+    else if(eta1 > 1.2){
+      if(eta2>2.1) sf=0.963;
+      else if(eta2>1.2) sf=0.961;
+      else if(eta2>0.9) sf=0.969;
+      else if(eta2>0.4) sf=0.972;
+      else sf=0.974;
+    }
+    else if(eta1 > 0.9){
+      if(eta2>2.1) sf=0.966;
+      else if(eta2>1.2) sf=0.969;
+      else if(eta2>0.9) sf=0.973;
+      else if(eta2>0.4) sf=0.978;
+      else sf=0.975;
+    }
+    else if(eta1 > 0.4){
+      if(eta2>2.1) sf=0.991;
+      else if(eta2>1.2) sf=0.970;
+      else if(eta2>0.9) sf=0.976;
+      else if(eta2>0.4) sf=0.975;
+      else sf=0.971;
+    }
+    else{
+      if(eta2>2.1) sf=1.003;
+      else if(eta2>1.2) sf=0.970;
+      else if(eta2>0.9) sf=0.973;
+      else if(eta2>0.4) sf=0.970;
+      else sf=0.966;
+    }
   }
+
   else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
     sf = 0.97;
   }
@@ -1174,30 +1225,47 @@ std::pair<float,float> getFakeRateByFlavor (std::string flavor){
   }
 
   if(flavor=="light"){
-    mufr = 0.333;
-    elfr = 0.261;
+    mufr = 0.120;
+    elfr = 0.209;
   }
 
   if(flavor=="charm"){
-    mufr=0.367;
-    elfr=0.212;
+    mufr=0.376;
+    elfr=0.215;
   }
 
   if(flavor=="bottom"){
-    mufr=0.284;
-    elfr=0.181;
+    mufr=0.283;
+    elfr=0.180;
   }
   if(flavor=="fakes"){
-    mufr=0.119;
-    elfr=0.277;
+    mufr=0.109;
+    elfr=0.278;
   }
   if(flavor=="average"){
-    mufr=0.282;
-    elfr=0.204;
+    mufr=0.281;
+    elfr=0.203;
   }
-
-
-
+  if(flavor=="light_qcd"){
+    mufr=0.193;
+    elfr=0.585;
+  }
+  if(flavor=="charm_qcd"){
+    mufr=0.330;
+    elfr=0.323;
+  }
+  if(flavor=="bottom_qcd"){
+    mufr=0.390;
+    elfr=0.211;
+  }
+  if(flavor=="fakes_qcd"){
+    mufr=0.354;
+    elfr=0.374;
+  }
+  if(flavor=="average_qcd"){
+    mufr=0.392;
+    elfr=0.371;
+  }
 
   std::pair<float,float> fr(mufr,elfr);
   return fr;
@@ -1236,7 +1304,7 @@ std::vector<float> weights_elmu(std::string flavor){
 std::vector<float> weights_mumu(std::string flavor){
 
   std::vector<float> weights;
-  float mufr = getFakeRateByFlavor(flavor).second;
+  float mufr = getFakeRateByFlavor(flavor).first;
   float mupr = getMuPromptRate("MVATightRC");
   //dimuectron channel so only same flavor weights, order is 0: nt00, 1: nt01, 2: nt10, 3: nt11
   weights.push_back(WeightSF_T0(mupr,mufr));
@@ -1245,3 +1313,12 @@ std::vector<float> weights_mumu(std::string flavor){
   weights.push_back(WeightSF_T2(mupr,mufr));
   return weights;
 }
+
+float getPUWeight(TH1F* h, int nPU){
+
+  float weight = -1;
+  weight = h->GetBinContent(nPU+1); // plus one because 1st bin is 0-0.9999 so pilupe of 1 falls in bin 2
+  std::cout<<"nInteractions: "<<nPU<<" and weight: "<<weight<<std::endl;
+  return weight;
+
+};
