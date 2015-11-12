@@ -1318,7 +1318,7 @@ float getPUWeight(TH1F* h, int nPU){
 
   float weight = -1;
   weight = h->GetBinContent(nPU+1); // plus one because 1st bin is 0-0.9999 so pilupe of 1 falls in bin 2
-  std::cout<<"nInteractions: "<<nPU<<" and weight: "<<weight<<std::endl;
+  //std::cout<<"nInteractions: "<<nPU<<" and weight: "<<weight<<std::endl;
   return weight;
 
 };

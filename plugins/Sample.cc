@@ -23,8 +23,25 @@ public:
   std::string cutname;
   int color;
   int linestyle;
+
+  //histograms for ntxy by channel
+  std::vector<TH1F*> hists_all;
+  std::vector<TH1F*> hists_elel;
+  std::vector<TH1F*> hists_elmu;
+  std::vector<TH1F*> hists_mumu;
+
   TH1F* hist;
+
+  //final histograms for np background (useful for drawing since will have error correct)
+  TH1F* NPCombinedHist_all;
+  TH1F* NPCombinedHist_elel;
+  TH1F* NPCombinedHist_elmu;
+  TH1F* NPCombinedHist_mumu;
+
   void setHist(Variable* var);
+
+  void setNPHistos(TFile*);
+  TH1F* SetNPCombinedHisto(std::vector<TH1F*> hists,std::vector<float> weights);
 };
   
 Sample::~Sample(){
@@ -42,6 +59,9 @@ Sample::Sample(std::string n, TFile* f, float w, float xs, std::string cut, int 
 
   hist = new TH1F();
 
+  setNPHistos(file);
+
+  
 
 };
 
@@ -67,5 +87,66 @@ void Sample::setHist(Variable* var){
   hist->SetLineWidth(linestyle);
 
 }
+
+
+void Sample::setNPHistos(TFile* f){
+
+
+  hists_all.push_back( (TH1F*) f->Get("All_HT_nConstCut_NT00"));
+  hists_all.push_back( (TH1F*) f->Get("All_HT_nConstCut_NT01"));
+  hists_all.push_back( (TH1F*) f->Get("All_HT_nConstCut_NT10"));
+  hists_all.push_back( (TH1F*) f->Get("All_HT_nConstCut_NT11"));
+
+  hists_elel.push_back( (TH1F*) f->Get("ElEl_HT_nConstCut_NT00"));
+  hists_elel.push_back( (TH1F*) f->Get("ElEl_HT_nConstCut_NT01"));
+  hists_elel.push_back( (TH1F*) f->Get("ElEl_HT_nConstCut_NT10"));
+  hists_elel.push_back( (TH1F*) f->Get("ElEl_HT_nConstCut_NT11"));
+
+  hists_elmu.push_back( (TH1F*) f->Get("ElMu_HT_nConstCut_NT00"));
+  hists_elmu.push_back( (TH1F*) f->Get("ElMu_HT_nConstCut_NT01"));
+  hists_elmu.push_back( (TH1F*) f->Get("ElMu_HT_nConstCut_NT10"));
+  hists_elmu.push_back( (TH1F*) f->Get("ElMu_HT_nConstCut_NT11"));
+
+  hists_mumu.push_back( (TH1F*) f->Get("MuMu_HT_nConstCut_NT00"));
+  hists_mumu.push_back( (TH1F*) f->Get("MuMu_HT_nConstCut_NT01"));
+  hists_mumu.push_back( (TH1F*) f->Get("MuMu_HT_nConstCut_NT10"));
+  hists_mumu.push_back( (TH1F*) f->Get("MuMu_HT_nConstCut_NT11"));
+
+
+}
+
+TH1F* Sample::SetNPCombinedHisto(std::vector<TH1F*> hists,std::vector<float> weights){
+
+  TH1F* hist = (TH1F*) hists.at(0)->Clone();
+
+  hist->Sumw2();
+  hist->Scale(weights.at(0) );
+
+  TH1F* ht01 = (TH1F*) hists.at(1)->Clone();
+  ht01->Sumw2();
+  ht01->Scale( weights.at(1));
+  hist->Add(ht01);
+
+  TH1F* ht10 = (TH1F*) hists.at(2)->Clone();
+  ht10->Sumw2();
+  ht10->Scale(weights.at(2));
+  hist->Add(ht10);
+
+  TH1F* ht11 = (TH1F*) hists.at(3)->Clone();
+  ht11->Sumw2();
+  ht11->Scale( weights.at(3));
+  hist->Add(ht11);
+
+  //std::cout<<"Nt00 weight: "<<weights.at(0)<<std::endl;
+  //std::cout<<"Nt01 weight: "<<weights.at(1)<<std::endl;
+  //std::cout<<"Nt10 weight: "<<weights.at(2)<<std::endl;
+  //std::cout<<"Nt11 weight: "<<weights.at(3)<<std::endl;
+
+  return hist;
+  
+
+}
+
+
 
 #endif
