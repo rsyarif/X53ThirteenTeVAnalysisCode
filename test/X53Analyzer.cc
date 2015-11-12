@@ -46,77 +46,77 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
-  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTW.root";
-  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTZ.root";
-  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTWW.root";
-  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WW.root";
-  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WWW.root";
-  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WZ.root";
-  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_ZZ.root";
-  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WJets.root";
-  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_DYJets.root";
-  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WWZ.root";
-  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WpWp.root";
+  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTW.root";
+  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTZ.root";
+  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTWW.root";
+  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WW.root";
+  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WWW.root";
+  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WZ.root";
+  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_ZZ.root";
+  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WJets.root";
+  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_DYJets.root";
+  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WWZ.root";
+  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WpWp.root";
 
   //nonoPrompt versions
-  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WJets.root";
+  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
 
   
-  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m700RH.root";
-  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m800RH.root";
-  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m900RH.root";
+  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700RH.root";
+  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800RH.root";
+  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900RH.root";
   //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1100RH.root";
-  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1200RH.root";
-  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1300RH.root";
-  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1400RH.root";
-  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1500RH.root";
-  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1600RH.root";
-  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m700LH.root";
-  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m800LH.root";
-  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m900LH.root";
-  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1000LH.root";
-  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1100LH.root";
-  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1200LH.root";
-  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1300LH.root";
-  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1400LH.root";
-  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1500LH.root";
-  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m1600LH.root";
+  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100RH.root";
+  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200RH.root";
+  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300RH.root";
+  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400RH.root";
+  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500RH.root";
+  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600RH.root";
+  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700LH.root";
+  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800LH.root";
+  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900LH.root";
+  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000LH.root";
+  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100LH.root";
+  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200LH.root";
+  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300LH.root";
+  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400LH.root";
+  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500LH.root";
+  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600LH.root";
   
-  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
-  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
-  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
-  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
-  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
-  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
-  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
-  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
-  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
-  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
-  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
-  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
-  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
-  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
-  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
-  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
-  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
-  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
-  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
-  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
+  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
+  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
+  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
+  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
+  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
+  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
+  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
+  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
+  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
+  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
+  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
+  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
+  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
+  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
+  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
+  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
+  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
+  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
+  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
+  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
-  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
-  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
+  data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -221,6 +221,11 @@ int main(int argc, char* argv[]){
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
+
+  //load pileup hist
+  TFile* fpu = new TFile("../plugins/MCPileup_scaled.root");
+  TH1F* hpu = (TH1F*) fpu->Get("NumTrueHist");
+  
 
   //get fake rate according to ID
   float muPromptRate;
@@ -474,13 +479,20 @@ int main(int argc, char* argv[]){
       }
     }
       
+    //get pileup weight;
+    float puweight=-1;
+    if(data) puweight=1;
+    else{
+      puweight = getPUWeight(hpu,tr->nPU);
+    }
+
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
 
 
     float st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
