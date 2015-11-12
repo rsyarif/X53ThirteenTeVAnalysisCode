@@ -277,7 +277,7 @@ void TreeReader::Init(TTree *treetemp)
 
   //pileup
   tree->SetBranchAddress("nTrueInteractions_PileUpCalc",&nPU,&b_nTrueInteractions_PileUpCalc);
-
+  tree->SetBranchAddress("nPV_DileptonCalc",&nPrimaryVert,&b_nPV_DileptonCalc);
   //Electrons                                                                                                                                                                                                     
   tree->SetBranchAddress("elChargeConsistent_DileptonCalc", &elChargeConsistent, &b_elChargeConsistent_DileptonCalc);
   tree->SetBranchAddress("elCharge_DileptonCalc", &elCharge, &b_elCharge_DileptonCalc);
