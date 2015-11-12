@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
 
   //check closure in terms of number of events
   std::ofstream outfile;
-  outfile.open("table_closureTest.txt");
+  outfile.open("table_closureTest_ttbar.txt");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -67,7 +67,9 @@ int main(int argc, char* argv[]){
   std::stringstream tables;
   tables<<std::fixed<<std::setprecision(2);
   bool Bkg=false;
-  std::vector<std::string> flavors; flavors.push_back("data"); flavors.push_back("light"); flavors.push_back("charm");flavors.push_back("bottom");flavors.push_back("fakes");flavors.push_back("average");
+  std::vector<std::string> flavors; 
+  flavors.push_back("data"); flavors.push_back("light"); flavors.push_back("charm");flavors.push_back("bottom");flavors.push_back("fakes");flavors.push_back("average");
+  flavors.push_back("light_qcd"); flavors.push_back("charm_qcd");flavors.push_back("bottom_qcd");flavors.push_back("fakes_acd");flavors.push_back("average_qcd");
   for(int nmu=-1; nmu<3; nmu++){
     //channel header
     std::string chan;
@@ -294,8 +296,8 @@ TH1F* getNPErrorHisto(std::vector<Sample*> vS, Variable* var, int nMu,std::strin
 
 std::stringstream& printRegEvtsAndError(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS){
 
-  int index = vCC.at(0)->nEvents.size();
-  CutClass* cc = vCC.at(0);
+  int index = vCC.at(2)->nEvents.size();
+  CutClass* cc = vCC.at(2);
   tablestring<<"Observed Events (MC) & N/A &"<< cc->nEvents.at(index-1)<<"$\\pm$"<<cc->vErr.at(index-1)<<"\\\\"<<std::endl;
 
 
@@ -305,7 +307,7 @@ std::stringstream& printClosureEvtsAndError(std::stringstream& tablestring,std::
 
   for(unsigned int i=0; i < vS.size(); i++){
     Sample* s = vS.at(i);    
-    if( (s->name).find("NonPromptTTJets")==std::string::npos) continue;
+    if( (s->name).find("NonPromptTTbar")==std::string::npos) continue;
     TH1F* h; 
     if( nmu==0) {h = s->SetNPCombinedHisto(s->hists_elel,weights_elel(FRflavor));h->Sumw2();}
     if( nmu==1) {h = s->SetNPCombinedHisto(s->hists_elmu,weights_elmu(FRflavor));h->Sumw2();}

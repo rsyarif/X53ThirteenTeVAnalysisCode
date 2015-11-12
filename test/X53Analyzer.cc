@@ -91,6 +91,28 @@ int main(int argc, char* argv[]){
   sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400LH.root";
   sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500LH.root";
   sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600LH.root";
+
+  sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
+  sig_samples["X53X53m800RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
+  sig_samples["X53X53m900RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
+  sig_samples["X53X53m1000RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
+  sig_samples["X53X53m1100RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
+  sig_samples["X53X53m1200RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
+  sig_samples["X53X53m1300RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
+  sig_samples["X53X53m1400RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
+  sig_samples["X53X53m1500RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
+  sig_samples["X53X53m1600RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
+  sig_samples["X53X53m700LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
+  sig_samples["X53X53m800LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
+  sig_samples["X53X53m900LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
+  sig_samples["X53X53m1000LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
+  sig_samples["X53X53m1100LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
+  sig_samples["X53X53m1200LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
+  sig_samples["X53X53m1300LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
+  sig_samples["X53X53m1400LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
+  sig_samples["X53X53m1500LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
+  sig_samples["X53X53m1600LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
+
   
   sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
   sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
@@ -433,7 +455,7 @@ int main(int argc, char* argv[]){
       if(tr->HLT_Mu23Ele12) nMu23Ele12+=1;
       if(tr->HLT_Mu8Ele23) nMu8Ele23+=1;
       //also get OR
-      if( (tr->HLT_Mu30Ele30) || (tr->HLT_Mu17Ele12) || (tr->HLT_Mu8Ele17) )nMu30Ele30ORMu17Ele12ORMu8Ele17+=1;
+      if( (tr->HLT_Mu17Ele12) || (tr->HLT_Mu8Ele17) )nMu30Ele30ORMu17Ele12ORMu8Ele17+=1;
       
     }
 
@@ -483,7 +505,7 @@ int main(int argc, char* argv[]){
     float puweight=-1;
     if(data) puweight=1;
     else{
-      puweight = getPUWeight(hpu,tr->nPU);
+      puweight = getPUWeight(hpu,(int)tr->nPU);
     }
 
     //fill tree for post ssdl cut since that is all that we've applied so far
@@ -683,7 +705,7 @@ int main(int argc, char* argv[]){
   TGraphAsymmErrors* Mu23Ele12Graph = new TGraphAsymmErrors(hNMu23Ele12Num,hNMu23Ele12Den);
   std::cout<<"Efficiency of Mu23Ele12: "<<nMu23Ele12/nElMu<<" +"<<Mu23Ele12Graph->GetErrorYhigh(0)<<" -"<<Mu23Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
 
-  std::cout<<"Efficiency of Mu30Ele30 OR Mu17Ele12 OR Mu8Ele17: "<<nMu30Ele30ORMu17Ele12ORMu8Ele17/nElMu<<std::endl;
+  std::cout<<"Efficiency of Mu17Ele12 OR Mu8Ele17: "<<nMu30Ele30ORMu17Ele12ORMu8Ele17/nElMu<<std::endl;
 }
 
 

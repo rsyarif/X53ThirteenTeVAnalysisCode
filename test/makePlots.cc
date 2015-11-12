@@ -25,7 +25,8 @@
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0);
 void DrawTriggerEff(Sample* s, TFile* outfile);
 void DrawChargeMisIDGraph(TFile* outfile, std::string elID);
-
+TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
+      
 void makePlots(std::string elID, std::string muID){
 
   //make output file
@@ -43,13 +44,13 @@ void makePlots(std::string elID, std::string muID){
   std::vector<Sample*> vSigSamples = getSigSampleVecForPlots("sZVeto", lumi, elID, muID);
   Sample* dataSample = getDataSample("sZVeto",elID,muID);
 
-  for(int j=0; j <3; j++){
+  for(int j=0; j <5; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
-      //DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j);
-      //DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j);
-      //DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j);
-      //DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j);
       gROOT->Reset();
     }
   }
@@ -70,19 +71,36 @@ void makePlots(std::string elID, std::string muID){
 void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex){
 
   TCanvas* c1 = new TCanvas("c1","c1");
-
+  
   c1->SetLogy();
 
+  //make tpads
+  TPad* pad1 = new TPad("pad1","pad1",0.01,0.30,1,1);
+  TPad* pad2 = new TPad("pad2","pad2",0.01,0.,1,0.30);
+
+  pad1->SetTopMargin(0.07);
+  pad1->SetLogy();
+  pad2->SetTopMargin(0.0);
+  pad1->SetBottomMargin(0.0);
+  pad2->SetBottomMargin(0.4);
+  pad1->Draw();
+  pad2->Draw();
+  //cd to top pad for drawing
+  pad1->cd();
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
     else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }
 
   THStack* tStack = new THStack("tStack","");
@@ -104,11 +122,15 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<") )";}
     else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
+    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nconst >=5) )";}
+    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt >100) )";}
   }
   //now add ntl requirement
   std::string nt00cut= "("+NTcutstring.str()+" && nTL==0)";;
@@ -164,7 +186,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
     //scale by weight - don't scale for data
     //skip non prompt if using data non prompt
-    if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("MC")==std::string::npos) ) { }
+    if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("TT")==std::string::npos) ) { }
     //skip charge misID
     else if( (s->name).find("ChargeMisID")!=std::string::npos) { h_err->Add(h);}
     else  {
@@ -225,7 +247,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //assert(h);
     //tStack->Add(h);
 
-    h->Draw("same");
+    h->Draw("hist same");
 
   }
 
@@ -266,6 +288,30 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(nMu==1) chantex->DrawLatex(0.25,0.8,"#bf{e#mu}");
   if(nMu==2) chantex->DrawLatex(0.25,0.8,"#bf{#mu#mu}");
 
+
+  //now draw pull plot
+  pad2->cd();
+  TH1F* hpull = getPullPlot(hData, tStack, var, h_err);
+  hpull->Draw("HIST");
+  //This changes the range of the X axis                                                                                                                                                                     
+  TAxis* axis = hpull->GetXaxis();
+  //ChangeAxisRange(title[i], hpull->GetXaxis());
+  hpull->GetXaxis()->SetLabelSize(0.15);
+  float xmin = hpull->GetBinLowEdge(axis->GetFirst());
+  float xmax = hpull->GetBinLowEdge(axis->GetLast()+1);
+  TLine* baseline = new TLine(xmin,0,xmax,0);
+  TLine* plus2line = new TLine(xmin,2,xmax,2);
+  TLine* minus2line = new TLine(xmin,-2,xmax,-2);
+  baseline->SetLineColor(kBlack);
+  baseline->SetLineStyle(2);
+  plus2line->SetLineStyle(2);
+  minus2line->SetLineStyle(2);
+  baseline->Draw();
+  plus2line->Draw();
+  minus2line->Draw();
+  //pad->RedrawAxis();                                                                                                                                                                                       
+  c1->Update();
+
   //rename plots by channel
   std::string channel;
   if(nMu==-1) channel="All";
@@ -276,6 +322,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(cutIndex==0) cutname =  "sZVeto";
   if(cutIndex==1) cutname =  "QuarkoniaAndElElZVeto";
   if(cutIndex==2) cutname =  "TwoJets";
+  if(cutIndex==3) cutname =  "nConstituents";
+  if(cutIndex==4) cutname =  "LeadingLepPt100";
   std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
   std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
 
@@ -333,7 +381,7 @@ void DrawTriggerEff(Sample* s, TFile* outfile){
 
 void DrawChargeMisIDGraph(TFile* outfile,std::string elID){
   std::string filename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
-  TFile* f = new TFile();
+  TFile* f = new TFile(filename.c_str());
   //TGraphAsymmErrors* chargeMisIDGraph = (TGraphAsymmErrors*) f->Get("divide_etaNumHist_by_etaDenHist");
   TH1F* chargeMisIDGraph = (TH1F*) f->Get("etaNumHist");
   TH1F* h2 = (TH1F*) f->Get("etaDenHist");
@@ -354,3 +402,67 @@ void DrawChargeMisIDGraph(TFile* outfile,std::string elID){
   //outfile->Append(chargeMisIDGraph);
   //outfile->Write();
 }
+
+
+TH1F*
+getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err){//Actually a residue plot for now
+
+  string title = hData->GetTitle();
+  title += " (Pull)";
+  TH1F* hpull = (TH1F*)hData->Clone(title.c_str());
+  
+  int size = hData->GetNbinsX();
+  //hpull->SetTitle(";;Residual");//#sigma(Data-MC)");
+  hpull->SetTitle(";;#frac{(obs-bkg)}{#sigma}");
+  //clint's edit to change title size
+  hpull->GetYaxis()->SetTitleSize(0.12);
+  hpull->GetYaxis()->SetTitleOffset(0.4);
+  hpull->GetXaxis()->SetTitle((var->Xaxis).c_str());
+  //hpull->GetXaxis()->SetTitle("L_{T}^{0e3#mu} #equiv #Sigma p_{T}^{#font[12]{l}} (GeV)");
+  hpull->GetXaxis()->SetTitleSize(0.17);
+  hpull->GetXaxis()->SetTitleOffset(1.02);
+  hpull->GetXaxis()->CenterTitle();
+  hpull->GetYaxis()->CenterTitle();
+  //hpull->SetTitle(title.c_str());
+  TH1F* hsum = (TH1F*) h->GetStack()->Last();
+  for(int i=1; i<=size; ++i){
+
+    float error;
+    float diff;
+    //diff = (hsum->GetBinContent(i) > 0) ? diff/hData->GetBinError(i) : 0.;
+    //if(debug_) cout<<"diff for bin "<<i<<" is "<<diff<<endl;
+    //cout<<"diff for bin "<<i<<" is "<<diff<<endl;
+    if(hData->GetBinContent(i)>=1){
+      int N = hData->GetBinContent(i);
+      double L =  (N==0) ? 0  : (ROOT::Math::gamma_quantile((1.0-0.6827)/2,N,1.));
+      double U = ROOT::Math::gamma_quantile_c((1.0-0.6827)/2.0,N+1,1);
+      if(hData->GetBinContent(i)>h_err->GetBinContent(i)){
+	error = pow( pow(h_err->GetBinError(i),2) + pow(N-L,2),0.5);
+	diff = (hData->GetBinContent(i) - hsum->GetBinContent(i))/error;
+      }
+      else{
+	error = pow( pow(h_err->GetBinError(i),2) + pow(U-N,2),0.5);
+	diff = (hData->GetBinContent(i) - hsum->GetBinContent(i))/error;
+      }
+      hpull->SetBinContent(i,diff);
+      hpull->SetBinError(i,0);//Cory: include mc error
+    }
+    else{
+      double U = ROOT::Math::gamma_quantile_c((1.0-0.6827)/2.0,1,1);
+      error=pow( pow(h_err->GetBinError(i),2) + pow(U,2),0.5);
+      diff=((-1.0)*hsum->GetBinContent(i))/error;
+      hpull->SetBinContent(i,diff);
+      hpull->SetBinError(i,0);//Cory: include mc error
+    }
+  }
+  hpull->SetAxisRange( -3, 3, "Y");
+  //hpull->GetYaxis()->SetRangeUser(-2.5,2.5);
+  hpull->GetYaxis()->SetNdivisions(203);
+  hpull->GetYaxis()->SetTickLength(0.02);
+  hpull->GetYaxis()->SetLabelSize(0.13);
+  hpull->GetXaxis()->SetLabelSize(0.35);
+  hpull->SetLineColor(kBlack);
+  hpull->SetFillColor(kRed);
+  return hpull;
+}
+

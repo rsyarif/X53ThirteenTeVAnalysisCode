@@ -8,7 +8,8 @@
 void frtable(){
 
 
-  TFile* f = new TFile("FakeRate_TTJets.root");
+  //TFile* f = new TFile("FakeRate_TTJets.root");
+  TFile* f = new TFile("FakeRate_TTbar-powheg.root");
   //TFile* f = new TFile("FakeRate_QCD_Combined.root");
   TH1F* el_all = (TH1F*) f->Get("elNumHist_all");
   TH1F* el_lpt = (TH1F*) f->Get("elNumHist_lpt");

@@ -171,6 +171,8 @@ int main(int argc, char* argv[]){
   etaDenHist->Sumw2();
   etaNumHist_hpt->Sumw2();
   etaDenHist_hpt->Sumw2();
+  etaNumHist_lpt->Sumw2();
+  etaDenHist_lpt->Sumw2();
   ptNumHist->Sumw2();
   ptDenHist->Sumw2();
   massNumHist->Sumw2();
