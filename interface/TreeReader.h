@@ -54,8 +54,11 @@ class TreeReader{
   TBranch* b_event_CommonCalc;
 
   //pileup
-  int nPU;
+  double nPU;
   TBranch* b_nTrueInteractions_PileUpCalc;
+
+  int nPrimaryVert;
+  TBranch* b_nPV_DileptonCalc;
 
   //Electrons
   //kinematics
