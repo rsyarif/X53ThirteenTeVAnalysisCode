@@ -93,7 +93,8 @@ int main(int argc, char* argv[]){
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
-  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
@@ -128,13 +129,25 @@ int main(int argc, char* argv[]){
   outfile<<"kmax 7\n"; //currently have 3 systematics
 
   //write observed - FOW NOW DUMMY
-  if(nMu>0) outfile<<"------------\n"<<"bin "<<channel<<"\n"<<"observation 0\n"<<"------------\n\n";
-  else outfile<<"------------\n"<<"bin ee emu mumu\n"<<"observation 0 0 0\n"<<"------------\n\n";
+  if(nMu>=0){
+    CutClass* cutData = makeCutClass(dataSample,vCutString,nMu);
+    float nData = (cutData->nEvents).at(0);
+    outfile<<"------------\n"<<"bin "<<channel<<"\n"<<"observation "<<nData<<"\n"<<"------------\n\n";
+  }
+  else {
+    CutClass* cutData0 = makeCutClass(dataSample,vCutString,0);
+    float nData0 = (cutData0->nEvents).at(0);
+    CutClass* cutData1 = makeCutClass(dataSample,vCutString,1);
+    float nData1 = (cutData1->nEvents).at(0);
+    CutClass* cutData2 = makeCutClass(dataSample,vCutString,2);
+    float nData2 = (cutData2->nEvents).at(0);
+    outfile<<"------------\n"<<"bin ee emu mumu\n"<<"observation "<<nData0<<" "<<nData1<<" "<<nData2<<"\n"<<"------------\n\n";
+  }
   outfile<<"\n";
   //write bin labels
   outfile<<"bin \t\t";
 
-  if(nMu>0){
+  if(nMu>=0){
     //get cut class for signal
     CutClass* cutSig = makeCutClass(sigSample,vCutString,nMu);
     //get cut class vector for background
@@ -199,7 +212,7 @@ int main(int argc, char* argv[]){
   outfile<<"\n\n"<<"------------\n";
   std::stringstream fakerate;
   fakerate<<"- - - - - - - 1.50 -";
-  if(nMu>0){
+  if(nMu>=0){
     outfile<<"FakeRate lnN "<<fakerate.str()<<"\n";
   }
   else{
@@ -207,8 +220,8 @@ int main(int argc, char* argv[]){
   }
 
   std::stringstream qcdScale;
-  qcdScale<<"- 1.12 1.135 1.50 1.50 1.50 1.50 - -";
-  if(nMu>0){
+  qcdScale<<"- 1.13 1.18 1.50 1.50 1.50 1.50 - -";
+  if(nMu>=0){
     outfile<<"MCNorm lnN "<<qcdScale.str()<<"\n";
   }
   else{
@@ -216,7 +229,7 @@ int main(int argc, char* argv[]){
   }
   std::stringstream jes;
   jes<<"- 1.04 1.03 1.05 1.04 1.04 1.04 - -";
-  if(nMu>0){
+  if(nMu>=0){
     outfile<<"JES lnN "<<jes.str()<<"\n";
   }
   else{
@@ -224,7 +237,7 @@ int main(int argc, char* argv[]){
   }
   std::stringstream chargemisid;
   chargemisid<<"- - - - - - - - 1.20";
-  if(nMu>0){
+  if(nMu>=0){
     outfile<<"ChargeMisID lnN "<<chargemisid.str()<<"\n";
   }
   else{
@@ -233,7 +246,7 @@ int main(int argc, char* argv[]){
 
   std::stringstream lumisys;
   lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
-  if(nMu>0){
+  if(nMu>=0){
     outfile<<"LUMISYS lnN "<<lumisys.str()<<"\n";
   }
   else{
@@ -259,8 +272,8 @@ int main(int argc, char* argv[]){
   std::stringstream Trig;
   if(nMu==0) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
   else if(nMu==1) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
-  else if (nMu==2)Trig<<"1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
-  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
+  else if (nMu==2)Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
+  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
 
   outfile<<"Trig lnN "<<Trig.str()<<"\n";
   
