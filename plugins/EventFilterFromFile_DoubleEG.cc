@@ -11,7 +11,7 @@ bool EventFilterFromFile_DoubleEG(int r, int l, int e){
   std::stringstream streamline;
   std::string info;
   int i=0;
-  bool badEvent;
+  bool badEvent=false;
 
 
   int run=-1;
@@ -28,6 +28,9 @@ bool EventFilterFromFile_DoubleEG(int r, int l, int e){
       if(i==2) lumi = std::stoi(info);
       if(i==3) event = std::stoi(info);
     }
+    std::cout<<"checking run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
+    std::cout<<"current run: "<<r<<" lumi: "<<l<<" event: "<<e<<std::endl;
+
     //    std::cout<<"run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
     if(run==r && lumi==l && event==e){
       badEvent=true;
