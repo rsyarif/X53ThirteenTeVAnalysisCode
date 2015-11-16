@@ -41,7 +41,7 @@ void makePlots(std::string elID, std::string muID){
   std::vector<Variable*> vVariables = getVariableVec();
 
   std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi, elID, muID);
-  std::vector<Sample*> vSigSamples = getSigSampleVecForPlots("sZVeto", lumi, elID, muID);
+  std::vector<Sample*> vSigSamples = getInclusiveSigSampleVecForTable("sZVeto", lumi, elID, muID);
   Sample* dataSample = getDataSample("sZVeto",elID,muID);
 
   for(int j=0; j <5; j++){
@@ -227,8 +227,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   std::cout<<"h_err bin 5: "<<h_err->GetBinContent(5)<<" and error: "<<h_err->GetBinError(5)<<std::endl;
   //draw signal:
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
-
+ 
     Sample* s = vSig.at(i1);
+    if(s->name.find("700")==std::string::npos) continue;
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
 

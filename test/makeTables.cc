@@ -9,6 +9,8 @@
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c, std::string caption);
 std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
+std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, std::vector<std::string> vCutString);
+std::stringstream& printEffTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
 std::stringstream& printChargeMisIDTable_lpt(std::stringstream& chargeMisIDTable);
 std::stringstream& printChargeMisIDTable_hpt(std::stringstream& chargeMisIDTable);
 
@@ -23,10 +25,12 @@ void makeTables(){
   float lumi = 1.28; //fb^-1
 
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
 
   //get vector of background samples
   std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
+  //get vector of data
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -46,11 +50,17 @@ void makeTables(){
     //now make a vector of cutClass for sig
     std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
     //now print background table
+    tables<<std::fixed<<std::setprecision(2);
     printTable(tables,vCutBkg,vCutString,nmu,Bkg);
     printTable(tables,vCutSig,vCutString,nmu,Sig);
-
+    tables<<std::fixed<<std::setprecision(4);
+    printEffTable(tables,vCutBkg,vCutString,nmu,Bkg);
+    printEffTable(tables,vCutSig,vCutString,nmu,Sig);
   }
   
+  tables<<std::fixed<<std::setprecision(2);
+  printFinalTable(tables,vBkg,vSig,dataSample,vCutString);
+
   //make charge misID table
   tables<<"\n";
   printChargeMisIDTable_lpt(tables);
@@ -117,9 +127,22 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
 
   tablestring<<tableHeader(vCS, vCC.at(0), caption); tablestring<<"\\hline \n";
   for(size_t i=0; i < vCC.size(); i++){
+    float sys=0;
+    if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
+    else if(vCC.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
+    else if(vCC.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2);
+    else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2);
+    else if(vCC.at(i)->samplename.find("X53X53")!=std::string::npos) sys = sys;
+    else sys = pow(0.5,2);
+    if(! (vCC.at(i)->samplename=="NonPrompt" || vCC.at(i)->samplename=="ChargeMisID")){
+      sys = sys + 2*pow(0.02,2) + pow(0.01,2) + pow(.12,2); //id iso and trigger  plus lumi    
+    }
     tablestring<<vCC.at(i)->samplename;
     for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
-      tablestring<<" & "<<(vCC.at(i)->nEvents).at(j)<<" $\\pm$ "<<(vCC.at(i))->vErr.at(j);
+      float errsys = sys*pow((vCC.at(i)->nEvents).at(j),2);
+      float err = pow((vCC.at(i)->vErr).at(j),2) + errsys;
+      err = pow(err,0.5);
+      tablestring<<" & "<<(vCC.at(i)->nEvents).at(j)<<" $\\pm$ "<<err;
     }
     tablestring<<" \\\\"<<std::endl;
   }
@@ -128,6 +151,60 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
   return tablestring;
  
 }
+
+
+std::stringstream& printEffTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig){
+
+
+
+  //caption
+  std::string caption;
+  if(sig){
+    if(nmu==-1) caption = "Signal Efficiency Post Associated Z Veto vs. Analysis Cut for all channels combined";
+    if(nmu==0) caption = "Signal Efficiency Post Associated Z Veto vs. Analysis Cut for di-electron channel";
+    if(nmu==1) caption = "Signal Efficiency Post Associated Z Veto vs. Analysis Cut for electron-muon channel";
+    if(nmu==2) caption = "Signal Efficiency Post Associated Z Veto vs. Analysis Cut for di-muon channel";
+  }
+  else{
+    if(nmu==-1) caption = "Background Rejection Post Associated Z Veto vs. Analysis Cut for all channels combined";
+    if(nmu==0) caption = "Background Rejection Post Associated Z Veto vs. Analysis Cut for di-electron channel";
+    if(nmu==1) caption = "Background Rejection Post Associated Z Veto vs. Analysis Cut for electron-muon channel";
+    if(nmu==2) caption = "Background Rejection Post Associated Z Veto vs. Analysis Cut for di-muon channel";
+  }
+
+
+  //label
+  std::string label;
+  if(sig){
+    if(nmu==-1) label = "\\label{tab:ExpSigEvtsAll}";
+    if(nmu==0) label = "\\label{tab:ExpSigEvtsElEl}";
+    if(nmu==1) label = "\\label{tab:ExpSigEvtsElMu}";
+    if(nmu==2) label = "\\label{tab:ExpSigEvtsMuMu}";
+  }
+  else{
+    if(nmu==-1) label = "\\label{tab:ExpBkgEvtsAll}";
+    if(nmu==0) label = "\\label{tab:ExpBkgEvtsElEl}";
+    if(nmu==1) label = "\\label{tab:ExpBkgEvtsElMu}";
+    if(nmu==2) label = "\\label{tab:ExpBkgEvtsMuMu}";
+  }
+
+  tablestring<<tableHeader(vCS, vCC.at(0), caption); tablestring<<"\\hline \n";
+  for(size_t i=0; i < vCC.size(); i++){
+    tablestring<<vCC.at(i)->samplename;
+    for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
+      float eff = vCC.at(i)->nEvents.at(j)/vCC.at(i)->nEvents.at(0);
+      if(sig) tablestring<<" & "<<eff;
+      else tablestring<<" & "<<(1-eff);
+    }
+    tablestring<<" \\\\"<<std::endl;
+  }
+  tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";
+
+  return tablestring;
+ 
+}
+
+
 
 std::stringstream& printChargeMisIDTable_lpt(std::stringstream& table){
 
@@ -205,4 +282,102 @@ std::stringstream& printChargeMisIDTable_hpt(std::stringstream& table){
 
   return table;
 
+}
+
+std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, std::vector<std::string> vCutString){
+
+  tablestring<<"\\begin{table}\n\\centering\n\\begin{tabular}{|cccc|c|c|}";
+  //caption
+  std::string caption;
+  caption = "Summary of expected and observed events for all channels. We show also he representative yields for an 800 \\GeV \\xft. All systematic uncertainties are included.";
+  tablestring<<"PSS MC&NonPrompt&ChargeMisID& 800 \GeV \xft&Observed\\\\\n";
+  std::string label;
+  //label
+  label = "\\label{tab:FinalYields}";
+
+
+  for(int nmu=-1; nmu<3; nmu++){
+    //now make a vector of cutClass for bkg
+    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    //now make a vector of cutClass for sig
+    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    CutClass* cutSig = 0;
+    for(unsigned int j=0; j<vCutSig.size();j++){
+      if(vCutSig.at(j)->samplename.find("800")!=std::string::npos && vCutSig.at(j)->samplename.find("RH")!=std::string::npos) cutSig = vCutSig.at(j);
+    }
+
+    //now get cutcalss fordata
+    CutClass* cutData = makeCutClass(dataSample, vCutString, nmu);
+
+    //first machinery to get events in nice format
+    float events_mctot=0;
+    float errors_mctot=0;
+    float events_nptot=0;
+    float errors_nptot=0;
+    float events_cmtot=0;
+    float errors_cmtot=0;
+    float events_tot = 0;
+    float errors_tot = 0;
+
+    //get background events
+    for(size_t i=0; i < vCutBkg.size(); i++){
+      float sys=0;
+      if(vCutBkg.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
+      else if(vCutBkg.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
+      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2);
+      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2);
+      else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = sys;
+      else sys = pow(0.5,2);
+      if(! (vCutBkg.at(i)->samplename=="NonPrompt" || vCutBkg.at(i)->samplename=="ChargeMisID")){
+	sys = sys + 2*pow(0.02,2) + pow(0.01,2) + pow(.12,2); //id iso and trigger  plus lumi    
+      }
+      
+
+      for(size_t j =0; j < (vCutBkg.at(i)->nEvents).size(); j++){
+	if(j < (vCutBkg.at(i)->nEvents).size() -1) continue; //only get the last yields
+	float errsys = sys*pow((vCutBkg.at(i)->nEvents).at(j),2);
+	float err = pow((vCutBkg.at(i)->vErr).at(j),2) + errsys;
+	if(! (vCutBkg.at(i)->samplename=="NonPrompt" || vCutBkg.at(i)->samplename=="ChargeMisID")){ //only add together if MC background
+	  events_mctot = events_mctot + (vCutBkg.at(i)->nEvents).at(j);
+	  errors_mctot = errors_mctot + err;
+
+	  events_tot = events_tot + (vCutBkg.at(i)->nEvents).at(j);
+	  errors_tot = errors_tot + err;
+	}      
+	else if(vCutBkg.at(i)->samplename!="NonPrompt" && vCutBkg.at(i)->samplename=="ChargeMisID"){ //only add together if MC background
+	  events_tot = events_tot + (vCutBkg.at(i)->nEvents).at(j);
+	  errors_tot = errors_tot + err;
+	  events_cmtot = (vCutBkg.at(i)->nEvents).at(j);
+	  errors_cmtot = err;	  
+	}
+	else if(vCutBkg.at(i)->samplename=="NonPrompt" && vCutBkg.at(i)->samplename!="ChargeMisID"){ //only add together if MC background
+	  events_tot = events_tot + (vCutBkg.at(i)->nEvents).at(j);
+	  errors_tot = errors_tot + err;
+	  events_nptot = (vCutBkg.at(i)->nEvents).at(j);
+	  errors_nptot = err;	  
+	}
+
+      }
+
+
+      
+    }
+  
+    //now signal
+    float sig = (cutSig->nEvents).at( (cutSig->nEvents).size()-1);
+    
+    //ok now I have all background, so get observed with no errors
+   float obs =  (cutData->nEvents).at( (cutData->nEvents).size()-1);
+
+
+    //now write table line
+    tablestring<<"$"<<events_mctot<<"\\pm"<<errors_mctot<<"$&$"<<events_nptot<<"\\pm"<<errors_nptot<<"$&$"<<events_cmtot<<"\\pm"<<errors_cmtot<<"$ &$ "<<events_tot<<"$\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+  }//end loop over channels
+
+  tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";
+
+  return tablestring;
+
+
+    
 }

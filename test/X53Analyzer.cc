@@ -348,7 +348,7 @@ int main(int argc, char* argv[]){
     if(data){
       badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event) || EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event) || EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     }
-    if(badEvent) continue;
+    if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;

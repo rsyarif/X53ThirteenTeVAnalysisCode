@@ -46,10 +46,10 @@ int main(int argc, char* argv[]){
 
   for(unsigned int i=0; i< vVariables.size(); i++){
     for(unsigned int j =0; j<5; j++){
-      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,-1,j);
-      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,0,j);
-      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,1,j);
-      //DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,2,j);
+      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,-1,j);
+      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,0,j);
+      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,1,j);
+      DrawAndSave(vVariables.at(i),vSamples,fout,elID,muID,2,j);
       
     }
   }
@@ -66,10 +66,12 @@ int main(int argc, char* argv[]){
   }
   std::stringstream tables;
   tables<<std::fixed<<std::setprecision(2);
-  bool Bkg=false;
+  //bool Bkg=false;
   std::vector<std::string> flavors; 
   flavors.push_back("data"); flavors.push_back("light"); flavors.push_back("charm");flavors.push_back("bottom");flavors.push_back("fakes");flavors.push_back("average");
-  flavors.push_back("light_qcd"); flavors.push_back("charm_qcd");flavors.push_back("bottom_qcd");flavors.push_back("fakes_acd");flavors.push_back("average_qcd");
+  flavors.push_back("light_qcd"); flavors.push_back("charm_qcd");flavors.push_back("bottom_qcd");flavors.push_back("fakes_qcd");flavors.push_back("average_qcd");
+  flavors.push_back("light_ttb"); flavors.push_back("charm_ttb");flavors.push_back("bottom_ttb");flavors.push_back("fakes_ttb");flavors.push_back("unmatched_ttb");flavors.push_back("average_ttb");
+
   for(int nmu=-1; nmu<3; nmu++){
     //channel header
     std::string chan;
@@ -141,7 +143,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
   leg->SetBorderSize(0);
   //histogram for weights
   TH1F* h_err = getNPErrorHisto(vSamples,var,nMu,elID,muID, cutIndex);
-  for(unsigned int i=0; i< vSamples.size();i++){
+  for(unsigned int i=2; i< vSamples.size();i++){
     Sample* s = vSamples.at(i);
     
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);    
@@ -160,8 +162,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vSamples, TFile* outfile, s
     h->GetYaxis()->SetTitle(var->Yaxis.c_str());
     std::cout<<"Sample: "<<s->name<<" and bin 3 content: "<<h->GetBinContent(3)<<" h_Err bin 3 content: "<<h_err->GetBinContent(3)<<std::endl;
     //add to legend
-    leg->AddEntry(h,(s->name).c_str(),"l");
-    if(i==0) h->Draw("hist e");
+    if(i==2) leg->AddEntry(h,"Observed TTbar","l");
+    else leg->AddEntry(h,"Predicted TTbar","l");
+    if(i==2) h->Draw("hist e");
     else { h->Draw("hist same");}
     
   }
