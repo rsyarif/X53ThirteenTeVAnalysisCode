@@ -235,8 +235,15 @@ int main(int argc, char* argv[]){
 
   //histogram for pdf uncertainties
   TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
-  //histogram for pdf uncertainties
-  TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties",500,0,5,30,0,3000);
+  //histogram for scale uncertainties - one for all and then separate ones
+  TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties Combined",500,0,5,30,0,3000);//total
+  TH2F* hist_scaleHT_1002 = new TH2F("hist_scaleHT_1002","MC Scale Uncertainties ID:1002",500,0,5,30,0,3000);//1002
+  TH2F* hist_scaleHT_1003 = new TH2F("hist_scaleHT_1003","MC Scale Uncertainties ID:1003",500,0,5,30,0,3000);//1003
+  TH2F* hist_scaleHT_1004 = new TH2F("hist_scaleHT_1004","MC Scale Uncertainties ID:1004",500,0,5,30,0,3000);//1004
+  TH2F* hist_scaleHT_1005 = new TH2F("hist_scaleHT_1005","MC Scale Uncertainties ID:1005",500,0,5,30,0,3000);//1005
+  TH2F* hist_scaleHT_1007 = new TH2F("hist_scaleHT_1007","MC Scale Uncertainties ID:1007",500,0,5,30,0,3000);//1007
+  TH2F* hist_scaleHT_1009 = new TH2F("hist_scaleHT_1009","MC Scale Uncertainties ID:1009",500,0,5,30,0,3000);//1009
+
 
   //load eta weights in:
   std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
@@ -286,7 +293,7 @@ int main(int argc, char* argv[]){
   int nElEl=0;
   int nGenMuMu=0;
   int nGenElMu=0;
-  int nGenElEl=0;
+   int nGenElEl=0;
 
   //floats for trigger eff
   float nMu40=0;
@@ -303,8 +310,28 @@ int main(int argc, char* argv[]){
   float nMu8Ele23=0;
   float nMu30Ele30ORMu17Ele12ORMu8Ele17=0;
 
-
-
+  //get variable vector
+  std::vector<Variable*> vVar = getVariableVec();
+  //now make histograms for various levels of cuts;
+  std::vector<TH1F*> hists_ssdl_all = initHistos(vVar,-1,"ssdl");
+  std::vector<TH1F*> hists_ssdl_elel = initHistos(vVar,0,"ssdl");
+  std::vector<TH1F*> hists_ssdl_elmu = initHistos(vVar,1,"ssdl");
+  std::vector<TH1F*> hists_ssdl_mumu = initHistos(vVar,2,"ssdl");
+  //associated z-veto
+  std::vector<TH1F*> hists_sZVeto_all = initHistos(vVar,-1,"sZVeto");
+  std::vector<TH1F*> hists_sZVeto_elel = initHistos(vVar,0,"sZVeto");
+  std::vector<TH1F*> hists_sZVeto_elmu = initHistos(vVar,1,"sZVeto");
+  std::vector<TH1F*> hists_sZVeto_mumu = initHistos(vVar,2,"sZVeto");
+  //two jets
+  std::vector<TH1F*> hists_TwoJets_all = initHistos(vVar,-1,"TwoJets");
+  std::vector<TH1F*> hists_TwoJets_elel = initHistos(vVar,0,"TwoJets");
+  std::vector<TH1F*> hists_TwoJets_elmu = initHistos(vVar,1,"TwoJets");
+  std::vector<TH1F*> hists_TwoJets_mumu = initHistos(vVar,2,"TwoJets");
+  //nConst
+  std::vector<TH1F*> hists_nConst_all = initHistos(vVar,-1,"nConst");
+  std::vector<TH1F*> hists_nConst_elel = initHistos(vVar,0,"nConst");
+  std::vector<TH1F*> hists_nConst_elmu = initHistos(vVar,1,"nConst");
+  std::vector<TH1F*> hists_nConst_mumu = initHistos(vVar,2,"nConst");
 
   for(int ient=0; ient<nEntries; ient++){
 
@@ -313,7 +340,7 @@ int main(int argc, char* argv[]){
     tr->GetEntry(ient);
     
     //weight for non prompt method
-    float NPweight;
+    float NPweight=0;
     int TL;
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
@@ -326,8 +353,7 @@ int main(int argc, char* argv[]){
 
 
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
-    bool zLeps = true;
-    float weight;
+    float weight=0;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){
       
       samesign = checkOppositeSignLeptonsForDY(goodLeptons); //returns true if find opposite sign leptons not in mu-mu channel
@@ -340,7 +366,7 @@ int main(int argc, char* argv[]){
     }
 
 
-    if(!zLeps || !samesign) continue;
+    if(!samesign) continue;
 
 
     //now veto on bad events from met scanners
@@ -373,8 +399,6 @@ int main(int argc, char* argv[]){
     //now get dilepton mass
     float dilepMass = (vSSLep.at(0)->lv + vSSLep.at(1)->lv).M();
 
-    //quarkonia veto
-    //if(dilepMass<=20) continue;
 
     float HT=0;
     HT+=vSSLep.at(0)->pt+vSSLep.at(1)->pt;
@@ -504,18 +528,35 @@ int main(int argc, char* argv[]){
     //get pileup weight;
     float puweight=-1;
     if(data) puweight=1;
+    //else{
+    //puweight = getPUWeight(hpu,(int)tr->nPU);
+    //}
+
+    float mcweight;
+    if(data) mcweight = 1;
     else{
-      puweight = getPUWeight(hpu,(int)tr->nPU);
+      if(tr->MCWeight>0) mcweight=1.0;
+      else mcweight=-1.0;
     }
 
     //fill tree for post ssdl cut since that is all that we've applied so far
     tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
+    //fill histos for same cut level
+    float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
+    fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elel) fillHistos(hists_ssdl_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elmu) fillHistos(hists_ssdl_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(mumu) fillHistos(hists_ssdl_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
     tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
-
+    //now fill corresponding histos
+    fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elmu) fillHistos(hists_sZVeto_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(mumu) fillHistos(hists_sZVeto_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
 
     float st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
     for(unsigned int j=0; j < vNonSSLep.size(); j++){
@@ -532,26 +573,42 @@ int main(int argc, char* argv[]){
     //quarkonia veto
     if(!(dilepMass>20)) continue;
 
+    if(tr->cleanedAK4Jets.size()>1){
+      //now fill corresponding histos
+      fillHistos(hists_TwoJets_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+      if(elel) fillHistos(hists_TwoJets_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+      if(elmu) fillHistos(hists_TwoJets_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+      if(mumu) fillHistos(hists_TwoJets_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    }
+
     if(vSSLep.at(0)->pt<40) continue; //skip events with leading lepton pt less than 40
     
     int nconst = tr->cleanedAK4Jets.size() + vNonSSLep.size();
     if(nconst<5) continue; //nconst cutl
 
-    float mcweight;
-    if(data) mcweight = 1;
-    else{
-      if(tr->MCWeight>0) mcweight=1.0;
-      else mcweight=-1.0;
-    }
+    //now fill corresponding histos
+    fillHistos(hists_nConst_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elel) fillHistos(hists_nConst_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elmu) fillHistos(hists_nConst_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(mumu) fillHistos(hists_nConst_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+
+
 
     if(!data){
       //now fill ppdf weight histogram
       std::vector<double> pdfweights = (*tr->LHEWeights);
       std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
-      for(int i=0; i< pdfweightIDs.size(); i++){
+      for(unsigned int i=0; i< pdfweightIDs.size(); i++){
 	int ID = pdfweightIDs.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
-	  hist_scaleHT->Fill(pdfweights.at(i),st);
+	  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
+	  //now fill individual
+	  if(ID==1002)hist_scaleHT_1002->Fill(pdfweights.at(i),st);
+	  if(ID==1003)hist_scaleHT_1003->Fill(pdfweights.at(i),st);
+	  if(ID==1004)hist_scaleHT_1004->Fill(pdfweights.at(i),st);
+	  if(ID==1005)hist_scaleHT_1005->Fill(pdfweights.at(i),st);
+	  if(ID==1007)hist_scaleHT_1007->Fill(pdfweights.at(i),st);
+	  if(ID==1009)hist_scaleHT_1009->Fill(pdfweights.at(i),st);
 	}
 	if(!(ID>2000 && i<2101)) continue;
 	hist_pdfHT->Fill(pdfweights.at(i),st);
@@ -599,6 +656,28 @@ int main(int argc, char* argv[]){
     fsig->WriteTObject(npHistos_emu.at(j));
     fsig->WriteTObject(npHistos_mumu.at(j));
   }
+
+  //write histograms
+  writeHistos(fsig, hists_ssdl_all);
+  writeHistos(fsig, hists_ssdl_elel);
+  writeHistos(fsig, hists_ssdl_elmu);
+  writeHistos(fsig, hists_ssdl_mumu);
+
+  writeHistos(fsig, hists_sZVeto_all);
+  writeHistos(fsig, hists_sZVeto_elel);
+  writeHistos(fsig, hists_sZVeto_elmu);
+  writeHistos(fsig, hists_sZVeto_mumu);
+
+  writeHistos(fsig, hists_TwoJets_all);
+  writeHistos(fsig, hists_TwoJets_elel);
+  writeHistos(fsig, hists_TwoJets_elmu);
+  writeHistos(fsig, hists_TwoJets_mumu);
+
+  writeHistos(fsig, hists_nConst_all);
+  writeHistos(fsig, hists_nConst_elel);
+  writeHistos(fsig, hists_nConst_elmu);
+  writeHistos(fsig, hists_nConst_mumu);
+
   fsig->WriteTObject(h_DoubleEle33Num); 
   fsig->WriteTObject(h_DoubleEle33_MWNum);
   fsig->WriteTObject(h_Ele27WP85Num); 
@@ -856,11 +935,10 @@ bool checkSameSignLeptons(std::vector<TLepton*> leptons){
 
 bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
 
-  bool outsidePeak=false;
-  bool oppositeSign=false;
 
+  bool oppositeSign=false;
+  float pairMass=-999;
   float minDiff=99999;
-  float pairMass=91.1;
 
   TLepton* Lep1=0;
   TLepton* Lep2=0;
@@ -878,11 +956,6 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
 	Lep2=lep2;
       }
     }
-  }
-
-  if(minDiff!=99999){
-    if(minDiff>15) outsidePeak=true;
-    if(Lep1->charge != Lep2->charge) oppositeSign=true;
   }
 
   if(! oppositeSign ) return false;
@@ -914,9 +987,7 @@ std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*> leptons){
 std::vector<TLepton*> makeOSLeptonsForDY(std::vector<TLepton*> leptons){
 
   std::vector<TLepton*> vSSLep;
-  float minDiff=99999;
-  float pairMass=91.1;
-
+  
 
   for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
     TLepton* lep1 = leptons.at(uilep);
