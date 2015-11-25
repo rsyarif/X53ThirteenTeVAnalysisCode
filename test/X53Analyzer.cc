@@ -31,7 +31,7 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*>);
 int getNSSDLGen(std::vector<TGenParticle*>, int);
 void printParticle(TGenParticle*);
 void printParticle(TLepton*);
-bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
+std::pair<bool,float> checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons);
 std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps);
 bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
@@ -46,99 +46,105 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
-  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTW.root";
-  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTZ.root";
-  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTWW.root";
-  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WW.root";
-  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WWW.root";
-  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WZ.root";
-  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_ZZ.root";
-  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WJets.root";
-  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_DYJets.root";
-  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WWZ.root";
-  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WpWp.root";
+  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTW.root";
+  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTZ.root";
+  bg_samples["TTH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTH.root";
+  bg_samples["TTTT"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTTT.root";
+  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTWW.root";
+  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WW.root";
+  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WWW.root";
+  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WWZ.root";
+  bg_samples["WZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZZ.root";
+  bg_samples["ZZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZZ.root";
+  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZ.root";
+  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZ.root";
+  bg_samples["VH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_VH.root";
+  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
+  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root";
+  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WpWp.root";
+  bg_samples["WW-mpi"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WW-mpi.root";
 
   //nonoPrompt versions
-  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
+  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg.root";
+  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
+  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
 
   
-  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700RH.root";
-  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800RH.root";
-  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900RH.root";
+  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700RH.root";
+  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800RH.root";
+  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900RH.root";
   //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100RH.root";
-  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200RH.root";
-  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300RH.root";
-  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400RH.root";
-  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500RH.root";
-  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600RH.root";
-  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700LH.root";
-  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800LH.root";
-  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900LH.root";
-  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000LH.root";
-  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100LH.root";
-  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200LH.root";
-  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300LH.root";
-  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400LH.root";
-  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500LH.root";
-  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600LH.root";
+  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100RH.root";
+  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200RH.root";
+  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300RH.root";
+  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400RH.root";
+  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500RH.root";
+  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600RH.root";
+  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700LH.root";
+  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800LH.root";
+  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900LH.root";
+  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000LH.root";
+  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100LH.root";
+  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200LH.root";
+  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300LH.root";
+  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400LH.root";
+  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500LH.root";
+  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600LH.root";
 
-  sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
-  sig_samples["X53X53m800RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
-  sig_samples["X53X53m900RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
-  sig_samples["X53X53m1000RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
-  sig_samples["X53X53m1100RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
-  sig_samples["X53X53m1200RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
-  sig_samples["X53X53m1300RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
-  sig_samples["X53X53m1400RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
-  sig_samples["X53X53m1500RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
-  sig_samples["X53X53m1600RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
-  sig_samples["X53X53m700LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
-  sig_samples["X53X53m800LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
-  sig_samples["X53X53m900LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
-  sig_samples["X53X53m1000LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
-  sig_samples["X53X53m1100LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
-  sig_samples["X53X53m1200LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
-  sig_samples["X53X53m1300LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
-  sig_samples["X53X53m1400LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
-  sig_samples["X53X53m1500LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
-  sig_samples["X53X53m1600LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
+  sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
+  sig_samples["X53X53m800RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
+  sig_samples["X53X53m900RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
+  sig_samples["X53X53m1000RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
+  sig_samples["X53X53m1100RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
+  sig_samples["X53X53m1200RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
+  sig_samples["X53X53m1300RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
+  sig_samples["X53X53m1400RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
+  sig_samples["X53X53m1500RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
+  sig_samples["X53X53m1600RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
+  sig_samples["X53X53m700LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
+  sig_samples["X53X53m800LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
+  sig_samples["X53X53m900LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
+  sig_samples["X53X53m1000LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
+  sig_samples["X53X53m1100LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
+  sig_samples["X53X53m1200LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
+  sig_samples["X53X53m1300LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
+  sig_samples["X53X53m1400LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
+  sig_samples["X53X53m1500LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
+  sig_samples["X53X53m1600LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
 
   
-  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
-  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
-  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
-  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
-  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
-  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
-  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
-  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
-  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
-  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
-  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
-  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
-  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
-  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
-  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
-  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
-  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
-  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
-  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
-  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/PreApproval/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
+  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
+  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
+  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
+  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
+  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
+  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
+  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
+  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
+  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
+  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
+  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
+  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
+  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
+  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
+  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
+  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
+  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
+  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
+  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
+  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
-  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
-  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/PreApproval/ljmet_trees/ljmet_Data_All.root";
+  data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -237,12 +243,20 @@ int main(int argc, char* argv[]){
   TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
   //histogram for scale uncertainties - one for all and then separate ones
   TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties Combined",500,0,5,30,0,3000);//total
-  TH2F* hist_scaleHT_1002 = new TH2F("hist_scaleHT_1002","MC Scale Uncertainties ID:1002",500,0,5,30,0,3000);//1002
-  TH2F* hist_scaleHT_1003 = new TH2F("hist_scaleHT_1003","MC Scale Uncertainties ID:1003",500,0,5,30,0,3000);//1003
-  TH2F* hist_scaleHT_1004 = new TH2F("hist_scaleHT_1004","MC Scale Uncertainties ID:1004",500,0,5,30,0,3000);//1004
-  TH2F* hist_scaleHT_1005 = new TH2F("hist_scaleHT_1005","MC Scale Uncertainties ID:1005",500,0,5,30,0,3000);//1005
-  TH2F* hist_scaleHT_1007 = new TH2F("hist_scaleHT_1007","MC Scale Uncertainties ID:1007",500,0,5,30,0,3000);//1007
-  TH2F* hist_scaleHT_1009 = new TH2F("hist_scaleHT_1009","MC Scale Uncertainties ID:1009",500,0,5,30,0,3000);//1009
+  TH1F* hist_scaleHT_1002 = new TH1F("hist_scaleHT_1002","MC Scale Uncertainties ID:1002",30,0,3000);//1002
+  TH1F* hist_scaleHT_1003 = new TH1F("hist_scaleHT_1003","MC Scale Uncertainties ID:1003",30,0,3000);//1003
+  TH1F* hist_scaleHT_1004 = new TH1F("hist_scaleHT_1004","MC Scale Uncertainties ID:1004",30,0,3000);//1004
+  TH1F* hist_scaleHT_1005 = new TH1F("hist_scaleHT_1005","MC Scale Uncertainties ID:1005",30,0,3000);//1005
+  TH1F* hist_scaleHT_1007 = new TH1F("hist_scaleHT_1007","MC Scale Uncertainties ID:1007",30,0,3000);//1007
+  TH1F* hist_scaleHT_1009 = new TH1F("hist_scaleHT_1009","MC Scale Uncertainties ID:1009",30,0,3000);//1009
+
+  TH1F* hist_scaleHT_ssdl_1002 = new TH1F("hist_scaleHT_ssdl_1002","MC Scale Uncertainties ID:1002",30,0,3000);//1002
+  TH1F* hist_scaleHT_ssdl_1003 = new TH1F("hist_scaleHT_ssdl_1003","MC Scale Uncertainties ID:1003",30,0,3000);//1003
+  TH1F* hist_scaleHT_ssdl_1004 = new TH1F("hist_scaleHT_ssdl_1004","MC Scale Uncertainties ID:1004",30,0,3000);//1004
+  TH1F* hist_scaleHT_ssdl_1005 = new TH1F("hist_scaleHT_ssdl_1005","MC Scale Uncertainties ID:1005",30,0,3000);//1005
+  TH1F* hist_scaleHT_ssdl_1007 = new TH1F("hist_scaleHT_ssdl_1007","MC Scale Uncertainties ID:1007",30,0,3000);//1007
+  TH1F* hist_scaleHT_ssdl_1009 = new TH1F("hist_scaleHT_ssdl_1009","MC Scale Uncertainties ID:1009",30,0,3000);//1009
+
 
 
   //load eta weights in:
@@ -258,26 +272,26 @@ int main(int argc, char* argv[]){
 
   //get fake rate according to ID
   float muPromptRate;
-  if(muID=="CBTight") muPromptRate=0.9396;
+  if(muID=="CBTight") muPromptRate=0.940;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elPromptRate;
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.8941;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.873;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //get fake rate according to ID
   float muFakeRate;
-  if(muID=="CBTight") muFakeRate=0.347;
+  if(muID=="CBTight") muFakeRate=0.371;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.288;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.298;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -303,6 +317,9 @@ int main(int argc, char* argv[]){
   float nEle27=0;
   float nDoubleEle33=0;
   float nEle17Ele12=0;
+  float nEle17Ele12ORDoubleEle8HT300=0;
+  float nEle17Ele12_highHT=0;
+  float nEle17Ele12ORDoubleEle8HT300_highHT=0;
   float nMu30Ele30=0;
   float nMu17Ele12=0;
   float nMu8Ele17=0;
@@ -351,7 +368,6 @@ int main(int argc, char* argv[]){
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
     bool samesign;
 
-
     //get chargeMisID rate for DY and save DY events outside of Z-peak (71-111 GeV) with weights for chargeMisID
     float weight=0;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){
@@ -385,6 +401,7 @@ int main(int argc, char* argv[]){
 
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
+
 
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
@@ -469,8 +486,9 @@ int main(int argc, char* argv[]){
       h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_Ele17Ele12) nEle17Ele12+=1;
+      if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300+=1;
     }
-
+  
     //if cross channel
     if(elmu){
       if(tr->HLT_Mu30Ele30) nMu30Ele30+=1;
@@ -526,7 +544,7 @@ int main(int argc, char* argv[]){
     }
       
     //get pileup weight;
-    float puweight=-1;
+    float puweight=1;
     if(data) puweight=1;
     //else{
     //puweight = getPUWeight(hpu,(int)tr->nPU);
@@ -535,28 +553,23 @@ int main(int argc, char* argv[]){
     float mcweight;
     if(data) mcweight = 1;
     else{
-      if(tr->MCWeight>0) mcweight=1.0;
+      if(tr->MCWeight>=0) mcweight=1.0;
       else mcweight=-1.0;
     }
 
+    //make boolean here so we can fill the closets associated mass
+    bool secondaryZVeto = (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).first;
+    float assocMass =  (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).second;
+
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass);
     //fill histos for same cut level
     float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_ssdl_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elmu) fillHistos(hists_ssdl_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(mumu) fillHistos(hists_ssdl_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
-    //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
-    bool secondaryZVeto = checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons);
-    if(secondaryZVeto) continue;
-    //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight);
-    //now fill corresponding histos
-    fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
-    if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
-    if(elmu) fillHistos(hists_sZVeto_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
-    if(mumu) fillHistos(hists_sZVeto_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+
 
     float st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
     for(unsigned int j=0; j < vNonSSLep.size(); j++){
@@ -565,6 +578,40 @@ int main(int argc, char* argv[]){
     for(unsigned int j=0; j <tr->cleanedAK4Jets.size();j++){
       st = st + tr->cleanedAK4Jets.at(j)->pt;
     }
+
+    //now get pdf weights at early stage
+    if(!data){
+      //now fill ppdf weight histogram
+      std::vector<double> pdfweights = (*tr->LHEWeights);
+      std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
+      for(unsigned int i=0; i< pdfweightIDs.size(); i++){
+	int ID = pdfweightIDs.at(i);
+	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
+	  //now fill individual
+	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i));
+	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i));
+	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i));
+	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i));
+	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i));
+	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i));
+	}
+	if(!(ID>2000 && i<2101)) continue;
+
+      }
+      delete pdfweights; delete pdfweightIDs;
+    }
+
+
+    //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
+    if(secondaryZVeto) continue;
+    //fill tree for post secondary z veto
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass);
+    //now fill corresponding histos
+    fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(elmu) fillHistos(hists_sZVeto_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+    if(mumu) fillHistos(hists_sZVeto_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
+
     //skip events in dielectron which reconstruct to z
     if(elel){
       if(dilepMass < 106 && dilepMass>76) continue;
@@ -592,23 +639,27 @@ int main(int argc, char* argv[]){
     if(elmu) fillHistos(hists_nConst_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(mumu) fillHistos(hists_nConst_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
 
-
+    if(elel && st>1000){
+      if(tr->HLT_Ele17Ele12) nEle17Ele12_highHT+=1;
+      if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300_highHT+=1;
+    }
 
     if(!data){
       //now fill ppdf weight histogram
       std::vector<double> pdfweights = (*tr->LHEWeights);
       std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
+      //now fill ppdf weight histogram
       for(unsigned int i=0; i< pdfweightIDs.size(); i++){
 	int ID = pdfweightIDs.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
 	  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_1002->Fill(pdfweights.at(i),st);
-	  if(ID==1003)hist_scaleHT_1003->Fill(pdfweights.at(i),st);
-	  if(ID==1004)hist_scaleHT_1004->Fill(pdfweights.at(i),st);
-	  if(ID==1005)hist_scaleHT_1005->Fill(pdfweights.at(i),st);
-	  if(ID==1007)hist_scaleHT_1007->Fill(pdfweights.at(i),st);
-	  if(ID==1009)hist_scaleHT_1009->Fill(pdfweights.at(i),st);
+	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i));
+	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i));
+	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i));
+	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i));
+	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i));
+	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i));
 	}
 	if(!(ID>2000 && i<2101)) continue;
 	hist_pdfHT->Fill(pdfweights.at(i),st);
@@ -704,6 +755,12 @@ int main(int argc, char* argv[]){
   
   fsig->WriteTObject(hist_pdfHT);
   fsig->WriteTObject(hist_scaleHT);
+  fsig->WriteTObject(hist_scaleHT_1002);
+  fsig->WriteTObject(hist_scaleHT_1003);
+  fsig->WriteTObject(hist_scaleHT_1004);
+  fsig->WriteTObject(hist_scaleHT_1005);
+  fsig->WriteTObject(hist_scaleHT_1007);
+  fsig->WriteTObject(hist_scaleHT_1009);
 
   fsig->Write();
   fsig->Close();
@@ -747,7 +804,10 @@ int main(int argc, char* argv[]){
   for(int j =0; j<nEle17Ele12;j++) hNEle17Ele12Num->Fill(j);
   for(int j =0; j<nElEl;j++) hNEle17Ele12Den->Fill(j);
   TGraphAsymmErrors* Ele17Ele12Graph = new TGraphAsymmErrors(hNEle17Ele12Num,hNEle17Ele12Den);
-  std::cout<<"Efficiency of Ele17Ele12: "<<nEle17Ele12/nElEl<<" +"<<Ele17Ele12Graph->GetErrorYhigh(0)<<" -"<<Ele17Ele12Graph->GetErrorYlow(0)<<std::endl<<"\n";
+  std::cout<<"Efficiency of Ele17Ele12: "<<nEle17Ele12/nElEl<<" +"<<Ele17Ele12Graph->GetErrorYhigh(0)<<" -"<<Ele17Ele12Graph->GetErrorYlow(0)<<std::endl;
+  std::cout<<"Efficiency of Ele17Ele12 OR DoubleEle8HT300: "<<nEle17Ele12ORDoubleEle8HT300/nElEl<<"\n";
+  std::cout<<"Efficiency of Ele17Ele12 at HT > 1000: "<<nEle17Ele12_highHT/nElEl<<"\n\n";
+  std::cout<<"Efficiency of Ele17Ele12 OR DoubleEle8HT300 at HT >1000: "<<nEle17Ele12ORDoubleEle8HT300_highHT/nElEl<<"\n\n";
  
   TH1F* hNMu30Ele30Num = new TH1F("hNMu30Ele30Num","",1,0,10000);
   TH1F* hNMu30Ele30Den = new TH1F("hNMu30Ele30Den","",1,0,10000);
@@ -937,31 +997,40 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
 
 
   bool oppositeSign=false;
+  bool sameSign=false;
   float pairMass=-999;
   float minDiff=99999;
 
-  TLepton* Lep1=0;
-  TLepton* Lep2=0;
+  TLepton* Lep1 =0;
+  TLepton* Lep2 =0;
 
   for(unsigned int uilep=0; uilep<leptons.size(); uilep++){
     TLepton* lep1 = leptons.at(uilep);
     for(unsigned int ujlep=uilep+1; ujlep<leptons.size(); ujlep++){
       TLepton* lep2 = leptons.at(ujlep);
-      float m = (lep1->lv + lep2->lv).M();
-      float diff = fabs(91.1 - m);
-      if( diff< minDiff){
-	minDiff=diff;
-	pairMass=m;
+      //check for hardest
+      if(lep1->charge==lep2->charge) sameSign=true;
+      if(lep1->charge!=lep2->charge) {
+	oppositeSign=true;
 	Lep1=lep1;
 	Lep2=lep2;
       }
     }
+  
   }
+  std::string os = oppositeSign ? "true" : "false";
 
-  if(! oppositeSign ) return false;
-  else if( Lep1->isMu && Lep2->isMu) return false; //don't allow mumu events to pass
-  else return true;
 
+  //now don't allow any events with samesign dileptons to pass
+  if(sameSign) return false;
+  //else return whether or not there were indeed opposite sign leptons
+  else{
+    if(oppositeSign){
+      if(Lep1->isMu && Lep2->isMu) return false; //skipp mumu events
+      else return true;
+    }
+    else return false;
+  }
 }
 
 
@@ -1070,9 +1139,10 @@ void printParticle(TLepton* l){
 	std::cout<<"charge "<<l->charge<<" pt: "<<l->pt<<" eta: "<<l->eta<<" phi: "<<l->phi<<std::endl;
 }
 
-bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
+std::pair<bool,float> checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, std::vector<TElectron*> electrons){
 
   bool veto=false;
+  float assocMass=-999;
   float zmass=91.1;
 
   for(std::vector<TLepton*>::size_type ilep=0; ilep < leps.size(); ilep++){
@@ -1093,7 +1163,7 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 	if(skip) continue; 
 
 	float diff =  getPairMass(lep,muons.at(imu)) - zmass;
-	if(fabs(diff) < 15){ veto=true; break;}
+	if(fabs(diff) < 15){ veto=true; assocMass = zmass+diff; break;}
       }
     }
     //else check mass w/ other electrons
@@ -1110,27 +1180,29 @@ bool checkSecondaryZVeto(std::vector<TLepton*> leps, std::vector<TMuon*> muons, 
 	if(skip) continue; 
 
 	float diff =  getPairMass(lep,electrons.at(iel)) - zmass;
-	if(fabs(diff) < 15){ veto=true; break;}
+	if(fabs(diff) < 15){ veto=true; assocMass = zmass+diff; break;}
       }
     }
   }
 
-  return veto;
+  std::pair<bool,float> checkAndMass(veto,assocMass);
+  return checkAndMass;
 
 }
 
 
 std::vector<TLepton*> pruneSSLep(std::vector<TLepton*> allLeps, std::vector<TLepton*> ssLeps){
 
-  std::vector<TLepton*> nonSSLeps=allLeps;
+  std::vector<TLepton*> nonSSLeps;
 
-  unsigned int remIndex=0;
-  for(std::vector<TLepton*>::size_type ilep=0; ilep<nonSSLeps.size();ilep++){
-    if( (nonSSLeps.at(ilep)->pt==ssLeps.at(0)->pt && nonSSLeps.at(ilep)->eta==ssLeps.at(0)->eta && nonSSLeps.at(ilep)->phi==ssLeps.at(0)->phi) || (nonSSLeps.at(ilep)->pt==ssLeps.at(1)->pt && nonSSLeps.at(ilep)->eta==ssLeps.at(1)->eta && nonSSLeps.at(ilep)->phi==ssLeps.at(1)->phi) ){
-      nonSSLeps.erase(nonSSLeps.begin()+remIndex);
+
+  for(std::vector<TLepton*>::size_type ilep=0; ilep<allLeps.size();ilep++){
+    //std::cout<<"SSLep 1 pt, eta, phi: "<<ssLeps.at(0)->pt<<", "<<ssLeps.at(0)->eta<<", "<<ssLeps.at(0)->phi<<" SSLep 2 pt, eta, phi: "<<ssLeps.at(1)->pt<<", "<<ssLeps.at(1)->eta<<", "<<ssLeps.at(1)->phi<<" current lep pt, eta, phi: "<<allLeps.at(ilep)->pt<<", "<<allLeps.at(ilep)->eta<<", "<<allLeps.at(ilep)->phi<<std::endl;
+    if( (allLeps.at(ilep)->pt==ssLeps.at(0)->pt && allLeps.at(ilep)->eta==ssLeps.at(0)->eta && allLeps.at(ilep)->phi==ssLeps.at(0)->phi) || (allLeps.at(ilep)->pt==ssLeps.at(1)->pt && allLeps.at(ilep)->eta==ssLeps.at(1)->eta && allLeps.at(ilep)->phi==ssLeps.at(1)->phi) || (!allLeps.at(ilep)->Tight) ){ //skip non tight since loose leptons can make it here from np background
     }
-    remIndex++;
-  }
+    else(nonSSLeps.push_back(allLeps.at(ilep)) );
 
+  }
+  //std::cout<<" done pruning for this event and found "<<nonSSLeps.size()<<" nonSSleptons \n \n";
   return nonSSLeps;
 }
