@@ -37,7 +37,7 @@ void makePlots(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi = 1.28; //fb^-1  
+  float lumi = 2.11; //fb^-1  
   std::vector<Variable*> vVariables = getVariableVec();
 
   std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi, elID, muID);
@@ -109,7 +109,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   leg->SetBorderSize(0);
   //histogram for weights
   TH1F* h_err = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  
+  TH1F* h_np = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   //now go through pain of getting non-prompt background error correct;
   TH1F* h_t00 = new TH1F("h_t00",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_t01 = new TH1F("h_t01",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -157,30 +157,41 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(h_t00->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t00->Scale(WeightSF_T0(elID,muID,nMu));
     else h_t00->Scale(WeightOF_T00(elID,muID));
-    h_err->Add(h_t00);
+    h_np->Add(h_t00);
   }
   if(h_t01->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t01->Scale(WeightSF_T1(elID,muID,nMu));
     else h_t01->Scale(WeightOF_T01(elID,muID));
-    h_err->Add(h_t01);
+    h_np->Add(h_t01);
   }
   if(h_t10->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t10->Scale(WeightSF_T1(elID,muID,nMu));
     else h_t10->Scale(WeightOF_T10(elID,muID));
-    h_err->Add(h_t10);
+    h_np->Add(h_t10);
   }
   if(h_t11->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t11->Scale(WeightSF_T2(elID,muID,nMu));
     else h_t11->Scale(WeightOF_T11(elID,muID));
-    h_err->Add(h_t11);
+    h_np->Add(h_t11);
+  }
+
+  std::vector<float> nperrs;
+  for(unsigned int ibin=0; ibin< h_np->GetNbinsX(); ibin++){
+    float etemp = pow(h_np->GetBinError(ibin),2);
+    etemp = etemp + pow( 0.5*h_np->GetBinContent(ibin),2);
+    etemp = pow(etemp,0.5);
+    nperrs.push_back(etemp);
+    
   }
 
   //*******Now fill in THStack
-
+  float ovf = 0;
   for(std::vector<Sample*>::size_type uk=0; uk<vBkg.size(); uk++){
 
     //vBkg.at(uk)->setHist(var);
     Sample* s = vBkg.at(uk);
+    s->setHist(var,(cutstring.str()).c_str());
+   
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
@@ -193,7 +204,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
       h->Scale(s->weight);
       h_err->Add(h);
     }
-
+    //add overflow to last bin
+    float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
+    (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     //aesthetics
     h->SetFillColor(s->color);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -205,7 +218,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     
 
   }
- 
+
 
   tStack->Draw("HIST");
   tStack->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -278,7 +291,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"1.28 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"2.11 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();

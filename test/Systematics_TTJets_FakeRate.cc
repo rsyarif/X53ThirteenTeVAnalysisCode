@@ -34,33 +34,34 @@ int main(int argc, char* argv[]){
 
   bool mc=true;
 
-
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap samples;
 
-  samples["TTJets"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_TTJets.root";
-  samples["TTbar-powheg"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_TTbar-powheg.root";
-  samples["TTbar-powheg_ext1"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  samples["TTbar-powheg_ext2"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_TTbar-powheg_part2.root";
-  samples["QCD_Pt-20to30_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_EMEnriched.root"; 
-  samples["QCD_Pt-30to50_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_EMEnriched.root";
-  samples["QCD_Pt-50to80_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_EMEnriched.root";
-  samples["QCD_Pt-80to120_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_EMEnriched.root";
-  samples["QCD_Pt-120to170_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_EMEnriched.root";
-  samples["QCD_Pt-170to300_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_EMEnriched.root";
-  samples["QCD_Pt-300toInf_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-300toInf_EMEnriched.root";
-  samples["QCD_Pt-20to30_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_MuEnrichedPt5.root";
-  samples["QCD_Pt-30to50_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_MuEnrichedPt5.root";
-  samples["QCD_Pt-50to80_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_MuEnrichedPt5.root";
-  samples["QCD_Pt-80to120_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_MuEnrichedPt5.root";
-  samples["QCD_Pt-120to170_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_MuEnrichedPt5.root";
-  samples["QCD_Pt-170to300_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_MuEnrichedPt5.root";
-  samples["QCD_Pt-300to470_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-300to470_MuEnrichedPt5.root";
-  samples["QCD_Pt-470to600_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-470to600_MuEnrichedPt5.root";
-  samples["QCD_Pt-600to800_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-600to800_MuEnrichedPt5.root";
-  samples["QCD_Pt-800to1000_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-800to1000_MuEnrichedPt5.root";
-  samples["QCD_Pt-1000toInf_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_QCD_Pt-1000toInf_MuEnrichedPt5.root";
+  samples["TTJets"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTJets.root";
+  samples["TTbar"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar.root";
+  samples["TTbar_ext1"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext1.root";
+  samples["TTbar_ext2"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext2.root";
+  samples["TTbar_ext3"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext3.root";
+  samples["TTbar_ext4"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext4.root";
+  samples["QCD_Pt-20to30_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_EMEnriched.root"; 
+  samples["QCD_Pt-30to50_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_EMEnriched.root";
+  samples["QCD_Pt-50to80_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_EMEnriched.root";
+  samples["QCD_Pt-80to120_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_EMEnriched.root";
+  samples["QCD_Pt-120to170_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_EMEnriched.root";
+  samples["QCD_Pt-170to300_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_EMEnriched.root";
+  samples["QCD_Pt-300toInf_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-300toInf_EMEnriched.root";
+  samples["QCD_Pt-20to30_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_MuEnrichedPt5.root";
+  samples["QCD_Pt-30to50_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_MuEnrichedPt5.root";
+  samples["QCD_Pt-50to80_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_MuEnrichedPt5.root";
+  samples["QCD_Pt-80to120_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_MuEnrichedPt5.root";
+  samples["QCD_Pt-120to170_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_MuEnrichedPt5.root";
+  samples["QCD_Pt-170to300_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_MuEnrichedPt5.root";
+  samples["QCD_Pt-300to470_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-300to470_MuEnrichedPt5.root";
+  samples["QCD_Pt-470to600_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-470to600_MuEnrichedPt5.root";
+  samples["QCD_Pt-600to800_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-600to800_MuEnrichedPt5.root";
+  samples["QCD_Pt-800to1000_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-800to1000_MuEnrichedPt5.root";
+  samples["QCD_Pt-1000toInf_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-1000toInf_MuEnrichedPt5.root";
     
   if(samples.find(sample)==samples.end()) {std::cout<<"didn't pick a correct sample! Exiting..."<<std::endl; return 0;}
     
@@ -71,7 +72,6 @@ int main(int argc, char* argv[]){
   TreeReader* tr = new TreeReader(filename.c_str(),mc);
   //TreeReader* tr = new TreeReader("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/LJMet/Com/python/ljmet_test.root",mc);
   TTree* t = tr->tree;
-
   std::string outname = "FakeRate_"+sample+".root";
 
   TFile* outfile = new TFile(outname.c_str(),"RECREATE");
@@ -89,7 +89,6 @@ int main(int argc, char* argv[]){
   TH1F* muDenHist_hpt = new TH1F("muDenHist_hpt","muDenHist_hpt",6,0,6);
   TH1F* muNumHist_all = new TH1F("muNumHist_all","muNumHist_all",6,0,6);
   TH1F* muDenHist_all = new TH1F("muDenHist_all","muDenHist_all",6,0,6);
-
 
   //set bin labels
   elNumHist_lpt->GetXaxis()->SetBinLabel(1,"Light Quarks");elNumHist_hpt->GetXaxis()->SetBinLabel(1,"Light Quarks");elNumHist_all->GetXaxis()->SetBinLabel(1,"Light Quarks");
@@ -352,16 +351,16 @@ int main(int argc, char* argv[]){
   muDenHist_all->Sumw2();
 
 
-  elNumHist_lpt->Divide(elDenHist_lpt);
-  elNumHist_hpt->Divide(elDenHist_hpt);
-  elNumHist_all->Divide(elDenHist_all);
+  //elNumHist_lpt->Divide(elDenHist_lpt);
+  //elNumHist_hpt->Divide(elDenHist_hpt);
+  //elNumHist_all->Divide(elDenHist_all);
   std::cout<<"Electron fake rate for pt 25-35 electrons: "<<elNumHist_lpt->GetBinContent(1)<<" +/- "<<elNumHist_lpt->GetBinError(1)<<std::endl;
   std::cout<<"Electron fake rate for pt>25 electrons: "<<elNumHist_hpt->GetBinContent(1)<<" +/- "<<elNumHist_hpt->GetBinError(1)<<std::endl;
   std::cout<<"Electron fake rate for all electrons: "<<elNumHist_all->GetBinContent(1)<<" +/- "<<elNumHist_all->GetBinError(1)<<std::endl;
 
-  muNumHist_lpt->Divide(muDenHist_lpt);
-  muNumHist_hpt->Divide(muDenHist_hpt);
-  muNumHist_all->Divide(muDenHist_all);
+  //muNumHist_lpt->Divide(muDenHist_lpt);
+  //muNumHist_hpt->Divide(muDenHist_hpt);
+  //muNumHist_all->Divide(muDenHist_all);
   std::cout<<"Muon fake rate for pt 25-35 muons: "<<muNumHist_lpt->GetBinContent(1)<<" +/- "<<muNumHist_lpt->GetBinError(1)<<std::endl;
   std::cout<<"Muon fake rate for pt>25 muons: "<<muNumHist_hpt->GetBinContent(1)<<" +/- "<<muNumHist_hpt->GetBinError(1)<<std::endl;
   std::cout<<"Muon fake rate for all muons: "<<muNumHist_all->GetBinContent(1)<<" +/- "<<muNumHist_all->GetBinError(1)<<std::endl;

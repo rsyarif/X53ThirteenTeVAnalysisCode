@@ -81,8 +81,8 @@ int main(int argc, char* argv[]){
   //get correct file
   std::vector<std::string> filenames;
   if(argv1.find("Data")!=std::string::npos) {
-    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_Mu.root");
-    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/ObjectReview/ljmet_trees/ljmet_FakeRate_El.root");
+    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_Mu.root");
+    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_El.root");
   }
   else{
     //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT100To200.root");
@@ -109,6 +109,13 @@ int main(int argc, char* argv[]){
     TH1F* etaNumHist = new TH1F("etaNumHist","#eta of Tight Leptons",12,-5,5);
     TH1F* etaDenHist = new TH1F("etaDenHist","#eta of All Leptons",12,-5,5);
     
+    TH1F* etaHist_all = new TH1F("etaHist_all","#eta of all Loose Leptons",12,-5,5);
+    TH1F* etaHist_ZVeto = new TH1F("etaHist_ZVeto","#eta of Leptons after zVeto",12,-5,5);
+    TH1F* etaHist_MET = new TH1F("etaHist_MET","#eta of Leptons after MET cut",12,-5,5);
+    TH1F* etaHist_MT = new TH1F("etaHist_MT","#eta of Leptons after M_{T} cut",12,-5,5);
+    TH1F* etaHist_AwayJet = new TH1F("etaHist_AwayJet","#eta of Leptons after AwayJet cut",12,-5,5);
+
+
     //get number of entries and start event loop
     int nEntries = t->GetEntries();
     for(int ient=0; ient<nEntries; ient++){
@@ -119,15 +126,16 @@ int main(int argc, char* argv[]){
       
       //make vector of leptons
       std::vector<TLepton*> leptons = makeLeptons(tr->allMuons,tr->allElectrons,MuonChannel, ID);
-	
+
       //veto on events with more than one lepton or no leptons
       if((leptons.size()==0) || (leptons.size() >1) ) continue;
       //now just take the lepton remaining
       TLepton* lep = leptons.at(0);
-      
+      etaHist_all->Fill(lep->eta);
       //make sure not much met in event to veto on leptons from Ws
       if(tr->MET > 25) continue;
-      
+      etaHist_MET->Fill(lep->eta);
+      //std::cout<<"lepton eta after MET cut : "<<lep->eta<<std::endl;      
       //check transverse mass is less than 25 GeV
       
       float et = tr->MET+lep->energy;
@@ -137,31 +145,44 @@ int main(int argc, char* argv[]){
       float pt2x = tr->MET*cos(tr->MET_phi);
       float mT = pow(et,2) - pow(lep->pt,2) - pow(tr->MET,2) - 2*(pt1y*pt2y - pt1x*pt2x);
       mT = pow(mT, 0.5);
-      if(mT>25) continue;
-      
+
+      double dphi = fabs(tr->MET_phi - lep->phi);
+      if (dphi > TMath::Pi()) dphi = TMath::TwoPi() - dphi;
+
+      double mt2 = 2 * lep->pt * tr->MET * (1 - cos(dphi));;
+      double mt  = sqrt(mt2);
+
+      //std::cout<<"Clint mt: "<<mT<<" Aram mt: "<<mt<<std::endl;
+
+      if(mt>25) continue; //change to Arams value
+      etaHist_MT->Fill(lep->eta);      
       //search through jet collection to check for jet mass
       bool Zveto = ZVetoCheck(lep,tr->allAK4Jets);
       if(Zveto) continue;
-      
+      etaHist_ZVeto->Fill(lep->eta);
+
       //check for away jet
       bool awayJet = AwayJetCheck(lep,tr->allAK4Jets);
       if(!awayJet) continue;
-      
+      etaHist_AwayJet->Fill(lep->eta);
+
       //Now just fill histograms
       etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
       if(lep->Tight){etaNumHist->Fill(lep->eta);ptNumHist->Fill(lep->pt);}
-      //delete lep and leptons
-      for(std::vector<TLepton*>::size_type j=0; j<leptons.size(); j++){
-	delete leptons[j];
-      }
-      leptons.clear();
+
     }//end event loop
     
     fout->Append(ptNumHist);
     fout->Append(ptDenHist);
     fout->Append(etaNumHist);
     fout->Append(etaDenHist);
-    
+
+    fout->Append(etaHist_all);
+    fout->Append(etaHist_MET);
+    fout->Append(etaHist_MT);
+    fout->Append(etaHist_ZVeto);
+    fout->Append(etaHist_AwayJet);
+
     TGraphAsymmErrors* ptgraph = new TGraphAsymmErrors(ptNumHist,ptDenHist);
     TGraphAsymmErrors* etagraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
     

@@ -95,11 +95,11 @@ int main(int argc, char* argv[]){
   for(int ient=0; ient<nEntries; ient++){
 
     tr->GetEntry(ient);
-
+    float weight = tr->MCWeight >=0 ? 1.0 : -1.0;
     if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
 
     for(std::vector<TElectron*>::size_type iel=0; iel<tr->goodElectrons.size();iel++){
-      etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta,tr->MCWeight);
+      etaAllHist->Fill( (tr->goodElectrons).at(iel)->eta,weight);
     }
 
     //make vector of leptons
@@ -130,39 +130,40 @@ int main(int argc, char* argv[]){
     bool zpeak= fabs(massDiff)<10 ? true : false;
 
     //fill denominator
-    massDenHist->Fill(zmass+massDiff,tr->MCWeight);
+    massDenHist->Fill(zmass+massDiff,weight);
 
     if(!zpeak) continue;
 
     //now fill histograms
+
     if(lep1->charge == lep2->charge){
-      massNumHist->Fill(zmass+massDiff,tr->MCWeight);
-      ptNumHist->Fill(lep1->pt,tr->MCWeight);
-      ptNumHist->Fill(lep2->pt,tr->MCWeight);
-      etaNumHist->Fill(lep1->eta,tr->MCWeight);
-      etaNumHist->Fill(lep2->eta,tr->MCWeight);
+      massNumHist->Fill(zmass+massDiff,weight);
+      ptNumHist->Fill(lep1->pt,weight);
+      ptNumHist->Fill(lep2->pt,weight);
+      etaNumHist->Fill(lep1->eta,weight);
+      etaNumHist->Fill(lep2->eta,weight);
       if(lep1->pt>100 || lep2->pt>100){
-	etaNumHist_hpt->Fill(lep1->eta,tr->MCWeight);
-	etaNumHist_hpt->Fill(lep2->eta,tr->MCWeight);
+	etaNumHist_hpt->Fill(lep1->eta,weight);
+	etaNumHist_hpt->Fill(lep2->eta,weight);
       }
       else{
-	etaNumHist_lpt->Fill(lep1->eta,tr->MCWeight);
-	etaNumHist_lpt->Fill(lep2->eta,tr->MCWeight);
+	etaNumHist_lpt->Fill(lep1->eta,weight);
+	etaNumHist_lpt->Fill(lep2->eta,weight);
       }
     }
 
     //fill denominator
-    ptDenHist->Fill(lep1->pt,tr->MCWeight);
-    ptDenHist->Fill(lep2->pt,tr->MCWeight);
-    etaDenHist->Fill(lep1->eta,tr->MCWeight);
-    etaDenHist->Fill(lep2->eta,tr->MCWeight);
+    ptDenHist->Fill(lep1->pt,weight);
+    ptDenHist->Fill(lep2->pt,weight);
+    etaDenHist->Fill(lep1->eta,weight);
+    etaDenHist->Fill(lep2->eta,weight);
     if(lep1->pt>100 || lep2->pt>100){
-      etaDenHist_hpt->Fill(lep1->eta,tr->MCWeight);
-      etaDenHist_hpt->Fill(lep2->eta,tr->MCWeight);
+      etaDenHist_hpt->Fill(lep1->eta,weight);
+      etaDenHist_hpt->Fill(lep2->eta,weight);
     }
     else{
-      etaDenHist_lpt->Fill(lep1->eta,tr->MCWeight);
-      etaDenHist_lpt->Fill(lep2->eta,tr->MCWeight);
+      etaDenHist_lpt->Fill(lep1->eta,weight);
+      etaDenHist_lpt->Fill(lep2->eta,weight);
     }
   }//end event loop
 

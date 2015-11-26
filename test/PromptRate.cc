@@ -61,10 +61,10 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_MuMu.root";
-    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_MuMu.root";
+    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElEl.root";
   }
-  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_DYJets.root"; data=false;}
+  else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
   //make filename for output root file
   std::string outname;

@@ -22,7 +22,7 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 1.28; //fb^-1
+  float lumi = 2.11; //fb^-1
 
   //get list of signal samples starting with ssdl cut
   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");

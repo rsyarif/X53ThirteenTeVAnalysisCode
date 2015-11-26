@@ -582,23 +582,22 @@ int main(int argc, char* argv[]){
     //now get pdf weights at early stage
     if(!data){
       //now fill ppdf weight histogram
-      std::vector<double> pdfweights = (*tr->LHEWeights);
-      std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
-      for(unsigned int i=0; i< pdfweightIDs.size(); i++){
-	int ID = pdfweightIDs.at(i);
+      std::vector<double> pdfweight_ssdl = (*tr->LHEWeights);
+      std::vector<int> pdfweightIDs_ssdl = (*tr->LHEWeightIDs);
+      for(unsigned int i=0; i< pdfweightIDs_ssdl.size(); i++){
+	int ID = pdfweightIDs_ssdl.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i));
-	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i));
-	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i));
-	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i));
-	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i));
-	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i));
+	  if(ID==1002)hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1003)hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1004)hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1005)hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1007)hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1009)hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i));
 	}
 	if(!(ID>2000 && i<2101)) continue;
 
       }
-      delete pdfweights; delete pdfweightIDs;
     }
 
 
@@ -761,6 +760,13 @@ int main(int argc, char* argv[]){
   fsig->WriteTObject(hist_scaleHT_1005);
   fsig->WriteTObject(hist_scaleHT_1007);
   fsig->WriteTObject(hist_scaleHT_1009);
+
+  fsig->WriteTObject(hist_scaleHT_ssdl_1002);
+  fsig->WriteTObject(hist_scaleHT_ssdl_1003);
+  fsig->WriteTObject(hist_scaleHT_ssdl_1004);
+  fsig->WriteTObject(hist_scaleHT_ssdl_1005);
+  fsig->WriteTObject(hist_scaleHT_ssdl_1007);
+  fsig->WriteTObject(hist_scaleHT_ssdl_1009);
 
   fsig->Write();
   fsig->Close();
