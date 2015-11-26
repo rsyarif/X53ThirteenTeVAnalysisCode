@@ -38,7 +38,7 @@ public:
   TH1F* NPCombinedHist_elmu;
   TH1F* NPCombinedHist_mumu;
 
-  void setHist(Variable* var);
+  void setHist(Variable* var,std::string cut);
 
   void setNPHistos(TFile*);
   TH1F* SetNPCombinedHisto(std::vector<TH1F*> hists,std::vector<float> weights);
@@ -65,23 +65,27 @@ Sample::Sample(std::string n, TFile* f, float w, float xs, std::string cut, int 
 
 };
 
-void Sample::setHist(Variable* var){
+
+void Sample::setHist(Variable* var, std::string cut){
 
   //reset the hist
-  hist->Reset();
+  hist->Reset("ICESM");
+  //make new bins
+  hist ->SetBins(var->nbins, var->xmin, var->xmax);
   //set name
   std::string histname = "h_"+var->name+"_"+name;
-  std::cout<<"setting histname to: "<<histname<<std::endl;
+  //std::cout<<"setting histname to: "<<histname<<std::endl;
   hist->SetName(histname.c_str());
   hist->SetFillColor(color);
   //now draw variable into it
-  std::cout<<"about to project ttree for sample name "<<name<<std::endl;
-  tree->Project(histname.c_str(),(var->name).c_str());
-  std::cout<<"finished projecting ttree for sample "<<name<<" and mean is now: "<<hist->GetMean()<<std::endl;  
+  //std::cout<<"about to project ttree for sample name "<<name<<std::endl;
+  tree->Project(histname.c_str(),(var->name).c_str(),cut.c_str());
+  //std::cout<<"finished projecting ttree for sample "<<name<<" and mean is now: "<<hist->GetMean()<<std::endl;  
   //now scale by weight
-  hist->Scale( weight);
-  std::cout<<"scaled weight for sample name "<<name<<std::endl;
+  //hist->Scale( weight);
+  //std::cout<<"scaled weight for sample name "<<name<<std::endl;
   //now set axis labels
+  hist->Sumw2();
   hist->GetXaxis()->SetTitle(var->Xaxis.c_str());
   hist->GetYaxis()->SetTitle(var->Yaxis.c_str());
   hist->SetLineWidth(linestyle);
