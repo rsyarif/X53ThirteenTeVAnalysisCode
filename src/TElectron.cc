@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),
   gsfCharge(gsfCharget),
   ctfCharge(ctfCharget),
@@ -9,6 +9,7 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   dEta(dEtatemp),
   dPhi(dPhitemp),
   dZ(dZtemp),
+  SIP3d(siptemp),
   d0(d0temp),
   hOverE(hOverEtemp),
   mHits(mHitstemp),

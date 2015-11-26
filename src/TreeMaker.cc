@@ -92,15 +92,16 @@ void TreeMaker::InitTree(std::string treename){
 
 
   tree->Branch("DilepMass",&DilepMass_);
+  tree->Branch("AssocMass",&AssocMass_);
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
   nTL_ = nTLtemp;
-  if(mcweight>0) MCWeight_=1;
+  if(mcweight>=0) MCWeight_=1;
   else MCWeight_=-1;
 
   trigSF_=trSF;
@@ -237,6 +238,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   nConst_=nCleanAK4Jets_+vNonSSLep.size();
   DilepMass_ = DilepMasstemp;
+  AssocMass_ = amasst;
   nMu_= nMu;
   tree->Fill();
 

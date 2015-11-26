@@ -60,7 +60,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
 
   }
 
@@ -69,7 +69,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     allMuons.push_back(new TMuon((*muPt)[i],
 				 (*muEta)[i], (*muPhi)[i], (*muEnergy)[i],(*muCharge)[i], (*muIsLoose)[i],(*muIsTight)[i],
 				 (*muGlobal)[i],(*muPF)[i],(*muTracker)[i],(*muChi2)[i], (*muNValMuHits)[i],  (*muNMatchedStations)[i],
-				 (*muDxy)[i], (*muDz)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i], (*muMiniIso)[i]));
+				 (*muDxy)[i], (*muDz)[i],(*muSIP3d)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i], (*muMiniIso)[i]));
   }
 
   //make all jets
@@ -112,12 +112,12 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   //now from allElectrons make goodElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->cutBasedTight25nsSpring15MC()) goodElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->mvaTightRCIso()) goodElectrons.push_back(allElectrons.at(iel));
   }
   //std::cout<<"making loose electrons"<<std::endl;
   //now from allElectrons make looseElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->cutBasedLoose25nsSpring15MC()) looseElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->mvaLooseRCIso()) looseElectrons.push_back(allElectrons.at(iel));
   }
   //now from allElectrons make cmsdasElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
@@ -178,6 +178,7 @@ void TreeReader::Init(TTree *treetemp)
 
   elD0 = 0;
   elDZ = 0;
+  elSIP3d = 0;
   elDeta = 0;
   elDphi = 0;
   elDxy = 0;
@@ -232,6 +233,7 @@ void TreeReader::Init(TTree *treetemp)
   muChi2 = 0;
   muDxy = 0;
   muDz = 0;
+  muSIP3d = 0;
   muEnergy = 0;
   muEta = 0;
   muPhi = 0;
@@ -290,6 +292,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elQuality_DileptonCalc", &elQuality, &b_elQuality_DileptonCalc);
   tree->SetBranchAddress("elD0_DileptonCalc", &elD0, &b_elD0_DileptonCalc);
   tree->SetBranchAddress("elDZ_DileptonCalc", &elDZ, &b_elDZ_DileptonCalc);
+  tree->SetBranchAddress("elSIP3D_DileptonCalc", &elSIP3d, &b_elSIP3d_DileptonCalc);
   tree->SetBranchAddress("elDeta_DileptonCalc", &elDeta, &b_elDeta_DileptonCalc);
   tree->SetBranchAddress("elDphi_DileptonCalc", &elDphi, &b_elDphi_DileptonCalc);
   tree->SetBranchAddress("elDxy_DileptonCalc", &elDxy, &b_elDxy_DileptonCalc);
@@ -322,6 +325,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("muChi2_DileptonCalc", &muChi2, &b_muChi2_DileptonCalc);
   tree->SetBranchAddress("muDxy_DileptonCalc", &muDxy, &b_muDxy_DileptonCalc);
   tree->SetBranchAddress("muDz_DileptonCalc", &muDz, &b_muDz_DileptonCalc);
+  tree->SetBranchAddress("muSIP3D_DileptonCalc", &muSIP3d, &b_muSIP3d_DileptonCalc);
   tree->SetBranchAddress("muEnergy_DileptonCalc", &muEnergy, &b_muEnergy_DileptonCalc);
   tree->SetBranchAddress("muEta_DileptonCalc", &muEta, &b_muEta_DileptonCalc);
   tree->SetBranchAddress("muPhi_DileptonCalc", &muPhi, &b_muPhi_DileptonCalc);
@@ -385,6 +389,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc", &HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);
   tree->SetBranchAddress("HLT_DoubleEle33_MW_DileptonCalc",&HLT_DoubleEle33,&b_HLT_DoubleEle33_MW_DileptonCalc);
   tree->SetBranchAddress("HLT_Ele17_Ele12_DZ_DileptonCalc",&HLT_Ele17Ele12,&b_HLT_Ele17Ele12_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle8_Mass8_HT300_DileptonCalc", &HLT_DoubleEle8_HT300,&b_HLT_DoubleEle8_HT300_DileptonCalc);
   //single electron
   tree->SetBranchAddress("HLT_Ele27WP85_DileptonCalc",&HLT_Ele27WP85,&b_HLT_Ele27WP85_DileptonCalc);
   //double muon
