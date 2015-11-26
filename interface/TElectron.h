@@ -6,7 +6,7 @@
 class TElectron : public TLepton{
 public:
   //constructor
-  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double miniIsotemp);
+  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp, double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double miniIsotemp);
   //varibles for charge
   int gsfCharge;
   int ctfCharge;
@@ -16,6 +16,7 @@ public:
   double dPhi;
   //variables for primary vtx cuts
   double dZ;
+  double SIP3d;
   double d0;
   // Hadronic energy divided by the Electromagnetic
   double hOverE;
@@ -90,6 +91,7 @@ public:
     dPhi = -100;
 
     dZ   = -100;
+    SIP3d= -100;
     d0   = -100;
     
     hOverE  = -100;

@@ -96,6 +96,8 @@ class TreeReader{
   TBranch        *b_elD0_DileptonCalc;
   std::vector<double>  *elDZ;
   TBranch        *b_elDZ_DileptonCalc;
+  std::vector<double>  *elSIP3d;
+  TBranch        *b_elSIP3d_DileptonCalc;
   std::vector<double>  *elDeta;
   TBranch        *b_elDeta_DileptonCalc;
   std::vector<double>  *elDphi;
@@ -153,6 +155,8 @@ class TreeReader{
   TBranch        *b_muDxy_DileptonCalc;
   std::vector<double>  *muDz;
   TBranch        *b_muDz_DileptonCalc;
+  std::vector<double>  *muSIP3d;
+  TBranch        *b_muSIP3d_DileptonCalc;
   std::vector<double>  *muEnergy;
   TBranch        *b_muEnergy_DileptonCalc;
   std::vector<double>  *muEta;
@@ -253,6 +257,8 @@ class TreeReader{
   TBranch* b_HLT_DoubleEle33_MW_DileptonCalc;
   bool HLT_Ele17Ele12;
   TBranch* b_HLT_Ele17Ele12_DileptonCalc;
+  bool HLT_DoubleEle8_HT300;
+  TBranch* b_HLT_DoubleEle8_HT300_DileptonCalc;
   //single electron
   bool HLT_Ele27WP85;
   TBranch* b_HLT_Ele27WP85_DileptonCalc;

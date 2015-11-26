@@ -21,12 +21,14 @@ public:
 
   bool Tight;
   bool Loose;
-
+  bool isPrompt; // only valid for MC
   TLorentzVector lv;
 
   void setLV() {
     lv.SetPxPyPzE(pt*cos(phi), pt*sin(phi), pt*TMath::SinH(eta), energy);
   }
+
+  enum flavor { Prompt, Light, Charm, Bottom, Fake, Unmatched} SourceFlavor;
 
 };
 
