@@ -44,3 +44,7 @@ Systematics_NonPromptClosureTest:
 nPV_histmaker:
 	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o nPV_histmaker.o nPV_histmaker.cc
 
+CrossChecks_IPTest:
+	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o CrossChecks_IPTest.o CrossChecks_IPTest.cc
+Systematics_ClosureTestByFlavor:
+	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o Systematics_ClosureTestByFlavor.o Systematics_ClosureTestByFlavor.cc
