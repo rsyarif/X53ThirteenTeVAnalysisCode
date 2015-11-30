@@ -13,14 +13,14 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",15,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
 
-  Variable* lep2pt = new Variable("Lep2Pt",15,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -48,14 +48,14 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(nak4jets);*/
 
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -72,14 +72,14 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(nnonssleps);
 
   //simple cleaned jet variables
-  /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(simpleCleanak4jet1pt);
   Variable* simpleCleanak4jet1eta = new Variable("simpleCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(simpleCleanak4jet1eta);
   Variable* simpleCleanak4jet1phi = new Variable("simpleCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(simpleCleanak4jet1phi);
 
-  Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(simpleCleanak4jet2pt);
   Variable* simpleCleanak4jet2eta = new Variable("simpleCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(simpleCleanak4jet2eta);
@@ -108,14 +108,14 @@ std::vector<Variable*> getVariablesForClosureTest(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",15,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep1pt);
   /*Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);*/
 
-  Variable* lep2pt = new Variable("Lep2Pt",15,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep2pt);
   /*Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -123,14 +123,14 @@ std::vector<Variable*> getVariablesForClosureTest(){
   vVar.push_back(lep2phi);*/
 
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet1pt);
   /*Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);*/
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet2pt);
   /*Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -422,7 +422,7 @@ std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lum
   std::string lh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+".root";
   TFile* x53x53900Lfile = new TFile(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
-  //vSigSamples.push_back(x53x53m900L);
+  vSigSamples.push_back(x53x53m900L);
   std::string rh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+".root";
   TFile* x53x53900Rfile = new TFile(rh900.c_str());
   Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
@@ -546,12 +546,18 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
  //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398000 * 0.464779);
   vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252908 * 0.513428);
+  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back(17882125 *0.296995);
+  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(1238145 *0.4177);
   vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1925000 * 1);
   //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
   //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
   vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6652512 * 0.689851);
+  vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 0.45775);
   vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 140224* 1);
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(250000*0.876672);
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000*0.8554);
 
   //******* Non Prompt**********
   //vBkgNames.push_back("NonPromptMC");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
@@ -579,9 +585,20 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
   vSample.push_back(ttwSample);
 
+  std::string tthfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTH_Mu"+muID+"_El"+elID+".root";
+  TFile* tthfile = new TFile(tthfilename.c_str());
+  Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
+  vSample.push_back(tthSample);
+
+  std::string ttttfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTTT_Mu"+muID+"_El"+elID+".root";
+  TFile* ttttfile = new TFile(ttttfilename.c_str());
+  Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
+  vSample.push_back(ttttSample);
+
+
   std::string wzfilename="/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZ_Mu"+muID+"_El"+elID+".root";
   TFile* wzfile = new TFile(wzfilename.c_str());
-  Sample* wzSample = new Sample(vBkgNames.at(2),wzfile, vWeights.at(2),vXsec.at(2),cut,kBlue-3);
+  Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
   vSample.push_back(wzSample);
 
   //TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets_Mu"+muID+"_El"+elID+".root");
@@ -595,21 +612,46 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   
   std::string zzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ_Mu"+muID+"_El"+elID+".root";
   TFile* zzjfile = new TFile(zzfilename.c_str());
-  Sample* zzjSample = new Sample(vBkgNames.at(3),zzjfile, vWeights.at(3),vXsec.at(3),cut,kOrange+1);
+  Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
+  std::string vhfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/VH_Mu"+muID+"_El"+elID+".root";
+  TFile* vhjfile = new TFile(vhfilename.c_str());
+  Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
+  //std::cout<<"weight for VH is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(vhjSample);
+
   std::string wpwpfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WpWp_Mu"+muID+"_El"+elID+".root";
   TFile* wpwpfile = new TFile(wpwpfilename.c_str());
-  Sample* wpwpSample = new Sample(vBkgNames.at(4),wpwpfile, vWeights.at(4),vXsec.at(4),cut,kGreen+1);
+  Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wpwpSample);
 
+  std::string wwmpifilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WW-mpi_Mu"+muID+"_El"+elID+".root";
+  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
+  Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wwmpiSample);
+
+
   std::string wwzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WWZ_Mu"+muID+"_El"+elID+".root";
   TFile* wwzfile = new TFile(wwzfilename.c_str());
-  Sample* wwzSample = new Sample(vBkgNames.at(5),wwzfile, vWeights.at(5),vXsec.at(5),cut,kViolet+1);
+  Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwzSample);
+
+  std::string wzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wzzfile = new TFile(wzzfilename.c_str());
+  Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wzzSample);
+
+  std::string zzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* zzzfile = new TFile(zzzfilename.c_str());
+  Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(zzzSample);
 
 
   //********** NonPrompt ***************
@@ -620,13 +662,13 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
 
   std::string npfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptData_Mu"+muID+"_El"+elID+".root";
   TFile* npfile = new TFile(npfilename.c_str());
-  Sample* npSample = new Sample(vBkgNames.at(6),npfile,vWeights.at(6),vXsec.at(6),cut,kGray);
+  Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
   std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(7),cmidfile,vWeights.at(7),vXsec.at(7),cut,kAzure+6);
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6);
   vSample.push_back(cmidSample);
 
 
@@ -660,7 +702,7 @@ std::vector<std::string> getCutString(){
   //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
   //vString.push_back(jet2pt);
   //HT cut
-  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1100)";
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 900)";
   vString.push_back(htcut);
   return vString;
 }
