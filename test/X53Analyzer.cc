@@ -47,9 +47,9 @@ int main(int argc, char* argv[]){
   
   StringMap bg_samples, sig_samples,data_samples;
   bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext2.root";
   bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTW.root";
   bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTZ.root";
   bg_samples["TTH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTH.root";
@@ -61,6 +61,7 @@ int main(int argc, char* argv[]){
   bg_samples["WZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZZ.root";
   bg_samples["ZZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZZ.root";
   bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZ.root";
+  bg_samples["WZ_MiniAODv1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZ_MiniAODv1.root";
   bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZ.root";
   bg_samples["VH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_VH.root";
   bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
@@ -71,9 +72,9 @@ int main(int argc, char* argv[]){
   //nonoPrompt versions
   bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
   bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg.root";
-  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part1.root";
-  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar-powheg_ext_part2.root";
+  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext2.root";
 
   
   sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700RH.root";
@@ -243,6 +244,7 @@ int main(int argc, char* argv[]){
   TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
   //histogram for scale uncertainties - one for all and then separate ones
   TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties Combined",500,0,5,30,0,3000);//total
+  TH1F* hist_scaleHT_nom = new TH1F("hist_scaleHT_nom","MC Scale Uncertainties ID:Nominal",30,0,3000);//1002
   TH1F* hist_scaleHT_1002 = new TH1F("hist_scaleHT_1002","MC Scale Uncertainties ID:1002",30,0,3000);//1002
   TH1F* hist_scaleHT_1003 = new TH1F("hist_scaleHT_1003","MC Scale Uncertainties ID:1003",30,0,3000);//1003
   TH1F* hist_scaleHT_1004 = new TH1F("hist_scaleHT_1004","MC Scale Uncertainties ID:1004",30,0,3000);//1004
@@ -250,6 +252,7 @@ int main(int argc, char* argv[]){
   TH1F* hist_scaleHT_1007 = new TH1F("hist_scaleHT_1007","MC Scale Uncertainties ID:1007",30,0,3000);//1007
   TH1F* hist_scaleHT_1009 = new TH1F("hist_scaleHT_1009","MC Scale Uncertainties ID:1009",30,0,3000);//1009
 
+  TH1F* hist_scaleHT_ssdl_nom = new TH1F("hist_scaleHT_ssdl_nom","MC Scale Uncertainties ID:Nominal",30,0,3000);//1002
   TH1F* hist_scaleHT_ssdl_1002 = new TH1F("hist_scaleHT_ssdl_1002","MC Scale Uncertainties ID:1002",30,0,3000);//1002
   TH1F* hist_scaleHT_ssdl_1003 = new TH1F("hist_scaleHT_ssdl_1003","MC Scale Uncertainties ID:1003",30,0,3000);//1003
   TH1F* hist_scaleHT_ssdl_1004 = new TH1F("hist_scaleHT_ssdl_1004","MC Scale Uncertainties ID:1004",30,0,3000);//1004
@@ -388,6 +391,7 @@ int main(int argc, char* argv[]){
     //now veto on bad events from met scanners
     bool badEvent = false;
     if(data){
+     
       badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event) || EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event) || EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     }
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
@@ -584,16 +588,17 @@ int main(int argc, char* argv[]){
       //now fill ppdf weight histogram
       std::vector<double> pdfweight_ssdl = (*tr->LHEWeights);
       std::vector<int> pdfweightIDs_ssdl = (*tr->LHEWeightIDs);
+      hist_scaleHT_ssdl_nom->Fill(st,mcweight);
       for(unsigned int i=0; i< pdfweightIDs_ssdl.size(); i++){
 	int ID = pdfweightIDs_ssdl.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i));
-	  if(ID==1003)hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i));
-	  if(ID==1004)hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i));
-	  if(ID==1005)hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i));
-	  if(ID==1007)hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i));
-	  if(ID==1009)hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i));
+	  if(ID==1002)hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1003)hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1004)hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1005)hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1007)hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1009)hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i)*mcweight);
 	}
 	if(!(ID>2000 && i<2101)) continue;
 
@@ -648,17 +653,18 @@ int main(int argc, char* argv[]){
       std::vector<double> pdfweights = (*tr->LHEWeights);
       std::vector<int> pdfweightIDs = (*tr->LHEWeightIDs);
       //now fill ppdf weight histogram
+      hist_scaleHT_nom->Fill(st,mcweight);
       for(unsigned int i=0; i< pdfweightIDs.size(); i++){
 	int ID = pdfweightIDs.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
 	  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i));
-	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i));
-	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i));
-	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i));
-	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i));
-	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i));
+	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight);
 	}
 	if(!(ID>2000 && i<2101)) continue;
 	hist_pdfHT->Fill(pdfweights.at(i),st);
@@ -754,6 +760,7 @@ int main(int argc, char* argv[]){
   
   fsig->WriteTObject(hist_pdfHT);
   fsig->WriteTObject(hist_scaleHT);
+  fsig->WriteTObject(hist_scaleHT_nom);
   fsig->WriteTObject(hist_scaleHT_1002);
   fsig->WriteTObject(hist_scaleHT_1003);
   fsig->WriteTObject(hist_scaleHT_1004);
@@ -761,6 +768,7 @@ int main(int argc, char* argv[]){
   fsig->WriteTObject(hist_scaleHT_1007);
   fsig->WriteTObject(hist_scaleHT_1009);
 
+  fsig->WriteTObject(hist_scaleHT_ssdl_nom);
   fsig->WriteTObject(hist_scaleHT_ssdl_1002);
   fsig->WriteTObject(hist_scaleHT_ssdl_1003);
   fsig->WriteTObject(hist_scaleHT_ssdl_1004);
