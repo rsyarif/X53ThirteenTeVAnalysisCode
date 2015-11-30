@@ -128,7 +128,7 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
   tablestring<<tableHeader(vCS, vCC.at(0), caption); tablestring<<"\\hline \n";
   for(size_t i=0; i < vCC.size(); i++){
     float sys=0;
-    if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
+    if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.4, 2);
     else if(vCC.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
     else if(vCC.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2);
     else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2);
@@ -289,8 +289,8 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
   tablestring<<"\\begin{table}\n\\centering\n\\begin{tabular}{|cccc|c|c|}";
   //caption
   std::string caption;
-  caption = "Summary of expected and observed events for all channels. We show also he representative yields for an 800 \\GeV \\xft. All systematic uncertainties are included.";
-  tablestring<<"PSS MC&NonPrompt&ChargeMisID& 800 \GeV \xft&Observed\\\\\n";
+  caption = "Summary of expected and observed events for all channels. We show also the representative yields for an 800 \\GeV \\xft. All systematic uncertainties are included.";
+  tablestring<<"PSS MC&NonPrompt&ChargeMisID& Total Background & 800 \\GeV \\xft&Observed\\\\\n";
   std::string label;
   //label
   label = "\\label{tab:FinalYields}";
@@ -324,10 +324,10 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
       float sys=0;
       if(vCutBkg.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
       else if(vCutBkg.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
-      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2);
-      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2);
+      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2) + pow(0.12,2) + pow(0.05,2);
+      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2) + pow(0.12,2) + pow(0.05,2);
       else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = sys;
-      else sys = pow(0.5,2);
+      else sys = pow(0.5,2) + pow(0.12,2) + pow(0.05,2);
       if(! (vCutBkg.at(i)->samplename=="NonPrompt" || vCutBkg.at(i)->samplename=="ChargeMisID")){
 	sys = sys + 2*pow(0.02,2) + pow(0.01,2) + pow(.12,2); //id iso and trigger  plus lumi    
       }
@@ -371,7 +371,7 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
 
 
     //now write table line
-    tablestring<<"$"<<events_mctot<<"\\pm"<<errors_mctot<<"$&$"<<events_nptot<<"\\pm"<<errors_nptot<<"$&$"<<events_cmtot<<"\\pm"<<errors_cmtot<<"$ &$ "<<events_tot<<"$\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+    tablestring<<"$"<<events_mctot<<"\\pm"<<errors_mctot<<"$&$"<<events_nptot<<"\\pm"<<errors_nptot<<"$&$"<<events_cmtot<<"\\pm"<<errors_cmtot<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
   }//end loop over channels
 
   tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";
