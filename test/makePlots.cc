@@ -90,10 +90,10 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+    else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
@@ -109,7 +109,14 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   leg->SetBorderSize(0);
   //histogram for weights
   TH1F* h_err = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_np = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_np = new TH1F("h_np",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_cmid = new TH1F("h_cmid",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_ttz = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_ttw = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_wz = new TH1F("h_wz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_zz = new TH1F("h_zz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_wwz = new TH1F("h_wwz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   //now go through pain of getting non-prompt background error correct;
   TH1F* h_t00 = new TH1F("h_t00",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_t01 = new TH1F("h_t01",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -120,16 +127,16 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   std::stringstream NTcutstring;
   if(nMu>=0){
     if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
-    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<" && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100) )";}
+    else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
+    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nconst >=5) )";}
+    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
     else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt >100) )";}
   }
   //now add ntl requirement
@@ -158,34 +165,30 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     if(nMu==0 || nMu==2) h_t00->Scale(WeightSF_T0(elID,muID,nMu));
     else h_t00->Scale(WeightOF_T00(elID,muID));
     h_np->Add(h_t00);
+    h_err->Add(h_t00);
   }
   if(h_t01->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t01->Scale(WeightSF_T1(elID,muID,nMu));
     else h_t01->Scale(WeightOF_T01(elID,muID));
     h_np->Add(h_t01);
+    h_err->Add(h_t01);
   }
   if(h_t10->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t10->Scale(WeightSF_T1(elID,muID,nMu));
     else h_t10->Scale(WeightOF_T10(elID,muID));
     h_np->Add(h_t10);
+    h_err->Add(h_t10);
   }
   if(h_t11->Integral()!=0){ 
     if(nMu==0 || nMu==2) h_t11->Scale(WeightSF_T2(elID,muID,nMu));
     else h_t11->Scale(WeightOF_T11(elID,muID));
     h_np->Add(h_t11);
+    h_err->Add(h_t11);
   }
 
-  std::vector<float> nperrs;
-  for(unsigned int ibin=0; ibin< h_np->GetNbinsX(); ibin++){
-    float etemp = pow(h_np->GetBinError(ibin),2);
-    etemp = etemp + pow( 0.5*h_np->GetBinContent(ibin),2);
-    etemp = pow(etemp,0.5);
-    nperrs.push_back(etemp);
-    
-  }
 
   //*******Now fill in THStack
-  float ovf = 0;
+  float lastbin = 0;
   for(std::vector<Sample*>::size_type uk=0; uk<vBkg.size(); uk++){
 
     //vBkg.at(uk)->setHist(var);
@@ -199,14 +202,22 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //skip non prompt if using data non prompt
     if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("TT")==std::string::npos) ) { }
     //skip charge misID
-    else if( (s->name).find("ChargeMisID")!=std::string::npos) { h_err->Add(h);}
+    else if( (s->name).find("ChargeMisID")!=std::string::npos) { h_err->Add(h);h_cmid->Add(h);}
     else  {
       h->Scale(s->weight);
       h_err->Add(h);
     }
+    if(s->name=="TTZ") h_ttz->Add(h);
+    if(s->name=="TTW") h_ttw->Add(h);
+    if(s->name=="WZ") h_wz->Add(h);
+    if(s->name=="ZZ") h_zz->Add(h);
+    if(s->name=="WWZ") h_wwz->Add(h);
+    if(s->name=="WpWp") h_wpwp->Add(h);
+   
     //add overflow to last bin
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
+    lastbin = lastbin + ovf;
     //aesthetics
     h->SetFillColor(s->color);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -219,6 +230,64 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   }
 
+
+  //make errors
+  std::vector<float> errs;
+  for(unsigned int ibin=0; ibin< h_np->GetNbinsX(); ibin++){
+    //nonprompt
+    float etemp = pow(h_np->GetBinError(ibin),2); //stat
+    etemp = etemp + pow( 0.5*h_np->GetBinContent(ibin),2);//sys
+    //chargemisID
+    etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.2*h_cmid->GetBinContent(ibin),2);//sys
+    //TTZ
+    etemp = etemp + pow(h_ttz->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.13*h_ttz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_ttz->GetBinContent(ibin),2); //pileup
+    //TTW
+    etemp = etemp + pow(h_ttw->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.18*h_ttw->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.04*h_ttw->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_ttw->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_ttw->GetBinContent(ibin),2); //pileup
+
+    //WZ
+    etemp = etemp + pow(h_wz->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.5*h_wz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.05*h_wz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_wz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_wz->GetBinContent(ibin),2); //pileup
+
+    //ZZ
+    etemp = etemp + pow(h_zz->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.50*h_zz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.04*h_zz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_zz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_zz->GetBinContent(ibin),2); //pileup
+
+    //WpWp
+    etemp = etemp + pow(h_wpwp->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.50*h_wpwp->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.04*h_wpwp->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_wpwp->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_wpwp->GetBinContent(ibin),2); //pileup
+
+    //TTW
+    etemp = etemp + pow(h_wwz->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.50*h_wwz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.04*h_wwz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.12*h_wwz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.05*h_wwz->GetBinContent(ibin),2); //pileup
+
+    etemp = pow(etemp,0.5);
+    h_err->SetBinError(ibin,etemp);
+    errs.push_back(etemp);    
+  }
+
+  //now set err bin to have overflow content
+  h_err->SetBinContent(h_err->GetNbinsX(),lastbin);
 
   tStack->Draw("HIST");
   tStack->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -237,10 +306,16 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   h_err->SetFillStyle(3344);
   h_err->SetFillColor(1);
   h_err->Draw("SAME E2");
-  std::cout<<"h_err bin 5: "<<h_err->GetBinContent(5)<<" and error: "<<h_err->GetBinError(5)<<std::endl;
+  if(var->name=="Lep1Pt"){
+    for(unsigned int jb=1; jb<=h_err->GetNbinsX(); jb++){
+      float totbkg = h_np->GetBinContent(jb) + h_cmid->GetBinContent(jb) + h_ttw->GetBinContent(jb) + h_ttz->GetBinContent(jb) + h_wz->GetBinContent(jb) + h_wpwp->GetBinContent(jb) + h_zz->GetBinContent(jb)+h_wwz->GetBinContent(jb);
+      float stacktot = ( (TH1F*)(tStack->GetStack()->Last()))->GetBinContent(jb);
+      std::cout<<"h_err bin "<<jb<<": "<<h_err->GetBinContent(jb)<<" and error: "<<h_err->GetBinError(jb)<<" nonprompt: "<<h_np->GetBinContent(jb)<<" sum of backgrounds: "<<totbkg<<" tstack content: "<<stacktot<<std::endl;
+    }
+  }
   //draw signal:
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
- 
+    
     Sample* s = vSig.at(i1);
     if(s->name.find("700")==std::string::npos) continue;
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
