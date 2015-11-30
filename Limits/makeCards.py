@@ -15,7 +15,7 @@ for mass in masses:
                     lep2=l2*10
                     for l1 in range(l2+1,2):
                         lep1=l1*10
-                        for ht in range(0,2):
+                        for ht in range(0,3):
                             htcut=100*ht
                             if theta:
                                 command="./makeLimitCards.o %i %s %i %i %i %i %i theta" % (mass,chi,i,lep1,lep2,htcut,nc)
