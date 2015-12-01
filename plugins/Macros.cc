@@ -557,7 +557,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
   vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(250000*0.876672);
-  vBkgNames.push_back("WZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000*0.8554);
+  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000*0.8554);
 
   //******* Non Prompt**********
   //vBkgNames.push_back("NonPromptMC");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
@@ -702,7 +702,7 @@ std::vector<std::string> getCutString(){
   //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
   //vString.push_back(jet2pt);
   //HT cut
-  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 900)";
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)";
   vString.push_back(htcut);
   return vString;
 }
