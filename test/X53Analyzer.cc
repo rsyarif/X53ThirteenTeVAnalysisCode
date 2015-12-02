@@ -46,106 +46,115 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar.root";
-  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext1.root";
-  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext2.root";
-  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTW.root";
-  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTZ.root";
-  bg_samples["TTH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTH.root";
-  bg_samples["TTTT"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTTT.root";
-  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTWW.root";
-  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WW.root";
-  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WWW.root";
-  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WWZ.root";
-  bg_samples["WZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZZ.root";
-  bg_samples["ZZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZZ.root";
-  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZ.root";
-  bg_samples["WZ_MiniAODv1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WZ_MiniAODv1.root";
-  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_ZZ.root";
-  bg_samples["VH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_VH.root";
-  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
-  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root";
-  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WpWp.root";
-  bg_samples["WW-mpi"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WW-mpi.root";
+  bg_samples["TTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["TTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["TTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar_ext2.root";
+  bg_samples["TTW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTW.root";
+  bg_samples["TTZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTZ.root";
+  bg_samples["TTH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTH.root";
+  bg_samples["TTTT"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTTT.root";
+  bg_samples["TTWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTWW.root";
+  bg_samples["WW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WW.root";
+  bg_samples["WWW"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WWW.root";
+  bg_samples["WWZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WWZ.root";
+  bg_samples["WZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WZZ.root";
+  bg_samples["ZZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_ZZZ.root";
+  bg_samples["WZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WZ.root";
+  bg_samples["WZ_MiniAODv1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WZ_MiniAODv1.root";
+  bg_samples["ZZ"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_ZZ.root";
+  bg_samples["VH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_VH.root";
+  bg_samples["WJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WJets.root";
+  bg_samples["DYJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_DYJets.root";
+  bg_samples["WpWp"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WpWp.root";
+  bg_samples["WW-mpi"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WW-mpi.root";
 
   //nonoPrompt versions
-  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar.root";
-  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext1.root";
-  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext2.root";
+  bg_samples["NonPromptTTJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["NonPromptWJets"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_WJets.root";
+  bg_samples["NonPromptTTbar"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["NonPromptTTbar_ext1"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["NonPromptTTbar_ext2"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_TTbar_ext2.root";
 
   
-  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700RH.root";
-  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800RH.root";
-  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900RH.root";
+  sig_samples["X53X53m700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m700RH.root";
+  sig_samples["X53X53m800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m800RH.root";
+  sig_samples["X53X53m900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m900RH.root";
   //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100RH.root";
-  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200RH.root";
-  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300RH.root";
-  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400RH.root";
-  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500RH.root";
-  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600RH.root";
-  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700LH.root";
-  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800LH.root";
-  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900LH.root";
-  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000LH.root";
-  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100LH.root";
-  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200LH.root";
-  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300LH.root";
-  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400LH.root";
-  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500LH.root";
-  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600LH.root";
+  sig_samples["X53X53m1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1100RH.root";
+  sig_samples["X53X53m1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1200RH.root";
+  sig_samples["X53X53m1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1300RH.root";
+  sig_samples["X53X53m1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1400RH.root";
+  sig_samples["X53X53m1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1500RH.root";
+  sig_samples["X53X53m1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1600RH.root";
+  sig_samples["X53X53m700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m700LH.root";
+  sig_samples["X53X53m800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m800LH.root";
+  sig_samples["X53X53m900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m900LH.root";
+  sig_samples["X53X53m1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1000LH.root";
+  sig_samples["X53X53m1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1100LH.root";
+  sig_samples["X53X53m1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1200LH.root";
+  sig_samples["X53X53m1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1300LH.root";
+  sig_samples["X53X53m1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1400LH.root";
+  sig_samples["X53X53m1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1500LH.root";
+  sig_samples["X53X53m1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1600LH.root";
 
-  sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
-  sig_samples["X53X53m800RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
-  sig_samples["X53X53m900RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
-  sig_samples["X53X53m1000RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
-  sig_samples["X53X53m1100RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
-  sig_samples["X53X53m1200RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
-  sig_samples["X53X53m1300RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
-  sig_samples["X53X53m1400RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
-  sig_samples["X53X53m1500RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
-  sig_samples["X53X53m1600RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
-  sig_samples["X53X53m700LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
-  sig_samples["X53X53m800LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
-  sig_samples["X53X53m900LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
-  sig_samples["X53X53m1000LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
-  sig_samples["X53X53m1100LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
-  sig_samples["X53X53m1200LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
-  sig_samples["X53X53m1300LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
-  sig_samples["X53X53m1400LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
-  sig_samples["X53X53m1500LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
-  sig_samples["X53X53m1600LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
+  sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
+  sig_samples["X53X53m800RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
+  sig_samples["X53X53m900RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
+  sig_samples["X53X53m1000RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
+  sig_samples["X53X53m1100RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
+  sig_samples["X53X53m1200RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
+  sig_samples["X53X53m1300RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
+  sig_samples["X53X53m1400RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
+  sig_samples["X53X53m1500RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
+  sig_samples["X53X53m1600RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
+  sig_samples["X53X53m700LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
+  sig_samples["X53X53m800LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
+  sig_samples["X53X53m900LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
+  sig_samples["X53X53m1000LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
+  sig_samples["X53X53m1100LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
+  sig_samples["X53X53m1200LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
+  sig_samples["X53X53m1300LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
+  sig_samples["X53X53m1400LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
+  sig_samples["X53X53m1500LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
+  sig_samples["X53X53m1600LH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
 
   
-  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
-  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
-  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
-  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
-  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
-  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
-  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
-  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
-  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
-  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
-  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
-  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
-  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
-  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
-  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
-  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
-  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
-  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
-  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
-  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
+  sig_samples["X53Tm700RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
+  sig_samples["X53Tm800RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
+  sig_samples["X53Tm900RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
+  sig_samples["X53Tm1000RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
+  sig_samples["X53Tm1100RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
+  sig_samples["X53Tm1200RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
+  sig_samples["X53Tm1300RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
+  sig_samples["X53Tm1400RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
+  sig_samples["X53Tm1500RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
+  sig_samples["X53Tm1600RH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
+  sig_samples["X53Tm700LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
+  sig_samples["X53Tm800LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
+  sig_samples["X53Tm900LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
+  sig_samples["X53Tm1000LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
+  sig_samples["X53Tm1100LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
+  sig_samples["X53Tm1200LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
+  sig_samples["X53Tm1300LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
+  sig_samples["X53Tm1400LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
+  sig_samples["X53Tm1500LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
+  sig_samples["X53Tm1600LH"]="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Approval/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
   data_samples["Data"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
+  data_samples["DataElEl"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["DataElMu"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElMu.root";
+  data_samples["DataMuMu"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_MuMu.root";
   data_samples["NonPromptData"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptDataElEl"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["NonPromptDataElMu"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElMu.root";
+  data_samples["NonPromptDataMuMu"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_MuMu.root";
+
   data_samples["ChargeMisID"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisIDElEl"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["ChargeMisIDElMu"]="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElMu.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -200,6 +209,8 @@ int main(int argc, char* argv[]){
   tm_ssdl->InitTree("tEvts_ssdl");
   TreeMaker* tm_sZVeto = new TreeMaker();
   tm_sZVeto->InitTree("tEvts_sZVeto");
+  TreeMaker* tm_DilepMassCut = new TreeMaker();
+  tm_DilepMassCut->InitTree("tEvts_DilepMassCut");
 
   TreeReader* tr;
   tr = new TreeReader(filename.c_str(),!data);
@@ -269,8 +280,8 @@ int main(int argc, char* argv[]){
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
 
   //load pileup hist
-  TFile* fpu = new TFile("../plugins/MCPileup_scaled.root");
-  TH1F* hpu = (TH1F*) fpu->Get("NumTrueHist");
+  TFile* fpu = new TFile("PileupWeights.root");
+  TH1F* hpu = (TH1F*) fpu->Get("h_weights");
   
 
   //get fake rate according to ID
@@ -388,14 +399,6 @@ int main(int argc, char* argv[]){
     if(!samesign) continue;
 
 
-    //now veto on bad events from met scanners
-    bool badEvent = false;
-    if(data){
-     
-      badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event) || EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event) || EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
-    }
-    if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
-
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){      
@@ -443,6 +446,31 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(0)->isMu && vSSLep.at(1)->isMu){ nMuMu+=1; mumu=true;}
     else if( ( vSSLep.at(0)->isEl && vSSLep.at(1)->isMu) || (vSSLep.at(0)->isMu && vSSLep.at(1)->isEl)){ nElMu+=1; elmu=true;}
     else {nElEl+=1; elel=true;}
+
+
+    //require OR of triggers but make each channel consistent
+    bool skip = true;
+    if(mumu && tr->HLT_Mu27TkMu8) skip =false;
+    if(elmu && (tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12)) skip = false;
+    if(elel && tr->HLT_Ele17Ele12) skip = false;
+    if(skip) continue;
+
+
+    //now skip if not the channel from the corresponding dataset
+    if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
+    if((argv1=="DataElMu" || argv1=="NonPromptDataElMu" || argv1=="ChargeMisIDElMu") && !elmu) continue;
+    if((argv1=="DataElEl" || argv1=="NonPromptDataElEl" || argv1=="ChargeMisIDElEl") && !elel) continue;
+
+    //now veto on bad events from met scanners
+    bool badEvent = false;
+    if(data && sample!="ChargeMisIDElEl"){     //do charge misID later to save time
+      std::cout<<"checking at beginning for sample "<<sample<<std::endl;
+      if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
+      else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
+      else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+    }
+    if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
+    
 
     //now veto on dielectron events coming from Z bosons
     //if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
@@ -505,12 +533,6 @@ int main(int argc, char* argv[]){
       
     }
 
-    //require OR of triggers but make each channel consistent
-    bool skip = true;
-    if(mumu && tr->HLT_Mu27TkMu8) skip =false;
-    if(elmu && (tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12)) skip = false;
-    if(elel && tr->HLT_Ele17Ele12) skip = false;
-    if(skip) continue;
 
     //get trigger scale factors
     float trigSF; 
@@ -548,11 +570,13 @@ int main(int argc, char* argv[]){
     }
       
     //get pileup weight;
-    float puweight=1;
+    float puweight=-11;
     if(data) puweight=1;
-    //else{
-    //puweight = getPUWeight(hpu,(int)tr->nPU);
-    //}
+    else{
+      puweight = getPUWeight(hpu,(int)tr->nPU);
+    }
+
+    if(puweight >20) std::cout<<"Pileup weight is: "<<puweight<<std::endl;
 
     float mcweight;
     if(data) mcweight = 1;
@@ -591,14 +615,14 @@ int main(int argc, char* argv[]){
       hist_scaleHT_ssdl_nom->Fill(st,mcweight);
       for(unsigned int i=0; i< pdfweightIDs_ssdl.size(); i++){
 	int ID = pdfweightIDs_ssdl.at(i);
-	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
+	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009 || ID==2 || ID==3 || ID==4 || ID==5 || ID==7 || ID==9){
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1003)hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1004)hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1005)hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1007)hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1009)hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1002 || (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1003 || (outname.find("X53")!=std::string::npos && ID==3) )hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1004 || (outname.find("X53")!=std::string::npos && ID==4) )hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1005 || (outname.find("X53")!=std::string::npos && ID==5) )hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1007|| (outname.find("X53")!=std::string::npos && ID==7) )hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1009|| (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i)*mcweight);
 	}
 	if(!(ID>2000 && i<2101)) continue;
 
@@ -623,6 +647,14 @@ int main(int argc, char* argv[]){
 
     //quarkonia veto
     if(!(dilepMass>20)) continue;
+
+    if(data && sample=="ChargeMisIDElEl"){     //do charge misID after vetoing on primary Z
+      if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
+      else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
+      else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+    }
+    if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
+    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass);
 
     if(tr->cleanedAK4Jets.size()>1){
       //now fill corresponding histos
@@ -656,15 +688,15 @@ int main(int argc, char* argv[]){
       hist_scaleHT_nom->Fill(st,mcweight);
       for(unsigned int i=0; i< pdfweightIDs.size(); i++){
 	int ID = pdfweightIDs.at(i);
-	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009){
+	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009 || ID==2 || ID==3 || ID==4 || ID==5 || ID==7 || ID==9){
 	  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
 	  //now fill individual
-	  if(ID==1002)hist_scaleHT_1002->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1003)hist_scaleHT_1003->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1004)hist_scaleHT_1004->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1005)hist_scaleHT_1005->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1007)hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1009)hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1002 || (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_1002->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1003 || (outname.find("X53")!=std::string::npos && ID==3) )hist_scaleHT_1003->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1004 || (outname.find("X53")!=std::string::npos && ID==4) )hist_scaleHT_1004->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1005 || (outname.find("X53")!=std::string::npos && ID==5) )hist_scaleHT_1005->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1007 || (outname.find("X53")!=std::string::npos && ID==7) )hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight);
+	  if(ID==1009 || (outname.find("X53")!=std::string::npos && ID==9) )hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight);
 	}
 	if(!(ID>2000 && i<2101)) continue;
 	hist_pdfHT->Fill(pdfweights.at(i),st);
@@ -704,6 +736,7 @@ int main(int argc, char* argv[]){
   //write the trees
   tm_ssdl->tree->Write();
   tm_sZVeto->tree->Write();
+  tm_DilepMassCut->tree->Write();
 
   //write the nonprompt histograms
   for(unsigned int j=0; j<4; j++){
