@@ -18,16 +18,20 @@
 /* the point of this script is to produce a card file suitable for use with higgs combine tool or theta 
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
    where the default values are 30, 30, and 900 GeV (i.e. those of 2012 analysis) */
-std::ofstream& printProcessNames(std::ofstream& outfile, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
-std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg, int nmu, std::string channel);
-std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu, bool theta);
-std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu);
 
 int main(int argc, char* argv[]){
 
   //debug, set to true by hand until sure script is working
   bool debug_ = true;
 
+  //set desired lumi
+  float lumi = 2.11; // fb^{-1}
+
+  //check ot make sure enough arguments have been passed
+  if(!argc==3){
+    std::cout<<"Need to supply 2 arguments: X53 Mass and Chirality! Exiting....."<<std::endl;
+    return 0;
+  }
 
   //get arguments
   std::istringstream arg1(argv[1]);
@@ -36,55 +40,13 @@ int main(int argc, char* argv[]){
   else{arg1>>mass;}
   std::string chirality(argv[2]);
   if( chirality.find("RH")==std::string::npos && chirality.find("LH")==std::string::npos) {std::cout<<"Invalid chirality choice! Choose either \'RH\' or \'LH\'. Exiting...."<<std::endl; return 0;}
-  std::istringstream arg3(argv[3]);
-  int nMu=-1; //defaults to all channels
-  if(!(arg3>>nMu)){ std::cout<<"Invalid number for channel! Specify number of muons (-1 means all channels) Exiting..."<<std::endl; return 0;}
-  else{arg3>>nMu;}
-  std::istringstream arg4(argv[4]);
-  float lep1shift=0;
-  if(!(arg4>>lep1shift)){ std::cout<<"Invalid number for leading lepton shift! Exiting..."<<std::endl; return 0;}
-  else{arg4>>lep1shift;}
-  std::istringstream arg5(argv[5]);
-  float lep2shift=0;
-  if(!(arg5>>lep2shift)){ std::cout<<"Invalid number for subleading lepton shift! Exiting..."<<std::endl; return 0;}
-  else{arg5>>lep2shift;}
-  std::istringstream arg6(argv[6]);
-  float HTshift=0;
-  if(!(arg6>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
-  else{arg6>>HTshift;}
-  std::istringstream arg7(argv[7]);
-  int nConst=0;
-  if(!(arg7>>nConst)){ std::cout<<"Invalid number for Number of Constituents! "<<arg7.str()<<" Exiting..."<<std::endl; return 0;}
-  else{arg7>>nConst;}
 
-  bool theta=false; //default to making higgs cards
-  std::string tool(argv[8]);
-  if(tool.find("theta")!=std::string::npos) theta=true;
 
-  float lep1cut = 30.0 + lep1shift;
-  float lep2cut = 30.0 + lep2shift;
-  float HTcut = 900.0 + HTshift;
-
-  std::string channel="";
-  if(nMu==-1) channel = "All";
-  else if(nMu==0) channel = "ee";
-  else if(nMu==1) channel = "emu";
-  else if(nMu==2) channel = "mumu";
-  else{ std::cout<<"Picked invalid channel! Exiting..."<<std::endl; return 0;}
-
-  std::cout<<"Now running for "<<mass<<" "<<chirality<<" X53"<<" in channel "<<channel<<" and the following cuts: Leading lepton pT > "<<lep1cut<<" GeV; subLeading lepton pT > "<<lep2cut<<" GeV; HT > "<<HTcut<<" GeV."<<std::endl;
-
-  //output file
-  std::stringstream filename;
-  filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  if(theta) filename<<"_theta.txt";
-  else filename<<"_higgs.txt";
-  std::string fstring = filename.str();
-  std::ofstream outfile;
-  outfile.open(fstring);
-
-  //set desired lumi
-  float lumi = 2.11; // fb^{-1}
+  //set cuts by hand
+  float lep1cut = 40.0;
+  float lep2cut = 30.0;
+  float HTcut   = 900.0;
+  int nConst = 5;
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
@@ -117,27 +79,21 @@ int main(int argc, char* argv[]){
 
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
-  //write file header:
-  if(nMu>=0)  outfile<<"imax 1\n";
-  else   outfile<<"imax 3\n";
-  outfile<<"jmax 12\n";
-  outfile<<"kmax 10\n"; //currently have 10 systematics
-
   //output root file
   std::stringstream rootfilename;
-  rootfilename<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  if(theta) rootfilename<<"_theta.root";
+  rootfilename<<"Limits_M"<<mass<<"_"<<chirality<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename<<"_theta.root";
 
   TFile* fout = new TFile((rootfilename.str()).c_str(),"RECREATE");
 
   //write observed
-  TH1F* all_DATA = new TH1F("All_DATA","",1,0,1);
-  TH1F* elel_DATA = new TH1F("elel_DATA","",1,0,1);
-  TH1F* elmu_DATA = new TH1F("elmu_DATA","",1,0,1);
-  TH1F* mumu_DATA = new TH1F("mumu_DATA","",1,0,1);
+  //TH1F* All__DATA = new TH1F("All__DATA","",3,0,3);
+  TH1F* elel__DATA = new TH1F("elel__DATA","",1,0,1);
+  TH1F* elmu__DATA = new TH1F("elmu__DATA","",1,0,1);
+  TH1F* mumu__DATA = new TH1F("mumu__DATA","",1,0,1);
 
-  CutClass* cutData = makeCutClass(dataSample,vCutString,-1);
-  int nData = (cutData->nEvents).at(0);
+  //CutClass* cutData = makeCutClass(dataSample,vCutString,-1);
+  //int nData = (cutData->nEvents).at(0);
   CutClass* cutData0 = makeCutClass(dataSample,vCutString,0);
   int nData0 = (cutData0->nEvents).at(0);
   CutClass* cutData1 = makeCutClass(dataSample,vCutString,1);
@@ -146,243 +102,454 @@ int main(int argc, char* argv[]){
   int nData2 = (cutData2->nEvents).at(0);
   
   
-  for(int i=0; i<nData; i++){
-    all_DATA->Fill(0.5);
-  }
+  //for(int i=0; i<nData; i++){
+  //all__DATA->Fill(0.5);
+  //}
   for(int i=0; i<nData0; i++){
-    elel_DATA->Fill(0.5);
+    elel__DATA->Fill(0.5);
   }
   for(int i=0; i<nData1; i++){
-    mumu_DATA->Fill(0.5);
+    elmu__DATA->Fill(0.5);
   }
   for(int i=0; i<nData2; i++){
-    mumu_DATA->Fill(0.5);
+    mumu__DATA->Fill(0.5);
   }
 
 
-  fout->WriteTObject(all_DATA);
-  fout->WriteTObject(elel_DATA);
-  fout->WriteTObject(elmu_DATA);
-  fout->WriteTObject(mumu_DATA);
+  //fout->WriteTObject(all__DATA);
+  fout->WriteTObject(elel__DATA);
+  fout->WriteTObject(elmu__DATA);
+  fout->WriteTObject(mumu__DATA);
 
 
   //get cut class for signal
-  CutClass* cutSig_all = makeCutClass(sigSample,vCutString,-1);
+  //CutClass* cutSig_all = makeCutClass(sigSample,vCutString,-1);
   CutClass* cutSig_elel = makeCutClass(sigSample,vCutString,0);
   CutClass* cutSig_elmu = makeCutClass(sigSample,vCutString,1);
   CutClass* cutSig_mumu = makeCutClass(sigSample,vCutString,2);
 
   //histos for signal
-  TH1F* All_sig = new TH1F("All_sig","",1,0,1);
-  float all_sig = cutSig_all->nEvents.at(0) / cSig->xsec;
-  float errAll_sig = cutSig_all->vErr.at(0);
-  All_sig->SetBinContent(1,all_sig); All_sig->SetBinError(1,errAll_sig);
+  //TH1F* All_sig = new TH1F("All_sig","",3,0,3);
+  //TH1F* elel_sig = new TH1F("elel_sig","",1,0,1);
+  //TH1F* elmu_sig = new TH1F("elmu_sig","",1,0,1);
+  //TH1F* mumu_sig = new TH1F("mumu_sig","",1,0,1);
+  //float all_sig = cutSig_all->nEvents.at(0) / cutSig->xsec;
+  //float errAll_sig = cutSig_all->vErr.at(0);
+  //All_sig->SetBinContent(1,all_sig); All_sig->SetBinError(1,errAll_sig);
 
-  TH1F* elel_sig = new TH1F("elel_sig","",1,0,1);
-  float elel_sig = cutSig_elel->nEvents.at(0) / cSig->xsec;
+  TH1F* elel__sig = new TH1F("elel__sig","",1,0,1);
+  float nSig_elel = cutSig_elel->nEvents.at(0) / cutSig_elel->xsec;
   float errElel_sig = cutSig_elel->vErr.at(0);
-  elel_sig->SetBinContent(1,elel_sig); elel_sig->SetBinError(1,errElel_sig);
+  elel__sig->SetBinContent(1,nSig_elel); elel__sig->SetBinError(1,errElel_sig);
 
-  TH1F* elmu_sig = new TH1F("elmu_sig","",1,0,1);
-  float elmu_sig = cutSig_elmu->nEvents.at(0) / cSig->xsec;
+  TH1F* elmu__sig = new TH1F("elmu__sig","",1,0,1);
+  float nSig_elmu = cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec;
   float errElmu_sig = cutSig_elmu->vErr.at(0);
-  elmu_sig->SetBinContent(1,elmu_sig); elmu_sig->SetBinError(1,errElmu_sig);
+  elmu__sig->SetBinContent(1,nSig_elmu); elmu__sig->SetBinError(1,errElmu_sig);
 
-  TH1F* mumu_sig = new TH1F("mumu_sig","",1,0,1);
-  float mumu_sig = cutSig_mumu->nEvents.at(0) / cSig->xsec;
+  TH1F* mumu__sig = new TH1F("mumu__sig","",1,0,1);
+  float nSig_mumu = cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec;
   float errMumu_sig = cutSig_mumu->vErr.at(0);
-  mumu_sig->SetBinContent(1,mumu_sig); mumu_sig->SetBinError(1,errMumu_sig);
+  mumu__sig->SetBinContent(1,nSig_mumu); mumu__sig->SetBinError(1,errMumu_sig);
 
-  fout->WriteTObject(all_sig);
-  fout->WriteTObject(elel_sig);
-  fout->WriteTObject(elmu_sig);
-  fout->WriteTObject(mumu_sig);
+  //fout->WriteTObject(all_sig);
+  fout->WriteTObject(elel__sig);
+  fout->WriteTObject(elmu__sig);
+  fout->WriteTObject(mumu__sig);
 
-
-  if(theta) file<<std::setprecision(4)<<(1.0/cSig->xsec)*(cSig->nEvents).at(0)<<" ";
-  else file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<" ";
-  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    if((vCBkg.at(i)->nEvents).at(0)==0)    file<<"0.001 ";
-    else file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<" ";
-  }
 
   //get cut class vector for background
-  std::vector<CutClass*> vCutBkg_all  = getCutClassVector(vBkg,vCutString,-1);
+  //std::vector<CutClass*> vCutBkg_all  = getCutClassVector(vBkg,vCutString,-1);
   std::vector<CutClass*> vCutBkg_elel = getCutClassVector(vBkg,vCutString,0);
   std::vector<CutClass*> vCutBkg_elmu = getCutClassVector(vBkg,vCutString,1);
   std::vector<CutClass*> vCutBkg_mumu = getCutClassVector(vBkg,vCutString,2);
 
-  printEvents(outfile,cutSig,vCutBkg, nMu,theta);
+
+  //variables for background yields and stat errors
+  float nFakeRate0=0;  float nFakeRate1=0;  float nFakeRate2=0;
+  float errFakeRate0=0;  float errFakeRate1=0;  float errFakeRate2=0;
+  float nChargeMisID0=0;  float nChargeMisID1=0;  float nChargeMisID2=0;
+  float errChargeMisID0=0;  float errChargeMisID1=0;  float errChargeMisID2=0;
+
+  //need one histogram per process which has it's own unique systematic values
+  float nTTW0;  float nTTW1;  float nTTW2;
+  float errTTW0;  float errTTW1;  float errTTW2;
+
+  float nTTZ0;  float nTTZ1;  float nTTZ2;
+  float errTTZ0;  float errTTZ1;  float errTTZ2;
+
+  float nTTH0;  float nTTH1;  float nTTH2;
+  float errTTH0;  float errTTH1;  float errTTH2;
+
+  float nTTTT0;  float nTTTT1;  float nTTTT2;
+  float errTTTT0;  float errTTTT1;  float errTTTT2;
+
+  float nWZ0;  float nWZ1;  float nWZ2;
+  float errWZ0;  float errWZ1;  float errWZ2;
+
+  float nZZ0;  float nZZ1;  float nZZ2;
+  float errZZ0;  float errZZ1;  float errZZ2;
+
+  float nWpWp0;  float nWpWp1;  float nWpWp2;
+  float errWpWp0;  float errWpWp1;  float errWpWp2;
+
+  float nWWZ0;  float nWWZ1;  float nWWZ2;
+  float errWWZ0;  float errWWZ1;  float errWWZ2;
+
+  float nWZZ0;  float nWZZ1;  float nWZZ2;
+  float errWZZ0;  float errWZZ1;  float errWZZ2;
+
+  float nZZZ0;  float nZZZ1;  float nZZZ2;
+  float errZZZ0;  float errZZZ1;  float errZZZ2;
+
+
+  for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elel.size(); i++){
+    if(vCutBkg_elel.at(i)->samplename=="NonPrompt"){
+      nFakeRate0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errFakeRate0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="ChargeMisID"){
+      nChargeMisID0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errChargeMisID0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="TTW"){
+      nTTW0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errTTW0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="TTZ"){
+      nTTZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errTTZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="TTH"){
+      nTTH0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errTTH0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="TTTT"){
+      nTTTT0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errTTTT0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="WZ"){
+      nWZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errWZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="ZZ"){
+      nZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="WpWp"){
+      nWpWp0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errWpWp0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="WWZ"){
+      nWWZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errWWZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="WZZ"){
+      nWZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errWZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elel.at(i)->samplename=="ZZZ"){
+      nZZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+      errZZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    }
+  }//end loop over elel bkg vector
+
+  for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elmu.size(); i++){
+    if(vCutBkg_elmu.at(i)->samplename=="NonPrompt"){
+      nFakeRate1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errFakeRate1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="ChargeMisID"){
+      nChargeMisID1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errChargeMisID1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="TTW"){
+      nTTW1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errTTW1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="TTZ"){
+      nTTZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errTTZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="TTH"){
+      nTTH1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errTTH1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="TTTT"){
+      nTTTT1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errTTTT1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="WZ"){
+      nWZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errWZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="ZZ"){
+      nZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="WpWp"){
+      nWpWp1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errWpWp1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="WWZ"){
+      nWWZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errWWZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="WZZ"){
+      nWZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errWZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_elmu.at(i)->samplename=="ZZZ"){
+      nZZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+      errZZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    }
+  }//end loop over elmu bkg vector
+
+  for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_mumu.size(); i++){
+    if(vCutBkg_mumu.at(i)->samplename=="NonPrompt"){
+      nFakeRate2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errFakeRate2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="ChargeMisID"){
+      nChargeMisID2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errChargeMisID2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="TTW"){
+      nTTW2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errTTW2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="TTZ"){
+      nTTZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errTTZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="TTH"){
+      nTTH2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errTTH2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="TTTT"){
+      nTTTT2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errTTTT2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="WZ"){
+      nWZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errWZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="ZZ"){
+      nZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="WpWp"){
+      nWpWp2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errWpWp2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="WWZ"){
+      nWWZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errWWZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="WZZ"){
+      nWZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errWZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+    if(vCutBkg_mumu.at(i)->samplename=="ZZZ"){
+      nZZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+      errZZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    }
+  }//end loop over mumu bkg vector
+
+  /* for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elmu.size(); i++){
+    if(vCutBkg.at(i)->samplename=="NonPrompt"){
+      nFakeRate1 = vCutBkg.at(i)->nEvents.at(0);
+      errFakeRate1 = vCutBkg.at(i)->vErr.at(0);
+    }
+    else if(vCutBkg.at(i)->samplename=="ChargeMisID"){
+      nChargeMisID1 = vCutBkg.at(i)->nEvents.at(0);
+      errChargeMisID1 = vCutBkg.at(i)->vErr.at(0);
+    }
+
+    else{
+      nPSSMC1 = nPSSMC1 + vCutBkg.at(i)->nEvents.at(0);
+      errPSSMC1 = errPSSMC1 + pow(vCutBkg.at(i)->vErr.at(0),2); //add in quadrature, take square root later
+    }
+  }//end loop over elel bkg vector
+
+  //take square root for error on PSSMC
+  errPSSMC1 = pow(errPSSMC1,0.5);
+
+  for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_mumu.size(); i++){
+    if(vCutBkg.at(i)->samplename=="NonPrompt"){
+      nFakeRate2 = vCutBkg.at(i)->nEvents.at(0);
+      errFakeRate2 = vCutBkg.at(i)->vErr.at(0);
+    }
+    else if(vCutBkg.at(i)->samplename=="ChargeMisID"){
+      nChargeMisID2 = vCutBkg.at(i)->nEvents.at(0);
+      errChargeMisID2 = vCutBkg.at(i)->vErr.at(0);
+    }
+
+    else{
+      nPSSMC2 = nPSSMC2 + vCutBkg.at(i)->nEvents.at(0);
+      errPSSMC2 = errPSSMC2 + pow(vCutBkg.at(i)->vErr.at(0),2); //add in quadrature, take square root later
+    }
+  }//end loop over elel bkg vector
+
+  //take square root for error on PSSMC
+  errPSSMC2 = pow(errPSSMC2,0.5);
+  */
+
+  //now histograms for the different background processes
+  //TH1F* All__FakeRate = new TH1F("All__FakeRate","",3,0,3);
+  TH1F* elel__FakeRate = new TH1F("elel__FakeRate","",1,0,1);
+  TH1F* elmu__FakeRate = new TH1F("elmu__FakeRate","",1,0,1);
+  TH1F* mumu__FakeRate = new TH1F("mumu__FakeRate","",1,0,1);
+  elel__FakeRate->SetBinContent(1,nFakeRate0);  elel__FakeRate->SetBinError(1,errFakeRate0);
+  elmu__FakeRate->SetBinContent(1,nFakeRate1);  elmu__FakeRate->SetBinError(1,errFakeRate1);
+  mumu__FakeRate->SetBinContent(1,nFakeRate2);  mumu__FakeRate->SetBinError(1,errFakeRate2);
+
+  //TH1F* All__ChargeMisID = new TH1F("All__ChargeMisID","",3,0,3);
+  TH1F* elel__ChargeMisID = new TH1F("elel__ChargeMisID","",1,0,1);
+  TH1F* elmu__ChargeMisID = new TH1F("elmu__ChargeMisID","",1,0,1);
+  TH1F* mumu__ChargeMisID = new TH1F("mumu__ChargeMisID","",1,0,1);
+  elel__ChargeMisID->SetBinContent(1,nChargeMisID0);  elel__ChargeMisID->SetBinError(1,errChargeMisID0);
+  elmu__ChargeMisID->SetBinContent(1,nChargeMisID1);  elmu__ChargeMisID->SetBinError(1,errChargeMisID1);
+  mumu__ChargeMisID->SetBinContent(1,nChargeMisID2);  mumu__ChargeMisID->SetBinError(1,errChargeMisID2);
+
+
+  //TH1F* All__TTW = new TH1F("All__TTW","",3,0,3);
+  TH1F* elel__TTW = new TH1F("elel__TTW","",1,0,1);
+  TH1F* elmu__TTW = new TH1F("elmu__TTW","",1,0,1);
+  TH1F* mumu__TTW = new TH1F("mumu__TTW","",1,0,1);
+  elel__TTW->SetBinContent(1,nTTW0);  elel__TTW->SetBinError(1,errTTW0);
+  elmu__TTW->SetBinContent(1,nTTW1);  elmu__TTW->SetBinError(1,errTTW1);
+  mumu__TTW->SetBinContent(1,nTTW2);  mumu__TTW->SetBinError(1,errTTW2);
+
+  //TH1F* All__TTZ = new TH1F("All__TTZ","",3,0,3);
+  TH1F* elel__TTZ = new TH1F("elel__TTZ","",1,0,1);
+  TH1F* elmu__TTZ = new TH1F("elmu__TTZ","",1,0,1);
+  TH1F* mumu__TTZ = new TH1F("mumu__TTZ","",1,0,1);
+  elel__TTZ->SetBinContent(1,nTTZ0);  elel__TTZ->SetBinError(1,errTTZ0);
+  elmu__TTZ->SetBinContent(1,nTTZ1);  elmu__TTZ->SetBinError(1,errTTZ1);
+  mumu__TTZ->SetBinContent(1,nTTZ2);  mumu__TTZ->SetBinError(1,errTTZ2);
+
+  //TH1F* All__TTH = new TH1F("All__TTH","",3,0,3);
+  TH1F* elel__TTH = new TH1F("elel__TTH","",1,0,1);
+  TH1F* elmu__TTH = new TH1F("elmu__TTH","",1,0,1);
+  TH1F* mumu__TTH = new TH1F("mumu__TTH","",1,0,1);
+  elel__TTH->SetBinContent(1,nTTH0);  elel__TTH->SetBinError(1,errTTH0);
+  elmu__TTH->SetBinContent(1,nTTH1);  elmu__TTH->SetBinError(1,errTTH1);
+  mumu__TTH->SetBinContent(1,nTTH2);  mumu__TTH->SetBinError(1,errTTH2);
+
+  //TH1F* All__TTTT = new TH1F("All__TTTT","",3,0,3);
+  TH1F* elel__TTTT = new TH1F("elel__TTTT","",1,0,1);
+  TH1F* elmu__TTTT = new TH1F("elmu__TTTT","",1,0,1);
+  TH1F* mumu__TTTT = new TH1F("mumu__TTTT","",1,0,1);
+  elel__TTTT->SetBinContent(1,nTTTT0);  elel__TTTT->SetBinError(1,errTTTT0);
+  elmu__TTTT->SetBinContent(1,nTTTT1);  elmu__TTTT->SetBinError(1,errTTTT1);
+  mumu__TTTT->SetBinContent(1,nTTTT2);  mumu__TTTT->SetBinError(1,errTTTT2);
+
+  //TH1F* All__WZ = new TH1F("All__WZ","",3,0,3);
+  TH1F* elel__WZ = new TH1F("elel__WZ","",1,0,1);
+  TH1F* elmu__WZ = new TH1F("elmu__WZ","",1,0,1);
+  TH1F* mumu__WZ = new TH1F("mumu__WZ","",1,0,1);
+  elel__WZ->SetBinContent(1,nWZ0);  elel__WZ->SetBinError(1,errWZ0);
+  elmu__WZ->SetBinContent(1,nWZ1);  elmu__WZ->SetBinError(1,errWZ1);
+  mumu__WZ->SetBinContent(1,nWZ2);  mumu__WZ->SetBinError(1,errWZ2);
+
+  //TH1F* All__ZZ = new TH1F("All__ZZ","",3,0,3);
+  TH1F* elel__ZZ = new TH1F("elel__ZZ","",1,0,1);
+  TH1F* elmu__ZZ = new TH1F("elmu__ZZ","",1,0,1);
+  TH1F* mumu__ZZ = new TH1F("mumu__ZZ","",1,0,1);
+  elel__ZZ->SetBinContent(1,nZZ0);  elel__ZZ->SetBinError(1,errZZ0);
+  elmu__ZZ->SetBinContent(1,nZZ1);  elmu__ZZ->SetBinError(1,errZZ1);
+  mumu__ZZ->SetBinContent(1,nZZ2);  mumu__ZZ->SetBinError(1,errZZ2);
+
+  //TH1F* All__WpWp = new TH1F("All__WpWp","",3,0,3);
+  TH1F* elel__WpWp = new TH1F("elel__WpWp","",1,0,1);
+  TH1F* elmu__WpWp = new TH1F("elmu__WpWp","",1,0,1);
+  TH1F* mumu__WpWp = new TH1F("mumu__WpWp","",1,0,1);
+  elel__WpWp->SetBinContent(1,nWpWp0);  elel__WpWp->SetBinError(1,errWpWp0);
+  elmu__WpWp->SetBinContent(1,nWpWp1);  elmu__WpWp->SetBinError(1,errWpWp1);
+  mumu__WpWp->SetBinContent(1,nWpWp2);  mumu__WpWp->SetBinError(1,errWpWp2);
+
+
+  //TH1F* All__WZ = new TH1F("All__WZ","",3,0,3);
+  TH1F* elel__WWZ = new TH1F("elel__WWZ","",1,0,1);
+  TH1F* elmu__WWZ = new TH1F("elmu__WWZ","",1,0,1);
+  TH1F* mumu__WWZ = new TH1F("mumu__WWZ","",1,0,1);
+  elel__WWZ->SetBinContent(1,nWWZ0);  elel__WWZ->SetBinError(1,errWWZ0);
+  elmu__WWZ->SetBinContent(1,nWWZ1);  elmu__WWZ->SetBinError(1,errWWZ1);
+  mumu__WWZ->SetBinContent(1,nWWZ2);  mumu__WWZ->SetBinError(1,errWWZ2);
+
+  //TH1F* All__WZZ = new TH1F("All__WZZ","",3,0,3);
+  TH1F* elel__WZZ = new TH1F("elel__WZZ","",1,0,1);
+  TH1F* elmu__WZZ = new TH1F("elmu__WZZ","",1,0,1);
+  TH1F* mumu__WZZ = new TH1F("mumu__WZZ","",1,0,1);
+  elel__WZZ->SetBinContent(1,nWZZ0);  elel__WZZ->SetBinError(1,errWZZ0);
+  elmu__WZZ->SetBinContent(1,nWZZ1);  elmu__WZZ->SetBinError(1,errWZZ1);
+  mumu__WZZ->SetBinContent(1,nWZZ2);  mumu__WZZ->SetBinError(1,errWZZ2);
+
+  //TH1F* All__ZZZ = new TH1F("All__ZZZ","",3,0,3);
+  TH1F* elel__ZZZ = new TH1F("elel__ZZZ","",1,0,1);
+  TH1F* elmu__ZZZ = new TH1F("elmu__ZZZ","",1,0,1);
+  TH1F* mumu__ZZZ = new TH1F("mumu__ZZZ","",1,0,1);
+  elel__ZZZ->SetBinContent(1,nZZZ0);  elel__ZZZ->SetBinError(1,errZZZ0);
+  elmu__ZZZ->SetBinContent(1,nZZZ1);  elmu__ZZZ->SetBinError(1,errZZZ1);
+  mumu__ZZZ->SetBinContent(1,nZZZ2);  mumu__ZZZ->SetBinError(1,errZZZ2);
+
+
+
+  fout->WriteTObject(elel__FakeRate);
+  fout->WriteTObject(elmu__FakeRate);
+  fout->WriteTObject(mumu__FakeRate);
+  fout->WriteTObject(elel__ChargeMisID);
+  fout->WriteTObject(elmu__ChargeMisID);
+  fout->WriteTObject(mumu__ChargeMisID);
+
+  fout->WriteTObject(elel__TTW);
+  fout->WriteTObject(elmu__TTW);
+  fout->WriteTObject(mumu__TTW);
+
+  fout->WriteTObject(elel__TTZ);
+  fout->WriteTObject(elmu__TTZ);
+  fout->WriteTObject(mumu__TTZ);
+
+  fout->WriteTObject(elel__TTH);
+  fout->WriteTObject(elmu__TTH);
+  fout->WriteTObject(mumu__TTH);
+
+  fout->WriteTObject(elel__TTTT);
+  fout->WriteTObject(elmu__TTTT);
+  fout->WriteTObject(mumu__TTTT);
+
+  fout->WriteTObject(elel__WZ);
+  fout->WriteTObject(elmu__WZ);
+  fout->WriteTObject(mumu__WZ);
+
+  fout->WriteTObject(elel__ZZ);
+  fout->WriteTObject(elmu__ZZ);
+  fout->WriteTObject(mumu__ZZ);
+
+  fout->WriteTObject(elel__WpWp);
+  fout->WriteTObject(elmu__WpWp);
+  fout->WriteTObject(mumu__WpWp);
+
+  fout->WriteTObject(elel__WWZ);
+  fout->WriteTObject(elmu__WWZ);
+  fout->WriteTObject(mumu__WWZ);
+
+  fout->WriteTObject(elel__WZZ);
+  fout->WriteTObject(elmu__WZZ);
+  fout->WriteTObject(mumu__WZZ);
+
+  fout->WriteTObject(elel__ZZZ);
+  fout->WriteTObject(elmu__ZZZ);
+  fout->WriteTObject(mumu__ZZZ);
+
 
   
-
-  //write systematics - ALL BUT LEPTON ID/ISO/TRIG DONE IN THETA NOW
-  outfile<<"\n\n"<<"------------\n";
-  std::stringstream fakerate;
-  fakerate<<"- - - - - - - - - - - 1.50 -";
-  if(nMu>=0){
-    outfile<<"FakeRate lnN "<<fakerate.str()<<"\n";
-  }
-  else{
-    outfile<<"FakeRate lnN "<<fakerate.str()<<" "<<fakerate.str()<<" "<<fakerate.str()<<"\n";
-  }
-
-  std::stringstream chargemisid;
-  chargemisid<<"- - - - - - - - - - - - 1.30";
-  if(nMu>=0){
-    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<"\n";
-  }
-  else{
-    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
-  }
-
-  std::stringstream qcdScale;
-  qcdScale<<"- 1.12 1.20 1.14 1.50 1.12 1.12 1.50 1.50 1.50 1.50 - -";
-  if(nMu>=0){
-    outfile<<"MCNorm lnN "<<qcdScale.str()<<"\n";
-  }
-  else{
-    outfile<<"MCNorm lnN "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
-  }
-  std::stringstream jes;
-  jes<<"1.03 1.04 1.03 1.08 1.06 1.05 1.04 1.04 1.04 1.06 1.06 - -";
-  if(nMu>=0){
-    outfile<<"JES lnN "<<jes.str()<<"\n";
-  }
-  else{
-    outfile<<"JES lnN "<<jes.str()<<" "<<jes.str()<<" "<<jes.str()<<"\n";
-  }
-
-  std::stringstream jer;
-  jer<<"1.01 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  if(nMu>=0){
-    outfile<<"JER lnN "<<jer.str()<<"\n";
-  }
-  else{
-    outfile<<"JER lnN "<<jer.str()<<" "<<jer.str()<<" "<<jer.str()<<"\n";
-  }
-
-  std::stringstream pileup;
-  pileup<<"1.01 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 - -";
-  if(nMu>=0){
-    outfile<<"Pileup lnN "<<pileup.str()<<"\n";
-  }
-  else{
-    outfile<<"Pileup lnN "<<pileup.str()<<" "<<pileup.str()<<" "<<pileup.str()<<"\n";
-  }
-
-  std::stringstream lumisys;
-  lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
-  if(nMu>=0){
-    outfile<<"LUMISYS lnN "<<lumisys.str()<<"\n";
-  }
-  else{
-    outfile<<"LUMISYS lnN "<<lumisys.str()<<" "<<lumisys.str()<<" "<<lumisys.str()<<"\n";
-  }
-  
-  std::stringstream lepID_el;
-  if(nMu==0) {lepID_el<<"LepIDEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepID_el.str();}
-  if(nMu==1) {lepID_el<<"LepIDEl lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepID_el.str();}
-  if(nMu==-1){lepID_el<<"LepIDEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - - - - - - - - - - - - - - \n";outfile<<lepID_el.str();}
-
-  std::stringstream lepID_mu;
-  if(nMu==2) {lepID_mu<<"LepIDMu lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepID_mu.str();}
-  if(nMu==1) {lepID_mu<<"LepIDMu lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepID_mu.str();}
-  if(nMu==-1){lepID_mu<<"LepIDMu lnN - - - - - - - - - - - - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - \n";outfile<<lepID_mu.str();}
-
-  std::stringstream lepISO_el;
-  if(nMu==0) {lepISO_el<<"LepISOEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepISO_el.str();}
-  if(nMu==1) {lepISO_el<<"LepISOEl lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepISO_el.str();}
-  if(nMu==-1){lepISO_el<<"LepISOEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - - - - - - - - - - - - - - \n";outfile<<lepISO_el.str();}
-
-  std::stringstream lepISO_mu;
-  if(nMu==2) {lepISO_mu<<"LepISOMu lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepISO_mu.str();}
-  if(nMu==1) {lepISO_mu<<"LepISOMu lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepISO_mu.str();}
-  if(nMu==-1){lepISO_mu<<"LepISOMu lnN - - - - - - - - - - - - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - \n";outfile<<lepISO_mu.str();}
-
- std::stringstream lepTrig_el;
-  if(nMu==0) {lepTrig_el<<"LepTrigEl lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_el.str();}
-  if(nMu==-1){lepTrig_el<<"LepTrigEl lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n";outfile<<lepTrig_el.str();}
-
-  std::stringstream lepTrig_emu;
-  if(nMu==1) {lepTrig_emu<<"LepTrigEmu lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_emu.str();}
-  if(nMu==-1){lepTrig_emu<<"LepTrigEmu lnN - - - - - - - - - - - - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - - - - - - - - - - - - - - \n";outfile<<lepTrig_emu.str();}
-
-  std::stringstream lepTrig_mu;
-  if(nMu==2) {lepTrig_mu<<"LepTrigMu lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_mu.str();}
-  if(nMu==-1){lepTrig_mu<<"LepTrigMu lnN - - - - - - - - - - - - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - \n";outfile<<lepTrig_mu.str();}
-
-
-
-  // std::stringstream lepISO;
-  //lepISO<< "1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  /*if(nMu==0) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else if(nMu==1) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else if (nMu==2)lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";*/
-
-  /*  if(nMu>=0) outfile<<"LepISO lnN "<<lepISO.str()<<"\n";
-  else  outfile<<"LepISO lnN "<<lepISO.str()<<" "<<lepISO.str()<<" "<<lepISO.str()<<"\n";
+  //fout->Write();
+  fout->Close();
   
 
-  std::stringstream Trig;
-  Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
- /*if(nMu==0) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
-  else if(nMu==1) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
-  else if (nMu==2)Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
-  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
 
-  if(nMu>=0) outfile<<"Trig lnN "<<Trig.str()<<"\n";
-  else  outfile<<"Trig lnN "<<Trig.str()<<" "<<Trig.str()<<" "<<Trig.str()<<"\n";*/
   return 0;
 }
 
-std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<CutClass*> vCBkg,int nmu, std::string channel){
-  std::string label;
-  if(nmu==-1) label = "All";
-  else if(nmu==0) label = "ee";
-  else if(nmu==1) label = "emu";
-  else if(nmu==2) label = "mumu";
-  for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
-    file<<label<<" ";
-  }
-
-  return file;
-}
-
-std::ofstream& printProcessNames(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
-
-  file<<"sig ";
-  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    if (vCBkg.at(i)->samplename=="WW-mpi") file<<"WWmpi ";
-    else file<<(vCBkg.at(i)->samplename)<<" ";
-  }
-  return file;
-
-}
-
-std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
-
-  file<<"0"<<" ";
-  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    int j=i+1;
-    file<<j<<" ";
-  }
-  return file;
-
-}
-
-std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu, bool theta){
-  //set precision
-  int old_prec = std::cout.precision();
-  //now write process numbers, if using theta scale signal yield to 1pb xsec:
-  //std::cout<<"sample: "<<cSig->samplename<<" and events: "<<cSig->nEvents.at(0)<<" and xsec: "<<cSig->xsec<<std::endl;
-  if(theta) file<<std::setprecision(4)<<(1.0/cSig->xsec)*(cSig->nEvents).at(0)<<" ";
-  else file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<" ";
-  for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    if((vCBkg.at(i)->nEvents).at(0)==0)    file<<"0.001 ";
-    else file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<" ";
-  }
-  std::cout<<std::setprecision(old_prec);
-  return file;
-}
