@@ -698,7 +698,7 @@ int main(int argc, char* argv[]){
 	  if(ID==1007 || (outname.find("X53")!=std::string::npos && ID==7) )hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight);
 	  if(ID==1009 || (outname.find("X53")!=std::string::npos && ID==9) )hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight);
 	}
-	if(!(ID>2000 && i<2101)) continue;
+	if(!( (ID>2000 && i<2101 && outname.find("X53")==std::string::npos ) || (outname.find("X53")!=std::string::npos && ( ID> 111 && ID <212)) ) ) continue;
 	hist_pdfHT->Fill(pdfweights.at(i),st);
       }
     }
