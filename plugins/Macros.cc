@@ -63,7 +63,7 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(cleanak4jet2phi);
 
 
-  Variable* cleanak4ht = new Variable("cleanAK4HT",20,0,3000,"H_{T} (GeV)","N_{Events}");
+  Variable* cleanak4ht = new Variable("cleanAK4HT",20,0,3000,"H_{T}^{lep} (GeV)","N_{Events}");
   vVar.push_back(cleanak4ht);
   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(ncleanak4jets);
@@ -616,11 +616,11 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
-  std::string vhfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/VH_Mu"+muID+"_El"+elID+".root";
+  /*std::string vhfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/VH_Mu"+muID+"_El"+elID+".root";
   TFile* vhjfile = new TFile(vhfilename.c_str());
   Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
   //std::cout<<"weight for VH is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(vhjSample);
+  vSample.push_back(vhjSample);*/
 
   std::string wpwpfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WpWp_Mu"+muID+"_El"+elID+".root";
   TFile* wpwpfile = new TFile(wpwpfilename.c_str());
@@ -628,11 +628,11 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wpwpSample);
 
-  std::string wwmpifilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WW-mpi_Mu"+muID+"_El"+elID+".root";
+  /*std::string wwmpifilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WW-mpi_Mu"+muID+"_El"+elID+".root";
   TFile* wwmpifile = new TFile(wwmpifilename.c_str());
   Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(wwmpiSample);
+  vSample.push_back(wwmpiSample);*/
 
 
   std::string wwzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WWZ_Mu"+muID+"_El"+elID+".root";
@@ -654,7 +654,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   vSample.push_back(zzzSample);
 
 
-  //********** NonPrompt ***************
+  //********** Nonprompt ***************
   /*std::string npTTfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
   TFile* npttfile = new TFile(nptTfilename.c_str());
   Sample* npttSample = new Sample(vBkgNames.at(-1),npttfile,vWeights.at(-1),vXsec.at(01),cut,kBlue);
@@ -668,7 +668,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   //********ChargeMisID**********
   std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6);
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 
@@ -702,7 +702,7 @@ std::vector<std::string> getCutString(){
   //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
   //vString.push_back(jet2pt);
   //HT cut
-  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)";
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 900)";
   vString.push_back(htcut);
   return vString;
 }
@@ -711,12 +711,13 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
   bool scale = scale_;
   TTree* t = s->tree;
   TH1F* hdummy = new TH1F("hdummy","hdummy",1,0,10000);
+  hdummy->Sumw2();
   //make cut string based on channel, should always be outside of parantheses for other cuts so a simply && should work also apply chargeMisIDWeight
   std::stringstream channel;
   if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
   else  channel<<"";
 
-  std::string cutstring= " trigSF * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  std::string cutstring= " PUWeight* trigSF * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
