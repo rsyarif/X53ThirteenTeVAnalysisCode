@@ -128,19 +128,29 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
   tablestring<<tableHeader(vCS, vCC.at(0), caption); tablestring<<"\\hline \n";
   for(size_t i=0; i < vCC.size(); i++){
     float sys=0;
-    if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.4, 2);
-    else if(vCC.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
-    else if(vCC.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2);
-    else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2);
-    else if(vCC.at(i)->samplename.find("X53X53")!=std::string::npos) sys = sys;
+    if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
+    else if(vCC.at(i)->samplename=="ChargeMisID") sys= pow(0.3, 2);
+    else if(vCC.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2) + pow(0.06,2) + pow(0.02,2); //mc,jes,jer,pu
+    else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.12, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="TTH") sys= pow(0.14, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="ZZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2)+ pow(0.01,2) + pow(0.01,2); //jes, jer, pu
     else sys = pow(0.5,2);
     if(! (vCC.at(i)->samplename=="NonPrompt" || vCC.at(i)->samplename=="ChargeMisID")){
-      sys = sys + 2*pow(0.02,2) + pow(0.01,2) + pow(.12,2); //id iso and trigger  plus lumi    
+      sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.12,2); //id iso and trigger  plus lumi  plus pileup plus dummy jer
     }
     tablestring<<vCC.at(i)->samplename;
     for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
       float errsys = sys*pow((vCC.at(i)->nEvents).at(j),2);
+      float staterr = vCC.at(i)->vErr.at(j);
       float err = pow((vCC.at(i)->vErr).at(j),2) + errsys;
+      if(vCC.at(i)->samplename=="NonPrompt" && nmu==0)std::cout<<vCC.at(i)->samplename<<" sys: "<<sys<<" systematic errors"<<pow(errsys,0.5)<<" stat errors: "<<staterr<<" total errors "<<err<<" nEvents: "<<vCC.at(i)->nEvents.at(j)<<std::endl;
       err = pow(err,0.5);
       tablestring<<" & "<<(vCC.at(i)->nEvents).at(j)<<" $\\pm$ "<<err;
     }
@@ -322,16 +332,25 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
     //get background events
     for(size_t i=0; i < vCutBkg.size(); i++){
       float sys=0;
+
       if(vCutBkg.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
-      else if(vCutBkg.at(i)->samplename=="ChargeMisID") sys= pow(0.2, 2);
-      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2) + pow(0.12,2) + pow(0.05,2);
-      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.13, 2) + pow(0.03,2) + pow(0.12,2) + pow(0.05,2);
-      else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = sys;
-      else sys = pow(0.5,2) + pow(0.12,2) + pow(0.05,2);
+      else if(vCutBkg.at(i)->samplename=="ChargeMisID") sys= pow(0.3, 2);
+      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2); //mc,jes,pu,jer
+      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.12, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="TTH") sys= pow(0.14, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="ZZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2) + pow(0.01,2) + pow(0.01,2); //jes, jer, pu
+      else sys = pow(0.5,2);
       if(! (vCutBkg.at(i)->samplename=="NonPrompt" || vCutBkg.at(i)->samplename=="ChargeMisID")){
-	sys = sys + 2*pow(0.02,2) + pow(0.01,2) + pow(.12,2); //id iso and trigger  plus lumi    
+	sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.12,2) + pow(0.05,2) + pow(0.05,2); //id iso and trigger  plus lumi  plus pileup plus dummy jer
       }
-      
+      //std::cout<<"sample: "<<vCutBkg.at(i)->samplename<<" and total systematic: "<<pow(sys,0.5)<<std::endl;
 
       for(size_t j =0; j < (vCutBkg.at(i)->nEvents).size(); j++){
 	if(j < (vCutBkg.at(i)->nEvents).size() -1) continue; //only get the last yields
@@ -371,7 +390,7 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
 
 
     //now write table line
-    tablestring<<"$"<<events_mctot<<"\\pm"<<errors_mctot<<"$&$"<<events_nptot<<"\\pm"<<errors_nptot<<"$&$"<<events_cmtot<<"\\pm"<<errors_cmtot<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
   }//end loop over channels
 
   tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";
