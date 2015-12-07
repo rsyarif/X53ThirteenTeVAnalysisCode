@@ -44,7 +44,7 @@ void makePlots(std::string elID, std::string muID){
   std::vector<Sample*> vSigSamples = getInclusiveSigSampleVecForTable("sZVeto", lumi, elID, muID);
   Sample* dataSample = getDataSample("sZVeto",elID,muID);
 
-  for(int j=0; j <5; j++){
+  for(int j=2; j <4; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
       DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j);
@@ -113,9 +113,13 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   TH1F* h_cmid = new TH1F("h_cmid",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_ttz = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_ttw = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_tth = new TH1F("h_tth",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_tttt = new TH1F("h_tttt",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_wz = new TH1F("h_wz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_zz = new TH1F("h_zz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_wwz = new TH1F("h_wwz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_wzz = new TH1F("h_wzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* h_zzz = new TH1F("h_zzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   //now go through pain of getting non-prompt background error correct;
   TH1F* h_t00 = new TH1F("h_t00",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -209,9 +213,13 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     }
     if(s->name=="TTZ") h_ttz->Add(h);
     if(s->name=="TTW") h_ttw->Add(h);
+    if(s->name=="TTH") h_tth->Add(h);
+    if(s->name=="TTTT") h_tttt->Add(h);
     if(s->name=="WZ") h_wz->Add(h);
     if(s->name=="ZZ") h_zz->Add(h);
     if(s->name=="WWZ") h_wwz->Add(h);
+    if(s->name=="WZZ") h_wzz->Add(h);
+    if(s->name=="ZZZ") h_zzz->Add(h);
     if(s->name=="WpWp") h_wpwp->Add(h);
    
     //add overflow to last bin
@@ -239,47 +247,89 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow( 0.5*h_np->GetBinContent(ibin),2);//sys
     //chargemisID
     etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
-    etemp = etemp + pow(0.2*h_cmid->GetBinContent(ibin),2);//sys
+    etemp = etemp + pow(0.3*h_cmid->GetBinContent(ibin),2);//sys
     //TTZ
     etemp = etemp + pow(h_ttz->GetBinError(ibin),2);//stat
-    etemp = etemp + pow(0.13*h_ttz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_ttz->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_ttz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.06*h_ttz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_ttz->GetBinContent(ibin),2); //id plus iso
     //TTW
-    etemp = etemp + pow(h_ttw->GetBinError(ibin),2);//stat
-    etemp = etemp + pow(0.18*h_ttw->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.20*h_ttw->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_ttw->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_ttw->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_ttw->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_ttw->GetBinContent(ibin),2); //pileup
-
+    etemp = etemp + pow(0.06*h_ttw->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_ttw->GetBinContent(ibin),2); //id plus iso
+    //TTH
+    etemp = etemp + pow(0.14*h_tth->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.08*h_tth->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_tth->GetBinContent(ibin),2); //JER
+    etemp = etemp + pow(0.12*h_tth->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.06*h_tth->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_tth->GetBinContent(ibin),2); //id plus iso
+    //TTTT
+    etemp = etemp + pow(0.5*h_tttt->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JER
+    etemp = etemp + pow(0.12*h_tttt->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_tttt->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_tttt->GetBinContent(ibin),2); //id plus iso
     //WZ
-    etemp = etemp + pow(h_wz->GetBinError(ibin),2);//stat
-    etemp = etemp + pow(0.5*h_wz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.12*h_wz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.05*h_wz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_wz->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_wz->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_wz->GetBinContent(ibin),2); //pileup
-
+    etemp = etemp + pow(0.06*h_wz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_wz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_wz->GetBinContent(ibin),2); //id plus iso
     //ZZ
-    etemp = etemp + pow(h_zz->GetBinError(ibin),2);//stat
-    etemp = etemp + pow(0.50*h_zz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.12*h_zz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_zz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_zz->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_zz->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_zz->GetBinContent(ibin),2); //pileup
-
-    //WpWp
-    etemp = etemp + pow(h_wpwp->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.06*h_zz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_zz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_zz->GetBinContent(ibin),2); //id plus iso
+    //WPWP
     etemp = etemp + pow(0.50*h_wpwp->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_wpwp->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_wpwp->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_wpwp->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_wpwp->GetBinContent(ibin),2); //pileup
-
-    //TTW
-    etemp = etemp + pow(h_wwz->GetBinError(ibin),2);//stat
+    etemp = etemp + pow(0.06*h_wpwp->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_wpwp->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_wpwp->GetBinContent(ibin),2); //id plus iso
+    //WWZ
     etemp = etemp + pow(0.50*h_wwz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_wwz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_wwz->GetBinContent(ibin),2); //JER
     etemp = etemp + pow(0.12*h_wwz->GetBinContent(ibin),2); //lumi
-    etemp = etemp + pow(0.05*h_wwz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.06*h_wwz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_wwz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_wwz->GetBinContent(ibin),2); //id plus iso
+    //WZZ
+    etemp = etemp + pow(0.50*h_wzz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_wzz->GetBinContent(ibin),2); //JER
+    etemp = etemp + pow(0.12*h_wzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_wzz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_wzz->GetBinContent(ibin),2); //id plus iso
+    //ZZZ
+    etemp = etemp + pow(0.50*h_zzz->GetBinContent(ibin),2); //MC
+    etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //JES
+    etemp = etemp + pow(0.02*h_zzz->GetBinContent(ibin),2); //JER
+    etemp = etemp + pow(0.12*h_zzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //pileup
+    etemp = etemp + pow(0.03*h_zzz->GetBinContent(ibin),2); //trigger
+    etemp = etemp + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso
+
 
     etemp = pow(etemp,0.5);
     h_err->SetBinError(ibin,etemp);
@@ -310,7 +360,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     for(unsigned int jb=1; jb<=h_err->GetNbinsX(); jb++){
       float totbkg = h_np->GetBinContent(jb) + h_cmid->GetBinContent(jb) + h_ttw->GetBinContent(jb) + h_ttz->GetBinContent(jb) + h_wz->GetBinContent(jb) + h_wpwp->GetBinContent(jb) + h_zz->GetBinContent(jb)+h_wwz->GetBinContent(jb);
       float stacktot = ( (TH1F*)(tStack->GetStack()->Last()))->GetBinContent(jb);
-      std::cout<<"h_err bin "<<jb<<": "<<h_err->GetBinContent(jb)<<" and error: "<<h_err->GetBinError(jb)<<" nonprompt: "<<h_np->GetBinContent(jb)<<" sum of backgrounds: "<<totbkg<<" tstack content: "<<stacktot<<std::endl;
+      //std::cout<<"h_err bin "<<jb<<": "<<h_err->GetBinContent(jb)<<" and error: "<<h_err->GetBinError(jb)<<" nonprompt: "<<h_np->GetBinContent(jb)<<" sum of backgrounds: "<<totbkg<<" tstack content: "<<stacktot<<std::endl;
     }
   }
   //draw signal:
