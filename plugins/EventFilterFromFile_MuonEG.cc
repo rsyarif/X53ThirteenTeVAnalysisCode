@@ -28,6 +28,11 @@ bool EventFilterFromFile_MuonEG(int r, int l, int e){
     }
     //std::cout<<"checking run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
     //std::cout<<"current run: "<<r<<" lumi: "<<l<<" event: "<<e<<std::endl;
+
+    //check if we have already passed it in terms of run number, which means it is a good event and we can stop checking
+    if(run>r){ badEvent=false; break;}
+
+
     if(run==r && lumi==l && event==e){
       badEvent=true;
       break;

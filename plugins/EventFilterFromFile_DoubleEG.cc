@@ -32,6 +32,10 @@ bool EventFilterFromFile_DoubleEG(int r, int l, int e){
     //std::cout<<"current run: "<<r<<" lumi: "<<l<<" event: "<<e<<std::endl;
 
     //    std::cout<<"run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
+
+    //check if we have already passed it in terms of run number, which means it is a good event and we can stop checking
+    if(run>r){ badEvent=false; break;}
+
     if(run==r && lumi==l && event==e){
       badEvent=true;
       break;
