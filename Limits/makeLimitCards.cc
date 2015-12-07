@@ -116,7 +116,7 @@ int main(int argc, char* argv[]){
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
   std::stringstream cutSStream;
-  cutSStream<<" ( (Channel!=-0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
+  cutSStream<<" ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
   //cutSStream<<" ( (Channel!=-0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20)  && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( AK4HT > "<<HTcut<<")";
   vCutString.push_back(cutSStream.str());
 
@@ -125,10 +125,10 @@ int main(int argc, char* argv[]){
   //write file header:
   if(nMu>=0)  outfile<<"imax 1\n";
   else   outfile<<"imax 3\n";
-  outfile<<"jmax 14\n";
-  outfile<<"kmax 8\n"; //currently have 8 systematics
+  outfile<<"jmax 12\n";
+  outfile<<"kmax 10\n"; //currently have 10 systematics
 
-  //write observed - FOW NOW DUMMY
+  //write observed
   if(nMu>=0){
     CutClass* cutData = makeCutClass(dataSample,vCutString,nMu);
     float nData = (cutData->nEvents).at(0);
@@ -145,7 +145,7 @@ int main(int argc, char* argv[]){
   }
   outfile<<"\n";
   //write bin labels
-  outfile<<"bin \t\t";
+  outfile<<"bin ";
 
   if(nMu>=0){
     //get cut class for signal
@@ -155,15 +155,15 @@ int main(int argc, char* argv[]){
     printLabels(outfile,cutSig,vCutBkg, nMu, channel);
     
     // write names
-    outfile<<"\nprocess \t";
+    outfile<<"\nprocess ";
     printProcessNames(outfile,cutSig,vCutBkg, nMu);
     
     //write indices
-    outfile<<"\nprocess \t";
+    outfile<<"\nprocess ";
     printProcessIndex(outfile,cutSig,vCutBkg, nMu);
     
     // write events
-    outfile<<"\n"<<"rate \t\t";
+    outfile<<"\n"<<"rate ";
     printEvents(outfile,cutSig,vCutBkg, nMu,theta);
   }
   else{
@@ -176,7 +176,7 @@ int main(int argc, char* argv[]){
     }
     
     // write names
-    outfile<<"\nprocess \t";
+    outfile<<"\nprocess ";
     for(int nmu=0; nmu<3;nmu++){
       //get cut class for signal
       CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
@@ -186,7 +186,7 @@ int main(int argc, char* argv[]){
     }
 
     //write indices
-    outfile<<"\nprocess \t";
+    outfile<<"\nprocess ";
     for(int nmu=0; nmu<3;nmu++){
       //get cut class for signal
       CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
@@ -196,7 +196,7 @@ int main(int argc, char* argv[]){
     }
 
     // write events
-    outfile<<"\n"<<"rate \t\t";
+    outfile<<"\n"<<"rate ";
     for(int nmu=0; nmu<3;nmu++){
       //get cut class for signal
       CutClass* cutSig = makeCutClass(sigSample,vCutString,nmu);
@@ -208,10 +208,10 @@ int main(int argc, char* argv[]){
   }
   
 
-  //write systematics
+  //write systematics - ALL BUT LEPTON ID/ISO/TRIG DONE IN THETA NOW
   outfile<<"\n\n"<<"------------\n";
   std::stringstream fakerate;
-  fakerate<<"- - - - - - - - - - - - - 1.50 -";
+  fakerate<<"- - - - - - - - - - - 1.50 -";
   if(nMu>=0){
     outfile<<"FakeRate lnN "<<fakerate.str()<<"\n";
   }
@@ -219,25 +219,25 @@ int main(int argc, char* argv[]){
     outfile<<"FakeRate lnN "<<fakerate.str()<<" "<<fakerate.str()<<" "<<fakerate.str()<<"\n";
   }
 
+  std::stringstream chargemisid;
+  chargemisid<<"- - - - - - - - - - - - 1.30";
+  if(nMu>=0){
+    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<"\n";
+  }
+  else{
+    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
+  }
+
   std::stringstream qcdScale;
-  qcdScale<<"- 1.12 1.20 1.14 1.50 1.50 1.50 1.50 1.50 1.50 1.50 1.50 1.50 - -";
+  qcdScale<<"- 1.12 1.20 1.14 1.50 1.12 1.12 1.50 1.50 1.50 1.50 - -";
   if(nMu>=0){
     outfile<<"MCNorm lnN "<<qcdScale.str()<<"\n";
   }
   else{
     outfile<<"MCNorm lnN "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
   }
-  std::stringstream pileup;
-  pileup<<"1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
-  if(nMu>=0){
-    outfile<<"Pileup lnN "<<pileup.str()<<"\n";
-  }
-  else{
-    outfile<<"Pileup lnN "<<pileup.str()<<" "<<pileup.str()<<" "<<pileup.str()<<"\n";
-  }
-
   std::stringstream jes;
-  jes<<"1.05 1.04 1.03 1.05 1.05 1.05 1.04 1.05 1.04 1.05 1.04 1.05 1.05 - -";
+  jes<<"1.03 1.04 1.03 1.08 1.06 1.05 1.04 1.04 1.04 1.06 1.06 - -";
   if(nMu>=0){
     outfile<<"JES lnN "<<jes.str()<<"\n";
   }
@@ -246,7 +246,7 @@ int main(int argc, char* argv[]){
   }
 
   std::stringstream jer;
-  jer<<"1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 1.05 - -";
+  jer<<"1.01 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
   if(nMu>=0){
     outfile<<"JER lnN "<<jer.str()<<"\n";
   }
@@ -254,56 +254,78 @@ int main(int argc, char* argv[]){
     outfile<<"JER lnN "<<jer.str()<<" "<<jer.str()<<" "<<jer.str()<<"\n";
   }
 
-  std::stringstream chargemisid;
-  chargemisid<<"- - - - - - - - - - - - - - 1.30";
+  std::stringstream pileup;
+  pileup<<"1.01 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 1.06 - -";
   if(nMu>=0){
-    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<"\n";
+    outfile<<"Pileup lnN "<<pileup.str()<<"\n";
   }
   else{
-    outfile<<"ChargeMisID lnN "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
+    outfile<<"Pileup lnN "<<pileup.str()<<" "<<pileup.str()<<" "<<pileup.str()<<"\n";
   }
 
   std::stringstream lumisys;
-  lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
+  lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
   if(nMu>=0){
     outfile<<"LUMISYS lnN "<<lumisys.str()<<"\n";
   }
   else{
     outfile<<"LUMISYS lnN "<<lumisys.str()<<" "<<lumisys.str()<<" "<<lumisys.str()<<"\n";
   }
+  
+  std::stringstream lepID_el;
+  if(nMu==0) {lepID_el<<"LepIDEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepID_el.str();}
+  if(nMu==1) {lepID_el<<"LepIDEl lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepID_el.str();}
+  if(nMu==-1){lepID_el<<"LepIDEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - - - - - - - - - - - - - - \n";outfile<<lepID_el.str();}
 
-  std::stringstream lepID;
-  lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  /*if(nMu==0)lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else if(nMu==1) lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else if (nMu==2)lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
-  else lepID<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";*/
-  if(nMu>=0){
-    outfile<<"LepID lnN "<<lepID.str()<<"\n";
-  }
-  else{
-    outfile<<"LepID lnN "<<lepID.str()<<" "<<lepID.str()<<" "<<lepID.str()<<"\n";
-  }
-  std::stringstream lepISO;
-  lepISO<< "1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02  - -";
+  std::stringstream lepID_mu;
+  if(nMu==2) {lepID_mu<<"LepIDMu lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepID_mu.str();}
+  if(nMu==1) {lepID_mu<<"LepIDMu lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepID_mu.str();}
+  if(nMu==-1){lepID_mu<<"LepIDMu lnN - - - - - - - - - - - - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - \n";outfile<<lepID_mu.str();}
+
+  std::stringstream lepISO_el;
+  if(nMu==0) {lepISO_el<<"LepISOEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepISO_el.str();}
+  if(nMu==1) {lepISO_el<<"LepISOEl lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepISO_el.str();}
+  if(nMu==-1){lepISO_el<<"LepISOEl lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - - - - - - - - - - - - - - \n";outfile<<lepISO_el.str();}
+
+  std::stringstream lepISO_mu;
+  if(nMu==2) {lepISO_mu<<"LepISOMu lnN 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -\n"; outfile<<lepISO_mu.str();}
+  if(nMu==1) {lepISO_mu<<"LepISOMu lnN 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -\n"; outfile<<lepISO_mu.str();}
+  if(nMu==-1){lepISO_mu<<"LepISOMu lnN - - - - - - - - - - - - - 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - - 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - - \n";outfile<<lepISO_mu.str();}
+
+ std::stringstream lepTrig_el;
+  if(nMu==0) {lepTrig_el<<"LepTrigEl lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_el.str();}
+  if(nMu==-1){lepTrig_el<<"LepTrigEl lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n";outfile<<lepTrig_el.str();}
+
+  std::stringstream lepTrig_emu;
+  if(nMu==1) {lepTrig_emu<<"LepTrigEmu lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_emu.str();}
+  if(nMu==-1){lepTrig_emu<<"LepTrigEmu lnN - - - - - - - - - - - - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - - - - - - - - - - - - - - \n";outfile<<lepTrig_emu.str();}
+
+  std::stringstream lepTrig_mu;
+  if(nMu==2) {lepTrig_mu<<"LepTrigMu lnN 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - -\n"; outfile<<lepTrig_mu.str();}
+  if(nMu==-1){lepTrig_mu<<"LepTrigMu lnN - - - - - - - - - - - - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 1.03 - - \n";outfile<<lepTrig_mu.str();}
+
+
+
+  // std::stringstream lepISO;
+  //lepISO<< "1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
   /*if(nMu==0) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
   else if(nMu==1) lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
   else if (nMu==2)lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";
   else lepISO<<"1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -"<<" 1.02 1.02 1.02 1.02 1.02 1.02 1.02 - -";*/
 
-  if(nMu>=0) outfile<<"LepISO lnN "<<lepISO.str()<<"\n";
+  /*  if(nMu>=0) outfile<<"LepISO lnN "<<lepISO.str()<<"\n";
   else  outfile<<"LepISO lnN "<<lepISO.str()<<" "<<lepISO.str()<<" "<<lepISO.str()<<"\n";
   
 
   std::stringstream Trig;
-  Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
+  Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
  /*if(nMu==0) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
   else if(nMu==1) Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
   else if (nMu==2)Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
-  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";*/
+  else Trig<<"1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -"<<" 1.01 1.01 1.01 1.01 1.01 1.01 1.01 - -";
 
   if(nMu>=0) outfile<<"Trig lnN "<<Trig.str()<<"\n";
-  else  outfile<<"Trig lnN "<<Trig.str()<<" "<<Trig.str()<<" "<<Trig.str()<<"\n";
+  else  outfile<<"Trig lnN "<<Trig.str()<<" "<<Trig.str()<<" "<<Trig.str()<<"\n";*/
   return 0;
 }
 
@@ -314,7 +336,7 @@ std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<Cut
   else if(nmu==1) label = "emu";
   else if(nmu==2) label = "mumu";
   for(std::vector<CutClass*>::size_type i =0; i<vCBkg.size()+1;i++){
-    file<<label<<"\t";
+    file<<label<<" ";
   }
 
   return file;
@@ -322,10 +344,10 @@ std::ofstream& printLabels(std::ofstream &file, CutClass* cSig, std:: vector<Cut
 
 std::ofstream& printProcessNames(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
 
-  file<<"sig\t";
+  file<<"sig ";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    if (vCBkg.at(i)->samplename=="WW-mpi") file<<"WWmpi\t";
-    else file<<(vCBkg.at(i)->samplename)<<"\t";
+    if (vCBkg.at(i)->samplename=="WW-mpi") file<<"WWmpi ";
+    else file<<(vCBkg.at(i)->samplename)<<" ";
   }
   return file;
 
@@ -333,10 +355,10 @@ std::ofstream& printProcessNames(std::ofstream &file, CutClass* cSig, std::vecto
 
 std::ofstream& printProcessIndex(std::ofstream &file, CutClass* cSig, std::vector<CutClass*> vCBkg, int nmu){
 
-  file<<"0"<<"\t";
+  file<<"0"<<" ";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
     int j=i+1;
-    file<<j<<"\t";
+    file<<j<<" ";
   }
   return file;
 
@@ -347,11 +369,11 @@ std::ofstream& printEvents(std::ofstream &file, CutClass* cSig, std::vector<CutC
   int old_prec = std::cout.precision();
   //now write process numbers, if using theta scale signal yield to 1pb xsec:
   //std::cout<<"sample: "<<cSig->samplename<<" and events: "<<cSig->nEvents.at(0)<<" and xsec: "<<cSig->xsec<<std::endl;
-  if(theta) file<<std::setprecision(4)<<(1.0/cSig->xsec)*(cSig->nEvents).at(0)<<"\t";
-  else file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<"\t";
+  if(theta) file<<std::setprecision(4)<<(1.0/cSig->xsec)*(cSig->nEvents).at(0)<<" ";
+  else file<<std::setprecision(4)<<(cSig->nEvents).at(0)<<" ";
   for(std::vector<CutClass*>::size_type i =0; i< vCBkg.size(); i++){
-    if((vCBkg.at(i)->nEvents).at(0)==0)    file<<"0.001\t";
-    else file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<"\t";
+    if((vCBkg.at(i)->nEvents).at(0)==0)    file<<"0.001 ";
+    else file<<std::setprecision(3)<<(vCBkg.at(i)->nEvents).at(0)<<" ";
   }
   std::cout<<std::setprecision(old_prec);
   return file;
