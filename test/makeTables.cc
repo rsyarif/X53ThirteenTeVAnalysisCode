@@ -22,7 +22,7 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 2.11; //fb^-1
+  float lumi = 2.215; //fb^-1
 
   //get list of signal samples starting with ssdl cut
   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
@@ -143,7 +143,7 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
     else if(vCC.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2)+ pow(0.01,2) + pow(0.01,2); //jes, jer, pu
     else sys = pow(0.5,2);
     if(! (vCC.at(i)->samplename=="NonPrompt" || vCC.at(i)->samplename=="ChargeMisID")){
-      sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.12,2); //id iso and trigger  plus lumi  plus pileup plus dummy jer
+      sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.046,2); //id iso and trigger  plus lumi 
     }
     tablestring<<vCC.at(i)->samplename;
     for(size_t j =0; j < (vCC.at(i)->nEvents).size(); j++){
@@ -348,7 +348,7 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
       else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2) + pow(0.01,2) + pow(0.01,2); //jes, jer, pu
       else sys = pow(0.5,2);
       if(! (vCutBkg.at(i)->samplename=="NonPrompt" || vCutBkg.at(i)->samplename=="ChargeMisID")){
-	sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.12,2) + pow(0.05,2) + pow(0.05,2); //id iso and trigger  plus lumi  plus pileup plus dummy jer
+	sys = sys + 2*pow(0.02,2) + pow(0.03,2) + pow(.046,2) + pow(0.05,2) + pow(0.05,2); //id iso and trigger  plus lumi  plus pileup plus dummy jer
       }
       //std::cout<<"sample: "<<vCutBkg.at(i)->samplename<<" and total systematic: "<<pow(sys,0.5)<<std::endl;
 
