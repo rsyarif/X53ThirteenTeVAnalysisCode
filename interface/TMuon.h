@@ -30,6 +30,7 @@ public:
 
   bool cutBasedLoose();
   bool cutBasedTight();
+  bool cutBasedTightMiniIso();
 
   void init();
 };
