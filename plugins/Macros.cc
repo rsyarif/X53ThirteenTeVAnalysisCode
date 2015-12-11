@@ -13,14 +13,14 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
 
-  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -48,14 +48,14 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(nak4jets);*/
 
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -63,7 +63,7 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(cleanak4jet2phi);
 
 
-  Variable* cleanak4ht = new Variable("cleanAK4HT",20,0,3000,"H_{T}^{lep} (GeV)","N_{Events}");
+  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 150 GeV");
   vVar.push_back(cleanak4ht);
   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(ncleanak4jets);
@@ -98,7 +98,7 @@ std::vector<Variable*> getVariableVec(){
 
   Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
   vVar.push_back(met);
-  Variable* dilepMass = new Variable("DilepMass",60,0,600,"Dilepton Mass (GeV)", "N_{Events}");
+  Variable* dilepMass = new Variable("DilepMass",20,0,600,"Dilepton Mass (GeV)", "N_{Events} / 30 GeV");
   vVar.push_back(dilepMass);
   return vVar;
 
@@ -1033,7 +1033,7 @@ float getElFakeRate(std::string ID){
   else if(ID=="MVATightRC") return 0.298;
   else if(ID=="MVATightCC") return 0.298;
   else if(ID=="CBTightRC") return 0.43;
-  else return 0.288;
+  else return 0.298;
 
 }
 
@@ -1043,7 +1043,7 @@ float getElPromptRate(std::string ID){
   else if(ID=="MVATightRC") return 0.873;
   else if(ID=="MVATightCC") return 0.873;
   else if(ID=="CBTightRC") return 0.7259;
-  else return 0.87;
+  else return 0.873;
 
 }  
 
