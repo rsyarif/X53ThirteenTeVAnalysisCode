@@ -9,7 +9,7 @@ theta=True
 
 for mass in masses:
     for chi in chiralities:
-        for i in range(-1,3):
+        for i in range(-1,0):
             for nc in range(5,6):
                 for l2 in range(0,1):
                     lep2=l2*10
