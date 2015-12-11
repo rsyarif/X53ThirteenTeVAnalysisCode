@@ -18,21 +18,19 @@
 #include "../plugins/Macros.cc"
 #include "TGraphErrors.h"
 #include "TGraphAsymmErrors.h"
-#include "Math/QuantFuncMathCore.h"
-#include "TMath.h"
 
 //eaxample usage:
-//root -b -q -l 'makePlots.cc("MVATightRC","CBTight")' 
+//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTight")' 
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0);
 void DrawTriggerEff(Sample* s, TFile* outfile);
 void DrawChargeMisIDGraph(TFile* outfile, std::string elID);
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
       
-void makePlots(std::string elID, std::string muID){
+void makePlots_forPAS(std::string elID, std::string muID){
 
   //make output file
-  TFile* fout = new TFile("plots.root","RECREATE");
+  TFile* fout = new TFile("plots_forPAS.root","RECREATE");
 
   //set TDRStyle
   setTDRStyle();
@@ -46,7 +44,7 @@ void makePlots(std::string elID, std::string muID){
   std::vector<Sample*> vSigSamples = getInclusiveSigSampleVecForTable("sZVeto", lumi, elID, muID);
   Sample* dataSample = getDataSample("sZVeto",elID,muID);
 
-  for(int j=2; j <4; j++){
+  for(int j=2; j <3; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
       DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j);
@@ -109,90 +107,64 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);
   leg->SetFillStyle(0);
   leg->SetBorderSize(0);
-  //histogram for weights
-  TH1F* h_err = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_np = new TH1F("h_np",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_npf = new TH1F("h_npf",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_cmid = new TH1F("h_cmid",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_ttz = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_ttw = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_tth = new TH1F("h_tth",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_tttt = new TH1F("h_tttt",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_wz = new TH1F("h_wz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_zz = new TH1F("h_zz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_wwz = new TH1F("h_wwz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_wzz = new TH1F("h_wzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_zzz = new TH1F("h_zzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  //now go through pain of getting non-prompt background error correct;
-  TH1F* h_t00 = new TH1F("h_t00",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_t01 = new TH1F("h_t01",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_t10 = new TH1F("h_t10",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TH1F* h_t11 = new TH1F("h_t11",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  //stupid bins for hT
+  double htbins[21] = {0,120,270,420,570,720,870,1020,1170,1320,1470,1620,1770,1920,2070,2220,2370,2520,2670,2820,2970};
+  int nhtbins=20;
+  TH1F* h_err;
+  TH1F* h_np;
+  TH1F* h_npf;
+  TH1F* h_cmid;
+  TH1F* h_ttz;
+  TH1F* h_ttw;
+  TH1F* h_tth ;
+  TH1F* h_tttt ;
+  TH1F* h_wz ;
+  TH1F* h_zz;
+  TH1F* h_wwz;
+  TH1F* h_wzz ;
+  TH1F* h_zzz ;
+  TH1F* h_wpwp ;
+  TH1F* h_bos ;
+  TH1F* h_ttX ;
 
-  //get version without npweight
-  std::stringstream NTcutstring;
-  if(nMu>=0){
-    if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
-    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100) )";}
+  if(var->name=="dummycleanAK4HT"){
+    //histogram for weights
+     h_err = new TH1F("h_err",(var->name).c_str(),nhtbins,htbins);
+     h_np = new TH1F("h_np",(var->name).c_str(),nhtbins,htbins);
+     h_npf = new TH1F("h_npf",(var->name).c_str(),nhtbins,htbins);
+     h_cmid = new TH1F("h_cmid",(var->name).c_str(),nhtbins,htbins);
+     h_ttz = new TH1F("h_ttz",(var->name).c_str(),nhtbins,htbins);
+     h_ttw = new TH1F("h_ttz",(var->name).c_str(),nhtbins,htbins);
+     h_tth = new TH1F("h_tth",(var->name).c_str(),nhtbins,htbins);
+     h_tttt = new TH1F("h_tttt",(var->name).c_str(),nhtbins,htbins);
+     h_wz = new TH1F("h_wz",(var->name).c_str(),nhtbins,htbins);
+     h_zz = new TH1F("h_zz",(var->name).c_str(),nhtbins,htbins);
+     h_wwz = new TH1F("h_wwz",(var->name).c_str(),nhtbins,htbins);
+     h_wzz = new TH1F("h_wzz",(var->name).c_str(),nhtbins,htbins);
+     h_zzz = new TH1F("h_zzz",(var->name).c_str(),nhtbins,htbins);
+     h_wpwp = new TH1F("h_wpwp",(var->name).c_str(),nhtbins,htbins);
+     h_bos = new TH1F("h_wpwp",(var->name).c_str(),nhtbins,htbins);
+     h_ttX = new TH1F("h_bos",(var->name).c_str(),nhtbins,htbins);
   }
-  else {
-    if(cutIndex==0){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) )";}
-    else if(cutIndex==4){NTcutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * (Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt >100) )";}
+  else{
+     h_err = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_np = new TH1F("h_np",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_npf = new TH1F("h_npf",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_cmid = new TH1F("h_cmid",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_ttz = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_ttw = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_tth = new TH1F("h_tth",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_tttt = new TH1F("h_tttt",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_wz = new TH1F("h_wz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_zz = new TH1F("h_zz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_wwz = new TH1F("h_wwz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_wzz = new TH1F("h_wzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_zzz = new TH1F("h_zzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_bos = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_ttX = new TH1F("h_bos",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+    
   }
-  //now add ntl requirement
-  std::string nt00cut= "("+NTcutstring.str()+" && nTL==0)";;
-  std::string nt01cut= "("+NTcutstring.str()+" && nTL==1)";;
-  std::string nt10cut= "("+NTcutstring.str()+" && nTL==2)";;
-  std::string nt11cut= "("+NTcutstring.str()+" && nTL==3)";;
-
-  //now fill the needed histograms
-  for(std::vector<Sample*>::size_type nt=0;nt<vBkg.size();nt++){
-    //load sample
-    Sample* s= vBkg.at(nt);
-    //skip if not non prompt
-    if( (s->name).find("NonPrompt")==std::string::npos) continue;
-    //get tree
-    TTree* tdummy = s->tree;
-    //fill histograms
-    tdummy->Project("h_t00",(var->name).c_str(),nt00cut.c_str());
-    tdummy->Project("h_t01",(var->name).c_str(),nt01cut.c_str());
-    tdummy->Project("h_t10",(var->name).c_str(),nt10cut.c_str());
-    tdummy->Project("h_t11",(var->name).c_str(),nt11cut.c_str());
-  }
-
-  //now scale histograms and then add them to the total error but only do non-empty ones
-  if(h_t00->Integral()!=0){ 
-    if(nMu==0 || nMu==2) h_t00->Scale(WeightSF_T0(elID,muID,nMu));
-    else h_t00->Scale(WeightOF_T00(elID,muID));
-    h_np->Add(h_t00);
-    //h_err->Add(h_t00);
-  }
-  if(h_t01->Integral()!=0){ 
-    if(nMu==0 || nMu==2) h_t01->Scale(WeightSF_T1(elID,muID,nMu));
-    else h_t01->Scale(WeightOF_T01(elID,muID));
-    h_np->Add(h_t01);
-    //h_err->Add(h_t01);
-  }
-  if(h_t10->Integral()!=0){ 
-    if(nMu==0 || nMu==2) h_t10->Scale(WeightSF_T1(elID,muID,nMu));
-    else h_t10->Scale(WeightOF_T10(elID,muID));
-    h_np->Add(h_t10);
-    //h_err->Add(h_t10);
-  }
-  if(h_t11->Integral()!=0){ 
-    if(nMu==0 || nMu==2) h_t11->Scale(WeightSF_T2(elID,muID,nMu));
-    else h_t11->Scale(WeightOF_T11(elID,muID));
-    h_np->Add(h_t11);
-    //h_err->Add(h_t11);
-  }
-
 
   //*******Now fill in THStack
   float lastbin = 0;
@@ -201,11 +173,24 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //vBkg.at(uk)->setHist(var);
     Sample* s = vBkg.at(uk);
     s->setHist(var,(cutstring.str()).c_str());
-   
-    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+    TH1F* h;
+    if(var->name=="dummycleanAK4HT"){
+      h = new TH1F("h",(var->name).c_str(),nhtbins, htbins);
+    }
+    else{
+      h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+    }
     h->Sumw2();
     TTree* t = s->tree;
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
+
+    //set negative nonprompt bins to zero
+    //if(s->name=="NonPrompt"){
+      for(int hbin=0; hbin < h->GetNbinsX(); hbin++){
+	if(h->GetBinContent(hbin+1)<0) h->SetBinContent(hbin+1,0);
+      }
+      //}
+
     //scale by weight - don't scale for data
     //skip non prompt if using data non prompt
     if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("TT")==std::string::npos) ) { }
@@ -214,10 +199,13 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     else  {
       h->Scale(s->weight);
     }
+   
     //add overflow to last bin
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     lastbin = lastbin + ovf;
+    std::cout<<"lastbin: "<<lastbin<<" and current overflow for sample "<<s->name<<" is: "<<ovf<<std::endl;
+
     if(s->name=="TTZ") h_ttz->Add(h);
     if(s->name=="TTW") h_ttw->Add(h);
     if(s->name=="TTH") h_tth->Add(h);
@@ -228,33 +216,59 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     if(s->name=="WZZ") h_wzz->Add(h);
     if(s->name=="ZZZ") h_zzz->Add(h);
     if(s->name=="WpWp") h_wpwp->Add(h);
-    if(s->name=="NonPrompt")h_npf->Add(h) ;
     if(s->name=="ChargeMisID")h_cmid->Add(h);
-
+    //add to error hist
     h_err->Add(h);
-
     //aesthetics
     h->SetFillColor(s->color);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
     h->GetYaxis()->SetTitle(var->Yaxis.c_str());
     //add to legend
-    leg->AddEntry(h,(vBkg.at(uk)->name).c_str(),"f");
+    if(s->name=="TTZ") h_ttX->Add(h);
+    else if(s->name=="TTW") h_ttX->Add(h);
+    else if(s->name=="TTH") h_ttX->Add(h);
+    else if(s->name=="TTTT") h_ttX->Add(h);
+    else if(s->name=="WZ") h_bos->Add(h);
+    else if(s->name=="ZZ") h_bos->Add(h);
+    else if(s->name=="WWZ") h_bos->Add(h);
+    else if(s->name=="WZZ") h_bos->Add(h);
+    else if(s->name=="ZZZ") h_bos->Add(h);
+    else if(s->name=="WpWp") h_bos->Add(h);
+    else if(s->name=="NonPrompt") h_npf->Add(h);
+    //else std::cout<<"sample "<<s->name<<" not added!!!"<<std::endl;
     assert(h);
-    tStack->Add(h);
+    //tStack->Add(h);
     
 
   }
 
+  //add to tStack
+  h_bos->SetFillColor(kGreen+3);
+  tStack->Add(h_bos);
+  leg->AddEntry(h_bos,"Di/Tri-Boson","f");
+  h_ttX->SetFillColor(kYellow-3);
+  tStack->Add(h_ttX);
+  leg->AddEntry(h_ttX,"TT + X","f");
+
+  h_cmid->SetFillColor(kAzure+6);
+  tStack->Add(h_cmid);
+  leg->AddEntry(h_cmid,"ChargeMisID","f");
+
+  h_npf->SetFillColor(kGray);
+  tStack->Add(h_npf);
+  leg->AddEntry(h_npf, "NonPrompt", "f");
+  
 
   //make errors
   std::vector<float> errs;
-  for(unsigned int ibin=0; ibin< h_npf->GetNbinsX(); ibin++){
+  for(unsigned int ibin=1; ibin<= h_npf->GetNbinsX(); ibin++){
     //nonprompt
     float etemp = pow(h_npf->GetBinError(ibin),2); //stat
     etemp = etemp + pow( 0.5*h_npf->GetBinContent(ibin),2);//sys
     //chargemisID
     etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
     etemp = etemp + pow(0.3*h_cmid->GetBinContent(ibin),2);//sys
+    std::cout<<"cmid bin content: "<<h_cmid->GetBinContent(ibin)<<" and current total error: "<<pow(etemp,0.5)<<std::endl;
     //TTZ
     etemp = etemp + pow(h_ttz->GetBinError(ibin),2);//stat
     etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //MC
@@ -340,12 +354,12 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
     etemp = pow(etemp,0.5);
     h_err->SetBinError(ibin,etemp);
-    errs.push_back(etemp);    
+    errs.push_back(etemp);
   }
 
   //now set err bin to have overflow content
-  h_err->SetBinContent(h_err->GetNbinsX(),lastbin);
-
+  //h_err->SetBinContent(h_err->GetNbinsX(),lastbin);
+  
   tStack->Draw("HIST");
   tStack->GetXaxis()->SetTitle(var->Xaxis.c_str());
   tStack->GetXaxis()->CenterTitle();
@@ -363,11 +377,12 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   h_err->SetFillStyle(3344);
   h_err->SetFillColor(1);
   h_err->Draw("SAME E2");
-  if(var->name=="Lep1Pt"){
+  if(var->name=="cleanAK4HT"){
     for(unsigned int jb=1; jb<=h_err->GetNbinsX(); jb++){
-      float totbkg = h_npf->GetBinContent(jb) + h_cmid->GetBinContent(jb) + h_ttw->GetBinContent(jb) + h_ttz->GetBinContent(jb) + h_wz->GetBinContent(jb) + h_wpwp->GetBinContent(jb) + h_zz->GetBinContent(jb)+h_wwz->GetBinContent(jb);
-      float stacktot = ( (TH1F*)(tStack->GetStack()->Last()))->GetBinContent(jb);
-      std::cout<<"h_err bin "<<jb<<": "<<h_err->GetBinContent(jb)<<" and error: "<<h_err->GetBinError(jb)<<" nonprompt: "<<h_npf->GetBinContent(jb)<<" sum of backgrounds: "<<totbkg<<" tstack content: "<<stacktot<<std::endl;
+      float totbkg = h_npf->GetBinContent(jb) + h_cmid->GetBinContent(jb) + h_ttw->GetBinContent(jb) + h_ttz->GetBinContent(jb) + h_wz->GetBinContent(jb) + h_wpwp->GetBinContent(jb) + h_zz->GetBinContent(jb)+h_wwz->GetBinContent(jb) + h_tth->GetBinContent(jb) + h_tttt->GetBinContent(jb) + h_wzz->GetBinContent(jb) + h_zzz->GetBinContent(jb);
+    float stacktot = ( (TH1F*)(tStack->GetStack()->Last()))->GetBinContent(jb);
+    std::cout<<"bin: "<<jb<<"stack: "<<stacktot<<" bkg tot: "<<totbkg<<" total in h_err: "<<h_err->GetBinContent(jb)<<" np tot: "<<h_npf->GetBinContent(jb)<<" cmid tot: "<<h_cmid->GetBinContent(jb)<<" error: "<<h_err->GetBinError(jb)<<std::endl;
+      //std::cout<<"bin: "<<jb<<" error on fancy way: "<<h_np->GetBinError(jb)<<" error on standard way: "<<h_npf->GetBinError(jb)<<" fancy content: "<<h_np->GetBinContent(jb)<<" reg content: "<<h_npf->GetBinContent(jb)<<std::endl;
     }
   }
   //draw signal:
@@ -379,6 +394,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     TTree* t = s->tree;
 
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
+    float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
+    (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     //scale by weight
     h->Scale(s->weight);
     //aesthetics
@@ -401,17 +418,17 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TTree* tData = dataSample->tree;
   tData->Project("hData",(var->name).c_str(),(cutstring.str()).c_str());
-  //set error bars for zero bins
-  hData->SetBinErrorOption(TH1::kPoisson);
+  float ovf_d =  (hData)->GetBinContent( (hData)->GetNbinsX()+1) + (hData)->GetBinContent( (hData)->GetNbinsX()) ;
+  (hData)->SetBinContent( (hData)->GetNbinsX(),ovf_d);
   TGraphAsymmErrors* gData = new TGraphAsymmErrors(hData);
-  //sethorizontal error bars to 0
+  gData->SetMarkerStyle(20);
   for(unsigned int ig = 0; ig < gData->GetN(); ig++){
     int N = gData->GetY()[ig];
     if(N==0){
-      double L =  (N==0) ? 0  : (ROOT::Math::gamma_quantile((1.0-0.6827)/2,N,1.));
-      double U =  ROOT::Math::gamma_quantile_c((1.0-0.6827)/2,N+1,1) ;
-      gData->SetPointEYlow(ig, N-L);
-      gData->SetPointEYhigh(ig, U-N);
+      //double L =  (N==0) ? 0  : (ROOT::Math::gamma_quantile((1.0-0.6827)/2,N,1.));
+      //double U =  ROOT::Math::gamma_quantile_c((1.0-0.6827)/2,N+1,1) ;
+      //gData->SetPointEYlow(ig, N-L);
+      //gData->SetPointEYhigh(ig, U-N);
     }
     else{
       //gData->SetPointError(ig,0,gData->GetEY()[ig]);
@@ -419,10 +436,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     gData->SetPointEXlow(ig,0);
     gData->SetPointEXhigh(ig,0);
   }
-
-  gData->SetMarkerStyle(20);
   gData->Draw("pesame");
-  leg->AddEntry(hData,"Data","p");
+
+  leg->AddEntry(gData,"Data","p");
 
   //latex
   TLatex* cmstex = new TLatex();
@@ -484,8 +500,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(cutIndex==2) cutname =  "TwoJets";
   if(cutIndex==3) cutname =  "nConstituents";
   if(cutIndex==4) cutname =  "LeadingLepPt100";
-  std::string pdfname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
-  std::string pngname = "./plots/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
+  std::string pdfname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
+  std::string pngname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
