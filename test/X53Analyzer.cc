@@ -22,6 +22,10 @@
 #include "../plugins/EventFilterFromFile_MuonEG.cc"
 #include "../plugins/EventFilterFromFile_DoubleMu.cc"
 #include "../plugins/EventFilterFromFile_DoubleEG.cc"
+//#include "../plugins/EventFilterFromFile_CSC.cc"
+#include "../plugins/EventFilterFromFile_ECALSC.cc"
+#include "../plugins/EventFilterFromVector.cc"
+#include "../plugins/ReadEventFilterFromFile.cc"
 
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*>, std::vector<TElectron*>, float, std::string, std::string, bool);
 std::vector<TLepton*> makeSSLeptons(std::vector<TLepton*>);
@@ -287,6 +291,7 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
+  else if(muID=="CBTightMiniIso") muPromptRate=0.940;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
@@ -300,6 +305,7 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muFakeRate;
   if(muID=="CBTight") muFakeRate=0.371;
+  else if(muID=="CBTightMiniIso") muFakeRate=0.371;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
@@ -363,6 +369,26 @@ int main(int argc, char* argv[]){
   std::vector<TH1F*> hists_nConst_elel = initHistos(vVar,0,"nConst");
   std::vector<TH1F*> hists_nConst_elmu = initHistos(vVar,1,"nConst");
   std::vector<TH1F*> hists_nConst_mumu = initHistos(vVar,2,"nConst");
+
+
+
+  //load in event lists for filtering
+  std::vector<int> runs254227 = getRunListFilterFromFile("csc2015_Dec01.txt");  std::vector<int> lumis254227 = getLumiListFilterFromFile("csc2015_Dec01.txt");  std::vector<unsigned long long> evts254227 = getEventListFilterFromFile("csc2015_Dec01.txt");
+  std::vector<int> runs256676 = getRunListFilterFromFile("csc2015_Dec01_run256676.txt");  std::vector<int> lumis256676 = getLumiListFilterFromFile("csc2015_Dec01_run256676.txt");  std::vector<unsigned long long> evts256676 = getEventListFilterFromFile("csc2015_Dec01_run256676.txt");
+  std::vector<int> runs256677 = getRunListFilterFromFile("csc2015_Dec01_run256677.txt");  std::vector<int> lumis256677 = getLumiListFilterFromFile("csc2015_Dec01_run256677.txt");  std::vector<unsigned long long> evts256677 = getEventListFilterFromFile("csc2015_Dec01_run256677.txt");
+  std::vector<int> runs256734 = getRunListFilterFromFile("csc2015_Dec01_run256734.txt");  std::vector<int> lumis256734 = getLumiListFilterFromFile("csc2015_Dec01_run256734.txt");  std::vector<unsigned long long> evts256734 = getEventListFilterFromFile("csc2015_Dec01_run256734.txt");
+  std::vector<int> runs256866 = getRunListFilterFromFile("csc2015_Dec01_run256866.txt");  std::vector<int> lumis256866 = getLumiListFilterFromFile("csc2015_Dec01_run256866.txt");  std::vector<unsigned long long> evts256866 = getEventListFilterFromFile("csc2015_Dec01_run256866.txt");
+  std::vector<int> runs257490 = getRunListFilterFromFile("csc2015_Dec01_run257490.txt");  std::vector<int> lumis257490 = getLumiListFilterFromFile("csc2015_Dec01_run257490.txt");  std::vector<unsigned long long> evts257490 = getEventListFilterFromFile("csc2015_Dec01_run257490.txt");
+  std::vector<int> runs257751 = getRunListFilterFromFile("csc2015_Dec01_run257751.txt");  std::vector<int> lumis257751 = getLumiListFilterFromFile("csc2015_Dec01_run257751.txt");  std::vector<unsigned long long> evts257751 = getEventListFilterFromFile("csc2015_Dec01_run257751.txt");
+  std::vector<int> runs258136 = getRunListFilterFromFile("csc2015_Dec01_run258136.txt");  std::vector<int> lumis258136 = getLumiListFilterFromFile("csc2015_Dec01_run258136.txt");  std::vector<unsigned long long> evts258136 = getEventListFilterFromFile("csc2015_Dec01_run258136.txt");
+  std::vector<int> runs258211 = getRunListFilterFromFile("csc2015_Dec01_run258211.txt");  std::vector<int> lumis258211 = getLumiListFilterFromFile("csc2015_Dec01_run258211.txt");  std::vector<unsigned long long> evts258211 = getEventListFilterFromFile("csc2015_Dec01_run258211.txt");
+  std::vector<int> runs258244 = getRunListFilterFromFile("csc2015_Dec01_run258244.txt");  std::vector<int> lumis258244 = getLumiListFilterFromFile("csc2015_Dec01_run258244.txt");  std::vector<unsigned long long> evts258244 = getEventListFilterFromFile("csc2015_Dec01_run258244.txt");
+  std::vector<int> runs258713 = getRunListFilterFromFile("csc2015_Dec01_run258713.txt");  std::vector<int> lumis258713 = getLumiListFilterFromFile("csc2015_Dec01_run258713.txt");  std::vector<unsigned long long> evts258713 = getEventListFilterFromFile("csc2015_Dec01_run258713.txt");
+  std::vector<int> runs259686 = getRunListFilterFromFile("csc2015_Dec01_run259686.txt");  std::vector<int> lumis259686 = getLumiListFilterFromFile("csc2015_Dec01_run259686.txt");  std::vector<unsigned long long> evts259686 = getEventListFilterFromFile("csc2015_Dec01_run259686.txt");
+  std::vector<int> runs259891 = getRunListFilterFromFile("csc2015_Dec01_run259891.txt");  std::vector<int> lumis259891 = getLumiListFilterFromFile("csc2015_Dec01_run259891.txt");  std::vector<unsigned long long> evts259891 = getEventListFilterFromFile("csc2015_Dec01_run259891.txt");
+  std::vector<int> runs260536 = getRunListFilterFromFile("csc2015_Dec01_run260536.txt");  std::vector<int> lumis260536 = getLumiListFilterFromFile("csc2015_Dec01_run260536.txt");  std::vector<unsigned long long> evts260536 = getEventListFilterFromFile("csc2015_Dec01_run260536.txt");
+
+
 
   for(int ient=0; ient<nEntries; ient++){
 
@@ -463,11 +489,27 @@ int main(int argc, char* argv[]){
 
     //now veto on bad events from met scanners
     bool badEvent = false;
-    if(data && sample!="ChargeMisIDElEl"){     //do charge misID later to save time
-      std::cout<<"checking at beginning for sample "<<sample<<std::endl;
-      if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
-      else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
-      else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+    if(data){
+
+      if(tr->run >= 260536) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs260536,lumis260536,evts260536)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 259891) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs259891,lumis259891,evts259891)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 259686) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs259686,lumis259686,evts259686)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 258713) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs258713,lumis258713,evts258713)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 258244) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs258244,lumis258244,evts258244)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 258211) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs258211,lumis258211,evts258211)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 258136) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs258136,lumis258136,evts258136)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 257751) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs257751,lumis257751,evts257751)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 257490) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs257490,lumis257490,evts257490)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 256866) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs256866,lumis256866,evts256866)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 256734) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs256734,lumis256734,evts256734)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 256677) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs256677,lumis256677,evts256677)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 256676) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs256676,lumis256676,evts256676)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      else if(tr->run >= 254227) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs254227,lumis254227,evts254227)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      //std::cout<<"checking at beginning for sample "<<sample<<std::endl;
+      //badEvent = EventFilterFromFile_CSC(tr->run,tr->lumi,tr->event) || EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      //if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
+      ///else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
+      //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     }
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
     
@@ -648,11 +690,11 @@ int main(int argc, char* argv[]){
     //quarkonia veto
     if(!(dilepMass>20)) continue;
 
-    if(data && sample=="ChargeMisIDElEl"){     //do charge misID after vetoing on primary Z
-      if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
-      else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
-      else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
-    }
+    //if(data && sample=="ChargeMisIDElEl"){     //do charge misID after vetoing on primary Z
+    //if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
+    //else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
+    //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+    //}
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
     tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass);
 
@@ -906,6 +948,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
 
     if(muID=="CBTight"){
       iLep->Tight=imu->cutBasedTight();
+      iLep->Loose=imu->cutBasedLoose();
+    }
+    else if(muID=="CBTightMiniIso"){
+      iLep->Tight=imu->cutBasedTightMiniIso();
       iLep->Loose=imu->cutBasedLoose();
     }
     else if(muID=="CBLoose"){
