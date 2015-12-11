@@ -82,14 +82,14 @@ int main(int argc, char* argv[]){
   //output file
   std::stringstream filename;
   filename<<"card_M"<<mass<<"_"<<chirality<<"_Ch_"<<channel<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  if(theta) filename<<"_theta.txt";
+  if(theta) filename<<"_MCVar_theta.txt";
   else filename<<"_higgs.txt";
   std::string fstring = filename.str();
   std::ofstream outfile;
   outfile.open(fstring);
 
   //set desired lumi
-  float lumi = 2.215; // fb^{-1}
+  float lumi = 2.11; // fb^{-1}
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
@@ -228,14 +228,14 @@ int main(int argc, char* argv[]){
     outfile<<"ChargeMisID lnN "<<chargemisid.str()<<" "<<chargemisid.str()<<" "<<chargemisid.str()<<"\n";
   }
 
-  std::stringstream qcdScale;
+  /*std::stringstream qcdScale;
   qcdScale<<"- 1.12 1.20 1.14 1.50 1.12 1.12 1.50 1.50 1.50 1.50 - -";
   if(nMu>=0){
     outfile<<"MCNorm lnN "<<qcdScale.str()<<"\n";
   }
   else{
     outfile<<"MCNorm lnN "<<qcdScale.str()<<" "<<qcdScale.str()<<" "<<qcdScale.str()<<"\n";
-  }
+    }*/
   std::stringstream jes;
   jes<<"1.03 1.04 1.03 1.08 1.06 1.05 1.04 1.04 1.04 1.06 1.06 - -";
   if(nMu>=0){
@@ -264,7 +264,7 @@ int main(int argc, char* argv[]){
   }
 
   std::stringstream lumisys;
-  lumisys<<"1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 1.046 - -";
+  lumisys<<"1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 1.12 - -";
   if(nMu>=0){
     outfile<<"LUMISYS lnN "<<lumisys.str()<<"\n";
   }

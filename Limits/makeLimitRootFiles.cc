@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //set desired lumi
-  float lumi = 2.11; // fb^{-1}
+  float lumi = 2.215; // fb^{-1}
 
   //check ot make sure enough arguments have been passed
   if(!argc==3){
@@ -80,11 +80,26 @@ int main(int argc, char* argv[]){
   if(debug_) std::cout<<"Cutstring is: "<<cutSStream.str()<<std::endl;
 
   //output root file
-  std::stringstream rootfilename;
-  rootfilename<<"Limits_M"<<mass<<"_"<<chirality<<"_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename<<"_theta.root";
+  std::stringstream rootfilename_all;
+  rootfilename_all<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_all<<"_theta.root";
 
-  TFile* fout = new TFile((rootfilename.str()).c_str(),"RECREATE");
+  std::stringstream rootfilename_elel;
+  rootfilename_elel<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_elel<<"_theta.root";
+
+  std::stringstream rootfilename_elmu;
+  rootfilename_elmu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_elmu<<"_theta.root";
+
+  std::stringstream rootfilename_mumu;
+  rootfilename_mumu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_mumu<<"_theta.root";
+
+  TFile* fout = new TFile((rootfilename_all.str()).c_str(),"RECREATE");
+  TFile* fout_elel = new TFile((rootfilename_elel.str()).c_str(),"RECREATE");
+  TFile* fout_elmu = new TFile((rootfilename_elmu.str()).c_str(),"RECREATE");
+  TFile* fout_mumu = new TFile((rootfilename_mumu.str()).c_str(),"RECREATE");
 
   //write observed
   //TH1F* All__DATA = new TH1F("All__DATA","",3,0,3);
@@ -118,8 +133,13 @@ int main(int argc, char* argv[]){
 
   //fout->WriteTObject(all__DATA);
   fout->WriteTObject(elel__DATA);
+  fout_elel->WriteTObject(elel__DATA);
+
   fout->WriteTObject(elmu__DATA);
+  fout_elmu->WriteTObject(elmu__DATA);
+
   fout->WriteTObject(mumu__DATA);
+  fout_mumu->WriteTObject(mumu__DATA);
 
 
   //get cut class for signal
@@ -154,8 +174,13 @@ int main(int argc, char* argv[]){
 
   //fout->WriteTObject(all_sig);
   fout->WriteTObject(elel__sig);
+  fout_elel->WriteTObject(elel__sig);
+
   fout->WriteTObject(elmu__sig);
+  fout_elmu->WriteTObject(elmu__sig);
+
   fout->WriteTObject(mumu__sig);
+  fout_mumu->WriteTObject(mumu__sig);
 
 
   //get cut class vector for background
@@ -497,57 +522,120 @@ int main(int argc, char* argv[]){
 
 
   fout->WriteTObject(elel__FakeRate);
+  fout_elel->WriteTObject(elel__FakeRate);
+
   fout->WriteTObject(elmu__FakeRate);
+  fout_elmu->WriteTObject(elmu__FakeRate);
+
   fout->WriteTObject(mumu__FakeRate);
+  fout_mumu->WriteTObject(mumu__FakeRate);
+
   fout->WriteTObject(elel__ChargeMisID);
-  fout->WriteTObject(elmu__ChargeMisID);
+  fout_elel->WriteTObject(elel__ChargeMisID);
+
+  fout->WriteTObject(elmu__ChargeMisID); 
+  fout_elmu->WriteTObject(elmu__ChargeMisID);
+
   fout->WriteTObject(mumu__ChargeMisID);
+  fout_mumu->WriteTObject(mumu__ChargeMisID);
 
   fout->WriteTObject(elel__TTW);
+  fout_elel->WriteTObject(elel__TTW);
+
   fout->WriteTObject(elmu__TTW);
+  fout_elmu->WriteTObject(elmu__TTW);
+
   fout->WriteTObject(mumu__TTW);
+  fout_mumu->WriteTObject(mumu__TTW);
 
   fout->WriteTObject(elel__TTZ);
+  fout_elel->WriteTObject(elel__TTZ);
+
   fout->WriteTObject(elmu__TTZ);
+  fout_elmu->WriteTObject(elmu__TTZ);
+
   fout->WriteTObject(mumu__TTZ);
+  fout_mumu->WriteTObject(mumu__TTZ);
 
   fout->WriteTObject(elel__TTH);
+  fout_elel->WriteTObject(elel__TTH);
+
   fout->WriteTObject(elmu__TTH);
+  fout_elmu->WriteTObject(elmu__TTH);
+
   fout->WriteTObject(mumu__TTH);
+  fout_mumu->WriteTObject(mumu__TTH);
 
   fout->WriteTObject(elel__TTTT);
+  fout_elel->WriteTObject(elel__TTTT);
+
   fout->WriteTObject(elmu__TTTT);
+  fout_elmu->WriteTObject(elmu__TTTT);
+
   fout->WriteTObject(mumu__TTTT);
+  fout_mumu->WriteTObject(mumu__TTTT);
 
   fout->WriteTObject(elel__WZ);
+  fout_elel->WriteTObject(elel__WZ);
+
   fout->WriteTObject(elmu__WZ);
+  fout_elmu->WriteTObject(elmu__WZ);
+
   fout->WriteTObject(mumu__WZ);
+  fout_mumu->WriteTObject(mumu__WZ);
 
   fout->WriteTObject(elel__ZZ);
+  fout_elel->WriteTObject(elel__ZZ);
+
   fout->WriteTObject(elmu__ZZ);
+  fout_elmu->WriteTObject(elmu__ZZ);
+
   fout->WriteTObject(mumu__ZZ);
+  fout_mumu->WriteTObject(mumu__ZZ);
 
   fout->WriteTObject(elel__WpWp);
+  fout_elel->WriteTObject(elel__WpWp);
+
   fout->WriteTObject(elmu__WpWp);
+  fout_elmu->WriteTObject(elmu__WpWp);
+
   fout->WriteTObject(mumu__WpWp);
+  fout_mumu->WriteTObject(mumu__WpWp);
 
   fout->WriteTObject(elel__WWZ);
+  fout_elel->WriteTObject(elel__WWZ);
+
   fout->WriteTObject(elmu__WWZ);
+  fout_elmu->WriteTObject(elmu__WWZ);
+
   fout->WriteTObject(mumu__WWZ);
+  fout_mumu->WriteTObject(mumu__WWZ);
 
   fout->WriteTObject(elel__WZZ);
+  fout_elel->WriteTObject(elel__WZZ);
+
   fout->WriteTObject(elmu__WZZ);
+  fout_elmu->WriteTObject(elmu__WZZ);
+
   fout->WriteTObject(mumu__WZZ);
+  fout_mumu->WriteTObject(mumu__WZZ);
 
   fout->WriteTObject(elel__ZZZ);
+  fout_elel->WriteTObject(elel__ZZZ);
+
   fout->WriteTObject(elmu__ZZZ);
+  fout_elmu->WriteTObject(elmu__ZZZ);
+
   fout->WriteTObject(mumu__ZZZ);
+  fout_mumu->WriteTObject(mumu__ZZZ);
 
 
   
   //fout->Write();
   fout->Close();
-  
+  fout_elel->Close();
+  fout_elmu->Close();
+  fout_mumu->Close();
 
 
   return 0;
