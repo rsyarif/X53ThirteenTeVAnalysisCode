@@ -1,0 +1,65 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+bool EventFilterFromFile_CSC(int r, int l, int e){
+
+  std::ifstream file; 
+
+  //open file based on run numbers
+  if(r<256844)  file.open("csc2015_Dec01.txt");
+  else if(r>=256844 && r<257490)  file.open("csc2015_Dec01_run256866.txt");
+  else if(r>=257490 && r<257751)  file.open("csc2015_Dec01_run257490.txt");
+  else if(r>=257751 && r<258136)  file.open("csc2015_Dec01_run257751.txt");
+  else if(r>=258136 && r<258211)  file.open("csc2015_Dec01_run258136.txt");
+  else if(r>=258211 && r<258444)  file.open("csc2015_Dec01_run258211.txt");
+  else if(r>=258444 && r<258713)  file.open("csc2015_Dec01_run258444.txt");
+  else if(r>=258713 && r<259686)  file.open("csc2015_Dec01_run258713.txt");
+  else if(r>=259686 && r<259891)  file.open("csc2015_Dec01_run259686.txt");
+  else if(r>=259891 && r<260536)  file.open("csc2015_Dec01_run259891.txt");
+  else if(r>=260536)  file.open("csc2015_Dec01_run260536.txt");
+  std::string line;
+  std::stringstream streamline;
+  std::string info;
+  int i=0;
+  bool badEvent=false;
+
+
+  int run=-1;
+  int lumi =-1;
+  unsigned long long event =0;
+  
+  while(std::getline(file,line)){
+    //std::cout<<line<<std::endl;
+    streamline<<line;
+    i=0;
+    while(std::getline(streamline,info,':')){
+      i++;
+      if(i==1) run = std::stoi(info);
+      if(i==2) lumi = std::stoi(info);
+      if(i==3) event = std::stoull(info);
+    }
+    //std::cout<<"checking run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
+    //std::cout<<"current run: "<<r<<" lumi: "<<l<<" event: "<<e<<std::endl;
+
+    //    std::cout<<"run: "<<run<<" lumi: "<<lumi<<" event: "<<event<<std::endl;
+
+    //check if we have already passed it in terms of run number, which means it is a good event and we can stop checking
+    if(run>r){ badEvent=false; break;}
+    //another speedup in case of runs with many lumi sections to check
+    else if( run==r && lumi>l){ badEvent=false; break;}
+    if(run==r && lumi==l && event==e){
+      badEvent=true;
+      break;
+    }
+    streamline.str( std::string() );
+    streamline.clear();
+  }
+
+
+  return badEvent;
+
+}
+
