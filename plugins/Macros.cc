@@ -63,7 +63,7 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(cleanak4jet2phi);
 
 
-  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 150 GeV");
+  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
   vVar.push_back(cleanak4ht);
   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(ncleanak4jets);
