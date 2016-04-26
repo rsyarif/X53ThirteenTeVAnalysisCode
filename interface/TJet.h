@@ -13,6 +13,11 @@ class TJet{
   double eta;
   double phi;
   double energy;
+  //below are primarily used for subjets, so won't be meaningful for ak4 jets
+  double mass;
+  double dR;
+  double bDisc;
+  int bTag;
 
   TJet(const TJet& jet);
   ~TJet();
@@ -21,5 +26,8 @@ class TJet{
   void setLV(){
     lv.SetPxPyPzE(pt*cos(phi), pt*sin(phi), pt*TMath::SinH(eta), energy);
   }
+
+  void SetSubJetInfo(double m, double DR, double bd, int bt);
+
 };
 #endif

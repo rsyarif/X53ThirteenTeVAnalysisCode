@@ -4,6 +4,10 @@ TJet::TJet(double pttemp, double etatemp, double phitemp, double energytemp) :
   pt(pttemp),eta(etatemp),phi(phitemp),energy(energytemp)
 {
   setLV();
+  mass=-99;
+  dR=-99;
+  bDisc=-99;
+  bTag=-99;   
 }
 
 TJet::TJet(const TJet &jet){
@@ -12,6 +16,17 @@ TJet::TJet(const TJet &jet){
   phi=jet.phi;
   energy=jet.energy;
   setLV();
+  mass=-99;
+  dR=-99;
+  bDisc=-99;
+  bTag=-99;   
 }
 
 TJet::~TJet(){}
+
+void TJet::SetSubJetInfo(double m, double DR, double bd, int bt){
+  mass=m;
+  dR=DR;
+  bDisc=bd;
+  bTag=bt;
+}
