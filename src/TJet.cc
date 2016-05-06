@@ -9,6 +9,16 @@ TJet::TJet(double pttemp, double etatemp, double phitemp, double energytemp) :
   bDisc=-99;
   bTag=-99;   
 }
+TJet::TJet(double pttemp, double etatemp, double phitemp, double bd, double drtemp, double mtemp, int bt) :
+  pt(pttemp),eta(etatemp),phi(phitemp)
+{
+  energy=-99;
+  setLV();
+  mass=mtemp;
+  dR=drtemp;
+  bDisc=bd;
+  bTag=bt;   
+}
 
 TJet::TJet(const TJet &jet){
   pt=jet.pt;

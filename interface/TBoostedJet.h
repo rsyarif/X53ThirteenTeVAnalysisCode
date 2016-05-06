@@ -24,7 +24,7 @@ class TBoostedJet{
   double tau2;
   double tau3;
 
-  int nDaughters;
+  int nSubjets;
 
   std::vector<double> subjetPt;
   std::vector<double> subjetEta;

@@ -3,7 +3,7 @@
 TreeReader::TreeReader(const TString &filename,bool mc)
 {
 
-  TFile *f = new TFile(filename);
+  TFile *f = TFile::Open(filename);
   f->cd();
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
   isMc=mc;
@@ -26,6 +26,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i = 0;i<allElectrons.size();++i ) delete allElectrons[i];
   for (unsigned int i = 0;i<allAK4Jets.size();++i ) delete allAK4Jets[i];
   for (unsigned int i = 0;i<cleanedAK4Jets.size();++i ) delete cleanedAK4Jets[i];
+  for (unsigned int i = 0;i<newCleanedAK4Jets.size();++i ) delete newCleanedAK4Jets[i];
+  for (unsigned int i = 0;i<allAK8Jets.size();++i ) delete allAK8Jets[i];
   for (unsigned int i = 0;i<simpleCleanedAK4Jets.size();++i ) delete simpleCleanedAK4Jets[i];
   if(isMc){
     for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
@@ -42,7 +44,9 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   good50nsElectrons.clear();
   loose50nsElectrons.clear();
   allAK4Jets.clear();
+  allAK8Jets.clear();
   cleanedAK4Jets.clear();
+  newCleanedAK4Jets.clear();
   simpleCleanedAK4Jets.clear();
   if(isMc){
     genJets.clear();
@@ -57,6 +61,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   unsigned int nElectrons = elPt->size();
   unsigned int nAK4Jets = AK4JetPt->size();
   unsigned int nCleanedAK4Jets = cleanedAK4JetPt->size();
+  unsigned int nAK8Jets = AK8JetPt->size();
   //std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
@@ -78,14 +83,36 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     if( ( (*AK4JetPt)[i]<30) || fabs((*AK4JetEta)[i])>2.4) continue;
     allAK4Jets.push_back(new TJet( (*AK4JetPt)[i], (*AK4JetEta)[i], (*AK4JetPhi)[i],(*AK4JetEnergy)[i]) );
   }
-  //std::cout<<"making cleaned jets"<<std::endl;
-  //make cleaned jets
+
+  //make AK8, that is, boosted jets
+  for(unsigned int i=0; i<nAK8Jets; i++){
+    allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau2)[i], (*AK8JetNSubjets)[i]));
+    for(unsigned int j=0; j<(*AK8JetNSubjets)[i];j++){
+	unsigned int itsj = i+j;
+	TJet* subjet = new TJet((*subJetPt)[itsj],(*subJetEta)[itsj],(*subJetPhi)[itsj],(*subJetBDisc)[itsj],(*subJetDeltaR)[itsj], (*subJetMass)[itsj], (*subJetBTag)[itsj]);
+	allAK8Jets.at(i)->AddSubJet(subjet);
+      }
+  }
+
+  //make cleaned jets - original collection
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
-    //require jet to be greater than 30 GeV and eta less than 2.4
     if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
     cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
+    
   }
-  //std::cout<<"made cleaned jets"<<std::endl;
+
+  //make cleaned jets - only save if not inside (i.e.dR<0.8 of AK8 jets)
+  for (unsigned int i=0;i<nCleanedAK4Jets; i++){
+    if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
+
+    for(unsigned int j=0; j<nAK8Jets; j++){
+      float dR = pow( pow(allAK8Jets.at(j)->eta - (*cleanedAK4JetEta)[i],2) + pow(allAK8Jets.at(j)->phi - (*cleanedAK4JetPhi)[i],2),0.5);
+      if(dR>0.8) newCleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
+    }
+  }
+
+    
+
   if(isMc){
     unsigned int ngenJets = genJetPt->size();
     for (unsigned int i=0;i<ngenJets; i++){
@@ -264,6 +291,32 @@ void TreeReader::Init(TTree *treetemp)
   cleanedAK4JetPhi = 0;
   cleanedAK4JetPt = 0;
 
+  //ak8 jets
+  AK8JetEnergy = 0;
+  AK8JetEta = 0;
+  AK8JetPhi = 0;
+  AK8JetPt = 0;
+  AK8JetTrimMass = 0;
+  AK8JetPruneMass = 0;
+  AK8JetSDMass = 0;
+  AK8JetFiltMass=0;
+  AK8JetTau1=0;
+  AK8JetTau2=0;
+  AK8JetTau3=0;
+  AK8JetNSubjets=0;
+
+  //subjets
+  subJetEta=0;
+  subJetPhi=0;
+  subJetPt=0;
+  subJetBDisc=0;
+  subJetDeltaR=0;
+  subJetBTag=0;
+  subJetMass=0;
+
+
+
+
   if(isMc){
     //gen jets
     genJetEnergy = 0;
@@ -347,6 +400,30 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("cleanedAK4JetEta_DileptonCalc", &cleanedAK4JetEta, &b_cleanedAK4JetEta_DileptonCalc);
   tree->SetBranchAddress("cleanedAK4JetPhi_DileptonCalc", &cleanedAK4JetPhi, &b_cleanedAK4JetPhi_DileptonCalc);
   tree->SetBranchAddress("cleanedAK4JetPt_DileptonCalc", &cleanedAK4JetPt, &b_cleanedAK4JetPt_DileptonCalc);
+
+  //ak8jets
+  tree->SetBranchAddress("AK8JetEnergy_DileptonCalc", &AK8JetEnergy, &b_AK8JetEnergy_DileptonCalc);
+  tree->SetBranchAddress("AK8JetEta_DileptonCalc", &AK8JetEta, &b_AK8JetEta_DileptonCalc);
+  tree->SetBranchAddress("AK8JetPhi_DileptonCalc", &AK8JetPhi, &b_AK8JetPhi_DileptonCalc);
+  tree->SetBranchAddress("AK8JetPt_DileptonCalc", &AK8JetPt, &b_AK8JetPt_DileptonCalc);
+  tree->SetBranchAddress("AK8JetTrimMass_DileptonCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_DileptonCalc);
+  tree->SetBranchAddress("AK8JetSDMass_DileptonCalc", &AK8JetSDMass, &b_AK8JetSDMass_DileptonCalc);
+  tree->SetBranchAddress("AK8JetPruneMass_DileptonCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_DileptonCalc);
+  tree->SetBranchAddress("AK8JetFiltMass_DileptonCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_DileptonCalc);
+  tree->SetBranchAddress("AK8JetTau1_DileptonCalc", &AK8JetTau1, &b_AK8JetTau1_DileptonCalc);
+  tree->SetBranchAddress("AK8JetTau2_DileptonCalc", &AK8JetTau2, &b_AK8JetTau2_DileptonCalc);
+  tree->SetBranchAddress("AK8JetTau3_DileptonCalc", &AK8JetTau3, &b_AK8JetTau3_DileptonCalc);
+  tree->SetBranchAddress("AK8JetNSubjets_DileptonCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_DileptonCalc);
+
+  //subjets
+  tree->SetBranchAddress("subJetPt_DileptonCalc", &subJetPt, &b_subJetPt_DileptonCalc);
+  tree->SetBranchAddress("subJetEta_DileptonCalc", &subJetEta, &b_subJetEta_DileptonCalc);
+  tree->SetBranchAddress("subJetPhi_DileptonCalc", &subJetPhi, &b_subJetPhi_DileptonCalc);
+  tree->SetBranchAddress("subJetBDisc_DileptonCalc", &subJetBDisc, &b_subJetBDisc_DileptonCalc);
+  tree->SetBranchAddress("subJetBTag_DileptonCalc", &subJetBTag, &b_subJetBTag_DileptonCalc);
+  tree->SetBranchAddress("subJetDeltaR_DileptonCalc", &subJetDeltaR, &b_subJetDeltaR_DileptonCalc);
+  tree->SetBranchAddress("subJetMass_DileptonCalc", &subJetMass, &b_subJetMass_DileptonCalc);
+
 
   if(isMc){
     //gen jets

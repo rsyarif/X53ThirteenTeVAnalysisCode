@@ -8,6 +8,7 @@
 class TJet{
  public:
   TJet(double pttemp, double etatemp, double phitemp, double energytemp);
+  TJet(double pttemp, double etatemp, double phitemp, double bd, double drtemp, double mtemp,int bt);
   //kinematics
   double pt;
   double eta;

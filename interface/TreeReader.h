@@ -9,7 +9,7 @@
 #include "TGenParticle.h"
 #include "TElectron.h"
 #include "TMuon.h"
-#include "TJet.h"
+#include "TBoostedJet.h"
 #include <stdio.h>
 #include <vector>
 
@@ -27,8 +27,9 @@ class TreeReader{
   std::vector <TMuon*> allMuons, goodMuons,looseMuons;
   std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons, loose50nsElectrons, good50nsElectrons;
   std::vector <TGenParticle*> genParticles;
-  std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets;
+  std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets,newCleanedAK4Jets;
   std::vector <TJet*> genJets;
+  std::vector<TBoostedJet*> allAK8Jets;
 
   //met
   double MET;
@@ -227,6 +228,49 @@ class TreeReader{
   TBranch        *b_cleanedAK4JetPhi_DileptonCalc;
   std::vector<double>  *cleanedAK4JetPt;
   TBranch        *b_cleanedAK4JetPt_DileptonCalc;
+
+  //ak8 jets
+  std::vector<double>  *AK8JetEnergy;
+  TBranch        *b_AK8JetEnergy_DileptonCalc;
+  std::vector<double>  *AK8JetEta;
+  TBranch        *b_AK8JetEta_DileptonCalc;
+  std::vector<double>  *AK8JetPhi;
+  TBranch        *b_AK8JetPhi_DileptonCalc;
+  std::vector<double>  *AK8JetPt;
+  TBranch        *b_AK8JetPt_DileptonCalc;
+  std::vector<double>  *AK8JetTrimMass;
+  TBranch        *b_AK8JetTrimMass_DileptonCalc;
+  std::vector<double>  *AK8JetFiltMass;
+  TBranch        *b_AK8JetFiltMass_DileptonCalc;
+  std::vector<double>  *AK8JetPruneMass;
+  TBranch        *b_AK8JetPruneMass_DileptonCalc;
+  std::vector<double>  *AK8JetSDMass;
+  TBranch        *b_AK8JetSDMass_DileptonCalc;
+  std::vector<double>  *AK8JetTau1;
+  TBranch        *b_AK8JetTau1_DileptonCalc;
+  std::vector<double>  *AK8JetTau2;
+  TBranch        *b_AK8JetTau2_DileptonCalc;
+  std::vector<double>  *AK8JetTau3;
+  TBranch        *b_AK8JetTau3_DileptonCalc;
+  std::vector<double>  *AK8JetNSubjets;
+  TBranch        *b_AK8JetNSubjets_DileptonCalc;
+
+  //subjets
+  std::vector<double>  *subJetEta;
+  TBranch        *b_subJetEta_DileptonCalc;
+  std::vector<double>  *subJetPhi;
+  TBranch        *b_subJetPhi_DileptonCalc;
+  std::vector<double>  *subJetPt;
+  TBranch        *b_subJetPt_DileptonCalc;
+  std::vector<double>  *subJetBDisc;
+  TBranch        *b_subJetBDisc_DileptonCalc;
+  std::vector<double>  *subJetDeltaR;
+  TBranch        *b_subJetDeltaR_DileptonCalc;
+  std::vector<int>  *subJetBTag;
+  TBranch        *b_subJetBTag_DileptonCalc;
+  std::vector<double>  *subJetMass;
+  TBranch        *b_subJetMass_DileptonCalc;
+
 
   //gen jets
   std::vector<double>  *genJetEnergy;
