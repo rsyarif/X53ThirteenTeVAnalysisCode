@@ -231,45 +231,45 @@ class TreeReader{
 
   //ak8 jets
   std::vector<double>  *AK8JetEnergy;
-  TBranch        *b_AK8JetEnergy_DileptonCalc;
+  TBranch        *b_AK8JetEnergy_JetSubCalc;
   std::vector<double>  *AK8JetEta;
-  TBranch        *b_AK8JetEta_DileptonCalc;
+  TBranch        *b_AK8JetEta_JetSubCalc;
   std::vector<double>  *AK8JetPhi;
-  TBranch        *b_AK8JetPhi_DileptonCalc;
+  TBranch        *b_AK8JetPhi_JetSubCalc;
   std::vector<double>  *AK8JetPt;
-  TBranch        *b_AK8JetPt_DileptonCalc;
+  TBranch        *b_AK8JetPt_JetSubCalc;
   std::vector<double>  *AK8JetTrimMass;
-  TBranch        *b_AK8JetTrimMass_DileptonCalc;
+  TBranch        *b_AK8JetTrimMass_JetSubCalc;
   std::vector<double>  *AK8JetFiltMass;
-  TBranch        *b_AK8JetFiltMass_DileptonCalc;
+  TBranch        *b_AK8JetFiltMass_JetSubCalc;
   std::vector<double>  *AK8JetPruneMass;
-  TBranch        *b_AK8JetPruneMass_DileptonCalc;
+  TBranch        *b_AK8JetPruneMass_JetSubCalc;
   std::vector<double>  *AK8JetSDMass;
-  TBranch        *b_AK8JetSDMass_DileptonCalc;
+  TBranch        *b_AK8JetSDMass_JetSubCalc;
   std::vector<double>  *AK8JetTau1;
-  TBranch        *b_AK8JetTau1_DileptonCalc;
+  TBranch        *b_AK8JetTau1_JetSubCalc;
   std::vector<double>  *AK8JetTau2;
-  TBranch        *b_AK8JetTau2_DileptonCalc;
+  TBranch        *b_AK8JetTau2_JetSubCalc;
   std::vector<double>  *AK8JetTau3;
-  TBranch        *b_AK8JetTau3_DileptonCalc;
+  TBranch        *b_AK8JetTau3_JetSubCalc;
   std::vector<double>  *AK8JetNSubjets;
-  TBranch        *b_AK8JetNSubjets_DileptonCalc;
+  TBranch        *b_AK8JetNSubjets_JetSubCalc;
 
   //subjets
   std::vector<double>  *subJetEta;
-  TBranch        *b_subJetEta_DileptonCalc;
+  TBranch        *b_subJetEta_JetSubCalc;
   std::vector<double>  *subJetPhi;
-  TBranch        *b_subJetPhi_DileptonCalc;
+  TBranch        *b_subJetPhi_JetSubCalc;
   std::vector<double>  *subJetPt;
-  TBranch        *b_subJetPt_DileptonCalc;
+  TBranch        *b_subJetPt_JetSubCalc;
   std::vector<double>  *subJetBDisc;
-  TBranch        *b_subJetBDisc_DileptonCalc;
+  TBranch        *b_subJetBDisc_JetSubCalc;
   std::vector<double>  *subJetDeltaR;
-  TBranch        *b_subJetDeltaR_DileptonCalc;
+  TBranch        *b_subJetDeltaR_JetSubCalc;
   std::vector<int>  *subJetBTag;
-  TBranch        *b_subJetBTag_DileptonCalc;
+  TBranch        *b_subJetBTag_JetSubCalc;
   std::vector<double>  *subJetMass;
-  TBranch        *b_subJetMass_DileptonCalc;
+  TBranch        *b_subJetMass_JetSubCalc;
 
 
   //gen jets

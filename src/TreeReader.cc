@@ -402,27 +402,27 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("cleanedAK4JetPt_DileptonCalc", &cleanedAK4JetPt, &b_cleanedAK4JetPt_DileptonCalc);
 
   //ak8jets
-  tree->SetBranchAddress("AK8JetEnergy_DileptonCalc", &AK8JetEnergy, &b_AK8JetEnergy_DileptonCalc);
-  tree->SetBranchAddress("AK8JetEta_DileptonCalc", &AK8JetEta, &b_AK8JetEta_DileptonCalc);
-  tree->SetBranchAddress("AK8JetPhi_DileptonCalc", &AK8JetPhi, &b_AK8JetPhi_DileptonCalc);
-  tree->SetBranchAddress("AK8JetPt_DileptonCalc", &AK8JetPt, &b_AK8JetPt_DileptonCalc);
-  tree->SetBranchAddress("AK8JetTrimMass_DileptonCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_DileptonCalc);
-  tree->SetBranchAddress("AK8JetSDMass_DileptonCalc", &AK8JetSDMass, &b_AK8JetSDMass_DileptonCalc);
-  tree->SetBranchAddress("AK8JetPruneMass_DileptonCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_DileptonCalc);
-  tree->SetBranchAddress("AK8JetFiltMass_DileptonCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_DileptonCalc);
-  tree->SetBranchAddress("AK8JetTau1_DileptonCalc", &AK8JetTau1, &b_AK8JetTau1_DileptonCalc);
-  tree->SetBranchAddress("AK8JetTau2_DileptonCalc", &AK8JetTau2, &b_AK8JetTau2_DileptonCalc);
-  tree->SetBranchAddress("AK8JetTau3_DileptonCalc", &AK8JetTau3, &b_AK8JetTau3_DileptonCalc);
-  tree->SetBranchAddress("AK8JetNSubjets_DileptonCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_DileptonCalc);
+  tree->SetBranchAddress("theJetAK8JetEnergy_JetSubCalc", &AK8JetEnergy, &b_AK8JetEnergy_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetEta_JetSubCalc", &AK8JetEta, &b_AK8JetEta_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetPhi_JetSubCalc", &AK8JetPhi, &b_AK8JetPhi_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetPt_JetSubCalc", &AK8JetPt, &b_AK8JetPt_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetTrimMass_JetSubCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetSDMass_JetSubCalc", &AK8JetSDMass, &b_AK8JetSDMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetPruneMass_JetSubCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetFiltMass_JetSubCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetTau1_JetSubCalc", &AK8JetTau1, &b_AK8JetTau1_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetTau2_JetSubCalc", &AK8JetTau2, &b_AK8JetTau2_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetTau3_JetSubCalc", &AK8JetTau3, &b_AK8JetTau3_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8JetNSubjets_JetSubCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_JetSubCalc);
 
   //subjets
-  tree->SetBranchAddress("subJetPt_DileptonCalc", &subJetPt, &b_subJetPt_DileptonCalc);
-  tree->SetBranchAddress("subJetEta_DileptonCalc", &subJetEta, &b_subJetEta_DileptonCalc);
-  tree->SetBranchAddress("subJetPhi_DileptonCalc", &subJetPhi, &b_subJetPhi_DileptonCalc);
-  tree->SetBranchAddress("subJetBDisc_DileptonCalc", &subJetBDisc, &b_subJetBDisc_DileptonCalc);
-  tree->SetBranchAddress("subJetBTag_DileptonCalc", &subJetBTag, &b_subJetBTag_DileptonCalc);
-  tree->SetBranchAddress("subJetDeltaR_DileptonCalc", &subJetDeltaR, &b_subJetDeltaR_DileptonCalc);
-  tree->SetBranchAddress("subJetMass_DileptonCalc", &subJetMass, &b_subJetMass_DileptonCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetPt_JetSubCalc", &subJetPt, &b_subJetPt_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetEta_JetSubCalc", &subJetEta, &b_subJetEta_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetPhi_JetSubCalc", &subJetPhi, &b_subJetPhi_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetBDisc_JetSubCalc", &subJetBDisc, &b_subJetBDisc_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetBTag_JetSubCalc", &subJetBTag, &b_subJetBTag_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetDeltaR_JetSubCalc", &subJetDeltaR, &b_subJetDeltaR_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetMass_JetSubCalc", &subJetMass, &b_subJetMass_JetSubCalc);
 
 
   if(isMc){
