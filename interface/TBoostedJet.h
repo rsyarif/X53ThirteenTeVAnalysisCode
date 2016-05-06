@@ -43,6 +43,7 @@ class TBoostedJet{
   }
 
   void AddSubJet(TJet* j);
-
+  bool isTopTag();
+  bool isWTag();
 };
 #endif

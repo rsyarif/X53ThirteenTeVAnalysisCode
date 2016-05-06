@@ -27,3 +27,22 @@ void TBoostedJet::AddSubJet(TJet* j){
   subjetMass.push_back(j->mass);
 
 }
+
+bool TBoostedJet::isTopTag(){
+
+  float maxBDisc=-99;
+  for(unsigned int i=0; i< subjetBDisc.size();i++){
+    if(maxBDisc<subjetBDisc.at(i)) maxBDisc = subjetBDisc.at(i);
+  }
+
+  bool tag = (softDropMass>110 && softDropMass<210) && ( (tau3/tau2) < 0.54) && (maxBDisc > 0.79);
+  return tag;
+}
+
+
+bool TBoostedJet::isWTag(){
+
+  bool tag = (prunedMass > 65 && prunedMass < 105) && (tau2/tau1 <0.6);
+  return tag;
+
+}

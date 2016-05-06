@@ -90,13 +90,46 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("simpleCleanAK4Jet2Phi",&simpleCleanAK4Jet2Phi_);
   tree->Branch("simpleCleanAK4Jet2Energy",&simpleCleanAK4Jet2Energy_);  
 
+  //ak4jets
+  tree->Branch("AK8Jet1Pt",&AK8Jet1Pt_);
+  tree->Branch("AK8Jet1Eta",&AK8Jet1Eta_);
+  tree->Branch("AK8Jet1Phi",&AK8Jet1Phi_);
+  tree->Branch("AK8Jet1Energy",&AK8Jet1Energy_);
+  tree->Branch("AK8Jet1TrimMass",&AK8Jet1TrimMass_);
+  tree->Branch("AK8Jet1PruneMass",&AK8Jet1PruneMass_);
+  tree->Branch("AK8Jet1SDMass",&AK8Jet1SDMass_);
+  tree->Branch("AK8Jet1FiltMass",&AK8Jet1FiltMass_);
+  tree->Branch("AK8Jet1Tau1",&AK8Jet1Tau1_);
+  tree->Branch("AK8Jet1Tau2",&AK8Jet1Tau2_);
+  tree->Branch("AK8Jet1Tau3",&AK8Jet1Tau3_);
+  tree->Branch("AK8Jet1Tau21",&AK8Jet1Tau21_);
+  tree->Branch("AK8Jet1Tau31",&AK8Jet1Tau31_);
+  tree->Branch("AK8Jet1Tau32",&AK8Jet1Tau32_);
+  tree->Branch("AK8Jet1SubjetMaxBDisc",&AK8Jet1SubjetMaxBDisc_);
+
+  tree->Branch("AK8Jet2Pt",&AK8Jet2Pt_);
+  tree->Branch("AK8Jet2Eta",&AK8Jet2Eta_);
+  tree->Branch("AK8Jet2Phi",&AK8Jet2Phi_);
+  tree->Branch("AK8Jet2Energy",&AK8Jet2Energy_);
+  tree->Branch("AK8Jet2TrimMass",&AK8Jet2TrimMass_);
+  tree->Branch("AK8Jet2PruneMass",&AK8Jet2PruneMass_);
+  tree->Branch("AK8Jet2SDMass",&AK8Jet2SDMass_);
+  tree->Branch("AK8Jet2FiltMass",&AK8Jet2FiltMass_);
+  tree->Branch("AK8Jet2Tau1",&AK8Jet2Tau1_);
+  tree->Branch("AK8Jet2Tau2",&AK8Jet2Tau2_);
+  tree->Branch("AK8Jet2Tau3",&AK8Jet2Tau3_);
+  tree->Branch("AK8Jet2Tau21",&AK8Jet2Tau21_);
+  tree->Branch("AK8Jet2Tau31",&AK8Jet2Tau31_);
+  tree->Branch("AK8Jet2Tau32",&AK8Jet2Tau32_);
+  tree->Branch("AK8Jet2SubjetMaxBDisc",&AK8Jet2SubjetMaxBDisc_);
+
 
   tree->Branch("DilepMass",&DilepMass_);
   tree->Branch("AssocMass",&AssocMass_);
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<TJet*> newCleanAK4Jets){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
@@ -235,8 +268,133 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   }
 
 
+  //ak8jets
+  int nAK8Jets_ = AK8Jets.size();
+  if(nAK8Jets_>0){
+    AK8Jet1Pt_=AK8Jets.at(0)->pt;    
+    AK8Jet1Eta_=AK8Jets.at(0)->eta;
+    AK8Jet1Phi_=AK8Jets.at(0)->phi;
+    AK8Jet1Energy_=AK8Jets.at(0)->energy;
+    AK8Jet1TrimMass_=AK8Jets.at(0)->trimmedMass;
+    AK8Jet1PruneMass_=AK8Jets.at(0)->prunedMass;
+    AK8Jet1SDMass_=AK8Jets.at(0)->softDropMass;
+    AK8Jet1FiltMass_=AK8Jets.at(0)->filteredMass;
+    AK8Jet1Tau1_ = AK8Jets.at(0)->tau1;
+    AK8Jet1Tau2_ = AK8Jets.at(0)->tau2;
+    AK8Jet1Tau3_ = AK8Jets.at(0)->tau3;
+    AK8Jet1Tau21_ = AK8Jets.at(0)->tau2/AK8Jets.at(0)->tau1;
+    AK8Jet1Tau31_ = AK8Jets.at(0)->tau3/AK8Jets.at(0)->tau1;
+    AK8Jet1Tau32_ = AK8Jets.at(0)->tau3/AK8Jets.at(0)->tau2;
+    float maxBDisc1=-2;
+    for(int ib=0; ib<AK8Jets.at(0)->nSubjets; ib++){
+      if(AK8Jets.at(0)->subjetBDisc.at(ib) >= maxBDisc1) maxBDisc1=AK8Jets.at(0)->subjetBDisc.at(ib);
+    }
+    AK8Jet1SubjetMaxBDisc_ = maxBDisc1;
+  }
+  else{
+    AK8Jet1Pt_=-999;
+    AK8Jet1Eta_=-999;
+    AK8Jet1Phi_=-999;
+    AK8Jet1Energy_=-999;
+    AK8Jet1TrimMass_=-999;
+    AK8Jet1PruneMass_=-999;
+    AK8Jet1SDMass_=-999;
+    AK8Jet1FiltMass_=-999;
+    AK8Jet1Tau1_ = -999;
+    AK8Jet1Tau2_ = -999;
+    AK8Jet1Tau3_ = -999;
+    AK8Jet1Tau21_ = -999;
+    AK8Jet1Tau31_ = -999;
+    AK8Jet1Tau32_ = -999;
+    AK8Jet1SubjetMaxBDisc_ =-999;
+  }
 
-  nConst_=nCleanAK4Jets_+vNonSSLep.size();
+  if(nAK8Jets_>1){
+    AK8Jet2Pt_=AK8Jets.at(1)->pt;    
+    AK8Jet2Eta_=AK8Jets.at(1)->eta;
+    AK8Jet2Phi_=AK8Jets.at(1)->phi;
+    AK8Jet2Energy_=AK8Jets.at(1)->energy;
+    AK8Jet2TrimMass_=AK8Jets.at(1)->trimmedMass;
+    AK8Jet2PruneMass_=AK8Jets.at(1)->prunedMass;
+    AK8Jet2SDMass_=AK8Jets.at(1)->softDropMass;
+    AK8Jet2FiltMass_=AK8Jets.at(1)->filteredMass;
+    AK8Jet2Tau1_ = AK8Jets.at(1)->tau1;
+    AK8Jet2Tau2_ = AK8Jets.at(1)->tau2;
+    AK8Jet2Tau3_ = AK8Jets.at(1)->tau3;
+    AK8Jet2Tau21_ = AK8Jets.at(1)->tau2/AK8Jets.at(1)->tau1;
+    AK8Jet2Tau31_ = AK8Jets.at(1)->tau3/AK8Jets.at(1)->tau1;
+    AK8Jet2Tau32_ = AK8Jets.at(1)->tau3/AK8Jets.at(1)->tau2;
+    float maxBDisc=-2;
+    for(int ib=0; ib<AK8Jets.at(1)->nSubjets; ib++){
+      if(AK8Jets.at(1)->subjetBDisc.at(ib) >= maxBDisc) maxBDisc=AK8Jets.at(1)->subjetBDisc.at(ib);
+    }
+    AK8Jet2SubjetMaxBDisc_ = maxBDisc;
+  }
+  else{
+    AK8Jet2Pt_=-999;
+    AK8Jet2Eta_=-999;
+    AK8Jet2Phi_=-999;
+    AK8Jet2Energy_=-999;
+    AK8Jet2TrimMass_=-999;
+    AK8Jet2PruneMass_=-999;
+    AK8Jet2SDMass_=-999;
+    AK8Jet2FiltMass_=-999;
+    AK8Jet2Tau1_ = -999;
+    AK8Jet2Tau2_ = -999;
+    AK8Jet2Tau3_ = -999;
+    AK8Jet2Tau21_ = -999;
+    AK8Jet2Tau31_ = -999;
+    AK8Jet2Tau32_ = -999;
+    AK8Jet2SubjetMaxBDisc_ =-999;
+  }
+
+  //new newCleaned ak4 jets
+  nNewCleanAK4Jets_ = newCleanAK4Jets.size();
+  //new nConst
+  nNewConst_ = newCleanAK4Jets.size() + vNonSSLep.size();
+  newCleanAK4HT_=Lep1Pt_+Lep2Pt_;
+  for(int i=0; i<nNewCleanAK4Jets_;i++){
+    newCleanAK4HT_+=newCleanAK4Jets.at(i)->pt;
+  }
+  for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
+    newCleanAK4HT_+=vNonSSLep.at(ilep)->pt;
+  }
+  for(int i=0; i<nAK8Jets_;i++){
+    if(AK8Jets.at(i)->isTopTag() || AK8Jets.at(i)->isWTag()){
+      newCleanAK4HT_+=AK8Jets.at(i)->pt;
+    }
+    if(AK8Jets.at(i)->isTopTag()) nNewConst_= nNewConst_+3;
+    else if(AK8Jets.at(i)->isWTag() && !AK8Jets.at(i)->isTopTag()) nNewConst_ = nNewConst_+2;
+  }
+  
+  if(nNewCleanAK4Jets_>0){
+    newCleanAK4Jet1Pt_=newCleanAK4Jets.at(0)->pt;    
+    newCleanAK4Jet1Eta_=newCleanAK4Jets.at(0)->eta;
+    newCleanAK4Jet1Phi_=newCleanAK4Jets.at(0)->phi;
+    newCleanAK4Jet1Energy_=newCleanAK4Jets.at(0)->energy;
+  }
+  else{
+    newCleanAK4Jet1Pt_=-999;
+    newCleanAK4Jet1Eta_=-999;
+    newCleanAK4Jet1Phi_=-999;
+    newCleanAK4Jet1Energy_=-999;
+  }
+
+  if(nNewCleanAK4Jets_>1){
+    newCleanAK4Jet2Pt_=newCleanAK4Jets.at(1)->pt;    
+    newCleanAK4Jet2Eta_=newCleanAK4Jets.at(1)->eta;
+    newCleanAK4Jet2Phi_=newCleanAK4Jets.at(1)->phi;
+    newCleanAK4Jet2Energy_=newCleanAK4Jets.at(1)->energy;
+  }
+  else{
+    newCleanAK4Jet2Pt_=-999;
+    newCleanAK4Jet2Eta_=-999;
+    newCleanAK4Jet2Phi_=-999;
+    newCleanAK4Jet2Energy_=-999;
+  }
+
+
+  nConst_=nNewCleanAK4Jets_+vNonSSLep.size();
   DilepMass_ = DilepMasstemp;
   AssocMass_ = amasst;
   nMu_= nMu;

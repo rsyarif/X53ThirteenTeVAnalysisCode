@@ -4,7 +4,7 @@
 #include "TTree.h"
 #include "TreeReader.h"
 #include "TLepton.h"
-#include "TJet.h"
+#include "TBoostedJet.h"
 #include <iostream>
 #include <stdio.h>
 #include <vector>
@@ -55,6 +55,7 @@ class TreeMaker {
 
   int nConst_;
   int nAK4Jets_;
+  int nNewConst_;
 
   float AK4HT_;
   float MET_;
@@ -102,10 +103,59 @@ class TreeMaker {
   int nMu_; //the number of same-sign dileptons which are muons acts as standin for channel
 
 
+  //ak8 jets
+  float AK8Jet1Pt_;
+  float AK8Jet1Eta_;
+  float AK8Jet1Phi_;
+  float AK8Jet1Energy_;
+  float AK8Jet1TrimMass_;
+  float AK8Jet1PruneMass_;
+  float AK8Jet1SDMass_;
+  float AK8Jet1FiltMass_;
+  float AK8Jet1Tau1_;
+  float AK8Jet1Tau2_;
+  float AK8Jet1Tau3_;
+  float AK8Jet1Tau21_;
+  float AK8Jet1Tau31_;
+  float AK8Jet1Tau32_;
+  float AK8Jet1SubjetMaxBDisc_;
+
+  float AK8Jet2Pt_;
+  float AK8Jet2Eta_;
+  float AK8Jet2Phi_;
+  float AK8Jet2Energy_;
+  float AK8Jet2TrimMass_;
+  float AK8Jet2PruneMass_;
+  float AK8Jet2SDMass_;
+  float AK8Jet2FiltMass_;
+  float AK8Jet2Tau1_;
+  float AK8Jet2Tau2_;
+  float AK8Jet2Tau3_;
+  float AK8Jet2Tau21_;
+  float AK8Jet2Tau31_;
+  float AK8Jet2Tau32_;
+  float AK8Jet2SubjetMaxBDisc_;
+
+
+  //collections for newCleaned jets
+  float newCleanAK4Jet1Pt_;
+  float newCleanAK4Jet1Eta_;
+  float newCleanAK4Jet1Phi_;
+  float newCleanAK4Jet1Energy_;
+
+  float newCleanAK4Jet2Pt_;
+  float newCleanAK4Jet2Eta_;
+  float newCleanAK4Jet2Phi_;
+  float newCleanAK4Jet2Energy_;
+
+  int nNewCleanAK4Jets_;
+  float newCleanAK4HT_;
+
+
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight, float NpWeighttemp, int nTLtemp,float trSF, float idSF, float isoSF,float puwtemp,float amasst);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight, float NpWeighttemp, int nTLtemp,float trSF, float idSF, float isoSF,float puwtemp,float amasst,std::vector<TBoostedJet*> AK8Jets, std::vector<TJet*> newCleanAK4Jets);
 
 };
 
