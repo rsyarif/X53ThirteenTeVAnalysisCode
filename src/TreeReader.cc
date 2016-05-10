@@ -27,13 +27,15 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for (unsigned int i = 0;i<allAK4Jets.size();++i ) delete allAK4Jets[i];
   for (unsigned int i = 0;i<cleanedAK4Jets.size();++i ) delete cleanedAK4Jets[i];
   for (unsigned int i = 0;i<newCleanedAK4Jets.size();++i ) delete newCleanedAK4Jets[i];
+  //std::cout<<"deleting ak8 jets"<<std::endl;
   for (unsigned int i = 0;i<allAK8Jets.size();++i ) delete allAK8Jets[i];
+  //std::cout<<"deleted ak8 jets"<<std::endl;
   for (unsigned int i = 0;i<simpleCleanedAK4Jets.size();++i ) delete simpleCleanedAK4Jets[i];
   if(isMc){
     for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
     for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
   }
-  //std::cout<<"clearing collections"<<std::endl;
+  ////std::cout<<"clearing collections"<<std::endl;
   allMuons.clear();
   goodMuons.clear();
   looseMuons.clear();
@@ -55,14 +57,15 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   //check to make sure not empty
   if (!tree) return 0;  
-  //std::cout<<"getting size of input vectors"<<std::endl;
+  ////std::cout<<"getting size of input vectors"<<std::endl;
   int stat =  tree->GetEntry(entry);
   unsigned int nMuons = muPt->size();
   unsigned int nElectrons = elPt->size();
   unsigned int nAK4Jets = AK4JetPt->size();
   unsigned int nCleanedAK4Jets = cleanedAK4JetPt->size();
+  //std::cout<<"getting number of ak8 jets"<<std::endl;
   unsigned int nAK8Jets = AK8JetPt->size();
-  //std::cout<<"making collections"<<std::endl;
+  ////std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
     allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
@@ -85,14 +88,23 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   }
 
   //make AK8, that is, boosted jets
+  //std::cout<<"Making ak8 jet collection"<<std::endl;
   for(unsigned int i=0; i<nAK8Jets; i++){
+    /*    //only save if passes top or w tagging
+    bool save=false;
+    if( ( (*AK8JetTau2)[i] / (*AK8JetTau1)[i] <0.6 ) && (*AK8JetPruneMass)[i]>65 && (*AK8JetPruneMass)[i]<105) save = true;
+    else if( ((*AK8JetPt)[i]>400) && ( (*AK8JetTau3)[i] / (*AK8JetTau2)[i] < 0.54) && ( (*AK8JetSDMass)[i] >110 && (*AK8JetSDMass)[i]<210)) save = true;
+    if(save){*/
     allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau2)[i], (*AK8JetNSubjets)[i]));
     for(unsigned int j=0; j<(*AK8JetNSubjets)[i];j++){
-	unsigned int itsj = i+j;
-	TJet* subjet = new TJet((*subJetPt)[itsj],(*subJetEta)[itsj],(*subJetPhi)[itsj],(*subJetBDisc)[itsj],(*subJetDeltaR)[itsj], (*subJetMass)[itsj], (*subJetBTag)[itsj]);
-	allAK8Jets.at(i)->AddSubJet(subjet);
-      }
+      unsigned int itsj = i+j;
+      //std::cout<<"making subjet: "<<j<<" out of: "<<(*AK8JetNSubjets)[i]<<" for ak8 jet number: "<<i<<" and total size of subjet vector is: "<<(*subJetPt).size()<<std::endl;
+      TJet* subjet = new TJet((*subJetPt)[itsj],(*subJetEta)[itsj],(*subJetPhi)[itsj],(*subJetBDisc)[itsj],(*subJetDeltaR)[itsj], (*subJetMass)[itsj], (*subJetBTag)[itsj]);
+      allAK8Jets.at(i)->AddSubJet(subjet);
+    }
+    //}
   }
+  //std::cout<<"Making ak8 jet collection"<<std::endl;
 
   //make cleaned jets - original collection
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
@@ -100,17 +112,18 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
     
   }
-
+  //std::cout<<"Making new ak4 jets"<<std::endl;
   //make cleaned jets - only save if not inside (i.e.dR<0.8 of AK8 jets)
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
     if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
 
     for(unsigned int j=0; j<nAK8Jets; j++){
-      float dR = pow( pow(allAK8Jets.at(j)->eta - (*cleanedAK4JetEta)[i],2) + pow(allAK8Jets.at(j)->phi - (*cleanedAK4JetPhi)[i],2),0.5);
-      if(dR>0.8) newCleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
+      //float dR = pow( pow(allAK8Jets.at(j)->eta - (*cleanedAK4JetEta)[i],2) + pow(allAK8Jets.at(j)->phi - (*cleanedAK4JetPhi)[i],2),0.5);
+      //if(dR>0.8) newCleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
+      newCleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
     }
   }
-
+  //std::cout<<"Made new ak4 jets"<<std::endl;
     
 
   if(isMc){
@@ -131,7 +144,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   for(unsigned int imu =0; imu<allMuons.size(); imu++){
     if(allMuons.at(imu)->cutBasedTight()) goodMuons.push_back(allMuons.at(imu));
   }
-  //std::cout<<"making loose muons"<<std::endl;
+  ////std::cout<<"making loose muons"<<std::endl;
   //make loose muons
     for(unsigned int imu =0; imu<allMuons.size(); imu++){
     if(allMuons.at(imu)->cutBasedLoose()) looseMuons.push_back(allMuons.at(imu));
@@ -402,26 +415,26 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("cleanedAK4JetPt_DileptonCalc", &cleanedAK4JetPt, &b_cleanedAK4JetPt_DileptonCalc);
 
   //ak8jets
-  tree->SetBranchAddress("theJetAK8JetEnergy_JetSubCalc", &AK8JetEnergy, &b_AK8JetEnergy_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetEta_JetSubCalc", &AK8JetEta, &b_AK8JetEta_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetPhi_JetSubCalc", &AK8JetPhi, &b_AK8JetPhi_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetPt_JetSubCalc", &AK8JetPt, &b_AK8JetPt_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetTrimMass_JetSubCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetSDMass_JetSubCalc", &AK8JetSDMass, &b_AK8JetSDMass_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetPruneMass_JetSubCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetFiltMass_JetSubCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetTau1_JetSubCalc", &AK8JetTau1, &b_AK8JetTau1_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetTau2_JetSubCalc", &AK8JetTau2, &b_AK8JetTau2_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetTau3_JetSubCalc", &AK8JetTau3, &b_AK8JetTau3_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8JetNSubjets_JetSubCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8Energy_JetSubCalc", &AK8JetEnergy, &b_AK8JetEnergy_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8Eta_JetSubCalc", &AK8JetEta, &b_AK8JetEta_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8Phi_JetSubCalc", &AK8JetPhi, &b_AK8JetPhi_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8Pt_JetSubCalc", &AK8JetPt, &b_AK8JetPt_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8TrimmedMass_JetSubCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SoftDropMass_JetSubCalc", &AK8JetSDMass, &b_AK8JetSDMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8PrunedMass_JetSubCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8FilteredMass_JetSubCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8NjettinessTau1_JetSubCalc", &AK8JetTau1, &b_AK8JetTau1_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8NjettinessTau2_JetSubCalc", &AK8JetTau2, &b_AK8JetTau2_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8NjettinessTau3_JetSubCalc", &AK8JetTau3, &b_AK8JetTau3_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetSize_JetSubCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_JetSubCalc);
 
   //subjets
   tree->SetBranchAddress("theJetAK8SDSubjetPt_JetSubCalc", &subJetPt, &b_subJetPt_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SDSubjetEta_JetSubCalc", &subJetEta, &b_subJetEta_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SDSubjetPhi_JetSubCalc", &subJetPhi, &b_subJetPhi_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8SDSubjetBDisc_JetSubCalc", &subJetBDisc, &b_subJetBDisc_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetCSV_JetSubCalc", &subJetBDisc, &b_subJetBDisc_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SDSubjetBTag_JetSubCalc", &subJetBTag, &b_subJetBTag_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8SDSubjetDeltaR_JetSubCalc", &subJetDeltaR, &b_subJetDeltaR_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetDR_JetSubCalc", &subJetDeltaR, &b_subJetDeltaR_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SDSubjetMass_JetSubCalc", &subJetMass, &b_subJetMass_JetSubCalc);
 
 

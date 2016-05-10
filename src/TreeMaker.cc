@@ -144,7 +144,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<TJet*> newCleanAK4Jets_temp){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets){
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
@@ -295,9 +295,9 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   //new clean ak4 jets
   std::vector<TJet*> newCleanAK4Jets;
-  for(unsigned int i=0; i<newCleanAK4Jets_temp.size(); i++){
+  for(unsigned int i=0; i<cleanAK4Jets.size(); i++){
     bool save = true;
-    TJet* jet = newCleanAK4Jets_temp.at(i);
+    TJet* jet = cleanAK4Jets.at(i);
     for(int j=0; j<nTaggedAK8Jets_; j++){
       float dR = pow( pow(jet->eta - taggedAK8Jets.at(j)->eta,2) + pow(jet->phi - taggedAK8Jets.at(j)->phi, 2), 0.5);
       if(dR < 0.8){
