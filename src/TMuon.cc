@@ -17,6 +17,25 @@ bool TMuon::cutBasedLoose(){
   return true;
 }
 
+bool TMuon::cutBasedTight_NoIso(){
+  if(fabs(eta)>2.4)         return false;
+  if(!Global)               return false;
+  if(!PFMuon)               return false;
+  //  if (pt < 30)              return false;
+  //  if (global < 5)           return false; //Global muon and tracker muon
+  if (chi2 > 10)            return false;
+  if (fabs(dz) > 0.5)             return false;
+  if (fabs(dxy) > 0.2)            return false;
+  if (nValMuHits < 1)       return false;
+  if (nMatchedStations < 2) return false;
+  if (nValPixelHits < 1)    return false;
+  if (nTrackerLayers < 6)   return false;
+  //if (relIso > 0.2)        return false;
+  
+  return true;
+}
+
+
 bool TMuon::cutBasedTight(){
   if(fabs(eta)>2.4)         return false;
   if(!Global)               return false;
