@@ -126,6 +126,77 @@ void TreeMaker::InitTree(std::string treename){
 
 
 
+  //topjets
+  tree->Branch("TopJet1Pt",&TopJet1Pt_);
+  tree->Branch("TopJet1Eta",&TopJet1Eta_);
+  tree->Branch("TopJet1Phi",&TopJet1Phi_);
+  tree->Branch("TopJet1Energy",&TopJet1Energy_);
+  tree->Branch("TopJet1TrimMass",&TopJet1TrimMass_);
+  tree->Branch("TopJet1PruneMass",&TopJet1PruneMass_);
+  tree->Branch("TopJet1SDMass",&TopJet1SDMass_);
+  tree->Branch("TopJet1FiltMass",&TopJet1FiltMass_);
+  tree->Branch("TopJet1Tau1",&TopJet1Tau1_);
+  tree->Branch("TopJet1Tau2",&TopJet1Tau2_);
+  tree->Branch("TopJet1Tau3",&TopJet1Tau3_);
+  tree->Branch("TopJet1Tau21",&TopJet1Tau21_);
+  tree->Branch("TopJet1Tau31",&TopJet1Tau31_);
+  tree->Branch("TopJet1Tau32",&TopJet1Tau32_);
+  tree->Branch("TopJet1SubjetMaxBDisc",&TopJet1SubjetMaxBDisc_);
+
+  tree->Branch("TopJet2Pt",&TopJet2Pt_);
+  tree->Branch("TopJet2Eta",&TopJet2Eta_);
+  tree->Branch("TopJet2Phi",&TopJet2Phi_);
+  tree->Branch("TopJet2Energy",&TopJet2Energy_);
+  tree->Branch("TopJet2TrimMass",&TopJet2TrimMass_);
+  tree->Branch("TopJet2PruneMass",&TopJet2PruneMass_);
+  tree->Branch("TopJet2SDMass",&TopJet2SDMass_);
+  tree->Branch("TopJet2FiltMass",&TopJet2FiltMass_);
+  tree->Branch("TopJet2Tau1",&TopJet2Tau1_);
+  tree->Branch("TopJet2Tau2",&TopJet2Tau2_);
+  tree->Branch("TopJet2Tau3",&TopJet2Tau3_);
+  tree->Branch("TopJet2Tau21",&TopJet2Tau21_);
+  tree->Branch("TopJet2Tau31",&TopJet2Tau31_);
+  tree->Branch("TopJet2Tau32",&TopJet2Tau32_);
+  tree->Branch("TopJet2SubjetMaxBDisc",&TopJet2SubjetMaxBDisc_);
+
+  //W jets
+  tree->Branch("WJet1Pt",&WJet1Pt_);
+  tree->Branch("WJet1Eta",&WJet1Eta_);
+  tree->Branch("WJet1Phi",&WJet1Phi_);
+  tree->Branch("WJet1Energy",&WJet1Energy_);
+  tree->Branch("WJet1TrimMass",&WJet1TrimMass_);
+  tree->Branch("WJet1PruneMass",&WJet1PruneMass_);
+  tree->Branch("WJet1SDMass",&WJet1SDMass_);
+  tree->Branch("WJet1FiltMass",&WJet1FiltMass_);
+  tree->Branch("WJet1Tau1",&WJet1Tau1_);
+  tree->Branch("WJet1Tau2",&WJet1Tau2_);
+  tree->Branch("WJet1Tau3",&WJet1Tau3_);
+  tree->Branch("WJet1Tau21",&WJet1Tau21_);
+  tree->Branch("WJet1Tau31",&WJet1Tau31_);
+  tree->Branch("WJet1Tau32",&WJet1Tau32_);
+  tree->Branch("WJet1SubjetMaxBDisc",&WJet1SubjetMaxBDisc_);
+
+  tree->Branch("WJet2Pt",&WJet2Pt_);
+  tree->Branch("WJet2Eta",&WJet2Eta_);
+  tree->Branch("WJet2Phi",&WJet2Phi_);
+  tree->Branch("WJet2Energy",&WJet2Energy_);
+  tree->Branch("WJet2TrimMass",&WJet2TrimMass_);
+  tree->Branch("WJet2PruneMass",&WJet2PruneMass_);
+  tree->Branch("WJet2SDMass",&WJet2SDMass_);
+  tree->Branch("WJet2FiltMass",&WJet2FiltMass_);
+  tree->Branch("WJet2Tau1",&WJet2Tau1_);
+  tree->Branch("WJet2Tau2",&WJet2Tau2_);
+  tree->Branch("WJet2Tau3",&WJet2Tau3_);
+  tree->Branch("WJet2Tau21",&WJet2Tau21_);
+  tree->Branch("WJet2Tau31",&WJet2Tau31_);
+  tree->Branch("WJet2Tau32",&WJet2Tau32_);
+  tree->Branch("WJet2SubjetMaxBDisc",&WJet2SubjetMaxBDisc_);
+
+
+  tree->Branch("NTopTags",&nTopTaggedJets_);
+  tree->Branch("NWTags",&nWTaggedJets_);
+  tree->Branch("X53Mass",&X53mass_);
+
   //cleaned jets
   tree->Branch("nNewCleanAK4Jets",&nNewCleanAK4Jets_);
   tree->Branch("newCleanAK4HT",&newCleanAK4HT_);
@@ -145,6 +216,7 @@ void TreeMaker::InitTree(std::string treename){
 }
 
 void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets){
+
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
@@ -287,25 +359,23 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   int nAK8Jets_ = AK8Jets.size();
   //make tagged ak8 jets
   std::vector<TBoostedJet*> taggedAK8Jets;
+  std::vector<TBoostedJet*> topTaggedJets;
+  std::vector<TBoostedJet*> wTaggedJets;
   for(int i=0; i<nAK8Jets_; i++){
-    if(AK8Jets.at(i)->isWTag() || AK8Jets.at(i)->isTopTag_BTag()) taggedAK8Jets.push_back(AK8Jets.at(i));
+    if(AK8Jets.at(i)->isWTag_JMAR() || AK8Jets.at(i)->isTopTag_BTag_LJets()){
+      //std::cout<<"Pruned jet mass for jet: "<<i<<" is: "<<AK8Jets.at(i)->prunedMass<<std::endl;
+      //std::cout<<"Tau21 for jet: "<<i<<" is: "<<AK8Jets.at(i)->tau2 / AK8Jets.at(i)->tau1<<std::endl;
+      taggedAK8Jets.push_back(AK8Jets.at(i));
+      if(AK8Jets.at(i)->isTopTag_BTag_LJets()) topTaggedJets.push_back(AK8Jets.at(i));
+      if(AK8Jets.at(i)->isWTag_JMAR() && !(AK8Jets.at(i)->isTopTag_BTag_LJets())) wTaggedJets.push_back(AK8Jets.at(i));
+    }
   }
+
+  nTopTaggedJets_ = topTaggedJets.size();
+  nWTaggedJets_ = wTaggedJets.size();
 
   int nTaggedAK8Jets_ = taggedAK8Jets.size();
 
-  //new clean ak4 jets
-  std::vector<TJet*> newCleanAK4Jets;
-  for(unsigned int i=0; i<cleanAK4Jets.size(); i++){
-    bool save = true;
-    TJet* jet = cleanAK4Jets.at(i);
-    for(int j=0; j<nTaggedAK8Jets_; j++){
-      float dR = pow( pow(jet->eta - taggedAK8Jets.at(j)->eta,2) + pow(jet->phi - taggedAK8Jets.at(j)->phi, 2), 0.5);
-      if(dR < 0.8){
-	save=false;
-      }
-    }
-    if(save) newCleanAK4Jets.push_back(jet);
-  }
  
   if(nTaggedAK8Jets_>0){
     AK8Jet1Pt_=taggedAK8Jets.at(0)->pt;    
@@ -385,8 +455,188 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     AK8Jet2SubjetMaxBDisc_ =-999;
   }
 
-  //new newCleaned ak4 jets
+
+  if(nTopTaggedJets_>0){
+    TopJet1Pt_=topTaggedJets.at(0)->pt;    
+    TopJet1Eta_=topTaggedJets.at(0)->eta;
+    TopJet1Phi_=topTaggedJets.at(0)->phi;
+    TopJet1Energy_=topTaggedJets.at(0)->energy;
+    TopJet1TrimMass_=topTaggedJets.at(0)->trimmedMass;
+    TopJet1PruneMass_=topTaggedJets.at(0)->prunedMass;
+    TopJet1SDMass_=topTaggedJets.at(0)->softDropMass;
+    TopJet1FiltMass_=topTaggedJets.at(0)->filteredMass;
+    TopJet1Tau1_ = topTaggedJets.at(0)->tau1;
+    TopJet1Tau2_ = topTaggedJets.at(0)->tau2;
+    TopJet1Tau3_ = topTaggedJets.at(0)->tau3;
+    TopJet1Tau21_ = topTaggedJets.at(0)->tau2/topTaggedJets.at(0)->tau1;
+    TopJet1Tau31_ = topTaggedJets.at(0)->tau3/topTaggedJets.at(0)->tau1;
+    TopJet1Tau32_ = topTaggedJets.at(0)->tau3/topTaggedJets.at(0)->tau2;
+    float maxBDisc1=-2;
+    for(int ib=0; ib<topTaggedJets.at(0)->nSubjets; ib++){
+      if(topTaggedJets.at(0)->subjetBDisc.at(ib) >= maxBDisc1) maxBDisc1=topTaggedJets.at(0)->subjetBDisc.at(ib);
+    }
+    TopJet1SubjetMaxBDisc_ = maxBDisc1;
+  }
+  else{
+    TopJet1Pt_=-999;
+    TopJet1Eta_=-999;
+    TopJet1Phi_=-999;
+    TopJet1Energy_=-999;
+    TopJet1TrimMass_=-999;
+    TopJet1PruneMass_=-999;
+    TopJet1SDMass_=-999;
+    TopJet1FiltMass_=-999;
+    TopJet1Tau1_ = -999;
+    TopJet1Tau2_ = -999;
+    TopJet1Tau3_ = -999;
+    TopJet1Tau21_ = -999;
+    TopJet1Tau31_ = -999;
+    TopJet1Tau32_ = -999;
+    TopJet1SubjetMaxBDisc_ =-999;
+  }
+
+  if(nTopTaggedJets_>1){
+    TopJet2Pt_=topTaggedJets.at(1)->pt;    
+    TopJet2Eta_=topTaggedJets.at(1)->eta;
+    TopJet2Phi_=topTaggedJets.at(1)->phi;
+    TopJet2Energy_=topTaggedJets.at(1)->energy;
+    TopJet2TrimMass_=topTaggedJets.at(1)->trimmedMass;
+    TopJet2PruneMass_=topTaggedJets.at(1)->prunedMass;
+    TopJet2SDMass_=topTaggedJets.at(1)->softDropMass;
+    TopJet2FiltMass_=topTaggedJets.at(1)->filteredMass;
+    TopJet2Tau1_ = topTaggedJets.at(1)->tau1;
+    TopJet2Tau2_ = topTaggedJets.at(1)->tau2;
+    TopJet2Tau3_ = topTaggedJets.at(1)->tau3;
+    TopJet2Tau21_ = topTaggedJets.at(1)->tau2/topTaggedJets.at(1)->tau1;
+    TopJet2Tau31_ = topTaggedJets.at(1)->tau3/topTaggedJets.at(1)->tau1;
+    TopJet2Tau32_ = topTaggedJets.at(1)->tau3/topTaggedJets.at(1)->tau2;
+    float maxBDisc=-2;
+    for(int ib=0; ib<topTaggedJets.at(1)->nSubjets; ib++){
+      if(topTaggedJets.at(1)->subjetBDisc.at(ib) >= maxBDisc) maxBDisc=topTaggedJets.at(1)->subjetBDisc.at(ib);
+    }
+    TopJet2SubjetMaxBDisc_ = maxBDisc;
+  }
+  else{
+    TopJet2Pt_=-999;
+    TopJet2Eta_=-999;
+    TopJet2Phi_=-999;
+    TopJet2Energy_=-999;
+    TopJet2TrimMass_=-999;
+    TopJet2PruneMass_=-999;
+    TopJet2SDMass_=-999;
+    TopJet2FiltMass_=-999;
+    TopJet2Tau1_ = -999;
+    TopJet2Tau2_ = -999;
+    TopJet2Tau3_ = -999;
+    TopJet2Tau21_ = -999;
+    TopJet2Tau31_ = -999;
+    TopJet2Tau32_ = -999;
+    TopJet2SubjetMaxBDisc_ =-999;
+  }
+
+
+  if(nWTaggedJets_>0){
+    WJet1Pt_=wTaggedJets.at(0)->pt;    
+    WJet1Eta_=wTaggedJets.at(0)->eta;
+    WJet1Phi_=wTaggedJets.at(0)->phi;
+    WJet1Energy_=wTaggedJets.at(0)->energy;
+    WJet1TrimMass_=wTaggedJets.at(0)->trimmedMass;
+    WJet1PruneMass_=wTaggedJets.at(0)->prunedMass;
+    WJet1SDMass_=wTaggedJets.at(0)->softDropMass;
+    WJet1FiltMass_=wTaggedJets.at(0)->filteredMass;
+    WJet1Tau1_ = wTaggedJets.at(0)->tau1;
+    WJet1Tau2_ = wTaggedJets.at(0)->tau2;
+    WJet1Tau3_ = wTaggedJets.at(0)->tau3;
+    WJet1Tau21_ = wTaggedJets.at(0)->tau2/wTaggedJets.at(0)->tau1;
+    WJet1Tau31_ = wTaggedJets.at(0)->tau3/wTaggedJets.at(0)->tau1;
+    WJet1Tau32_ = wTaggedJets.at(0)->tau3/wTaggedJets.at(0)->tau2;
+    float maxBDisc1=-2;
+    for(int ib=0; ib<wTaggedJets.at(0)->nSubjets; ib++){
+      if(wTaggedJets.at(0)->subjetBDisc.at(ib) >= maxBDisc1) maxBDisc1=wTaggedJets.at(0)->subjetBDisc.at(ib);
+    }
+    WJet1SubjetMaxBDisc_ = maxBDisc1;
+  }
+  else{
+    WJet1Pt_=-999;
+    WJet1Eta_=-999;
+    WJet1Phi_=-999;
+    WJet1Energy_=-999;
+    WJet1TrimMass_=-999;
+    WJet1PruneMass_=-999;
+    WJet1SDMass_=-999;
+    WJet1FiltMass_=-999;
+    WJet1Tau1_ = -999;
+    WJet1Tau2_ = -999;
+    WJet1Tau3_ = -999;
+    WJet1Tau21_ = -999;
+    WJet1Tau31_ = -999;
+    WJet1Tau32_ = -999;
+    WJet1SubjetMaxBDisc_ =-999;
+  }
+
+  if(nWTaggedJets_>1){
+    WJet2Pt_=wTaggedJets.at(1)->pt;    
+    WJet2Eta_=wTaggedJets.at(1)->eta;
+    WJet2Phi_=wTaggedJets.at(1)->phi;
+    WJet2Energy_=wTaggedJets.at(1)->energy;
+    WJet2TrimMass_=wTaggedJets.at(1)->trimmedMass;
+    WJet2PruneMass_=wTaggedJets.at(1)->prunedMass;
+    WJet2SDMass_=wTaggedJets.at(1)->softDropMass;
+    WJet2FiltMass_=wTaggedJets.at(1)->filteredMass;
+    WJet2Tau1_ = wTaggedJets.at(1)->tau1;
+    WJet2Tau2_ = wTaggedJets.at(1)->tau2;
+    WJet2Tau3_ = wTaggedJets.at(1)->tau3;
+    WJet2Tau21_ = wTaggedJets.at(1)->tau2/wTaggedJets.at(1)->tau1;
+    WJet2Tau31_ = wTaggedJets.at(1)->tau3/wTaggedJets.at(1)->tau1;
+    WJet2Tau32_ = wTaggedJets.at(1)->tau3/wTaggedJets.at(1)->tau2;
+    float maxBDisc=-2;
+    for(int ib=0; ib<wTaggedJets.at(1)->nSubjets; ib++){
+      if(wTaggedJets.at(1)->subjetBDisc.at(ib) >= maxBDisc) maxBDisc=wTaggedJets.at(1)->subjetBDisc.at(ib);
+    }
+    WJet2SubjetMaxBDisc_ = maxBDisc;
+  }
+  else{
+    WJet2Pt_=-999;
+    WJet2Eta_=-999;
+    WJet2Phi_=-999;
+    WJet2Energy_=-999;
+    WJet2TrimMass_=-999;
+    WJet2PruneMass_=-999;
+    WJet2SDMass_=-999;
+    WJet2FiltMass_=-999;
+    WJet2Tau1_ = -999;
+    WJet2Tau2_ = -999;
+    WJet2Tau3_ = -999;
+    WJet2Tau21_ = -999;
+    WJet2Tau31_ = -999;
+    WJet2Tau32_ = -999;
+    WJet2SubjetMaxBDisc_ =-999;
+  }
+
+
+  //new clean ak4 jets
+  std::vector<TJet*> newCleanAK4Jets;
+  for(unsigned int i=0; i<cleanAK4Jets.size(); i++){
+    bool save = true;
+    TJet* jet = cleanAK4Jets.at(i);
+    for(int j=0; j<nTaggedAK8Jets_; j++){
+      float dR = pow( pow(jet->eta - taggedAK8Jets.at(j)->eta,2) + pow(jet->phi - taggedAK8Jets.at(j)->phi, 2), 0.5);
+      //std::cout<<"dR for ak4 jet: "<<i<<" and ak8 jet: "<<j<<" is: "<<dR<<std::endl;
+      if(dR < 0.8){
+	save=false;
+	//std::cout<<"vetoing jet"<<std::endl;
+      }
+    }
+    if(save) {
+      //std::cout<<"saving jet with index: "<<i<<std::endl;
+      newCleanAK4Jets.push_back(jet);
+    }
+
+  }
+
   nNewCleanAK4Jets_ = newCleanAK4Jets.size();
+  //if(nNewCleanAK4Jets_>10) std::cout<<"Size of new AK4 jets: "<<nNewCleanAK4Jets_<<" and size of old: "<<nCleanAK4Jets_<<std::endl;
+  if(nNewCleanAK4Jets_ > nCleanAK4Jets_) std::cout<<"something is broken because new ak4 collection is larger than old"<<std::endl;
   //new nConst
   nNewConst_ = newCleanAK4Jets.size() + vNonSSLep.size();
   newCleanAK4HT_=Lep1Pt_+Lep2Pt_;
@@ -397,11 +647,11 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     newCleanAK4HT_+=vNonSSLep.at(ilep)->pt;
   }
   for(int i=0; i<nTaggedAK8Jets_;i++){
-    if(taggedAK8Jets.at(i)->isTopTag_BTag() || taggedAK8Jets.at(i)->isWTag()){
-      newCleanAK4HT_+=taggedAK8Jets.at(i)->pt;
-    }
-    if(taggedAK8Jets.at(i)->isTopTag_BTag()) nNewConst_= nNewConst_+3;
-    else if(taggedAK8Jets.at(i)->isWTag() && !taggedAK8Jets.at(i)->isTopTag_BTag()) nNewConst_ = nNewConst_+2;
+    
+    newCleanAK4HT_+=taggedAK8Jets.at(i)->pt;
+    
+    if(taggedAK8Jets.at(i)->isTopTag_BTag_LJets()) nNewConst_= nNewConst_+3;
+    else if(taggedAK8Jets.at(i)->isWTag_JMAR() && !taggedAK8Jets.at(i)->isTopTag_BTag_LJets()) nNewConst_ = nNewConst_+2;
   }
   
   if(nNewCleanAK4Jets_>0){
@@ -430,6 +680,231 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     newCleanAK4Jet2Energy_=-999;
   }
 
+
+  //mass reconstruction
+  X53mass_=-99;
+  TLorentzVector topjet, wjet;
+  bool foundTop=false;
+  bool foundW = false;
+  //case for when the event has a top jet
+  if(nTopTaggedJets_>0){
+    //if any top tagged jets this is true
+    foundTop=true;
+    if(nTopTaggedJets_==1) topjet = topTaggedJets.at(0)->lv;
+    //else more than one top tagged jet
+    else{
+      float mDiff=999;
+      int index=0; //default to leading jet
+      for(int i=0; i<nTopTaggedJets_;i++){
+	float mDtemp = 173.3 - topTaggedJets.at(i)->softDropMass;
+	if( fabs(mDtemp) < mDiff){
+	  index = i;
+	  mDiff = mDtemp;
+	}
+      }
+      topjet = topTaggedJets.at(index)->lv;    
+    }//end more than one top jet
+    //now find w
+    if(nWTaggedJets_>0){     
+      //take wjet closest to wmass
+      int ind=0; //default to leading;
+      float maxDiff=9999;
+      for(int i=0; i<nWTaggedJets_;i++){
+	float tempdiff = fabs(wTaggedJets.at(i)->trimmedMass - 80.385);
+	if(tempdiff<maxDiff) {ind = i; maxDiff=tempdiff;}
+      }
+      wjet=wTaggedJets.at(ind)->lv;
+      foundW=true;
+    }
+    //no wtagged jet, find pair of jets that most closely gives wMass
+    else{
+      int ind1=0; int ind2=0;
+      bool foundpair=false;
+      float mdiff=9999999;
+      for(int i=0; i<nNewCleanAK4Jets_;i++){
+	for(int j =i+1; j<nNewCleanAK4Jets_;j++){
+	  float mtemp = (newCleanAK4Jets.at(i)->lv + newCleanAK4Jets.at(j)->lv).M();
+	  //look for pair closest to w and require the mass to be within 20 GeV
+	  if(fabs( mtemp - 80.385) <mdiff && fabs(mtemp-80.385)<20){ ind1=i;ind2=j; foundpair=true;}	    
+	}
+      }
+      if(foundpair) {wjet= newCleanAK4Jets.at(ind1)->lv+newCleanAK4Jets.at(ind2)->lv; foundW=true;}
+      else wjet.SetPxPyPzE(0,0,0,0);    
+    }//end else about no w tagged jet      
+  }//end if has at least one top jet
+  else{ //no top jets in event
+    TLorentzVector  wjet1,wjet2, bjet;
+    std::vector<int> usedJets;
+    if(nWTaggedJets_>2){ // more than 2 w tags take two as candidates with closest trimmed masses to w mass (pruning skews peak to lower values while trimming doesn't)
+      int ind1=0; int ind2=0;
+      float diff1=99999;
+      float diff2=99999;
+      for(int i=0; i<nWTaggedJets_;i++){
+	float diffTemp = 80.385 - wTaggedJets.at(i)->trimmedMass;
+	if(fabs(diffTemp)<diff1) {ind1=i;diff1=diffTemp;}
+      }
+      for(int i=0; i<nWTaggedJets_;i++){
+	float diffTemp = 80.385 - wTaggedJets.at(i)->trimmedMass;
+	if(fabs(diffTemp)<diff2 && !(fabs(diffTemp)==diff1)) ind2=i;
+      }
+      wjet1=wTaggedJets.at(ind1)->lv;
+      wjet2=wTaggedJets.at(ind2)->lv;
+      //bjet is highest pT remaining ak4 jet
+      if(nNewCleanAK4Jets_>0) bjet=newCleanAK4Jets.at(0)->lv;
+      else bjet.SetPxPyPzE(0,0,0,0);
+      
+    }//end more than two w tags
+  
+    else if(nWTaggedJets_==2){// two w tags
+      wjet1=wTaggedJets.at(0)->lv;
+      wjet2=wTaggedJets.at(1)->lv;
+      //bjet is highest pT remaining ak4 jet
+      if(nNewCleanAK4Jets_>0) bjet=newCleanAK4Jets.at(0)->lv;
+      else bjet.SetPxPyPzE(0,0,0,0);
+      
+    }//end exactly two w tags
+
+    else if(nWTaggedJets_==1){//one wtag
+      wjet1=wTaggedJets.at(0)->lv;
+      //find second w and bjetEligibility conditions
+      if(nNewCleanAK4Jets_==0) {wjet2.SetPxPyPzE(0,0,0,0);bjet.SetPxPyPzE(0,0,0,0);} //set to empty four vectors
+      else if(nNewCleanAK4Jets_==1) {wjet2=newCleanAK4Jets.at(0)->lv;bjet.SetPxPyPzE(0,0,0,0);} //take only other existing jet - set bjet to empty four vector
+      else if(nNewCleanAK4Jets_==2) {wjet2=newCleanAK4Jets.at(0)->lv; bjet=newCleanAK4Jets.at(1)->lv;} //take leading as wjet, subleading as b jet
+      else{
+	int ind1=0;int ind2=0;
+	bool foundpair=false;
+	float mdiff=9999999;
+	for(int i=0; i<nNewCleanAK4Jets_;i++){
+	  for(int j =i+1; j<nNewCleanAK4Jets_;j++){
+	    float mtemp = (newCleanAK4Jets.at(i)->lv + newCleanAK4Jets.at(j)->lv).M();
+	    if(fabs( mtemp - 80.385) <mdiff && fabs(mtemp-80.385)<20){ ind1=i;ind2=j; foundpair=true;}	    
+	  }
+	}
+	if(foundpair) {wjet2 = newCleanAK4Jets.at(ind1)->lv + newCleanAK4Jets.at(ind2)->lv; usedJets.push_back(ind1); usedJets.push_back(ind2);}
+	else wjet2.SetPxPyPzE(0,0,0,0);
+	//set bjet to highest pt remaining jet
+	for(int i=0; i<nNewCleanAK4Jets_; i++){
+	  if( i!=ind1 && i!=ind2) { bjet=newCleanAK4Jets.at(i)->lv; break;}
+	}
+      }
+    }//end one w tag
+    else{//no w tags - require at least 5 jets otherwise it doesn't make sense
+      if(nNewCleanAK4Jets_>4){
+	int ind1=0; int ind2=0; int ind3=0;int ind4=0;
+	bool foundpair1=false; bool foundpair2=false;
+	float mdiff = 99999;
+	//find w jet
+	for(int i=0; i<nNewCleanAK4Jets_;i++){
+	  for(int j =i+1; j<nNewCleanAK4Jets_;j++){
+	    float mtemp = (newCleanAK4Jets.at(i)->lv + newCleanAK4Jets.at(j)->lv).M();
+	    if(fabs( mtemp - 80.385) <mdiff && fabs(mtemp-80.385)<20){ ind1=i;ind2=j; foundpair1=true;}	    
+	  }
+	}
+	mdiff=9999;
+	for(int i=0; i<nNewCleanAK4Jets_;i++){
+	  for(int j =i+1; j<nNewCleanAK4Jets_;j++){
+	    float mtemp = (newCleanAK4Jets.at(i)->lv + newCleanAK4Jets.at(j)->lv).M();
+	    if(! (ind1==i || ind1==j || ind2==i || ind2==j) && (fabs( mtemp - 80.385) <mdiff) && fabs(mtemp-80.385)<20){ ind3=i;ind4=j; foundpair2=true;}
+	  }
+	}
+	if(foundpair1) {wjet1 = newCleanAK4Jets.at(ind1)->lv + newCleanAK4Jets.at(ind2)->lv; usedJets.push_back(ind1); usedJets.push_back(ind2);}
+	else wjet1.SetPxPyPzE(0,0,0,0);
+	if(foundpair2) {wjet2 = newCleanAK4Jets.at(ind3)->lv + newCleanAK4Jets.at(ind4)->lv; usedJets.push_back(ind3);usedJets.push_back(ind4);}
+	else wjet2.SetPxPyPzE(0,0,0,0);
+	//take highest pt remaining jet as b jet
+	for(int i=0; i<nNewCleanAK4Jets_;i++){
+	  if(i!=ind1 && i!=ind2 && i!=ind3 &&i!=ind4) bjet=newCleanAK4Jets.at(i)->lv;        
+	}
+      }//end if at least 5 jets
+      else{//set lorentz vectors to 0
+	wjet1.SetPxPyPzE(0,0,0,0);
+	wjet2.SetPxPyPzE(0,0,0,0);
+	bjet.SetPxPyPzE(0,0,0,0);
+      }
+    }//end no wTags
+
+    /*    //now find bjet
+    int bjet1ind=0;
+    int bjet2ind=0;
+    float md1=999;
+    for(unsigned int i=0; i< newCleanAK4Jets.size(); i++){
+      bool used=false;
+      //check against all jets used and make sure the current jet doesn't match index of a used jet
+      for(unsigned int j=0; j<usedJets.size();j++){
+	if(i==j) used=true;
+      }
+      if(used) continue;
+      //find best top mass
+      float md1t = fabs( (wjet1+newCleanAK4Jets.at(i)->lv).M() - 173.3);
+      if(md1t<md1) {md1=md1t; bjet1ind=i;}
+    }
+    //now find best top mass with second jet
+    float md2=999;
+    for(unsigned int i=0; i< newCleanAK4Jets.size(); i++){
+      bool used=false;
+      //check against all jets used and make sure the current jet doesn't match index of a used jet
+      for(unsigned int j=0; j<usedJets.size();j++){
+	if(i==j) used=true;
+      }
+      if(used) continue;
+      //find best top mass
+      float md2t = fabs( (wjet2+newCleanAK4Jets.at(i)->lv).M() - 173.3);
+      if(md2t<md2) {md2=md2t; bjet2ind=i;}
+    }
+    //found best top reco for both Ws, now take one closest to top mass
+    if(md1<=md2){//wjet1 has best combo
+      //require to be within 30 GeV of top mass
+      if(md1<30){
+	bjet=newCleanAK4Jets.at(bjet1ind)->lv;
+	foundTop=true;
+	topjet = wjet1+bjet;
+	//require other wjet not to be zeros
+	if(wjet2.Pt() > 0){
+	  foundW=true;
+	  wjet = wjet2;
+	}       
+      }//end check on top mass
+    }//end md1<md2
+    else{//md2<md1
+      //require to be within 30 GeV of top mass
+      if(md2<30){
+	bjet=newCleanAK4Jets.at(bjet2ind)->lv;
+	foundTop=true;
+	topjet = wjet2+bjet;
+	//require other wjet not to be zeros
+	if(wjet1.Pt() > 0){
+	  foundW=true;
+	  wjet = wjet1;
+	}       
+      }//end check on top mass
+      }//end else*/
+
+
+    //now set global variables for topjet and bjet
+    float md1 = fabs( (wjet1+bjet).M() - 173.3);
+    float md2 = fabs( (wjet2+bjet).M() - 173.3);
+    if( md1 < 30){
+      foundTop=true;
+      topjet = wjet1+bjet;
+      //require other wjet not to be zeros
+      if(wjet2.Pt() > 0){
+	foundW=true;
+	wjet = wjet2;
+      }
+    }
+    else if(md2 < 30){
+      foundTop=true;
+      topjet = wjet2+bjet;
+      //require other wjet not to be zeros
+      if(wjet1.Pt() > 0){
+	foundW=true;
+	wjet = wjet1;
+      }
+    }
+    
+  }// end no top tag
+
+  if(foundW && foundTop) X53mass_ = (wjet+topjet).M();
 
   nConst_=nCleanAK4Jets_+vNonSSLep.size();
   DilepMass_ = DilepMasstemp;
