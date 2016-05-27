@@ -512,12 +512,12 @@ int main(int argc, char* argv[]){
   mumu__WZZ->SetBinContent(1,nWZZ2);  mumu__WZZ->SetBinError(1,errWZZ2);
 
   //TH1F* All__ZZZ = new TH1F("All__ZZZ","",3,0,3);
-  TH1F* elel__ZZZ = new TH1F("elel__ZZZ","",1,0,1);
+  /*TH1F* elel__ZZZ = new TH1F("elel__ZZZ","",1,0,1);
   TH1F* elmu__ZZZ = new TH1F("elmu__ZZZ","",1,0,1);
   TH1F* mumu__ZZZ = new TH1F("mumu__ZZZ","",1,0,1);
   elel__ZZZ->SetBinContent(1,nZZZ0);  elel__ZZZ->SetBinError(1,errZZZ0);
   elmu__ZZZ->SetBinContent(1,nZZZ1);  elmu__ZZZ->SetBinError(1,errZZZ1);
-  mumu__ZZZ->SetBinContent(1,nZZZ2);  mumu__ZZZ->SetBinError(1,errZZZ2);
+  mumu__ZZZ->SetBinContent(1,nZZZ2);  mumu__ZZZ->SetBinError(1,errZZZ2);*/
 
 
 
@@ -620,14 +620,14 @@ int main(int argc, char* argv[]){
   fout->WriteTObject(mumu__WZZ);
   fout_mumu->WriteTObject(mumu__WZZ);
 
-  fout->WriteTObject(elel__ZZZ);
+  /* fout->WriteTObject(elel__ZZZ);
   fout_elel->WriteTObject(elel__ZZZ);
 
   fout->WriteTObject(elmu__ZZZ);
   fout_elmu->WriteTObject(elmu__ZZZ);
 
   fout->WriteTObject(mumu__ZZZ);
-  fout_mumu->WriteTObject(mumu__ZZZ);
+  fout_mumu->WriteTObject(mumu__ZZZ);*/
 
 
   
