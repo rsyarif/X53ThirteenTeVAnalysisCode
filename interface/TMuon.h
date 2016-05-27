@@ -29,7 +29,9 @@ public:
   double miniIso;
 
   bool cutBasedLoose();
+  bool cutBasedLooseMiniIso();
   bool cutBasedTight();
+  bool cutBasedTight_NoIso();
   bool cutBasedTightMiniIso();
 
   void init();
