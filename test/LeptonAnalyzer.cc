@@ -21,6 +21,7 @@ const double dM   = 15;             //Size of window around Z
 bool matchToGenLep(TMuon* mu, std::vector<TGenParticle*> genParticles);
 bool matchToGenLep(TElectron* el, std::vector<TGenParticle*> genParticles);
 void doMuCutFlow(TH1F*& h, TMuon* mu);
+void doMuCutFlow_MiniIso(TH1F*& h, TMuon* mu);
 void doElCutFlow_Barrel(TH1F*& h, TElectron* el);
 void doElCutFlow_Endcap(TH1F*& h, TElectron* el);
 void doRCElCutFlow_Barrel(TH1F*& h, TElectron* el);
@@ -33,7 +34,7 @@ int main(int argc, char* argv[]){
   //read in arguments
   std::string argv1(argv[1]);
   bool data;
-  if(argv1.find("Data")!=std::string::npos) data=true;
+  if(argv1.find("data")!=std::string::npos) data=true;
   else data=false;
 
   std::string mass;
@@ -45,8 +46,8 @@ int main(int argc, char* argv[]){
 
   TString filename;
   if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
-  else filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/ObjectReview/ljmet_trees/ljmet_X53X53m"+mass+chirality+".root";
-
+  else filename = "/eos/uscms/store/user/clint/May03/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+                  
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
 
@@ -65,10 +66,13 @@ int main(int argc, char* argv[]){
 
   //setup histograms for muons
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",13,0,13);
+  TH1F* h_MuCutFlow_MiniIso = new TH1F("h_MuCutFlow_MiniIso","Muon Cut Flow MiniIso",13,0,13);
   TH1F* hPtNum_Mu = new TH1F("hPtNum_Mu","p_{T} of Tight Muons",60,0,600);
   TH1F* hPtDen_Mu = new TH1F("hPtDen_Mu","p_{T} of Loose Muons",60,0,600);
   TH1F* hEtaNum_Mu = new TH1F("hEtaNum_Mu","#eta of Tight Muons",15,-3,3);
   TH1F* hEtaDen_Mu = new TH1F("hEtaDen_Mu","#eta of Loose Muons",15,-3,3);
+  TH1F* hRelIso_Mu = new TH1F("hRelIso_Mu","RelIso of Tight Muons",100,0,1);
+  TH1F* hMiniIso_Mu = new TH1F("hMiniIso_Mu","miniIso of Tight Muons",100,0,1);
 
   //setup histograms for electrons
   TH1F* h_ElCutFlow_Barrel = new TH1F("h_ElCutFlow_Barrel","Electron Cut Flow",14,0,14);
@@ -177,8 +181,13 @@ int main(int argc, char* argv[]){
 	  hPtNum_Mu->Fill(imu->pt);
 	  hEtaNum_Mu->Fill(imu->eta);
 	}
+	if(imu->cutBasedTight_NoIso()){
+	  hMiniIso_Mu->Fill(imu->miniIso);
+	  hRelIso_Mu->Fill(imu->relIso);
+	}
 	//now do cutflow
 	doMuCutFlow(h_MuCutFlow, imu);
+	doMuCutFlow_MiniIso(h_MuCutFlow_MiniIso, imu);
       }
     }//end check of muon trigger firing
 
@@ -373,6 +382,7 @@ int main(int argc, char* argv[]){
   
   //scale cutflow diagrams
   h_MuCutFlow->Scale( 1.0 / h_MuCutFlow->GetBinContent(1));
+  h_MuCutFlow_MiniIso->Scale( 1.0 / h_MuCutFlow_MiniIso->GetBinContent(1));
   h_ElCutFlow_Barrel->Scale( 1.0 / h_ElCutFlow_Barrel->GetBinContent(1));
   h_ElCutFlow_Endcap->Scale( 1.0 / h_ElCutFlow_Endcap->GetBinContent(1));
   h_ElCutFlow_RC_Barrel->Scale( 1.0 / h_ElCutFlow_RC_Barrel->GetBinContent(1));
@@ -392,6 +402,22 @@ int main(int argc, char* argv[]){
   h_MuCutFlow->GetXaxis()->SetBinLabel(11,"nTrackLayers > 5");
   h_MuCutFlow->GetXaxis()->SetBinLabel(12,"RelIso <0.2");
   h_MuCutFlow->GetXaxis()->SetBinLabel(13,"p_{T} > 40 ");
+
+  //write out bin labels
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(1,"All");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(2,"p_{T} > 30");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(3,"#eta <2.4");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(4,"Global");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(5,"#Chi^{2}<10");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(6,"dZ<0.5");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(7,"dXY <0.2");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(8,"nValHits >0");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(9,"nMatched Stations >1");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(10,"nValPixHits > 0");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(11,"nTrackLayers > 5");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(12,"MiniIso <0.16");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(13,"p_{T} > 40 ");
+
 
   //bin labels for electrons
   h_ElCutFlow_Barrel->GetXaxis()->SetBinLabel(1,"All");
@@ -547,6 +573,38 @@ void doMuCutFlow(TH1F*& hist, TMuon* mu){
   if(mu->pt<40)                return;
   else hist->AddBinContent(13);
 }
+
+void doMuCutFlow_MiniIso(TH1F*& hist, TMuon* mu){
+
+  //increment first bin so that it represents 'null' cut
+  hist->AddBinContent(1);
+
+  if(mu->pt<30)                return;
+  else hist->AddBinContent(2);
+  if(mu->eta>2.4)              return;
+  else hist->AddBinContent(3);
+  if(!mu->Global)              return;
+  else hist->AddBinContent(4);
+  if(mu->chi2 > 10)            return;
+  else hist->AddBinContent(5);
+  if(mu->dz > 0.5)             return;
+  else hist->AddBinContent(6);
+  if(mu->dxy > 0.2)            return;
+  else hist->AddBinContent(7);
+  if(mu->nValMuHits < 1)       return;
+  else hist->AddBinContent(8);
+  if(mu->nMatchedStations < 2) return;
+  else hist->AddBinContent(9);
+  if(mu->nValPixelHits < 1)    return;
+  else hist->AddBinContent(10);
+  if(mu->nTrackerLayers < 6)   return;
+  else hist->AddBinContent(11);
+  if(mu->miniIso > 0.16)         return;
+  else hist->AddBinContent(12);
+  if(mu->pt<40)                return;
+  else hist->AddBinContent(13);
+}
+
 
 void doElCutFlow_Barrel(TH1F*& hist, TElectron* el){
 
