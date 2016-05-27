@@ -254,6 +254,8 @@ class TreeReader{
   TBranch        *b_AK8JetTau3_JetSubCalc;
   std::vector<double>  *AK8JetNSubjets;
   TBranch        *b_AK8JetNSubjets_JetSubCalc;
+  std::vector<int>  *AK8JetSubjetIndex;
+  TBranch        *b_AK8JetSubjetIndex_JetSubCalc;
 
   //subjets
   std::vector<double>  *subJetEta;

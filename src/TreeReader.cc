@@ -88,23 +88,18 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   }
 
   //make AK8, that is, boosted jets
-  //std::cout<<"Making ak8 jet collection"<<std::endl;
+ 
   for(unsigned int i=0; i<nAK8Jets; i++){
-    /*    //only save if passes top or w tagging
-    bool save=false;
-    if( ( (*AK8JetTau2)[i] / (*AK8JetTau1)[i] <0.6 ) && (*AK8JetPruneMass)[i]>65 && (*AK8JetPruneMass)[i]<105) save = true;
-    else if( ((*AK8JetPt)[i]>400) && ( (*AK8JetTau3)[i] / (*AK8JetTau2)[i] < 0.54) && ( (*AK8JetSDMass)[i] >110 && (*AK8JetSDMass)[i]<210)) save = true;
-    if(save){*/
-    allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau2)[i], (*AK8JetNSubjets)[i]));
-    for(unsigned int j=0; j<(*AK8JetNSubjets)[i];j++){
-      unsigned int itsj = i+j;
+    allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau3)[i], (*AK8JetNSubjets)[i]));
+    int firstsub = (*AK8JetSubjetIndex)[i];
+    int nsubs = (*AK8JetNSubjets)[i];
+    for(int j = firstsub; j< firstsub + nsubs;j++){
       //std::cout<<"making subjet: "<<j<<" out of: "<<(*AK8JetNSubjets)[i]<<" for ak8 jet number: "<<i<<" and total size of subjet vector is: "<<(*subJetPt).size()<<std::endl;
-      TJet* subjet = new TJet((*subJetPt)[itsj],(*subJetEta)[itsj],(*subJetPhi)[itsj],(*subJetBDisc)[itsj],(*subJetDeltaR)[itsj], (*subJetMass)[itsj], (*subJetBTag)[itsj]);
+      TJet* subjet = new TJet((*subJetPt)[j],(*subJetEta)[j],(*subJetPhi)[j],(*subJetBDisc)[j],(*subJetDeltaR)[j], (*subJetMass)[j], (*subJetBTag)[j]);
       allAK8Jets.at(i)->AddSubJet(subjet);
     }
-    //}
   }
-  //std::cout<<"Making ak8 jet collection"<<std::endl;
+
 
   //make cleaned jets - original collection
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
@@ -317,6 +312,7 @@ void TreeReader::Init(TTree *treetemp)
   AK8JetTau2=0;
   AK8JetTau3=0;
   AK8JetNSubjets=0;
+  AK8JetSubjetIndex=0;
 
   //subjets
   subJetEta=0;
@@ -427,6 +423,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("theJetAK8NjettinessTau2_JetSubCalc", &AK8JetTau2, &b_AK8JetTau2_JetSubCalc);
   tree->SetBranchAddress("theJetAK8NjettinessTau3_JetSubCalc", &AK8JetTau3, &b_AK8JetTau3_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SDSubjetSize_JetSubCalc", &AK8JetNSubjets, &b_AK8JetNSubjets_JetSubCalc);
+  tree->SetBranchAddress("theJetAK8SDSubjetIndex_JetSubCalc", &AK8JetSubjetIndex, &b_AK8JetSubjetIndex_JetSubCalc);
 
   //subjets
   tree->SetBranchAddress("theJetAK8SDSubjetPt_JetSubCalc", &subJetPt, &b_subJetPt_JetSubCalc);

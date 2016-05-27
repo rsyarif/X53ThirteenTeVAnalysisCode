@@ -137,6 +137,74 @@ class TreeMaker {
   float AK8Jet2SubjetMaxBDisc_;
 
 
+  //top tagged jets
+  float TopJet1Pt_;
+  float TopJet1Eta_;
+  float TopJet1Phi_;
+  float TopJet1Energy_;
+  float TopJet1TrimMass_;
+  float TopJet1PruneMass_;
+  float TopJet1SDMass_;
+  float TopJet1FiltMass_;
+  float TopJet1Tau1_;
+  float TopJet1Tau2_;
+  float TopJet1Tau3_;
+  float TopJet1Tau21_;
+  float TopJet1Tau31_;
+  float TopJet1Tau32_;
+  float TopJet1SubjetMaxBDisc_;
+
+  float TopJet2Pt_;
+  float TopJet2Eta_;
+  float TopJet2Phi_;
+  float TopJet2Energy_;
+  float TopJet2TrimMass_;
+  float TopJet2PruneMass_;
+  float TopJet2SDMass_;
+  float TopJet2FiltMass_;
+  float TopJet2Tau1_;
+  float TopJet2Tau2_;
+  float TopJet2Tau3_;
+  float TopJet2Tau21_;
+  float TopJet2Tau31_;
+  float TopJet2Tau32_;
+  float TopJet2SubjetMaxBDisc_;
+
+
+  //w jets
+  float WJet1Pt_;
+  float WJet1Eta_;
+  float WJet1Phi_;
+  float WJet1Energy_;
+  float WJet1TrimMass_;
+  float WJet1PruneMass_;
+  float WJet1SDMass_;
+  float WJet1FiltMass_;
+  float WJet1Tau1_;
+  float WJet1Tau2_;
+  float WJet1Tau3_;
+  float WJet1Tau21_;
+  float WJet1Tau31_;
+  float WJet1Tau32_;
+  float WJet1SubjetMaxBDisc_;
+
+  float WJet2Pt_;
+  float WJet2Eta_;
+  float WJet2Phi_;
+  float WJet2Energy_;
+  float WJet2TrimMass_;
+  float WJet2PruneMass_;
+  float WJet2SDMass_;
+  float WJet2FiltMass_;
+  float WJet2Tau1_;
+  float WJet2Tau2_;
+  float WJet2Tau3_;
+  float WJet2Tau21_;
+  float WJet2Tau31_;
+  float WJet2Tau32_;
+  float WJet2SubjetMaxBDisc_;
+
+
   //collections for newCleaned jets
   float newCleanAK4Jet1Pt_;
   float newCleanAK4Jet1Eta_;
@@ -151,6 +219,9 @@ class TreeMaker {
   int nNewCleanAK4Jets_;
   float newCleanAK4HT_;
 
+  int nTopTaggedJets_;
+  int nWTaggedJets_;
+  float X53mass_;
 
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
