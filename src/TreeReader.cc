@@ -34,6 +34,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   if(isMc){
     for (unsigned int i = 0;i<genJets.size();++i ) delete genJets[i];
     for (unsigned int i = 0;i<genParticles.size();++i ) delete genParticles[i];
+    for (unsigned int i = 0;i<hadronicGenJets.size();++i ) delete hadronicGenJets[i];
   }
   ////std::cout<<"clearing collections"<<std::endl;
   allMuons.clear();
@@ -53,6 +54,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   if(isMc){
     genJets.clear();
     genParticles.clear();
+    hadronicGenJets.clear();
   }
 
   //check to make sure not empty
@@ -87,8 +89,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     allAK4Jets.push_back(new TJet( (*AK4JetPt)[i], (*AK4JetEta)[i], (*AK4JetPhi)[i],(*AK4JetEnergy)[i]) );
   }
 
-  //make AK8, that is, boosted jets
- 
+  //make AK8, that is, boosted jets 
   for(unsigned int i=0; i<nAK8Jets; i++){
     allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau3)[i], (*AK8JetNSubjets)[i]));
     int firstsub = (*AK8JetSubjetIndex)[i];
@@ -107,8 +108,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
     
   }
-  //std::cout<<"Making new ak4 jets"<<std::endl;
-  //make cleaned jets - only save if not inside (i.e.dR<0.8 of AK8 jets)
+
+  //make cleaned jets - only save if not inside (i.e.dR<0.8 of AK8 jets) - DONE IN TREEMAKER NOW
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
     if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
 
@@ -118,7 +119,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
       newCleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
     }
   }
-  //std::cout<<"Made new ak4 jets"<<std::endl;
+
     
 
   if(isMc){
@@ -132,6 +133,12 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     for(unsigned int i=0; i< genPt->size() ; i++){
       genParticles.push_back(new TGenParticle( (*genPt)[i], (*genEta)[i], (*genPhi)[i],(*genEnergy)[i],(*genStatus)[i], (*genId)[i], (*genMotherId)[i], (*genIsPrompt)[i],(*genIsFromPromptTau)[i], (*genPMotherHasC)[i], (*genPMotherHasB)[i], (*genPMother)[i] ));
     }
+
+    //boosted hadronic gets
+    for(unsigned int i=0; i<HadronicVHtPt->size(); i++){
+      hadronicGenJets.push_back(new THadronicGenJet( (*HadronicVHtPt)[i],(*HadronicVHtEta)[i], (*HadronicVHtPhi)[i], (*HadronicVHtEnergy)[i],(*HadronicVHtID)[i],(*HadronicVHtStatus)[i],(*HadronicVHtD0Pt)[i],(*HadronicVHtD0Eta)[i],(*HadronicVHtD0Phi)[i],(*HadronicVHtD0E)[i],(*HadronicVHtD1Pt)[i],(*HadronicVHtD1Eta)[i],(*HadronicVHtD1Phi)[i],(*HadronicVHtD1E)[i],(*HadronicVHtD2Pt)[i],(*HadronicVHtD2Eta)[i],(*HadronicVHtD2Phi)[i],(*HadronicVHtD2E)[i]) );
+    }
+
   }
 
   //now from allMuons make goodMuons
@@ -459,6 +466,28 @@ void TreeReader::Init(TTree *treetemp)
     tree->SetBranchAddress("genPhi_DileptonCalc", &genPhi, &b_genPhi_DileptonCalc);
     tree->SetBranchAddress("genPt_DileptonCalc", &genPt, &b_genPt_DileptonCalc);
     //  tree->SetBranchAddress("genCharge_DileptonCalc", &genCharge, &b_genCharge_DileptonCalc);
+    
+    //boosted jets
+    tree->SetBranchAddress("HadronicVHtPt_JetSubCalc", &HadronicVHtPt, &b_HadronicVHtPt_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtEta_JetSubCalc", &HadronicVHtEta, &b_HadronicVHtEta_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtPhi_JetSubCalc", &HadronicVHtPhi, &b_HadronicVHtPhi_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtEnergy_JetSubCalc", &HadronicVHtEnergy, &b_HadronicVHtEnergy_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtID_JetSubCalc", &HadronicVHtID, &b_HadronicVHtID_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtStatus_JetSubCalc", &HadronicVHtStatus, &b_HadronicVHtStatus_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD0Pt_JetSubCalc", &HadronicVHtD0Pt, &b_HadronicVHtD0Pt_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD0Eta_JetSubCalc", &HadronicVHtD0Eta, &b_HadronicVHtD0Eta_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD0Phi_JetSubCalc", &HadronicVHtD0Phi, &b_HadronicVHtD0Phi_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD0E_JetSubCalc", &HadronicVHtD0E, &b_HadronicVHtD0E_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD1Pt_JetSubCalc", &HadronicVHtD1Pt, &b_HadronicVHtD1Pt_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD1Eta_JetSubCalc", &HadronicVHtD1Eta, &b_HadronicVHtD1Eta_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD1Phi_JetSubCalc", &HadronicVHtD1Phi, &b_HadronicVHtD1Phi_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD1E_JetSubCalc", &HadronicVHtD1E, &b_HadronicVHtD1E_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD2Pt_JetSubCalc", &HadronicVHtD2Pt, &b_HadronicVHtD2Pt_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD2Eta_JetSubCalc", &HadronicVHtD2Eta, &b_HadronicVHtD2Eta_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD2Phi_JetSubCalc", &HadronicVHtD2Phi, &b_HadronicVHtD2Phi_JetSubCalc);
+    tree->SetBranchAddress("HadronicVHtD2E_JetSubCalc", &HadronicVHtD2E, &b_HadronicVHtD2E_JetSubCalc);
+    
+    
   }
 
   //met

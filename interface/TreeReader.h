@@ -10,6 +10,7 @@
 #include "TElectron.h"
 #include "TMuon.h"
 #include "TBoostedJet.h"
+#include "THadronicGenJet.h"
 #include <stdio.h>
 #include <vector>
 
@@ -29,6 +30,7 @@ class TreeReader{
   std::vector <TGenParticle*> genParticles;
   std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets,newCleanedAK4Jets;
   std::vector <TJet*> genJets;
+  std::vector <THadronicGenJet*> hadronicGenJets;
   std::vector<TBoostedJet*> allAK8Jets;
 
   //met
@@ -283,6 +285,46 @@ class TreeReader{
   TBranch        *b_genJetPhi_DileptonCalc;
   std::vector<double>  *genJetPt;
   TBranch        *b_genJetPt_DileptonCalc;
+
+
+  //hadronic boosted jets
+  std::vector<double> *HadronicVHtPt;
+  std::vector<double> *HadronicVHtEta;
+  std::vector<double> *HadronicVHtPhi;
+  std::vector<double> *HadronicVHtEnergy;
+  std::vector<int> *HadronicVHtID;
+  std::vector<int> *HadronicVHtStatus;
+  std::vector<double> *HadronicVHtD0Pt;
+  std::vector<double> *HadronicVHtD0Eta;
+  std::vector<double> *HadronicVHtD0Phi;
+  std::vector<double> *HadronicVHtD0E;
+  std::vector<double> *HadronicVHtD1Pt;
+  std::vector<double> *HadronicVHtD1Eta;
+  std::vector<double> *HadronicVHtD1Phi;
+  std::vector<double> *HadronicVHtD1E;
+  std::vector<double> *HadronicVHtD2Pt;
+  std::vector<double> *HadronicVHtD2Eta;
+  std::vector<double> *HadronicVHtD2Phi;
+  std::vector<double> *HadronicVHtD2E;
+
+  TBranch *b_HadronicVHtPt_JetSubCalc;
+  TBranch *b_HadronicVHtEta_JetSubCalc;
+  TBranch *b_HadronicVHtPhi_JetSubCalc;
+  TBranch *b_HadronicVHtEnergy_JetSubCalc;
+  TBranch *b_HadronicVHtID_JetSubCalc;
+  TBranch *b_HadronicVHtStatus_JetSubCalc;
+  TBranch *b_HadronicVHtD0Pt_JetSubCalc;
+  TBranch *b_HadronicVHtD0Eta_JetSubCalc;
+  TBranch *b_HadronicVHtD0Phi_JetSubCalc;
+  TBranch *b_HadronicVHtD0E_JetSubCalc;
+  TBranch *b_HadronicVHtD1Pt_JetSubCalc;
+  TBranch *b_HadronicVHtD1Eta_JetSubCalc;
+  TBranch *b_HadronicVHtD1Phi_JetSubCalc;
+  TBranch *b_HadronicVHtD1E_JetSubCalc;
+  TBranch *b_HadronicVHtD2Pt_JetSubCalc;
+  TBranch *b_HadronicVHtD2Eta_JetSubCalc;
+  TBranch *b_HadronicVHtD2Phi_JetSubCalc;
+  TBranch *b_HadronicVHtD2E_JetSubCalc;
 
   //MC weight info
   double          MCWeight;
