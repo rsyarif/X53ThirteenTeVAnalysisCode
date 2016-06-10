@@ -23,6 +23,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("trigSF",&trigSF_);
   tree->Branch("IDSF",&IDSF_);
   tree->Branch("IsoSF",&IsoSF_);
+  tree->Branch("JetTaggingSF",&JetTaggingSF_);
 
   tree->Branch("PUWeight",&puweight_);
 
@@ -215,7 +216,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc){
 
 
   weight_=weight;
@@ -376,7 +377,87 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   int nTaggedAK8Jets_ = taggedAK8Jets.size();
 
+  //get tagging scale factors
+  if(mc){
+    //set toptagged jets to matched
+    for(unsigned int i=0; i<topTaggedJets.size(); i++){
+      TBoostedJet* tj = topTaggedJets.at(i);
+      float minDR = 9999.9;
+      THadronicGenJet* testjet=0;
+      //find closest jet
+      for(unsigned int j=0; j< hadronicGenJets.size(); j++){
+	THadronicGenJet* thj = hadronicGenJets.at(j);
+	float dR = tj->lv.DeltaR(thj->lv);
+	if(dR< minDR){testjet = thj; minDR=dR;}
+      }
+      //now make sure testjet is within dR0.8 of tagged jet
+      if(minDR<0.8){
+	//make sure test jet has correct id
+	if(abs(testjet->id)==6){
+	  //now makesure the daughters are inside the ak8jet
+	  TLorentzVector lvd0; lvd0.SetPtEtaPhiE(testjet->daughter0Pt,testjet->daughter0Eta,testjet->daughter0Phi,testjet->daughter0Energy);
+	  TLorentzVector lvd1; lvd1.SetPtEtaPhiE(testjet->daughter1Pt,testjet->daughter1Eta,testjet->daughter1Phi,testjet->daughter1Energy);
+	  TLorentzVector lvd2; lvd2.SetPtEtaPhiE(testjet->daughter2Pt,testjet->daughter2Eta,testjet->daughter2Phi,testjet->daughter2Energy);
+	  float d0dR = tj->lv.DeltaR(lvd0);
+	  float d1dR = tj->lv.DeltaR(lvd1);
+	  float d2dR = tj->lv.DeltaR(lvd2);
+	  if( d0dR < 0.8 && d1dR < 0.8 && d2dR<0.8){
+	    //pass all requirements for matching!
+	    topTaggedJets.at(i)->SetGenMatched();
+	  }//end check on daughters being with top jet
+	}//end check on hadronic jet being from top quark
+      }//end check on mindr <0.8
+    }//end loop on top tagged jets
+
+    //now set wtagged jets to matched
+    for(unsigned int i=0; i<wTaggedJets.size(); i++){
+      TBoostedJet* tj = wTaggedJets.at(i);
+      float minDR = 9999.9;
+      THadronicGenJet* testjet=0;
+      //find closest jet
+      for(unsigned int j=0; j< hadronicGenJets.size(); j++){
+	THadronicGenJet* thj = hadronicGenJets.at(j);
+	float dR = tj->lv.DeltaR(thj->lv);
+	if(dR< minDR){testjet = thj; minDR=dR;}
+      }
+      //now make sure testjet is within dR0.8 of tagged jet
+      if(minDR<0.8){
+	//make sure test jet has correct id
+	if(abs(testjet->id)==24){
+	  //now makesure the daughters are inside the ak8jet
+	  TLorentzVector lvd0; lvd0.SetPtEtaPhiE(testjet->daughter0Pt,testjet->daughter0Eta,testjet->daughter0Phi,testjet->daughter0Energy);
+	  TLorentzVector lvd1; lvd1.SetPtEtaPhiE(testjet->daughter1Pt,testjet->daughter1Eta,testjet->daughter1Phi,testjet->daughter1Energy);
+	  float d0dR = tj->lv.DeltaR(lvd0);
+	  float d1dR = tj->lv.DeltaR(lvd1);
+	  if( d0dR < 0.8 && d1dR < 0.8){
+	    //pass all requirements for matching!
+	    wTaggedJets.at(i)->SetGenMatched();
+	  }//end check on daughters being with w jet
+	}//end check on hadronic jet being from w quark
+      }//end check on mindr <0.8
+    }//end loop on wjets
+  }
  
+  //ok, have info on whether the jets are matched, so now calculate scalefactors
+  JetTaggingSF_=1.0;
+  //should never get to modify scale factor unless mc, but for safety
+  if(mc){
+    for(unsigned int i=0; i<topTaggedJets.size();i++){
+      TBoostedJet *tj = topTaggedJets.at(i);
+      if(tj->genMatched){
+	if(tj->pt>400 && tj->pt<550) JetTaggingSF_ *= 0.89;
+	else if(tj->pt>55) JetTaggingSF_ *= 1.08;
+      }//end check on genMatched
+    }//end loop on top jets
+    
+    for(unsigned int i=0; i<wTaggedJets.size();i++){
+      TBoostedJet *tj = wTaggedJets.at(i);
+      if(tj->genMatched){
+	//if(tj->pt>400 && tj->pt<550) JetTaggingSF_ *= 0.89;
+	//else if(tj->pt>55) JetTaggingSF_ *= 1.08;
+      }//end check on genMatched
+    }//end loop on w jets
+  }
   if(nTaggedAK8Jets_>0){
     AK8Jet1Pt_=taggedAK8Jets.at(0)->pt;    
     AK8Jet1Eta_=taggedAK8Jets.at(0)->eta;
