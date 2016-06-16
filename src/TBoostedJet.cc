@@ -4,6 +4,7 @@ TBoostedJet::TBoostedJet(double pttemp, double etatemp, double phitemp, double e
   pt(pttemp),eta(etatemp),phi(phitemp),energy(energytemp),trimmedMass(tM),prunedMass(pM),softDropMass(sdM),filteredMass(fM),tau1(t1),tau2(t2),tau3(t3),nSubjets(nD)
 {
   setLV();
+  genMatched=false;
 }
 
 TBoostedJet::TBoostedJet(const TBoostedJet &jet){
@@ -12,9 +13,14 @@ TBoostedJet::TBoostedJet(const TBoostedJet &jet){
   phi=jet.phi;
   energy=jet.energy;
   setLV();
+  genMatched=false;
 }
 
 TBoostedJet::~TBoostedJet(){}
+
+void TBoostedJet::SetGenMatched(){
+  genMatched=true;
+}
 
 void TBoostedJet::AddSubJet(TJet* j){
 
@@ -49,6 +55,14 @@ bool TBoostedJet::isTopTag_BTag_LJets(){
   bool tag = (softDropMass>110 && softDropMass<210) && ( (tau3/tau2) < 0.69) && (maxBDisc > 0.66) && pt>400;
   return tag;
 }
+
+bool TBoostedJet::isTopTag_LJets(){
+
+
+  bool tag = (softDropMass>110 && softDropMass<210) && ( (tau3/tau2) < 0.69) && pt>400;
+  return tag;
+}
+
 
 bool TBoostedJet::isTopTag(){
 

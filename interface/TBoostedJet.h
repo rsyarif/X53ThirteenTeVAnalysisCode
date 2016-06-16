@@ -37,15 +37,17 @@ class TBoostedJet{
   TBoostedJet(const TBoostedJet& jet);
   ~TBoostedJet();
   TLorentzVector lv;
-
+  bool genMatched;
   void setLV(){
     lv.SetPxPyPzE(pt*cos(phi), pt*sin(phi), pt*TMath::SinH(eta), energy);
   }
 
   void AddSubJet(TJet* j);
+  void SetGenMatched();
   bool isTopTag();
   bool isTopTag_BTag_JMAR();
   bool isTopTag_BTag_LJets();
+  bool isTopTag_LJets();
   bool isWTag_JMAR();
   bool isWTag_t21p6();
 };
