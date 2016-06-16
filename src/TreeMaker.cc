@@ -368,7 +368,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
       //std::cout<<"Tau21 for jet: "<<i<<" is: "<<AK8Jets.at(i)->tau2 / AK8Jets.at(i)->tau1<<std::endl;
       taggedAK8Jets.push_back(AK8Jets.at(i));
       if(AK8Jets.at(i)->isTopTag_LJets()) topTaggedJets.push_back(AK8Jets.at(i));
-      if(AK8Jets.at(i)->isWTag_JMAR() && !(AK8Jets.at(i)->isTopTag_BTag_LJets())) wTaggedJets.push_back(AK8Jets.at(i));
+      if(AK8Jets.at(i)->isWTag_JMAR() && !(AK8Jets.at(i)->isTopTag_LJets())) wTaggedJets.push_back(AK8Jets.at(i));
     }
   }
 
