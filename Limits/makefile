@@ -26,4 +26,6 @@ makeLimitRootFiles:
 makeLimitRootFiles_Boosted:
 	$(CXX) $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o makeLimitRootFiles_Boosted.o makeLimitRootFiles_Boosted.cc
 
+makeLimitRootFiles_miniIso:
+	$(CXX) $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o makeLimitRootFiles_miniIso.o makeLimitRootFiles_miniIso.cc
 

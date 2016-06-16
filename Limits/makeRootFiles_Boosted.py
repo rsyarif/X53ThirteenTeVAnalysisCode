@@ -9,9 +9,10 @@ theta=True
 
 for mass in masses:
     for chi in chiralities:
-        for i in range(0,8):
+        for i in range(0,1):
             ht=50*i
-            command="./makeLimitRootFiles_Boosted.o %i %s %i" % (mass,chi,ht)
-            print command
-            os.system(command)
+            for j in range(0,2):
+                command="./makeLimitRootFiles_Boosted.o %i %s %i %i" % (mass,chi,ht,j)
+                print command
+                os.system(command)
             
