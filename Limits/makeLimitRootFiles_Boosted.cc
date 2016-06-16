@@ -51,12 +51,17 @@ int main(int argc, char* argv[]){
   else{arg3>>HTshift;}
   float HTcut   = 900.0+HTshift;
 
-  int nConst = 5;
+  std::istringstream arg4(argv[4]);
+  int nConstShift=0;
+  if(!(arg4>>nConstShift)){ std::cout<<"Invalid number for nConst shift! Exiting..."<<std::endl; return 0;}
+  else{arg4>>nConstShift;}
+
+  int nConst = 5+nConstShift;
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
