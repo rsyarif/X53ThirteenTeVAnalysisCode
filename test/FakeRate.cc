@@ -81,8 +81,8 @@ int main(int argc, char* argv[]){
   //get correct file
   std::vector<std::string> filenames;
   if(argv1.find("Data")!=std::string::npos) {
-    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_Mu.root");
-    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Run2015D/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_El.root");
+    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/clint/FakeRate/ljmet_trees/ljmet_FakeRate_Mu.root");
+    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/clint/FakeRate/ljmet_trees/ljmet_FakeRate_El.root");
   }
   else{
     //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT100To200.root");

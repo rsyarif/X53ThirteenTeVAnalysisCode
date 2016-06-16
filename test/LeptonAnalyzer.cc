@@ -44,9 +44,9 @@ int main(int argc, char* argv[]){
       mass =argv[3] ;
   }
 
-  TString filename;
-  if(data) filename = "/eos/uscms/store/user/lpctlbsm/clint/Run2015D/ObjectReview/ljmet_trees/ljmet_Data_All.root";
-  else filename = "/eos/uscms/store/user/clint/May03/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  TString filename;                                
+  if(data) filename = "/eos/uscms/store/user/clint/May25/ljmet_trees/ljmet_Data_All.root";
+  else filename = "root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -321,11 +321,14 @@ int main(int argc, char* argv[]){
     for(std::vector<TLepton*>::size_type i =0; i<tr->allElectrons.size(); i++){
 
       TElectron* iel = tr->allElectrons.at(i);
-
-      bool matched = matchToGenLep(iel,tr->genParticles);
+      if(!iel->mvaTightIso()) continue;
+      //if MC match to gen lepton
+      bool matched =false;
+      if(data) matched = true;
+      else{
+	matched = matchToGenLep(iel,tr->genParticles);
+      }
       if(!matched) continue;
-      //get gen particle matched to reco electron
-      TGenParticle* gP = getMatchedGenParticle(iel,tr->genParticles);
 
       //make bools for majority agreement - i.e. 2 out of 3 methods
       bool gsfctfCons = iel->gsfCharge==iel->ctfCharge ? true : false;
@@ -363,17 +366,21 @@ int main(int argc, char* argv[]){
 	}
       }
 
-      //now check accuracy of each method
-      h_accGsf_PtDen->Fill(iel->pt);
-      h_accGsf_EtaDen->Fill(iel->eta);
-      if(gP->charge == iel->gsfCharge) {h_accGsf_PtNum->Fill(iel->pt);h_accGsf_EtaNum->Fill(iel->eta);}
-      h_accCtf_PtDen->Fill(iel->pt);
-      h_accCtf_EtaDen->Fill(iel->eta);
-      if(gP->charge == iel->ctfCharge){ h_accCtf_PtNum->Fill(iel->pt); h_accCtf_EtaNum->Fill(iel->eta);}
-      h_accScPix_PtDen->Fill(iel->pt);
-      h_accScPix_EtaDen->Fill(iel->eta);
-      if(gP->charge == iel->scpixCharge){ h_accScPix_PtNum->Fill(iel->pt); h_accScPix_EtaNum->Fill(iel->eta);}
+      //now check accuracy of each method - only for mc
+      if(!data){
+	//get gen particle matched to reco electron
+	TGenParticle* gP = getMatchedGenParticle(iel,tr->genParticles);
 
+	h_accGsf_PtDen->Fill(iel->pt);
+	h_accGsf_EtaDen->Fill(iel->eta);
+	if(gP->charge == iel->gsfCharge) {h_accGsf_PtNum->Fill(iel->pt);h_accGsf_EtaNum->Fill(iel->eta);}
+	h_accCtf_PtDen->Fill(iel->pt);
+	h_accCtf_EtaDen->Fill(iel->eta);
+	if(gP->charge == iel->ctfCharge){ h_accCtf_PtNum->Fill(iel->pt); h_accCtf_EtaNum->Fill(iel->eta);}
+	h_accScPix_PtDen->Fill(iel->pt);
+	h_accScPix_EtaDen->Fill(iel->eta);
+	if(gP->charge == iel->scpixCharge){ h_accScPix_PtNum->Fill(iel->pt); h_accScPix_EtaNum->Fill(iel->eta);}
+      }
       
     }//end loop over electrons
 
@@ -415,7 +422,7 @@ int main(int argc, char* argv[]){
   h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(9,"nMatched Stations >1");
   h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(10,"nValPixHits > 0");
   h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(11,"nTrackLayers > 5");
-  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(12,"MiniIso <0.16");
+  h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(12,"MiniIso <0.2");
   h_MuCutFlow_MiniIso->GetXaxis()->SetBinLabel(13,"p_{T} > 40 ");
 
 
@@ -599,7 +606,7 @@ void doMuCutFlow_MiniIso(TH1F*& hist, TMuon* mu){
   else hist->AddBinContent(10);
   if(mu->nTrackerLayers < 6)   return;
   else hist->AddBinContent(11);
-  if(mu->miniIso > 0.16)         return;
+  if(mu->miniIso > 0.2)         return;
   else hist->AddBinContent(12);
   if(mu->pt<40)                return;
   else hist->AddBinContent(13);

@@ -50,116 +50,116 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["TTbar"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar.root";
-  bg_samples["TTbar_ext1"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar_ext1.root";
-  bg_samples["TTbar_ext2"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar_ext2.root";
-  bg_samples["TTW"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTW.root";
-  bg_samples["TTZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTZ.root";
-  bg_samples["TTH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTH.root";
-  bg_samples["TTTT"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTTT.root";
-  bg_samples["TTWW"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTWW.root";
-  bg_samples["WW"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WW.root";
-  bg_samples["WWW"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WWW.root";
-  bg_samples["WWZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WWZ.root";
-  bg_samples["WZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WZZ.root";
-  bg_samples["ZZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_ZZZ.root";
-  bg_samples["WZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WZ.root";
-  bg_samples["WZ_MiniAODv1"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WZ_MiniAODv1.root";
-  bg_samples["ZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_ZZ.root";
-  bg_samples["VH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_VH.root";
-  bg_samples["WJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WJets.root";
-  bg_samples["DYJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_DYJets.root";
-  bg_samples["WpWp"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WpWp.root";
-  bg_samples["WW-mpi"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WW-mpi.root";
+  bg_samples["TTJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["TTbar"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["TTbar_ext1"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["TTbar_ext2"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar_ext2.root";
+  bg_samples["TTW"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTW.root";
+  bg_samples["TTZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTZ.root";
+  bg_samples["TTH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTH.root";
+  bg_samples["TTTT"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTTT.root";
+  bg_samples["TTWW"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTWW.root";
+  bg_samples["WW"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WW.root";
+  bg_samples["WWW"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WWW.root";
+  bg_samples["WWZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WWZ.root";
+  bg_samples["WZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WZZ.root";
+  bg_samples["ZZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_ZZZ.root";
+  bg_samples["WZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WZ.root";
+  bg_samples["WZ_MiniAODv1"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WZ_MiniAODv1.root";
+  bg_samples["ZZ"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_ZZ.root";
+  bg_samples["VH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_VH.root";
+  bg_samples["WJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WJets.root";
+  bg_samples["DYJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_DYJets.root";
+  bg_samples["WpWp"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WpWp.root";
+  bg_samples["WW-mpi"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WW-mpi.root";
 
   //nonoPrompt versions
-  bg_samples["NonPromptTTJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTJets.root";
-  bg_samples["NonPromptWJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar.root";
-  bg_samples["NonPromptTTbar_ext1"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar_ext1.root";
-  bg_samples["NonPromptTTbar_ext2"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_TTbar_ext2.root";
+  bg_samples["NonPromptTTJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTJets.root";
+  bg_samples["NonPromptWJets"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_WJets.root";
+  bg_samples["NonPromptTTbar"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar.root";
+  bg_samples["NonPromptTTbar_ext1"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar_ext1.root";
+  bg_samples["NonPromptTTbar_ext2"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_TTbar_ext2.root";
 
   
-  sig_samples["X53X53m700RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m700RH.root";
-  sig_samples["X53X53m800RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m800RH.root";
-  sig_samples["X53X53m900RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m900RH.root";
+  sig_samples["X53X53m700RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m700RH.root";
+  sig_samples["X53X53m800RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m800RH.root";
+  sig_samples["X53X53m900RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m900RH.root";
   //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1000RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1100RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1100RH.root";
-  sig_samples["X53X53m1200RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1200RH.root";
-  sig_samples["X53X53m1300RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1300RH.root";
-  sig_samples["X53X53m1400RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1400RH.root";
-  sig_samples["X53X53m1500RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1500RH.root";
-  sig_samples["X53X53m1600RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1600RH.root";
-  sig_samples["X53X53m700LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m700LH.root";
-  sig_samples["X53X53m800LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m800LH.root";
-  sig_samples["X53X53m900LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m900LH.root";
-  sig_samples["X53X53m1000LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1000LH.root";
-  sig_samples["X53X53m1100LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1100LH.root";
-  sig_samples["X53X53m1200LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1200LH.root";
-  sig_samples["X53X53m1300LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1300LH.root";
-  sig_samples["X53X53m1400LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1400LH.root";
-  sig_samples["X53X53m1500LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1500LH.root";
-  sig_samples["X53X53m1600LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1600LH.root";
+  sig_samples["X53X53m1000RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1000RH.root";
+  sig_samples["X53X53m1100RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1100RH.root";
+  sig_samples["X53X53m1200RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1200RH.root";
+  sig_samples["X53X53m1300RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1300RH.root";
+  sig_samples["X53X53m1400RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1400RH.root";
+  sig_samples["X53X53m1500RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1500RH.root";
+  sig_samples["X53X53m1600RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1600RH.root";
+  sig_samples["X53X53m700LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m700LH.root";
+  sig_samples["X53X53m800LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m800LH.root";
+  sig_samples["X53X53m900LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m900LH.root";
+  sig_samples["X53X53m1000LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1000LH.root";
+  sig_samples["X53X53m1100LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1100LH.root";
+  sig_samples["X53X53m1200LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1200LH.root";
+  sig_samples["X53X53m1300LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1300LH.root";
+  sig_samples["X53X53m1400LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1400LH.root";
+  sig_samples["X53X53m1500LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1500LH.root";
+  sig_samples["X53X53m1600LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1600LH.root";
 
-  sig_samples["X53X53m700RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
+  sig_samples["X53X53m700RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
   //sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Fall15/25ns/Feb20/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
-  sig_samples["X53X53m800RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
-  sig_samples["X53X53m900RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
-  sig_samples["X53X53m1000RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
-  sig_samples["X53X53m1100RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
-  sig_samples["X53X53m1200RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
-  sig_samples["X53X53m1300RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
-  sig_samples["X53X53m1400RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
-  sig_samples["X53X53m1500RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
-  sig_samples["X53X53m1600RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
-  sig_samples["X53X53m700LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
-  sig_samples["X53X53m800LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
-  sig_samples["X53X53m900LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
-  sig_samples["X53X53m1000LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
-  sig_samples["X53X53m1100LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
-  sig_samples["X53X53m1200LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
-  sig_samples["X53X53m1300LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
-  sig_samples["X53X53m1400LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
-  sig_samples["X53X53m1500LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
-  sig_samples["X53X53m1600LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
+  sig_samples["X53X53m800RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m800RH_Inc.root";
+  sig_samples["X53X53m900RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m900RH_Inc.root";
+  sig_samples["X53X53m1000RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1000RH_Inc.root";
+  sig_samples["X53X53m1100RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1100RH_Inc.root";
+  sig_samples["X53X53m1200RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1200RH_Inc.root";
+  sig_samples["X53X53m1300RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1300RH_Inc.root";
+  sig_samples["X53X53m1400RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1400RH_Inc.root";
+  sig_samples["X53X53m1500RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1500RH_Inc.root";
+  sig_samples["X53X53m1600RH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1600RH_Inc.root";
+  sig_samples["X53X53m700LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m700LH_Inc.root";
+  sig_samples["X53X53m800LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m800LH_Inc.root";
+  sig_samples["X53X53m900LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m900LH_Inc.root";
+  sig_samples["X53X53m1000LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1000LH_Inc.root";
+  sig_samples["X53X53m1100LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1100LH_Inc.root";
+  sig_samples["X53X53m1200LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1200LH_Inc.root";
+  sig_samples["X53X53m1300LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1300LH_Inc.root";
+  sig_samples["X53X53m1400LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1400LH_Inc.root";
+  sig_samples["X53X53m1500LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1500LH_Inc.root";
+  sig_samples["X53X53m1600LH_Inc"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m1600LH_Inc.root";
 
   
-  sig_samples["X53Tm700RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
-  sig_samples["X53Tm800RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
-  sig_samples["X53Tm900RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
-  sig_samples["X53Tm1000RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
-  sig_samples["X53Tm1100RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
-  sig_samples["X53Tm1200RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
-  sig_samples["X53Tm1300RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
-  sig_samples["X53Tm1400RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
-  sig_samples["X53Tm1500RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
-  sig_samples["X53Tm1600RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
-  sig_samples["X53Tm700LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
-  sig_samples["X53Tm800LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
-  sig_samples["X53Tm900LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
-  sig_samples["X53Tm1000LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
-  sig_samples["X53Tm1100LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
-  sig_samples["X53Tm1200LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
-  sig_samples["X53Tm1300LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
-  sig_samples["X53Tm1400LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
-  sig_samples["X53Tm1500LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
-  sig_samples["X53Tm1600LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
+  sig_samples["X53Tm700RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-700_right.root";
+  sig_samples["X53Tm800RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-800_right.root";
+  sig_samples["X53Tm900RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-900_right.root";
+  sig_samples["X53Tm1000RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1000_right.root";
+  sig_samples["X53Tm1100RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1100_right.root";
+  sig_samples["X53Tm1200RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1200_right.root";
+  sig_samples["X53Tm1300RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1300_right.root";
+  sig_samples["X53Tm1400RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1400_right.root";
+  sig_samples["X53Tm1500RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1500_right.root";
+  sig_samples["X53Tm1600RH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1600_right.root";
+  sig_samples["X53Tm700LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-700_left.root";
+  sig_samples["X53Tm800LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-800_left.root";
+  sig_samples["X53Tm900LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-900_left.root";
+  sig_samples["X53Tm1000LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1000_left.root";
+  sig_samples["X53Tm1100LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1100_left.root";
+  sig_samples["X53Tm1200LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1200_left.root";
+  sig_samples["X53Tm1300LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1300_left.root";
+  sig_samples["X53Tm1400LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1400_left.root";
+  sig_samples["X53Tm1500LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1500_left.root";
+  sig_samples["X53Tm1600LH"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["Data"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_All.root";
-  data_samples["DataElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElEl.root";
-  data_samples["DataElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElMu.root";
-  data_samples["DataMuMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_MuMu.root";
-  data_samples["NonPromptData"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_All.root";
-  data_samples["NonPromptDataElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElEl.root";
-  data_samples["NonPromptDataElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElMu.root";
-  data_samples["NonPromptDataMuMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_MuMu.root";
+  data_samples["Data"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_All.root";
+  data_samples["DataElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["DataElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElMu.root";
+  data_samples["DataMuMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_MuMu.root";
+  data_samples["NonPromptData"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_All.root";
+  data_samples["NonPromptDataElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["NonPromptDataElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElMu.root";
+  data_samples["NonPromptDataMuMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_MuMu.root";
 
-  data_samples["ChargeMisID"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_All.root";
-  data_samples["ChargeMisIDElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElEl.root";
-  data_samples["ChargeMisIDElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May03/ljmet_trees/ljmet_Data_ElMu.root";
+  data_samples["ChargeMisID"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_All.root";
+  data_samples["ChargeMisIDElEl"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElEl.root";
+  data_samples["ChargeMisIDElMu"]="root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_Data_ElMu.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -306,13 +306,13 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muFakeRate;
   if(muID=="CBTight") muFakeRate=0.346;
-  else if(muID=="CBTightMiniIso") muFakeRate=0.346;
+  else if(muID=="CBTightMiniIso") muFakeRate=0.426;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.288;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.298;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -616,8 +616,8 @@ int main(int argc, char* argv[]){
     float puweight=-11;
     if(data) puweight=1;
     else{
-      //puweight = getPUWeight(hpu,(int)tr->nPU);
-      puweight=1;
+      puweight = getPUWeight(hpu,(int)tr->nPU);
+      //puweight=1;
     }
 
     if(puweight >20) std::cout<<"Pileup weight is: "<<puweight<<std::endl;
@@ -634,7 +634,7 @@ int main(int argc, char* argv[]){
     float assocMass =  (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).second;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
     //fill histos for same cut level
     float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -677,7 +677,7 @@ int main(int argc, char* argv[]){
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
     //now fill corresponding histos
     fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -698,7 +698,7 @@ int main(int argc, char* argv[]){
     //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     //}
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
-    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets);
+    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
 
     if(tr->cleanedAK4Jets.size()>1){
       //now fill corresponding histos
