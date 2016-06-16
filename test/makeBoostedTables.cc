@@ -18,21 +18,21 @@ void makeBoostedTables(){
 
   //make output file
   std::ofstream outfile;
-  outfile.open("table_Boosted_ht900.txt");
+  outfile.open("table_Boosted_ht1100.txt");
   //set precision
 
   //set desired luminosity
   float lumi = 2.32; //fb^-1
 
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
   //std::vector<Sample*> v74Sig = get74XInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
 
   //get vector of background samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
   //std::vector<Sample*> v74Bkg = get74XBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
   //get vector of data
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getBoostedCutString();

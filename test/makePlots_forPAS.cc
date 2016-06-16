@@ -37,7 +37,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi = 2.215; //fb^-1  
+  float lumi = 2.32; //fb^-1  
   std::vector<Variable*> vVariables = getVariableVec();
 
   std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi, elID, muID);
@@ -89,18 +89,18 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   pad1->cd();
   std::stringstream cutstring;
   if(nMu>=0){
-    if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+    if(cutIndex==0){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
+    else if(cutIndex==1){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
-    if(cutIndex==0){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    if(cutIndex==0){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==1){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }
 
   THStack* tStack = new THStack("tStack","");
@@ -184,11 +184,11 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     TTree* t = s->tree;
     t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
 
-    //set negative nonprompt bins to zero
+    //set negative nonprompt bins to zero - less than or equal to set overflow bin to zero
     //if(s->name=="NonPrompt"){
-      for(int hbin=0; hbin < h->GetNbinsX(); hbin++){
-	if(h->GetBinContent(hbin+1)<0) h->SetBinContent(hbin+1,0);
-      }
+    for(int hbin=0; hbin <= h->GetNbinsX(); hbin++){
+      if(h->GetBinContent(hbin+1)<0) h->SetBinContent(hbin+1,0);
+    }
       //}
 
     //scale by weight - don't scale for data
@@ -262,19 +262,20 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   //make errors
   std::vector<float> errs;
   for(unsigned int ibin=1; ibin<= h_npf->GetNbinsX(); ibin++){
+    //check bin contents vs error hist - just doing this here since looping over bins anyway
+    std::cout<<"Bin: "<<ibin<<" err hist content: "<<h_err->GetBinContent(ibin)<<" summed bkg: "<<(h_ttX->GetBinContent(ibin)+h_bos->GetBinContent(ibin)+h_cmid->GetBinContent(ibin)+h_npf->GetBinContent(ibin))<<" NP bkg: "<<h_npf->GetBinContent(ibin)<<" CMID: "<<h_cmid->GetBinContent(ibin)<<" TTX: "<<h_ttX->GetBinContent(ibin)<<" BOSON: "<<h_bos->GetBinContent(ibin)<<std::endl;
     //nonprompt
     float etemp = pow(h_npf->GetBinError(ibin),2); //stat
     etemp = etemp + pow( 0.5*h_npf->GetBinContent(ibin),2);//sys
     //chargemisID
     etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
     etemp = etemp + pow(0.3*h_cmid->GetBinContent(ibin),2);//sys
-    std::cout<<"cmid bin content: "<<h_cmid->GetBinContent(ibin)<<" and current total error: "<<pow(etemp,0.5)<<std::endl;
     //TTZ
     etemp = etemp + pow(h_ttz->GetBinError(ibin),2);//stat
     etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_ttz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_ttz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttz->GetBinContent(ibin),2); //id plus iso
@@ -282,7 +283,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.20*h_ttw->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_ttw->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttw->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_ttw->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_ttw->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttw->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttw->GetBinContent(ibin),2); //id plus iso
@@ -290,7 +291,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.14*h_tth->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.08*h_tth->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tth->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_tth->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_tth->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tth->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tth->GetBinContent(ibin),2); //id plus iso
@@ -298,7 +299,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.5*h_tttt->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_tttt->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_tttt->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tttt->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tttt->GetBinContent(ibin),2); //id plus iso
@@ -306,7 +307,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.12*h_wz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.05*h_wz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_wz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_wz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wz->GetBinContent(ibin),2); //id plus iso
@@ -314,7 +315,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.12*h_zz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_zz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_zz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_zz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zz->GetBinContent(ibin),2); //id plus iso
@@ -322,7 +323,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.50*h_wpwp->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_wpwp->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wpwp->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_wpwp->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_wpwp->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wpwp->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wpwp->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wpwp->GetBinContent(ibin),2); //id plus iso
@@ -330,7 +331,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.50*h_wwz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_wwz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wwz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_wwz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_wwz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wwz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wwz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wwz->GetBinContent(ibin),2); //id plus iso
@@ -338,7 +339,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.50*h_wzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_wzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_wzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wzz->GetBinContent(ibin),2); //id plus iso
@@ -346,7 +347,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     etemp = etemp + pow(0.50*h_zzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.046*h_zzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.027*h_zzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso
@@ -453,7 +454,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"2.2 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"2.3 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();

@@ -18,19 +18,19 @@ void makeTables(){
 
   //make output file
   std::ofstream outfile;
-  outfile.open("table.txt");
+  outfile.open("table_miniIso.txt");
   //set precision
 
   //set desired luminosity
-  float lumi = 2.215; //fb^-1
+  float lumi = 2.32; //fb^-1
 
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
 
   //get vector of background samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
   //get vector of data
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -230,7 +230,7 @@ std::stringstream& printChargeMisIDTable_lpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC_CrossCheck.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist_lpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_lpt");
@@ -269,7 +269,7 @@ std::stringstream& printChargeMisIDTable_hpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC_CrossCheck.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");

@@ -32,6 +32,7 @@ void DrawNConstComparison(Sample* s){
   t->Project("h","nConst:nNewConst-nConst","PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ");
 
   TCanvas* c = new TCanvas();
+  c->SetLogz();
   h->Draw("colz");
   std::string pdfname = "plots_forBoostedAna/NConstComparison_"+s->name+".pdf";
   c->Print(pdfname.c_str());
@@ -43,6 +44,7 @@ void DrawHTComparison(Sample* s){
   t->Project("h","cleanAK4HT:newCleanAK4HT","PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ");
 
   TCanvas* c = new TCanvas();
+  c->SetLogz();
   c->SetRightMargin(0.16);
   h->Draw("colz0");
   std::string pdfname = "plots_forBoostedAna/HT_Comparison_"+s->name+".pdf";
