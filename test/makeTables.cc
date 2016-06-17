@@ -130,14 +130,14 @@ std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClas
     float sys=0;
     if(vCC.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
     else if(vCC.at(i)->samplename=="ChargeMisID") sys= pow(0.3, 2);
-    else if(vCC.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2) + pow(0.06,2) + pow(0.02,2); //mc,jes,jer,pu
-    else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.12, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="TTH") sys= pow(0.14, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
-    else if(vCC.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2) + pow(0.06,2) + pow(0.02,2); //mc,jes,jer,pu
+    else if(vCC.at(i)->samplename=="TTZ") sys= pow(0.11, 2) + pow(0.02,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="TTH") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+    else if(vCC.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.07,2)+ pow(0.06,2) + pow(0.02,2);
     else if(vCC.at(i)->samplename=="WZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
     else if(vCC.at(i)->samplename=="ZZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
     else if(vCC.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2)+ pow(0.01,2) + pow(0.01,2); //jes, jer, pu
@@ -335,14 +335,14 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
 
       if(vCutBkg.at(i)->samplename=="NonPrompt") sys= pow(0.5, 2);
       else if(vCutBkg.at(i)->samplename=="ChargeMisID") sys= pow(0.3, 2);
-      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.20, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2); //mc,jes,pu,jer
-      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.12, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="TTH") sys= pow(0.14, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
-      else if(vCutBkg.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="TTW") sys= pow(0.18, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2); //mc,jes,pu,jer
+      else if(vCutBkg.at(i)->samplename=="TTZ") sys= pow(0.11, 2) + pow(0.02,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="TTH") sys= pow(0.12, 2) + pow(0.04,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="TTTT") sys= pow(0.5, 2) + pow(0.03,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WZ") sys= pow(0.12, 2) + pow(0.08,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="ZZ") sys= pow(0.12, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WpWp") sys= pow(0.5, 2) + pow(0.05,2)+ pow(0.06,2) + pow(0.02,2);
+      else if(vCutBkg.at(i)->samplename=="WWZ") sys= pow(0.5, 2) + pow(0.07,2)+ pow(0.06,2) + pow(0.02,2);
       else if(vCutBkg.at(i)->samplename=="WZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
       else if(vCutBkg.at(i)->samplename=="ZZZ") sys= pow(0.5, 2) + pow(0.06,2)+ pow(0.06,2) + pow(0.02,2);
       else if(vCutBkg.at(i)->samplename.find("X53X53")!=std::string::npos) sys = pow(0.03,2) + pow(0.01,2) + pow(0.01,2); //jes, jer, pu
