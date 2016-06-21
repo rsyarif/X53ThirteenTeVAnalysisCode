@@ -341,6 +341,8 @@ class TreeReader{
   //double electron
   bool HLT_DoubleEle33;
   TBranch* b_HLT_DoubleEle33_DileptonCalc;
+  bool HLT_DoubleEle37_27;
+  TBranch* b_HLT_DoubleEle37_27_DileptonCalc;
   bool HLT_DoubleEle33_MW;
   TBranch* b_HLT_DoubleEle33_MW_DileptonCalc;
   bool HLT_Ele17Ele12;
@@ -348,8 +350,10 @@ class TreeReader{
   bool HLT_DoubleEle8_HT300;
   TBranch* b_HLT_DoubleEle8_HT300_DileptonCalc;
   //single electron
-  bool HLT_Ele27WP85;
-  TBranch* b_HLT_Ele27WP85_DileptonCalc;
+  bool HLT_Ele17Iso;
+  TBranch* b_HLT_Ele17Iso_DileptonCalc;
+  bool HLT_Ele17;
+  TBranch* b_HLT_Ele17_DileptonCalc;
   //double muon
   bool HLT_Mu27TkMu8;
   TBranch* b_HLT_Mu27TkMu8_DileptonCalc;
@@ -362,6 +366,8 @@ class TreeReader{
   //single muon
   bool HLT_Mu40;
   TBranch* b_HLT_Mu40_DileptonCalc;
+  bool HLT_Mu17;
+  TBranch* b_HLT_Mu17_DileptonCalc;
   bool HLT_IsoTkMu24;
   TBranch* b_HLT_IsoTkMu24_DileptonCalc;
   //cross triggers
@@ -375,6 +381,10 @@ class TreeReader{
   TBranch* b_HLT_Mu8Ele23_DileptonCalc;
   bool HLT_Mu30Ele30;
   TBranch* b_HLT_Mu30Ele30_DileptonCalc;
+  bool HLT_Mu27Ele37;
+  TBranch* b_HLT_Mu27Ele37_DileptonCalc;
+  bool HLT_Mu37Ele27;
+  TBranch* b_HLT_Mu37Ele27_DileptonCalc;
   //hadronic triggers
   bool HLT_PFHT900;
   TBranch* b_HLT_PFHT900_DileptonCalc;
