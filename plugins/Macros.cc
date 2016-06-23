@@ -1,4 +1,4 @@
-#include "TTree.h"
+1;95;0c#include "TTree.h"
 #include "TFile.h"
 #include <iostream>
 #include <vector>
@@ -898,26 +898,26 @@ std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lum
   //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
   //float BRssdl= 2*( pow((.1063 + .1071 + .1138),2)); INCLUSIVE SO NO BRANCHING RATIO
   std::vector<int> vNEvts;
-  vSigNames.push_back("LH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(297400.);
-  vSigNames.push_back("LH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(295600.);
-  vSigNames.push_back("RH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(299600.);
-  vSigNames.push_back("LH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(293600.);
-  vSigNames.push_back("RH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(299000.);
-  vSigNames.push_back("LH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299600.);
-  vSigNames.push_back("RH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(295400.);
-  vSigNames.push_back("RH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(293600.);
-  vSigNames.push_back("LH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(298400.);
-  vSigNames.push_back("LH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(298400.);
-  vSigNames.push_back("RH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
+  vSigNames.push_back("LH_X53X53_M-700"); vXsec.push_back(0.455); vNEvts.push_back(300000.);
+  vSigNames.push_back("RH_X53X53_M-700"); vXsec.push_back(0.455); vNEvts.push_back(297400.);
+  vSigNames.push_back("LH_X53X53_M-800"); vXsec.push_back(.196); vNEvts.push_back(295600.);
+  vSigNames.push_back("RH_X53X53_M-800"); vXsec.push_back(.196); vNEvts.push_back(299600.);
+  vSigNames.push_back("LH_X53X53_M-900"); vXsec.push_back(.0903); vNEvts.push_back(300000.);
+  vSigNames.push_back("RH_X53X53_M-900"); vXsec.push_back(.0903); vNEvts.push_back(299800.);
+  vSigNames.push_back("LH_X53X53_M-1000"); vXsec.push_back(0.0440); vNEvts.push_back(293600.);
+  vSigNames.push_back("RH_X53X53_M-1000"); vXsec.push_back(0.0440); vNEvts.push_back(299000.);
+  vSigNames.push_back("LH_X53X53_M-1100"); vXsec.push_back(0.0224); vNEvts.push_back(299600.);
+  vSigNames.push_back("RH_X53X53_M-1100"); vXsec.push_back(0.0224); vNEvts.push_back(299800.);
+  vSigNames.push_back("LH_X53X53_M-1200"); vXsec.push_back(0.0118); vNEvts.push_back(295400.);
+  vSigNames.push_back("RH_X53X53_M-1200"); vXsec.push_back(0.0118); vNEvts.push_back(300000.);
+  vSigNames.push_back("LH_X53X53_M-1300"); vXsec.push_back(0.00639); vNEvts.push_back(300000.);
+  vSigNames.push_back("RH_X53X53_M-1300"); vXsec.push_back(0.00639); vNEvts.push_back(293600.);
+  vSigNames.push_back("LH_X53X53_M-1400"); vXsec.push_back(0.00354); vNEvts.push_back(300000.);
+  vSigNames.push_back("RH_X53X53_M-1400"); vXsec.push_back(0.00354); vNEvts.push_back(298400.);
+  vSigNames.push_back("LH_X53X53_M-1500"); vXsec.push_back(0.00200); vNEvts.push_back(298400.);
+  vSigNames.push_back("RH_X53X53_M-1500"); vXsec.push_back(0.00200); vNEvts.push_back(300000.);
+  vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.001148); vNEvts.push_back(300000.);
+  vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.001148); vNEvts.push_back(300000.);
 
  
 
