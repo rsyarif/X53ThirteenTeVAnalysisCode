@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //set desired lumi
-  float lumi = 2.215; // fb^{-1}
+  float lumi = 2.32; // fb^{-1}
 
   //check ot make sure enough arguments have been passed
   if(!argc==3){
@@ -45,13 +45,23 @@ int main(int argc, char* argv[]){
   //set cuts by hand
   float lep1cut = 40.0;
   float lep2cut = 30.0;
-  float HTcut   = 900.0;
-  int nConst = 5;
+  std::istringstream arg3(argv[3]);
+  float HTshift=0;
+  if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
+  else{arg3>>HTshift;}
+  float HTcut   = 900.0+HTshift;
+
+  std::istringstream arg4(argv[4]);
+  int nConstShift=0;
+  if(!(arg4>>nConstShift)){ std::cout<<"Invalid number for nConst shift! Exiting..."<<std::endl; return 0;}
+  else{arg4>>nConstShift;}
+
+  int nConst = 5+nConstShift;
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTight");
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTight");
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTight");
+  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
@@ -82,19 +92,19 @@ int main(int argc, char* argv[]){
   //output root file
   std::stringstream rootfilename_all;
   rootfilename_all<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_all<<"_theta.root";
+  rootfilename_all<<"_thetamuMiniIso.root";
 
   std::stringstream rootfilename_elel;
   rootfilename_elel<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_elel<<"_theta.root";
+  rootfilename_elel<<"_thetamuMiniIso.root";
 
   std::stringstream rootfilename_elmu;
   rootfilename_elmu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_elmu<<"_theta.root";
+  rootfilename_elmu<<"_thetamuMiniIso.root";
 
   std::stringstream rootfilename_mumu;
   rootfilename_mumu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_mumu<<"_theta.root";
+  rootfilename_mumu<<"_thetamuMiniIso.root";
 
   TFile* fout = new TFile((rootfilename_all.str()).c_str(),"RECREATE");
   TFile* fout_elel = new TFile((rootfilename_elel.str()).c_str(),"RECREATE");
