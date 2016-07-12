@@ -1679,7 +1679,8 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
   if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
   else  channel<<"";
 
-  std::string cutstring= " PUWeight* trigSF * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  std::string cutstring= " PUWeight* ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  //std::string cutstring= " PUWeight* trigSF * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
@@ -2188,66 +2189,32 @@ float getLepIDSF(TLepton* lep){
   float sf;
 
   if(lep->isMu){
-    if(lep->eta > 2.1){
-      if(lep->pt>100) sf = 1.0028;
-      else if(lep->pt>60) sf = 0.9724;
-      else if(lep->pt>40) sf = 0.9851;
-      else sf = 0.9818;
+
+    if(lep->pt<40){
+      if(fabs(lep->eta)>2.1) sf = 0.978518;
+      else if(fabs(lep->eta)>1.2) sf = 0.991459;
+      else if(fabs(lep->eta)>0.9) sf = 0.973004;
+      else sf = 0.980461;
     }
-    else if(lep->eta > 1.2){
-      if(lep->pt>100) sf = 0.9987;
-      else if(lep->pt>60) sf = 0.9929;
-      else if(lep->pt>40) sf = 0.9947;
-      else sf = 0.9929;
+    else if(lep->pt<50){
+      if(fabs(lep->eta)>2.1) sf = 0.978189;
+      else if(fabs(lep->eta)>1.2) sf = 0.992793;
+      else if(fabs(lep->eta)>0.9) sf = 0.972825;
+      else sf = 0.979350;
     }
-    else if(lep->eta > 0.9){
-      if(lep->pt>100) sf = 0.9757;
-      else if(lep->pt>60) sf = 0.9696;
-      else if(lep->pt>40) sf = 0.9746;
-      else sf = 0.9724;
+    else if(lep->pt<60){
+      if(fabs(lep->eta)>2.1) sf = 0.978597;
+      else if(fabs(lep->eta)>1.2) sf = 0.994465;
+      else if(fabs(lep->eta)>0.9) sf = 0.972000;
+      else sf = 0.978940;
     }
-    else if(lep->eta > 0.4){
-      if(lep->pt>100) sf = 0.9754;
-      else if(lep->pt>60) sf = 0.9875;
-      else if(lep->pt>40) sf = 0.9898;
-      else sf = 0.9869;
-    }
-    else if(lep->eta > 0.0){
-      if(lep->pt>100) sf = 1.0165;
-      else if(lep->pt>60) sf = 0.9896;
-      else if(lep->pt>40) sf = 0.9877;
-      else sf = 0.9847;
-    }
-    else if(lep->eta > -0.4){
-      if(lep->pt>100) sf = 0.9985;
-      else if(lep->pt>60) sf = 0.9885;
-      else if(lep->pt>40) sf = 0.9874;
-      else sf = 0.9878;
-    }
-    else if(lep->eta > -0.9){
-      if(lep->pt>100) sf = 0.9951;
-      else if(lep->pt>60) sf = 0.9854;
-      else if(lep->pt>40) sf = 0.9920;
-      else sf = 0.9909;
-    }
-    else if(lep->eta > -1.2){
-      if(lep->pt>100) sf = 0.9876;
-      else if(lep->pt>60) sf = 0.9873;
-      else if(lep->pt>40) sf = 0.9886;
-      else sf = 0.9828;
-    }
-    else if(lep->eta > -2.1){
-      if(lep->pt>100) sf = 1.0039;
-      else if(lep->pt>60) sf = 0.9923;
-      else if(lep->pt>40) sf = 0.9922;
-      else sf = 0.9910;
-    }
-    else if(lep->eta > -2.4){
-      if(lep->pt>100) sf = 0.9738;
-      else if(lep->pt>60) sf = 0.9600;
-      else if(lep->pt>40) sf = 0.9793;
-      else sf = 0.9812;
-    }
+    else{
+      if(fabs(lep->eta)>2.1) sf = 0.979322;
+      else if(fabs(lep->eta)>1.2) sf = 0.996493;
+      else if(fabs(lep->eta)>0.9) sf = 0.977980;
+      else sf =0.979142;
+    }    
+
   }
   else{//electron
     if(lep->eta>1.566){
