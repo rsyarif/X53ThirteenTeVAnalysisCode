@@ -2217,7 +2217,9 @@ float getLepIDSF(TLepton* lep){
 
   }
   else{//electron
-    if(lep->eta>1.566){
+    sf=1.0;
+
+    /*    if(lep->eta>1.566){
       if(lep->pt>250) sf = 1.0271;
       else if(lep->pt>180) sf = 0.9987;
       else if(lep->pt>130) sf = 0.9597;
@@ -2278,8 +2280,8 @@ float getLepIDSF(TLepton* lep){
       else if(lep->pt>50)  sf = 0.9884;
       else if(lep->pt>40)  sf = 0.9663;
       else if(lep->pt>30)  sf = 0.9880;
+      }*/
     }
-  }
 
   return sf;
 }
