@@ -22,7 +22,7 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 2.32; //fb^-1
+  float lumi = 3.99; //fb^-1
 
   //get list of signal samples starting with ssdl cut
   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
@@ -230,7 +230,7 @@ std::stringstream& printChargeMisIDTable_lpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC_CrossCheck.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist_lpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_lpt");
@@ -269,7 +269,7 @@ std::stringstream& printChargeMisIDTable_hpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC_CrossCheck.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");
@@ -313,7 +313,7 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
     std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
     CutClass* cutSig = 0;
     for(unsigned int j=0; j<vCutSig.size();j++){
-      if(vCutSig.at(j)->samplename.find("800")!=std::string::npos && vCutSig.at(j)->samplename.find("RH")!=std::string::npos) cutSig = vCutSig.at(j);
+      if(vCutSig.at(j)->samplename.find("1000")!=std::string::npos && vCutSig.at(j)->samplename.find("RH")!=std::string::npos) cutSig = vCutSig.at(j);
     }
 
     //now get cutcalss fordata
@@ -389,8 +389,9 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
    float obs =  (cutData->nEvents).at( (cutData->nEvents).size()-1);
 
 
-    //now write table line
-   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+    //now write table line -- BLIND FOR NOW
+   //tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & XXX\\\\\n"; 
   }//end loop over channels
 
   tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";

@@ -40,21 +40,23 @@ int main(int argc, char* argv[]){
 
   bool bg_np = true;
   std::string elID = "MVATightRC";
-  std::string muID = "CBTight";
+  std::string muID = "CBTightMiniIso";
 
   //get input sample
   std::string sample(argv[1]);
   std::string inputname, outname;
-  if(sample=="TTbar"){ outname="SmartClosure_TTbar_reg.root"; inputname="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar.root";}
-  if(sample=="TTbar_ext1"){ outname="SmartClosure_TTbar_ext1.root"; inputname="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext1.root";}
-  if(sample=="TTbar_ext2"){ outname="SmartClosure_TTbar_ext2.root"; inputname="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext2.root";}
-  if(sample=="TTbar_ext3"){ outname="SmartClosure_TTbar_ext3.root"; inputname="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_TTbar_ext3.root";}
+  std::string eosname="root://cmseos.fnal.gov//eos/uscms/store/user/clint/Spring16/25ns/July2/ljmet_trees/";
+  if(sample=="TTbar"){ outname="SmartClosure_TTbar.root"; inputname=eosname+"ljmet_TTbar_part1.root";}
+  if(sample=="TTbar_ext1"){ outname="SmartClosure_TTbar_ext1.root"; inputname=eosname+"ljmet_TTbar_ext1.root";}
+  if(sample=="TTbar_ext2"){ outname="SmartClosure_TTbar_ext2.root"; inputname=eosname+"ljmet_TTbar_ext2.root";}
+  if(sample=="TTbar_ext3"){ outname="SmartClosure_TTbar_ext3.root"; inputname=eosname+"ljmet_TTbar_ext3.root";}
 
-  //output file
-  TFile* fout = new TFile(outname.c_str(),"RECREATE");
   //treereader
   bool mc = true;
   TreeReader* tr = new TreeReader(inputname.c_str(),mc);
+  TTree* t = tr->tree;
+  //output file
+  TFile* fout = new TFile(outname.c_str(),"RECREATE");
   //histograms
   TH1F* h_el_obs_light = new TH1F("h_el_obs_light","",1000,0,5000);
   TH1F* h_el_obs_charm = new TH1F("h_el_obs_charm","",1000,0,5000);
@@ -103,7 +105,7 @@ int main(int argc, char* argv[]){
 
 
 
-  int nEntries = tr->tree->GetEntries();
+  int nEntries = t->GetEntries();
 
   for(int ient=0; ient<nEntries; ient++){
 
@@ -353,10 +355,15 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Tight=imu->cutBasedTight();
       iLep->Loose=imu->cutBasedLoose();
     }
+    else if(muID=="CBTightMiniIso"){
+      iLep->Tight=imu->cutBasedTightMiniIso();
+      iLep->Loose=imu->cutBasedLooseMiniIso();
+    }
     else if(muID=="CBLoose"){
       iLep->Tight=imu->cutBasedLoose();
       iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
     }
+
     iLep->isMu = true;
     iLep->isEl = false;
     //skip for smaller than pT cut

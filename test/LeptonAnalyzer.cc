@@ -34,7 +34,9 @@ int main(int argc, char* argv[]){
   //read in arguments
   std::string argv1(argv[1]);
   bool data;
+  bool fr=false;
   if(argv1.find("data")!=std::string::npos) data=true;
+  else if(argv1.find("DataFR")!=std::string::npos) {data=true;fr=true;}
   else data=false;
 
   std::string mass;
@@ -45,8 +47,9 @@ int main(int argc, char* argv[]){
   }
 
   TString filename;                                
-  if(data) filename = "/eos/uscms/store/user/clint/May25/ljmet_trees/ljmet_Data_All.root";
-  else filename = "root://cmsxrootd.fnal.gov//store/user/clint/May25/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016B/June18/ljmet_trees/ljmet_Data_All.root";
+  else if(argv1.find("DataFR")!=std::string::npos) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/June18/ljmet_trees/ljmet_FakeRate_Mu.root";
+  else filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/June18/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -60,7 +63,8 @@ int main(int argc, char* argv[]){
 
   //outfile
   std::string outname;
-  if(data)outname="LeptonEfficiency_Signal_Data_Run2015D.root"; 
+  if(data && !fr)outname="LeptonEfficiency_Signal_Data_Run2015D.root"; 
+  else if(data && fr)outname="LeptonEfficiency_Signal_FakeRate.root"; 
   else outname="LeptonEfficiency_Signal_MC_"+mass+"_"+chirality+".root"; 
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
 

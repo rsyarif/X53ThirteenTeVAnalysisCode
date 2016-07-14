@@ -22,10 +22,12 @@
 //eaxample usage:
 //root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTight")' 
 
-void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0);
+void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
 void DrawTriggerEff(Sample* s, TFile* outfile);
 void DrawChargeMisIDGraph(TFile* outfile, std::string elID);
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
+
+
       
 void makePlots_forPAS(std::string elID, std::string muID){
 
@@ -37,7 +39,9 @@ void makePlots_forPAS(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi = 2.32; //fb^-1  
+  float lumi = 3.99; //fb^-1  
+  std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight *";
+
   std::vector<Variable*> vVariables = getVariableVec();
 
   std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi, elID, muID);
@@ -47,10 +51,10 @@ void makePlots_forPAS(std::string elID, std::string muID){
   for(int j=2; j <3; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j,weightstring);
       gROOT->Reset();
     }
   }
@@ -68,7 +72,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
 
 
 
-void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex){
+void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
 
   TCanvas* c1 = new TCanvas("c1","c1");
   
@@ -89,20 +93,20 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   pad1->cd();
   std::stringstream cutstring;
   if(nMu>=0){
-    if(cutIndex==0){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+    if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
-    if(cutIndex==0){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight * (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( PUWeight * trigSF * IDSF * IsoSF * ChargeMisIDWeight * MCWeight * NPWeight *(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }
-
+  std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
   TLegend* leg = new TLegend(0.65,0.6,0.9,0.9);
   leg->SetFillStyle(0);
@@ -204,7 +208,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     lastbin = lastbin + ovf;
-    std::cout<<"lastbin: "<<lastbin<<" and current overflow for sample "<<s->name<<" is: "<<ovf<<std::endl;
+    //std::cout<<"lastbin: "<<lastbin<<" and current overflow for sample "<<s->name<<" is: "<<ovf<<std::endl;
 
     if(s->name=="TTZ") h_ttz->Add(h);
     if(s->name=="TTW") h_ttw->Add(h);
@@ -263,7 +267,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   std::vector<float> errs;
   for(unsigned int ibin=1; ibin<= h_npf->GetNbinsX(); ibin++){
     //check bin contents vs error hist - just doing this here since looping over bins anyway
-    std::cout<<"Bin: "<<ibin<<" err hist content: "<<h_err->GetBinContent(ibin)<<" summed bkg: "<<(h_ttX->GetBinContent(ibin)+h_bos->GetBinContent(ibin)+h_cmid->GetBinContent(ibin)+h_npf->GetBinContent(ibin))<<" NP bkg: "<<h_npf->GetBinContent(ibin)<<" CMID: "<<h_cmid->GetBinContent(ibin)<<" TTX: "<<h_ttX->GetBinContent(ibin)<<" BOSON: "<<h_bos->GetBinContent(ibin)<<std::endl;
+    //std::cout<<"Bin: "<<ibin<<" err hist content: "<<h_err->GetBinContent(ibin)<<" summed bkg: "<<(h_ttX->GetBinContent(ibin)+h_bos->GetBinContent(ibin)+h_cmid->GetBinContent(ibin)+h_npf->GetBinContent(ibin))<<" NP bkg: "<<h_npf->GetBinContent(ibin)<<" CMID: "<<h_cmid->GetBinContent(ibin)<<" TTX: "<<h_ttX->GetBinContent(ibin)<<" BOSON: "<<h_bos->GetBinContent(ibin)<<std::endl;
     //nonprompt
     float etemp = pow(h_npf->GetBinError(ibin),2); //stat
     etemp = etemp + pow( 0.5*h_npf->GetBinContent(ibin),2);//sys
@@ -382,7 +386,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     for(unsigned int jb=1; jb<=h_err->GetNbinsX(); jb++){
       float totbkg = h_npf->GetBinContent(jb) + h_cmid->GetBinContent(jb) + h_ttw->GetBinContent(jb) + h_ttz->GetBinContent(jb) + h_wz->GetBinContent(jb) + h_wpwp->GetBinContent(jb) + h_zz->GetBinContent(jb)+h_wwz->GetBinContent(jb) + h_tth->GetBinContent(jb) + h_tttt->GetBinContent(jb) + h_wzz->GetBinContent(jb) + h_zzz->GetBinContent(jb);
     float stacktot = ( (TH1F*)(tStack->GetStack()->Last()))->GetBinContent(jb);
-    std::cout<<"bin: "<<jb<<"stack: "<<stacktot<<" bkg tot: "<<totbkg<<" total in h_err: "<<h_err->GetBinContent(jb)<<" np tot: "<<h_npf->GetBinContent(jb)<<" cmid tot: "<<h_cmid->GetBinContent(jb)<<" error: "<<h_err->GetBinError(jb)<<std::endl;
+    //std::cout<<"bin: "<<jb<<"stack: "<<stacktot<<" bkg tot: "<<totbkg<<" total in h_err: "<<h_err->GetBinContent(jb)<<" np tot: "<<h_npf->GetBinContent(jb)<<" cmid tot: "<<h_cmid->GetBinContent(jb)<<" error: "<<h_err->GetBinError(jb)<<std::endl;
       //std::cout<<"bin: "<<jb<<" error on fancy way: "<<h_np->GetBinError(jb)<<" error on standard way: "<<h_npf->GetBinError(jb)<<" fancy content: "<<h_np->GetBinContent(jb)<<" reg content: "<<h_npf->GetBinContent(jb)<<std::endl;
     }
   }
@@ -390,7 +394,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
     
     Sample* s = vSig.at(i1);
-    if(s->name.find("700")==std::string::npos) continue;
+    if(s->name.find("1000")==std::string::npos) continue;
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
 
@@ -454,7 +458,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"2.3 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"3.99 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();

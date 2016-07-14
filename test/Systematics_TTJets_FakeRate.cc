@@ -37,31 +37,31 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap samples;
-
-  samples["TTJets"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTJets.root";
-  samples["TTbar"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar.root";
-  samples["TTbar_ext1"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext1.root";
-  samples["TTbar_ext2"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext2.root";
-  samples["TTbar_ext3"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext3.root";
-  samples["TTbar_ext4"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_TTbar_ext4.root";
-  samples["QCD_Pt-20to30_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_EMEnriched.root"; 
-  samples["QCD_Pt-30to50_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_EMEnriched.root";
-  samples["QCD_Pt-50to80_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_EMEnriched.root";
-  samples["QCD_Pt-80to120_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_EMEnriched.root";
-  samples["QCD_Pt-120to170_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_EMEnriched.root";
-  samples["QCD_Pt-170to300_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_EMEnriched.root";
-  samples["QCD_Pt-300toInf_EMEnriched"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-300toInf_EMEnriched.root";
-  samples["QCD_Pt-20to30_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-20to30_MuEnrichedPt5.root";
-  samples["QCD_Pt-30to50_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-30to50_MuEnrichedPt5.root";
-  samples["QCD_Pt-50to80_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-50to80_MuEnrichedPt5.root";
-  samples["QCD_Pt-80to120_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-80to120_MuEnrichedPt5.root";
-  samples["QCD_Pt-120to170_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-120to170_MuEnrichedPt5.root";
-  samples["QCD_Pt-170to300_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-170to300_MuEnrichedPt5.root";
-  samples["QCD_Pt-300to470_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-300to470_MuEnrichedPt5.root";
-  samples["QCD_Pt-470to600_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-470to600_MuEnrichedPt5.root";
-  samples["QCD_Pt-600to800_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-600to800_MuEnrichedPt5.root";
-  samples["QCD_Pt-800to1000_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-800to1000_MuEnrichedPt5.root";
-  samples["QCD_Pt-1000toInf_MuEnrichedPt5"] = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Nov17/ljmet_trees/ljmet_FakeRate_QCD_Pt-1000toInf_MuEnrichedPt5.root";
+  std::string eosarea = "root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/July2/ljmet_trees/";
+  samples["TTJets"] = eosarea+"ljmet_FakeRate_TTJets.root";
+  samples["TTbar"] = eosarea+"ljmet_TTbar_part1.root";
+  samples["TTbar_ext1"] = eosarea+"ljmet_FakeRate_TTbar_ext1.root";
+  samples["TTbar_ext2"] = eosarea+"ljmet_FakeRate_TTbar_ext2.root";
+  samples["TTbar_ext3"] = eosarea+"ljmet_FakeRate_TTbar_ext3.root";
+  samples["TTbar_ext4"] = eosarea+"ljmet_FakeRate_TTbar_ext4.root";
+  samples["QCD_Pt-20to30_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-20to30_EMEnriched.root"; 
+  samples["QCD_Pt-30to50_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-30to50_EMEnriched.root";
+  samples["QCD_Pt-50to80_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-50to80_EMEnriched.root";
+  samples["QCD_Pt-80to120_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-80to120_EMEnriched.root";
+  samples["QCD_Pt-120to170_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-120to170_EMEnriched.root";
+  samples["QCD_Pt-170to300_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-170to300_EMEnriched.root";
+  samples["QCD_Pt-300toInf_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-300toInf_EMEnriched.root";
+  samples["QCD_Pt-20to30_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-20to30_MuEnrichedPt5.root";
+  samples["QCD_Pt-30to50_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-30to50_MuEnrichedPt5.root";
+  samples["QCD_Pt-50to80_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-50to80_MuEnrichedPt5.root";
+  samples["QCD_Pt-80to120_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-80to120_MuEnrichedPt5.root";
+  samples["QCD_Pt-120to170_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-120to170_MuEnrichedPt5.root";
+  samples["QCD_Pt-170to300_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-170to300_MuEnrichedPt5.root";
+  samples["QCD_Pt-300to470_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-300to470_MuEnrichedPt5.root";
+  samples["QCD_Pt-470to600_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-470to600_MuEnrichedPt5.root";
+  samples["QCD_Pt-600to800_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-600to800_MuEnrichedPt5.root";
+  samples["QCD_Pt-800to1000_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-800to1000_MuEnrichedPt5.root";
+  samples["QCD_Pt-1000toInf_MuEnrichedPt5"] = eosarea+"ljmet_FakeRate_QCD_Pt-1000toInf_MuEnrichedPt5.root";
     
   if(samples.find(sample)==samples.end()) {std::cout<<"didn't pick a correct sample! Exiting..."<<std::endl; return 0;}
     
@@ -231,6 +231,10 @@ int main(int argc, char* argv[]){
       if(muID=="CBTight"){
 	loose = imu->cutBasedLoose();
 	tight = imu->cutBasedTight();
+      }
+      else if(muID=="CBTightMiniIso"){
+	tight=imu->cutBasedTightMiniIso();
+	loose=imu->cutBasedLooseMiniIso();
       }
       else{
 	std::cout<<"Muon ID selected not the one used in analysis! Are you sure?? Exiting to let you think about it..."<<std::endl;

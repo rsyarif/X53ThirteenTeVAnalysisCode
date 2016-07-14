@@ -61,8 +61,8 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_MuMu.root";
-    else filename="/eos/uscms/store/user/lpctlbsm/clint/Run2015D/Nov17/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel) filename="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/ljmet_Data_MuMu.root";
+    else filename="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/ljmet_Data_ElEl.root";
   }
   else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
@@ -118,7 +118,7 @@ int main(int argc, char* argv[]){
 	if(tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) passTrig=true;
       }
       else{
-      if(tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) passTrig=true;
+      if(tr->HLT_Ele17Ele12) passTrig=true;
       }
     }
     if(!passTrig) continue;
@@ -212,6 +212,10 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
+      }
+      else if(ID=="CBTightMiniIso"){
+	iLep->Tight=imu->cutBasedTightMiniIso();
+	iLep->Loose=imu->cutBasedLooseMiniIso();
       }
       else if(ID=="CBLoose"){
 	iLep->Tight=imu->cutBasedLoose();
@@ -360,6 +364,10 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
       }
+      else if(ID=="CBTightMiniIso"){
+	iLep->Tight=imu->cutBasedTightMiniIso();
+	iLep->Loose=imu->cutBasedLooseMiniIso();
+      }
       else if(ID=="CBLoose"){
 	iLep->Tight=imu->cutBasedLoose();
 	iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
@@ -486,6 +494,10 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
+      }
+      else if(ID=="CBTightMiniIso"){
+	iLep->Tight=imu->cutBasedTightMiniIso();
+	iLep->Loose=imu->cutBasedLooseMiniIso();
       }
       else if(ID=="CBLoose"){
 	iLep->Tight=imu->cutBasedLoose();

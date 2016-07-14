@@ -41,8 +41,8 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/June18/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/June18/ljmet_trees/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July2/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/";
 
   if(argc!=4) return 0;
   std::string argv1=argv[1];
@@ -294,13 +294,13 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
-  else if(muID=="CBTightMiniIso") muPromptRate=0.940;
+  else if(muID=="CBTightMiniIso") muPromptRate=0.956;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elPromptRate;
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.873;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.839;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -308,13 +308,13 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muFakeRate;
   if(muID=="CBTight") muFakeRate=0.346;
-  else if(muID=="CBTightMiniIso") muFakeRate=0.426;
+  else if(muID=="CBTightMiniIso") muFakeRate=0.427;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.298;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.206;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -479,12 +479,16 @@ int main(int argc, char* argv[]){
 
     //require OR of triggers but make each channel consistent
     bool skip = true;
-    if(mumu && tr->HLT_Mu27TkMu8) skip =false;
-    if(elmu && (tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12)) skip = false;
-    if(elel && tr->HLT_Ele17Ele12) skip = false;
+    if(data){
+      if(mumu && tr->HLT_Mu27TkMu8) skip =false;
+      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
+      if(elel && tr->HLT_DoubleEle37_27) skip = false;     
+    }
+    else{
+      skip=false;
+    }
+    
     if(skip) continue;
-
-
     //now skip if not the channel from the corresponding dataset
     if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
     if((argv1=="DataElMu" || argv1=="NonPromptDataElMu" || argv1=="ChargeMisIDElMu") && !elmu) continue;
@@ -493,8 +497,9 @@ int main(int argc, char* argv[]){
     //now veto on bad events from met scanners
     bool badEvent = false;
     if(data){
-
-      if(tr->run >= 260536) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs260536,lumis260536,evts260536)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
+      badEvent=false;
+      /*
+      if(tr->run >= 260536) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs260536,lumis260536,evts260536)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);	
       else if(tr->run >= 259891) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs259891,lumis259891,evts259891)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
       else if(tr->run >= 259686) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs259686,lumis259686,evts259686)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
       else if(tr->run >= 258713) badEvent = EventFilterFromVector(tr->run, tr->lumi, tr->event, runs258713,lumis258713,evts258713)|| EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
@@ -512,9 +517,9 @@ int main(int argc, char* argv[]){
       //badEvent = EventFilterFromFile_CSC(tr->run,tr->lumi,tr->event) || EventFilterFromFile_ECALSC(tr->run,tr->lumi,tr->event);
       //if(elel) badEvent = EventFilterFromFile_DoubleEG(tr->run,tr->lumi,tr->event);
       ///else if(mumu) badEvent = EventFilterFromFile_DoubleMu(tr->run,tr->lumi,tr->event);
-      //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
+      //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);*/
     }
-    if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
+    if(badEvent) {std::cout<<"filtering bad event - run: "<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;continue;}
     
 
     //now veto on dielectron events coming from Z bosons
@@ -547,12 +552,6 @@ int main(int argc, char* argv[]){
     }
     //now electron trigger
     if(elel){
-      //HLt_Ele27 - check vs leading lepton
-      h_Ele27WP85Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_Ele27WP85){
-	h_Ele27WP85Num->Fill(vSSLep.at(0)->pt);
-	nEle27+=1;
-      }
       //HLT_DoubleEle33 - check vs subleading lepton
       h_DoubleEle33Den->Fill(vSSLep.at(1)->pt);
       if(tr->HLT_DoubleEle33){
@@ -636,7 +635,7 @@ int main(int argc, char* argv[]){
     float assocMass =  (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).second;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //fill histos for same cut level
     float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -679,7 +678,7 @@ int main(int argc, char* argv[]){
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //now fill corresponding histos
     fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -700,7 +699,7 @@ int main(int argc, char* argv[]){
     //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     //}
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
-    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data);
+    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
 
     if(tr->cleanedAK4Jets.size()>1){
       //now fill corresponding histos
