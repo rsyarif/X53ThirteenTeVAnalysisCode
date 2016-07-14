@@ -4,12 +4,12 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_12/src/AnalysisCode/X53ThirteenTeVAnalysisCode/plugins/Sample.cc"
-#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_12/src/AnalysisCode/X53ThirteenTeVAnalysisCode/plugins/CutClass.cc"
-#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_12/src/AnalysisCode/X53ThirteenTeVAnalysisCode/interface/TreeReader.h"
+#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/plugins/Sample.cc"
+#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/plugins/CutClass.cc"
+#include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/interface/TreeReader.h"
 #include "TGraphAsymmErrors.h"
 
-std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_12/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 
 std::vector<Variable*> getVariableVec(){
 
@@ -2191,97 +2191,92 @@ float getLepIDSF(TLepton* lep){
   if(lep->isMu){
 
     if(lep->pt<40){
-      if(fabs(lep->eta)>2.1) sf = 0.978518;
-      else if(fabs(lep->eta)>1.2) sf = 0.991459;
-      else if(fabs(lep->eta)>0.9) sf = 0.973004;
-      else sf = 0.980461;
+      if(fabs(lep->eta)>2.1) sf = 0.9778;
+      else if(fabs(lep->eta)>1.2) sf = 0.9909;
+      else if(fabs(lep->eta)>0.9) sf = 0.9714;
+      else sf = 0.9794;
     }
     else if(lep->pt<50){
-      if(fabs(lep->eta)>2.1) sf = 0.978189;
-      else if(fabs(lep->eta)>1.2) sf = 0.992793;
-      else if(fabs(lep->eta)>0.9) sf = 0.972825;
-      else sf = 0.979350;
+      if(fabs(lep->eta)>2.1) sf = 0.9783;
+      else if(fabs(lep->eta)>1.2) sf = 0.993;
+      else if(fabs(lep->eta)>0.9) sf = 0.9741;
+      else sf = 0.9803;
     }
     else if(lep->pt<60){
-      if(fabs(lep->eta)>2.1) sf = 0.978597;
-      else if(fabs(lep->eta)>1.2) sf = 0.994465;
-      else if(fabs(lep->eta)>0.9) sf = 0.972000;
-      else sf = 0.978940;
+      if(fabs(lep->eta)>2.1) sf = 0.9758;
+      else if(fabs(lep->eta)>1.2) sf = 0.9918;
+      else if(fabs(lep->eta)>0.9) sf = 0.9743;
+      else sf = 0.9796;
     }
     else{
-      if(fabs(lep->eta)>2.1) sf = 0.979322;
-      else if(fabs(lep->eta)>1.2) sf = 0.996493;
-      else if(fabs(lep->eta)>0.9) sf = 0.977980;
-      else sf =0.979142;
+      if(fabs(lep->eta)>2.1) sf = 0.9753;
+      else if(fabs(lep->eta)>1.2) sf = 0.9868;
+      else if(fabs(lep->eta)>0.9) sf = 0.9718;
+      else sf =0.9744;
     }    
 
   }
   else{//electron
-    sf=1.0;
 
-    /*    if(lep->eta>1.566){
-      if(lep->pt>250) sf = 1.0271;
-      else if(lep->pt>180) sf = 0.9987;
-      else if(lep->pt>130) sf = 0.9597;
-      else if(lep->pt>90)  sf = 1.0039;
-      else if(lep->pt>70)  sf = 0.9843;
-      else if(lep->pt>50)  sf = 0.9868;
-      else if(lep->pt>40)  sf = 0.9835;
-      else if(lep->pt>30)  sf = 0.9746;
+
+    if(lep->eta>1.566){
+      if(lep->pt>300) sf = 0.9971;
+      else if(lep->pt>200) sf = 0.9916;
+      else if(lep->pt>100) sf = 1.0159;
+      else if(lep->pt>75)  sf = 0.9899;
+      else if(lep->pt>50)  sf = 0.9716;
+      else if(lep->pt>40)  sf = 0.9455;
+      else if(lep->pt>30)  sf = 0.9569;
     }
     else if(lep->eta > 1.442) sf = 0; //should never happen but this is dummy to prevent electrons in gap
     else if(lep->eta>0.8){
-      if(lep->pt>250)      sf = 0.9443;
-      else if(lep->pt>180) sf = 0.9824;
-      else if(lep->pt>130) sf = 1.0141;
-      else if(lep->pt>90)  sf = 0.9545;
-      else if(lep->pt>70)  sf = 0.9846;
-      else if(lep->pt>50)  sf = 0.9871;
-      else if(lep->pt>40)  sf = 0.9814;
-      else if(lep->pt>30)  sf = 0.9934;
+      if(lep->pt>300) sf = 0.943;
+      else if(lep->pt>200) sf = 0.9834;
+      else if(lep->pt>100) sf = 0.9961;
+      else if(lep->pt>75)  sf = 0.9970;
+      else if(lep->pt>50)  sf = 0.9788;
+      else if(lep->pt>40)  sf = 0.9668;
+      else if(lep->pt>30)  sf = 0.9756;
     }
     else if(lep->eta>0.0){
-      if(lep->pt>250)      sf = 0.9334;
-      else if(lep->pt>180) sf = 0.9769;
-      else if(lep->pt>130) sf = 0.9725;
-      else if(lep->pt>90)  sf = 0.9963;
-      else if(lep->pt>70)  sf = 0.9963;
-      else if(lep->pt>50)  sf = 0.9657;
-      else if(lep->pt>40)  sf = 0.9808;
-      else if(lep->pt>30)  sf = 0.9990;
+      if(lep->pt>300) sf = 1.019;
+      else if(lep->pt>200) sf = 0.9742;
+      else if(lep->pt>100) sf = 0.9926;
+      else if(lep->pt>75)  sf = 0.9360;
+      else if(lep->pt>50)  sf = 0.9839;
+      else if(lep->pt>40)  sf = 0.9691;
+      else if(lep->pt>30)  sf = 0.9848;
     }
-    else if(lep->eta>-0.8){
-      if(lep->pt>250)      sf = 0.9677;
-      else if(lep->pt>180) sf = 0.999;
-      else if(lep->pt>130) sf = 1.0176;
-      else if(lep->pt>90)  sf = 0.9611;
-      else if(lep->pt>70)  sf = 0.9742;
-      else if(lep->pt>50)  sf = 0.9887;
-      else if(lep->pt>40)  sf = 0.9794;
-      else if(lep->pt>30)  sf = 0.9923;
+    else if(lep->eta> -0.8){
+      if(lep->pt>300) sf = 1.0099;
+      else if(lep->pt>200) sf = 0.9699;
+      else if(lep->pt>100) sf = 0.9842;
+      else if(lep->pt>75)  sf = 0.9810;
+      else if(lep->pt>50)  sf = 0.9689;
+      else if(lep->pt>40)  sf = 0.9613;
+      else if(lep->pt>30)  sf = 0.9561;
     }
-    else if(lep->eta>-1.442){
-      if(lep->pt>250)      sf = 0.9274;
-      else if(lep->pt>180) sf = 0.9556;
-      else if(lep->pt>130) sf = 0.9915;
-      else if(lep->pt>90)  sf = 1.0077;
-      else if(lep->pt>70)  sf = 1.0008;
-      else if(lep->pt>50)  sf = 0.9944;
-      else if(lep->pt>40)  sf = 0.9849;
-      else if(lep->pt>30)  sf = 0.9945;
+    else if(lep->eta > -1.442){
+      if(lep->pt>300) sf = 0.9820;
+      else if(lep->pt>200) sf = 0.9785;
+      else if(lep->pt>100) sf = 0.9817;
+      else if(lep->pt>75)  sf = 1.0024;
+      else if(lep->pt>50)  sf = 0.9757;
+      else if(lep->pt>40)  sf = 0.9668;
+      else if(lep->pt>30)  sf = 0.9622;
     }
     else if(lep->eta > -1.566) sf = 0; //same dummy protection against gap as above
-    else if(lep->eta>-2.4){
-      if(lep->pt>250)      sf = 0.9205;
-      else if(lep->pt>180) sf = 0.9118;
-      else if(lep->pt>130) sf = 0.9978;
-      else if(lep->pt>90)  sf = 0.9727;
-      else if(lep->pt>70)  sf = 0.9762;
-      else if(lep->pt>50)  sf = 0.9884;
-      else if(lep->pt>40)  sf = 0.9663;
-      else if(lep->pt>30)  sf = 0.9880;
-      }*/
+    else if(lep->eta > -1.442){
+      if(lep->pt>300) sf = 0.883;
+      else if(lep->pt>200) sf = 0.9810;
+      else if(lep->pt>100) sf = 1.0028;
+      else if(lep->pt>75)  sf = 0.9651;
+      else if(lep->pt>50)  sf = 0.9615;
+      else if(lep->pt>40)  sf = 0.9509;
+      else if(lep->pt>30)  sf = 0.9523;
     }
+    else sf=0 //lepton eta less than -2.4 shouldn't happen
+  }
 
   return sf;
 }
