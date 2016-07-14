@@ -12,6 +12,11 @@ TreeMaker::~TreeMaker(){}
 void TreeMaker::InitTree(std::string treename){
   tree = new TTree(treename.c_str(),treename.c_str());
 
+  //event info
+  tree->Branch("Run",&run_);
+  tree->Branch("Lumi",&lumi_);
+  tree->Branch("Event",&event_);
+
   //weight
   tree->Branch("ChargeMisIDWeight",&weight_);
   tree->Branch("MCWeight",&MCWeight_);
@@ -216,8 +221,11 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc,int run, int lumi, int event){
 
+  run_=run;
+  lumi_=lumi;
+  event_=event;
 
   weight_=weight;
   NPWeight_=NPWeighttemp;
