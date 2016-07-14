@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //set desired lumi
-  float lumi = 2.32; // fb^{-1}
+  float lumi = 3.99; // fb^{-1}
 
   //check ot make sure enough arguments have been passed
   if(!argc==3){
@@ -51,12 +51,13 @@ int main(int argc, char* argv[]){
   else{arg3>>HTshift;}
   float HTcut   = 900.0+HTshift;
 
-  std::istringstream arg4(argv[4]);
+  /*  std::istringstream arg4(argv[4]);
   int nConstShift=0;
   if(!(arg4>>nConstShift)){ std::cout<<"Invalid number for nConst shift! Exiting..."<<std::endl; return 0;}
   else{arg4>>nConstShift;}
 
-  int nConst = 5+nConstShift;
+  int nConst = 5+nConstShift;*/
+  int nConst = 5;
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
