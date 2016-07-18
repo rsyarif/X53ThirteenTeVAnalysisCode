@@ -245,6 +245,13 @@ bool TElectron::mvaTightRCIso(){
   return pass;
 }
 
+
+bool TElectron::mvaTightLCIso(){
+  bool cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaTightIso() && cc;
+  return pass;
+}
+
 //standard with tight charge consistency
 bool TElectron::mvaLooseCCIso(){
   bool cc = chargeConsistency< 1 ? false : true;
