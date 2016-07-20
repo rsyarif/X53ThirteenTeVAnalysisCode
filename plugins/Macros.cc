@@ -1635,6 +1635,9 @@ std::vector<std::string> getCutString(){
   //HT cut
   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 900)";
   vString.push_back(htcut);
+
+  std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
+  vString.push_back(centrallepcut);
   return vString;
 }
 
@@ -1882,6 +1885,46 @@ std::vector<float> getEtaWeights_hpt(TFile* weightfile){
   return etaWeights;
   
 };
+
+std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
+  
+  //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
+  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hhpt");
+  //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
+  //h->Divide(den);
+  std::vector<float> etaWeights;
+
+  for(int i=1; i<= h->GetNbinsX(); i++){
+    etaWeights.push_back(h->GetBinContent(i));
+  }
+  
+  return etaWeights;
+  
+};
+
+float getEtaWeight_hhpt(float abseta, std::vector<float> etaWeights){
+  float weight=0.0;
+
+  if(abseta>1.55) weight = etaWeights.at(3);
+  else if(abseta>1.442) weight = etaWeights.at(2);
+  else if(abseta>0.8) weight = etaWeights.at(1);
+  else weight = etaWeights.at(0);
+
+  return weight;
+}
+
+float getEtaWeight_hpt(float abseta, std::vector<float> etaWeights){
+  float weight=0.0;
+
+  if(abseta>2.0) weight = etaWeights.at(5);
+  else if(abseta>1.55) weight = etaWeights.at(4);
+  else if(abseta>1.442) weight = etaWeights.at(3);
+  else if(abseta>0.8) weight = etaWeights.at(2);
+  else if(abseta>0.4) weight = etaWeights.at(1);
+  else weight = etaWeights.at(0);
+
+  return weight;
+}
 
 float getEtaWeight(std::vector<float> etaWeights, std::vector<TLepton*> leptons){
 
@@ -2266,7 +2309,7 @@ float getLepIDSF(TLepton* lep){
       else if(lep->pt>30)  sf = 0.9622;
     }
     else if(lep->eta > -1.566) sf = 0; //same dummy protection against gap as above
-    else if(lep->eta > -1.442){
+    else if(lep->eta > -2.4){
       if(lep->pt>300) sf = 0.883;
       else if(lep->pt>200) sf = 0.9810;
       else if(lep->pt>100) sf = 1.0028;
@@ -2275,7 +2318,7 @@ float getLepIDSF(TLepton* lep){
       else if(lep->pt>40)  sf = 0.9509;
       else if(lep->pt>30)  sf = 0.9523;
     }
-    else sf=0 //lepton eta less than -2.4 shouldn't happen
+    else sf=0; //lepton eta less than -2.4 shouldn't happen
   }
 
   return sf;
