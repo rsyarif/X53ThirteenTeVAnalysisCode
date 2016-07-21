@@ -404,8 +404,8 @@ int main(int argc, char* argv[]){
     int TL;
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
-    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
-    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
+    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
+    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
 
     //reorder the leptons by pt to remove flavor ordering
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
@@ -450,7 +450,7 @@ int main(int argc, char* argv[]){
 	if(vSSLep.at(0)->pt>200){
 	  ew1=getEtaWeight_hhpt(fabs(vSSLep.at(0)->eta),etaWeights_hhpt);	  
 	}
-	else if(vSSLep.at(1)->pt>100){
+	else if(vSSLep.at(0)->pt>100){
 	  ew1=getEtaWeight_hpt(fabs(vSSLep.at(0)->eta),etaWeights_hpt);
 	}
 	else{
@@ -471,6 +471,8 @@ int main(int argc, char* argv[]){
       }
       //now add since these are probabilities
       weight=ew1 + ew2 - ew1*ew2;
+      //std::cout<<"lep1 abseta: "<<fabs(vSSLep.at(0)->eta)<<" lep1 pt: "<<vSSLep.at(0)->pt<<" ew1: "<<ew1<<std::endl;
+      //std::cout<<"lep2 abseta: "<<fabs(vSSLep.at(1)->eta)<<" lep2 pt: "<<vSSLep.at(1)->pt<<" ew2: "<<ew2<<std::endl;
     }
 
     //now get dilepton mass
@@ -505,7 +507,8 @@ int main(int argc, char* argv[]){
     bool skip = true;
     if(data){
       if(mumu && tr->HLT_Mu27TkMu8) skip =false;
-      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
+      if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
+      //if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
       if(elel && tr->HLT_DoubleEle37_27) skip = false;     
     }
     else{
