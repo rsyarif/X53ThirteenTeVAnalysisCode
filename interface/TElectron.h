@@ -63,6 +63,7 @@ public:
   bool mvaTightRCIso();
   bool mvaTightLCIso();
   bool mvaLooseRCIso();
+  bool mvaLooseLCIso();
 
   //susy ids
   bool susyTight();
