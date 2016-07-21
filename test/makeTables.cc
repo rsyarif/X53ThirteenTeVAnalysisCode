@@ -13,6 +13,7 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
 std::stringstream& printEffTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
 std::stringstream& printChargeMisIDTable_lpt(std::stringstream& chargeMisIDTable);
 std::stringstream& printChargeMisIDTable_hpt(std::stringstream& chargeMisIDTable);
+std::stringstream& printChargeMisIDTable_hhpt(std::stringstream& chargeMisIDTable);
 
 void makeTables(){
 
@@ -22,7 +23,7 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 3.99; //fb^-1
+  float lumi = 6.26; //fb^-1
 
   //get list of signal samples starting with ssdl cut
   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
@@ -65,6 +66,7 @@ void makeTables(){
   tables<<"\n";
   printChargeMisIDTable_lpt(tables);
   printChargeMisIDTable_hpt(tables);
+  printChargeMisIDTable_hhpt(tables);
   outfile<<tables.str();
 
   outfile.close();
@@ -272,6 +274,46 @@ std::stringstream& printChargeMisIDTable_hpt(std::stringstream& table){
   TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
 
   TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hpt");
+  //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");
+  //h->Divide(den);
+  TGraphErrors* g = new TGraphErrors(h);
+  for(unsigned int j=0; j< g->GetN(); j++){
+    std::cout<<"making point: "<<j<<" x bin: "<<g->GetX()[j]<<"+/-"<<g->GetErrorX(j)<<" and y value: "<<g->GetY()[j]<<std::endl;
+    float xlow = g->GetX()[j] - g->GetErrorX(j);
+    float xhigh = g->GetX()[j] + g->GetErrorX(j);
+    std::string etabin = Form("%.1f $>\\eta>$ %.1f",xlow,xhigh);
+    std::string misIDRate = Form("%1.5f",g->GetY()[j]);
+    table<<etabin<<" & "<<misIDRate<<"\\\\\n";
+  }
+
+  table<<"\\hline\n\\end{tabular}\\end{table}";
+
+  std::cout<<"made everything but table footer"<<std::endl;
+
+  std::cout<<"made table footer"<<std::endl;
+
+  return table;
+
+}
+
+
+std::stringstream& printChargeMisIDTable_hhpt(std::stringstream& table){
+
+
+  table<<"\\begin{table}\n\\centering\n";
+  table<<"\\topcaption{Charge misID rate for electrons where both electrons have \\pt above 100 GeV. Measured in data requiring two tight electrons with \\pt greater than 30 GeV and an invariant mass within 10 GeV of the Z-boson mass.}";
+  table<<"\\begin{tabular}{|";
+  for(int i=0;i<2;i++){
+    table<<"c|";
+  }
+
+  table<<"}\n\\hline\\hline\n";
+
+  table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
+
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+
+  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hhpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");
   //h->Divide(den);
   TGraphErrors* g = new TGraphErrors(h);

@@ -39,7 +39,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi = 3.99; //fb^-1  
+  float lumi = 6.26; //fb^-1  
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
@@ -458,7 +458,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"3.99 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"6.26 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
