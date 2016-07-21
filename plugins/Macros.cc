@@ -15,14 +15,14 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
 
-  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -1864,6 +1864,7 @@ std::vector<float> getEtaWeights_lpt(TFile* weightfile){
 
   for(int i=1; i<= h->GetNbinsX(); i++){
     etaWeights.push_back(h->GetBinContent(i));
+    std::cout<<"lpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
   
   return etaWeights;
@@ -1880,6 +1881,7 @@ std::vector<float> getEtaWeights_hpt(TFile* weightfile){
 
   for(int i=1; i<= h->GetNbinsX(); i++){
     etaWeights.push_back(h->GetBinContent(i));
+    std::cout<<"hpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
   
   return etaWeights;
@@ -1896,6 +1898,7 @@ std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
 
   for(int i=1; i<= h->GetNbinsX(); i++){
     etaWeights.push_back(h->GetBinContent(i));
+    std::cout<<"hhpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
   
   return etaWeights;
@@ -1908,7 +1911,7 @@ float getEtaWeight_hhpt(float abseta, std::vector<float> etaWeights){
   float weight=0.0;
 
   if(abseta>1.55) weight = etaWeights.at(3);
-  else if(abseta>1.442) weight = etaWeights.at(2);
+  else if(abseta>1.442) weight = 0.0;
   else if(abseta>0.8) weight = etaWeights.at(1);
   else weight = etaWeights.at(0);
 
@@ -1920,7 +1923,7 @@ float getEtaWeight_hpt(float abseta, std::vector<float> etaWeights){
 
   if(abseta>2.0) weight = etaWeights.at(5);
   else if(abseta>1.55) weight = etaWeights.at(4);
-  else if(abseta>1.442) weight = etaWeights.at(3);
+  else if(abseta>1.442) weight = 0.0;
   else if(abseta>0.8) weight = etaWeights.at(2);
   else if(abseta>0.4) weight = etaWeights.at(1);
   else weight = etaWeights.at(0);
@@ -1933,7 +1936,7 @@ float getEtaWeight_lpt(float abseta, std::vector<float> etaWeights){
 
   if(abseta>2.0) weight = etaWeights.at(5);
   else if(abseta>1.55) weight = etaWeights.at(4);
-  else if(abseta>1.442) weight = etaWeights.at(3);
+  else if(abseta>1.442) weight = 0.0;
   else if(abseta>0.8) weight = etaWeights.at(2);
   else if(abseta>0.4) weight = etaWeights.at(1);
   else weight = etaWeights.at(0);
@@ -2354,15 +2357,25 @@ float getLepIsoSF(TLepton* lep){
   float sf;
   if(lep->isMu) sf = 1.0; //no scale factor for muon iso
   else{
-    if(fabs(lep->eta) > 1.566){
-      if(lep->pt>50) sf = 1.00;
-      else if(lep->pt>40) sf = 1.019;
-      else if (lep->pt>30) sf = 1.000;
+    if(fabs(lep->eta) > 2.0){
+      if(lep->pt>50) sf = 1.02;
+      else if(lep->pt>40) sf = 1.033;
+      else if (lep->pt>30) sf = 1.042;
     }
-    else{
-      if(lep->pt>50) sf = 0.995;
-      else if(lep->pt>40) sf = 0.995;
-      else if (lep->pt>30) sf = 0.995;
+    else if(fabs(lep->eta) > 1.566){
+      if(lep->pt>50) sf = 1.002;
+      else if(lep->pt>40) sf = 1.006;
+      else if (lep->pt>30) sf = 1.011;
+    }
+    else if(fabs(lep->eta) > 0.8){
+      if(lep->pt>50) sf = 0.9982;
+      else if(lep->pt>40) sf = 0.9914;
+      else if (lep->pt>30) sf = 0.9904;
+    }
+    else if(fabs(lep->eta) >= 0.0){
+      if(lep->pt>50) sf = 0.9848;
+      else if(lep->pt>40) sf = 0.9791;
+      else if (lep->pt>30) sf = 0.9794;
     }
   }
 
