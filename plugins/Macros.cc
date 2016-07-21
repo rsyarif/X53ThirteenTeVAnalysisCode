@@ -1857,7 +1857,7 @@ std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<st
 std::vector<float> getEtaWeights_lpt(TFile* weightfile){
   
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_lpt");
+  TH1F* h = (TH1F*) weightfile->Get("h_num_lpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
   //h->Divide(den);
   std::vector<float> etaWeights;
