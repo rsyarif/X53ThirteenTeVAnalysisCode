@@ -28,7 +28,7 @@ void elEtaPhi(){
   TTree* t = (TTree*) f->Get("tEvts_sZVeto");
   gStyle->SetOptStat(kFALSE);
 
-  std::string cut = "((((((DilepMass>20) ) && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) )&& Lep1Pt > 40&& Lep2Pt > 30)&& nCleanAK4Jets >=2)&& cleanAK4HT > 1000 && Channel==0)";
+  std::string cut = "((((((DilepMass>20) ) && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) )&& Lep1Pt > 40&& Lep2Pt > 30)&& nCleanAK4Jets >=2)&& cleanAK4HT > 800 && Channel==0)";
 
 
   TH2F * h1 = new TH2F("h1","#eta vs #phi for leading electrons in high HT events",21,-3.5,3.5,60,-5,5);
