@@ -41,8 +41,8 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July2/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July12/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July12/ljmet_trees/";
 
   if(argc!=4) return 0;
   std::string argv1=argv[1];
@@ -281,11 +281,11 @@ int main(int argc, char* argv[]){
 
 
   //load eta weights in:
-  std::string cmidFilename = "ChargeMisID_Data_Run2015D_Electrons_"+elID+".root";
+  std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_"+elID+"_corrected.root";
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
-
+  std::vector<float> etaWeights_hhpt = getEtaWeights_hhpt(eWfile);
   //load pileup hist
   TFile* fpu = new TFile("PileupWeights.root");
   TH1F* hpu = (TH1F*) fpu->Get("h_weights");
@@ -441,12 +441,36 @@ int main(int argc, char* argv[]){
 
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
+    float ew1,ew2=0.0;
     //with vector now get weight for DY Events
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos) {
-      if( vSSLep.at(0)->pt >100 || vSSLep.at(1)->pt >100){ //high pt case
-	weight = getEtaWeight(etaWeights_hpt,vSSLep);
+      //first set to one if muon
+      if(vSSLep.at(0)->isMu){ew1=0.0;}//zero since it's cmid probability
+      else{
+	if(vSSLep.at(0)->pt>200){
+	  ew1=getEtaWeight_hhpt(fabs(vSSLep.at(0)->eta),etaWeights_hhpt);	  
+	}
+	else if(vSSLep.at(1)->pt>100){
+	  ew1=getEtaWeight_hpt(fabs(vSSLep.at(0)->eta),etaWeights_hpt);
+	}
+	else{
+	  ew1=getEtaWeight_lpt(fabs(vSSLep.at(0)->eta),etaWeights_lpt);
+	}
       }
-      else weight = getEtaWeight(etaWeights_lpt,vSSLep); //low pt case
+      if(vSSLep.at(1)->isMu){ew2=0.0;} //zero since it's cmid probability
+      else{
+	if(vSSLep.at(1)->pt>200){
+	  ew2 = getEtaWeight_hhpt(fabs(vSSLep.at(1)->eta),etaWeights_hhpt);
+	}
+	else if(vSSLep.at(1)->pt>100){
+	  ew2 = getEtaWeight_hpt(fabs(vSSLep.at(1)->eta),etaWeights_hpt);
+	}
+	else{
+	  ew2 = getEtaWeight_lpt(fabs(vSSLep.at(1)->eta),etaWeights_lpt);
+	}
+      }
+      //now add since these are probabilities
+      weight=ew1 + ew2 - ew1*ew2;
     }
 
     //now get dilepton mass

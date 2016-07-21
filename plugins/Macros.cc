@@ -1873,7 +1873,7 @@ std::vector<float> getEtaWeights_lpt(TFile* weightfile){
 std::vector<float> getEtaWeights_hpt(TFile* weightfile){
   
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hpt");
+  TH1F* h = (TH1F*) weightfile->Get("hpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
   //h->Divide(den);
   std::vector<float> etaWeights;
@@ -1889,7 +1889,7 @@ std::vector<float> getEtaWeights_hpt(TFile* weightfile){
 std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
   
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hhpt");
+  TH1F* h = (TH1F*) weightfile->Get("hhpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
   //h->Divide(den);
   std::vector<float> etaWeights;
@@ -1901,6 +1901,8 @@ std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
   return etaWeights;
   
 };
+
+
 
 float getEtaWeight_hhpt(float abseta, std::vector<float> etaWeights){
   float weight=0.0;
@@ -1914,6 +1916,19 @@ float getEtaWeight_hhpt(float abseta, std::vector<float> etaWeights){
 }
 
 float getEtaWeight_hpt(float abseta, std::vector<float> etaWeights){
+  float weight=0.0;
+
+  if(abseta>2.0) weight = etaWeights.at(5);
+  else if(abseta>1.55) weight = etaWeights.at(4);
+  else if(abseta>1.442) weight = etaWeights.at(3);
+  else if(abseta>0.8) weight = etaWeights.at(2);
+  else if(abseta>0.4) weight = etaWeights.at(1);
+  else weight = etaWeights.at(0);
+
+  return weight;
+}
+
+float getEtaWeight_lpt(float abseta, std::vector<float> etaWeights){
   float weight=0.0;
 
   if(abseta>2.0) weight = etaWeights.at(5);
