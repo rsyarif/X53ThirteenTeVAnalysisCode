@@ -17,7 +17,7 @@ for proc in procs:
     elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
         #Common
         model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
-        model.add_lognormal_uncertainty('lumi',math.log(1.05),proc)
+        model.add_lognormal_uncertainty('lumi',math.log(1.062),proc)
         #lepton ID
         model.add_lognormal_uncertainty('LepIDEl_elel',math.log(1.02),proc,'elel')
         #lepton ISO
@@ -72,7 +72,7 @@ for proc in procs:
         model.add_lognormal_uncertainty('JER',math.log(1.01),proc)
         model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
         model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
-        model.add_lognormal_uncertainty('lumi',math.log(1.05),proc)                                        
+        model.add_lognormal_uncertainty('lumi',math.log(1.062),proc)                                        
         #lepton ID
         model.add_lognormal_uncertainty('LepIDEl_elel',math.log(1.02),proc,'elel')
 #        lepton ISO
