@@ -45,6 +45,10 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 
 /// *********************** MVA IDs ************************
 bool TElectron::mvaLoose(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+
   if(fabs(eta)<0.8){
     if(mvaValue>0.913286) return true;
   }
@@ -59,6 +63,9 @@ bool TElectron::mvaLoose(){
 }
 
 bool TElectron::mvaTight(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue>0.967083) return true;
@@ -233,6 +240,12 @@ bool TElectron::mvaLooseRCIso(){
   bool cc;
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaLooseIso() && cc;
+  return pass;
+}
+
+bool TElectron::mvaLooseLCIso(){
+  bool cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mvaLooseIso() && cc;
   return pass;
 }
