@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
   bool debug_ = true;
 
   //set desired lumi
-  float lumi = 3.99; // fb^{-1}
+  float lumi = 6.26; // fb^{-1}
 
   //check ot make sure enough arguments have been passed
   if(!argc==3){
