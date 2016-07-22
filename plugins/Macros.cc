@@ -15,9 +15,9 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1ptEl = new Variable("Lep1PtEl",6,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep1ptEl = new Variable("Lep1Pt",6,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1ptEl);
-  Variable* lep1ptMu = new Variable("Lep1PtMu",6,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep1ptMu = new Variable("Lep1Pt",6,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1ptMu);
 
   Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
@@ -69,6 +69,10 @@ std::vector<Variable*> getVariableVec(){
   Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet2phi);
 
+  Variable* cleanak4htEl = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (leading electron) (GeV)","N_{Events} / 120 GeV");
+  vVar.push_back(cleanak4htEl);
+  Variable* cleanak4htMu = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep}(leading muon) (GeV)","N_{Events} / 120 GeV");
+  vVar.push_back(cleanak4htMu);
   Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
   vVar.push_back(cleanak4ht);
   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
@@ -1478,7 +1482,6 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
 
   //************** MC *************
-
  //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398600 * 0.464706);
   vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252673*0.515587);
@@ -1494,7 +1497,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(249200*0.885963);
   vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(249800*0.876645);
   vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000* 0.8554);
-
+  
   //******* Non Prompt**********
   //vBkgNames.push_back("NonPromptMC");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("NonPrompt"); vXsec.push_back(1); vNEvts.push_back(1);
@@ -1642,7 +1645,7 @@ std::vector<std::string> getCutString(){
   vString.push_back(htcut);
 
   std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
-  vString.push_back(centrallepcut);
+  //vString.push_back(centrallepcut);
   return vString;
 }
 
@@ -1687,8 +1690,8 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
   if(nMu>=0)  channel<<"&& (Channel =="<<nMu<<")";
   else  channel<<"";
 
-  std::string cutstring= " PUWeight* ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
-  //std::string cutstring= " PUWeight* trigSF * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  //std::string cutstring= " PUWeight* MCWeight*ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  std::string cutstring= " PUWeight * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
