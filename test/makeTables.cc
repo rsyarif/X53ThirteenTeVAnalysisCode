@@ -232,9 +232,9 @@ std::stringstream& printChargeMisIDTable_lpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2016_Electrons_MVATightRC_corrected.root");
 
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_lpt");
+  TH1F* h = (TH1F*) weightfile->Get("h_num_lpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_lpt");
   //h->Divide(den);
   TGraphErrors* g = new TGraphErrors(h);
@@ -271,9 +271,10 @@ std::stringstream& printChargeMisIDTable_hpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2016_Electrons_MVATightRC_corrected.root");
 
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hpt");
+
+  TH1F* h = (TH1F*) weightfile->Get("hpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");
   //h->Divide(den);
   TGraphErrors* g = new TGraphErrors(h);
@@ -311,9 +312,10 @@ std::stringstream& printChargeMisIDTable_hhpt(std::stringstream& table){
 
   table<<"Electron $\\eta$ & Charge MisID Rate\\\\\n\\hline\n";
 
-  TFile* weightfile = new TFile("ChargeMisID_Data_Run2015D_Electrons_MVATightRC.root");
+  TFile* weightfile = new TFile("ChargeMisID_Data_Run2016_Electrons_MVATightRC_corrected.root");
 
-  TH1F* h = (TH1F*) weightfile->Get("etaNumHist_hhpt");
+
+  TH1F* h = (TH1F*) weightfile->Get("hhpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist_hpt");
   //h->Divide(den);
   TGraphErrors* g = new TGraphErrors(h);
@@ -432,8 +434,8 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
 
 
     //now write table line -- BLIND FOR NOW
-   //tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
-   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & XXX\\\\\n"; 
+   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+   //tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & XXX\\\\\n"; 
   }//end loop over channels
 
   tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";

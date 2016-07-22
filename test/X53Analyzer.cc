@@ -404,8 +404,8 @@ int main(int argc, char* argv[]){
     int TL;
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
-    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
-    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
+    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);//switch
+    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
 
     //reorder the leptons by pt to remove flavor ordering
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
@@ -507,8 +507,8 @@ int main(int argc, char* argv[]){
     bool skip = true;
     if(data){
       if(mumu && tr->HLT_Mu27TkMu8) skip =false;
-      if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
-      //if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
+      //if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
+      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
       if(elel && tr->HLT_DoubleEle37_27) skip = false;     
     }
     else{

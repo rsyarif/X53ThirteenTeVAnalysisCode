@@ -40,7 +40,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
  
   //desired lumi:
   float lumi = 6.26; //fb^-1  
-  std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight *";
+  std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
 
@@ -48,7 +48,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
   std::vector<Sample*> vSigSamples = getInclusiveSigSampleVecForTable("sZVeto", lumi, elID, muID);
   Sample* dataSample = getDataSample("sZVeto",elID,muID);
 
-  for(int j=2; j <3; j++){
+  for(int j=0; j <3; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
       DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j,weightstring);
@@ -95,7 +95,11 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
     else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){
+      if(var->name=="Lep1PtEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else if(var->name=="Lep1PtMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+    }
     else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
     else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
@@ -186,8 +190,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     }
     h->Sumw2();
     TTree* t = s->tree;
-    t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
-
+    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
+    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str()); std::cout<<"command:t->Project(h,"<<var->name<<","<<cutstring.str()<<std::endl;}
     //set negative nonprompt bins to zero - less than or equal to set overflow bin to zero
     //if(s->name=="NonPrompt"){
     for(int hbin=0; hbin <= h->GetNbinsX(); hbin++){
@@ -398,7 +402,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
 
-    t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());
+    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());}
+    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());}
+      
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     //scale by weight
@@ -422,7 +428,9 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   //Draw data
   TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TTree* tData = dataSample->tree;
-  tData->Project("hData",(var->name).c_str(),(cutstring.str()).c_str());
+
+  if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){tData->Project("hData","Lep1Pt",(cutstring.str()).c_str());}
+  else{  tData->Project("hData",(var->name).c_str(),(cutstring.str()).c_str());}
   float ovf_d =  (hData)->GetBinContent( (hData)->GetNbinsX()+1) + (hData)->GetBinContent( (hData)->GetNbinsX()) ;
   (hData)->SetBinContent( (hData)->GetNbinsX(),ovf_d);
   TGraphAsymmErrors* gData = new TGraphAsymmErrors(hData);
