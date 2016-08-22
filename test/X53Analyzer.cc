@@ -42,7 +42,7 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 int main(int argc, char* argv[]){
 
   std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July12/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July12/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/";
 
   if(argc!=4) return 0;
   std::string argv1=argv[1];
@@ -225,7 +225,7 @@ int main(int argc, char* argv[]){
   TTree* t=tr->tree;
 
   //histogram for cutflow
-  TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
+  //TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
 
   //histogram for trigger studies
   TH1F* h_DoubleEle33Num = new TH1F("h_DoubleEle33Num","",60,0,600);
@@ -238,7 +238,7 @@ int main(int argc, char* argv[]){
   TH1F* h_Mu23Ele12Num = new TH1F("h_Mu23Ele12Num","",60,0,600);
   TH1F* h_Mu8Ele23Num = new TH1F("h_Mu8Ele23Num","",60,0,600);
   TH1F* h_PFHT900Num = new TH1F("h_PFHT900Num","",60,0,600);
-  TH1F* h_AK8PFJet360TrimMass30Num = new TH1F("h_AK8PFJet360TrimMass30Num","",60,0,600);
+ 
 
   TH1F* h_DoubleEle33Den = new TH1F("h_DoubleEle33Den","",60,0,600);
   TH1F* h_DoubleEle33_MWDen = new TH1F("h_DoubleEle33_MWDen","",60,0,600);
@@ -250,7 +250,7 @@ int main(int argc, char* argv[]){
   TH1F* h_Mu23Ele12Den = new TH1F("h_Mu23Ele12Den","",60,0,600);
   TH1F* h_Mu8Ele23Den = new TH1F("h_Mu8Ele23Den","",60,0,600);
   TH1F* h_PFHT900Den = new TH1F("h_PFHT900Den","",60,0,600);
-  TH1F* h_AK8PFJet360TrimMass30Den = new TH1F("h_AK8PFJet360TrimMass30Den","",60,0,600);
+
 
   //get vector of histograms for nonprompt
   std::vector<TH1F*> npHistos_all  = getNPHistos(-1);
@@ -328,9 +328,9 @@ int main(int argc, char* argv[]){
   int nMuMu=0;
   int nElMu=0;
   int nElEl=0;
-  int nGenMuMu=0;
-  int nGenElMu=0;
-   int nGenElEl=0;
+  //int nGenMuMu=0;
+  //int nGenElMu=0;
+  //int nGenElEl=0;
 
   //floats for trigger eff
   float nMu40=0;
@@ -521,7 +521,7 @@ int main(int argc, char* argv[]){
     if((argv1=="DataElMu" || argv1=="NonPromptDataElMu" || argv1=="ChargeMisIDElMu") && !elmu) continue;
     if((argv1=="DataElEl" || argv1=="NonPromptDataElEl" || argv1=="ChargeMisIDElEl") && !elel) continue;
 
-    //now veto on bad events from met scanners
+    //now veto on bad events from met scanners - already done at ljmet for 80X
     bool badEvent = false;
     if(data){
       badEvent=false;
@@ -849,7 +849,7 @@ int main(int argc, char* argv[]){
   //fsig->WriteTObject(h_Mu23Ele12Num);
   //fsig->WriteTObject(h_Mu8Ele23Num);
   //fsig->WriteTObject(h_PFHT900Num);
-  //fsig->WriteTObject(h_AK8PFJet360TrimMass30Num);
+
 
   fsig->WriteTObject(h_DoubleEle33Den); 
   fsig->WriteTObject(h_DoubleEle33_MWDen);
@@ -861,7 +861,7 @@ int main(int argc, char* argv[]){
   //fsig->WriteTObject(h_Mu23Ele12Den);
   //fsig->WriteTObject(h_Mu8Ele23Den);
   //fsig->WriteTObject(h_PFHT900Den);
-  //fsig->WriteTObject(h_AK8PFJet360TrimMass30Den);
+
   
   fsig->WriteTObject(hist_pdfHT);
   fsig->WriteTObject(hist_scaleHT);
@@ -884,7 +884,7 @@ int main(int argc, char* argv[]){
   fsig->Write();
   fsig->Close();
 
-  std::cout<<"Number of Gen MuMu: "<<nGenMuMu<<std::endl;
+  //std::cout<<"Number of Gen MuMu: "<<nGenMuMu<<std::endl;
   std::cout<<"Number of MuMu: "<<nMuMu<<std::endl;
   std::cout<<"Number of ElMu: "<<nElMu<<std::endl;
   std::cout<<"Number of ElEl: "<<nElEl<<std::endl;
@@ -974,7 +974,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  muons
   for(unsigned int uimu=0; uimu<muons.size(); uimu++){
     TMuon* imu = muons.at(uimu);
-    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso);
 
     if(muID=="CBTight"){
       iLep->Tight=imu->cutBasedTight();
@@ -982,7 +982,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     }
     else if(muID=="CBTightMiniIso"){
       iLep->Tight=imu->cutBasedTightMiniIso();
-      iLep->Loose=imu->cutBasedLoose();
+      iLep->Loose=imu->cutBasedLooseMiniIso();
     }
     else if(muID=="CBLoose"){
       iLep->Tight=imu->cutBasedLoose();
@@ -1005,7 +1005,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  electrons
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
     TElectron* iel = electrons.at(uiel);
-    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso);
     iLep->isMu = false;
     iLep->isEl = true;
     if(elID=="CBTight"){
@@ -1121,8 +1121,8 @@ bool checkOppositeSignLeptonsForDY(std::vector<TLepton*> leptons){
 
   bool oppositeSign=false;
   bool sameSign=false;
-  float pairMass=-999;
-  float minDiff=99999;
+  //float pairMass=-999;
+  //float minDiff=99999;
 
   TLepton* Lep1 =0;
   TLepton* Lep2 =0;
