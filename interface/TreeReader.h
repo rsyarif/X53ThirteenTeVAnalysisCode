@@ -53,7 +53,7 @@ class TreeReader{
   TBranch* b_run_CommonCalc;
   int lumi;
   TBranch* b_lumi_CommonCalc;
-  int event;
+  long long event;
   TBranch* b_event_CommonCalc;
 
   //pileup
