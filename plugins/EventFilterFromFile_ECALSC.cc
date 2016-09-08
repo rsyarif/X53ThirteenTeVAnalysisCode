@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-bool EventFilterFromFile_ECALSC(int r, int l, int e){
+bool EventFilterFromFile_ECALSC(int r, int l, long long e){
 
   std::ifstream file; file.open("ecalscn1043093_Dec01.txt");
   std::string line;
@@ -16,7 +16,7 @@ bool EventFilterFromFile_ECALSC(int r, int l, int e){
 
   int run=-1;
   int lumi =-1;
-  int event =-1;
+  long long event =-1;
   
   while(std::getline(file,line)){
     //std::cout<<line<<std::endl;

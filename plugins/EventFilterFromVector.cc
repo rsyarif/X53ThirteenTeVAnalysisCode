@@ -4,9 +4,9 @@
 #include <string>
 #include <sstream>
 
-bool EventFilterFromVector(int r, int l, int e, std::vector<int> runs, std::vector<int> lumis, std::vector<unsigned long long> events){
+bool EventFilterFromVector(int r, int l, long long e, std::vector<int> runs, std::vector<int> lumis, std::vector<unsigned long long> events){
 
-  bool badEvent;
+  bool badEvent=false;
 
 
   for(unsigned int i=0; i<runs.size(); i++){

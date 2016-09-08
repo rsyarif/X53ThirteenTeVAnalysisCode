@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-bool EventFilterFromFile_MuonEG(int r, int l, int e){
+bool EventFilterFromFile_MuonEG(int r, int l, long long e){
 
   std::ifstream file; file.open("eventlist_MuonEG_csc2015.txt");
   std::string line;
@@ -15,7 +15,7 @@ bool EventFilterFromFile_MuonEG(int r, int l, int e){
 
   int run=-1;
   int lumi=-1;
-  int event=-1;
+  long long event=-1;
   
   while(std::getline(file,line)){
     streamline<<line;
