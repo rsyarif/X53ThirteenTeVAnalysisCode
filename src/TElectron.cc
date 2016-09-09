@@ -63,9 +63,10 @@ bool TElectron::mvaTight(){
   if(fabs(eta)<0.8){
     if(mvaValue>0.967083) return true;
   }
-  else if(fabs(eta)<1.479){
+  else if(fabs(eta)<1.444){
     if(mvaValue>0.929117) return true;
   }
+  else if(fabs(eta)<1.556) {return false;} //veto gap electrons
   else if(fabs(eta)<2.4){
     if(mvaValue>0.726311) return true;
   }
