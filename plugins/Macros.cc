@@ -15,9 +15,9 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1ptEl = new Variable("Lep1Pt",6,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep1ptEl = new Variable("Lep1PtEl",6,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1ptEl);
-  Variable* lep1ptMu = new Variable("Lep1Pt",6,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep1ptMu = new Variable("Lep1PtMu",6,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1ptMu);
 
   Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
@@ -26,6 +26,12 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
+  Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+  vVar.push_back(lep1RelIso);
+  Variable* lep1MiniIso = new Variable("Lep1MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
+  vVar.push_back(lep1MiniIso);
+  Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+  vVar.push_back(lep1SusyIso);
 
   Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
@@ -33,6 +39,13 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(lep2eta);
   Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
   vVar.push_back(lep2phi);
+  Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+  vVar.push_back(lep2RelIso);
+  Variable* lep2MiniIso = new Variable("Lep2MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
+  vVar.push_back(lep2MiniIso);
+  Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+  vVar.push_back(lep2SusyIso);
+
 
   /*Variable* ak4jet1pt = new Variable("AK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(ak4jet1pt);
@@ -69,9 +82,9 @@ std::vector<Variable*> getVariableVec(){
   Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet2phi);
 
-  Variable* cleanak4htEl = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (leading electron) (GeV)","N_{Events} / 120 GeV");
+  Variable* cleanak4htEl = new Variable("cleanAK4HTEl",25,0,3000,"H_{T}^{lep} (leading electron) (GeV)","N_{Events} / 120 GeV");
   vVar.push_back(cleanak4htEl);
-  Variable* cleanak4htMu = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep}(leading muon) (GeV)","N_{Events} / 120 GeV");
+  Variable* cleanak4htMu = new Variable("cleanAK4HTMu",25,0,3000,"H_{T}^{lep}(leading muon) (GeV)","N_{Events} / 120 GeV");
   vVar.push_back(cleanak4htMu);
   Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
   vVar.push_back(cleanak4ht);
@@ -589,7 +602,7 @@ std::vector<TH1F*> getNPHistos(int nMu){
 
 Sample* getDataSample(std::string cut,std::string elID, std::string muID){
 
-  std::string filename = area+"test/oldCrossTrigger/Data_Mu"+muID+"_El"+elID+".root";
+  std::string filename = area+"test/Data_Mu"+muID+"_El"+elID+".root";
   TFile* tfile = new TFile(filename.c_str());
   Sample* dataSample = new Sample("Data",tfile,1,1,cut,kBlack,1);
   return dataSample;
@@ -1150,7 +1163,7 @@ std::vector<Sample*> get76XValidationSampleVec(std::string cut, float lumi, std:
   Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1500R);
 
-  /*  TFile* x53x531600Lfile = new TFile(area+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
+    TFile* x53x531600Lfile = new TFile(area+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
   Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1600L);
   TFile* x53x531600Rfile = new TFile(area+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+".root");
@@ -1281,7 +1294,7 @@ std::vector<Sample*> get74XValidationSampleVec(std::string cut, float lumi, std:
   Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1500R);
 
-  /*  TFile* x53x531600Lfile = new TFile(area+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
+    TFile* x53x531600Lfile = new TFile(area+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
   Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1600L);
   TFile* x53x531600Rfile = new TFile(area+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+".root");
@@ -1599,13 +1612,13 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   Sample* npttSample = new Sample(vBkgNames.at(-1),npttfile,vWeights.at(-1),vXsec.at(01),cut,kBlue);
   vSample.push_back(npttSample)*/
 
-  std::string npfilename = area+"test/oldCrossTrigger/NonPromptData_Mu"+muID+"_El"+elID+".root";
+  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+".root";
   TFile* npfile = new TFile(npfilename.c_str());
   Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
-  std::string cmidfilename = area+"test/oldCrossTrigger/ChargeMisID_Mu"+muID+"_El"+elID+".root";
+  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
   Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
@@ -2199,11 +2212,10 @@ float WeightOF_T11(std::string elID, std::string muID){
 float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
+  float eta1 = fabs(vLep.at(0)->eta);
+  float eta2 = fabs(vLep.at(1)->eta);
 
-  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel
-    
-    float eta1 = fabs(vLep.at(0)->eta);
-    float eta2 = fabs(vLep.at(1)->eta);
+  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel    
     
     if(eta1 > 2.1){
       if(eta2>2.1) sf=0.955;
@@ -2243,7 +2255,25 @@ float getTrigSF(std::vector<TLepton*> vLep){
   }
 
   else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
-    sf = 0.97;
+    float w1 = 0.0;
+    float w2 = 0.0;
+    //do weight for first electron
+    if(eta1<0.8) w1 = 0.980;
+    else if(eta1<1.5) w1  = 0.986;
+    else{
+      if(vSSLep.at(0)->pt<37) w1= 0.880;
+      else if(vSSLep.at(0)->pt<40) w1 = 0.976;
+      else w1 = 0.996;
+    }
+    //weight for second electron
+    if(eta2<0.8) w2 = 0.980;
+    else if(eta2<1.5) w2  = 0.986;
+    else{
+      if(vSSLep.at(1)->pt<37) w2= 0.880;
+      else if(vSSLep.at(1)->pt<40) w2 = 0.976;
+      else w2 = 0.996;
+    }
+    sf = w1*w2;
   }
   else{ //cross channel
     sf = 0.999;
