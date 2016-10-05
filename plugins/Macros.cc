@@ -2209,6 +2209,40 @@ float WeightOF_T11(std::string elID, std::string muID){
   return weight;
 
 }
+
+float getGsfSF(TLepton* lep){
+
+  float sf=0.0;
+  float eta = lep->eta;
+  if(eta<-2.3) sf       =1.00852;
+  else if(eta<-2.2)   sf=1.01047;
+  else if(eta<-2.0)   sf=1.00519;
+  else if(eta<-1.8)   sf=0.997932;
+  else if(eta<-1.63)  sf=0.991701;
+  else if(eta<-1.556) sf=0.986486;
+  else if(eta<-1.2)   sf=0.986667;
+  else if(eta<-1.0)   sf=0.977505;
+  else if(eta<-0.6)   sf=0.969388;
+  else if(eta<-0.4)   sf=0.966361;
+  else if(eta<-0.2)   sf=0.963303;
+  else if(eta<0.0)    sf=0.96;
+  else if(eta<0.2)    sf=0.966189;
+  else if(eta<0.4)    sf=0.979633;
+  else if(eta<0.6)    sf=0.976578;
+  else if(eta<1.0)    sf=0.980652;
+  else if(eta<1.2)    sf=0.986735;
+  else if(eta<1.445)  sf=0.98668;
+  else if(eta<1.63)   sf=0.989669;
+  else if(eta<1.8)    sf=0.995872;
+  else if(eta<2.0)    sf=0.989733;
+  else if(eta<2.2)    sf=0.994861;
+  else if(eta<2.3)    sf=0.992769;
+  else                sf=0.966632;
+
+  return sf;
+
+}
+
 float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
@@ -2261,16 +2295,16 @@ float getTrigSF(std::vector<TLepton*> vLep){
     if(eta1<0.8) w1 = 0.980;
     else if(eta1<1.5) w1  = 0.986;
     else{
-      if(vSSLep.at(0)->pt<37) w1= 0.880;
-      else if(vSSLep.at(0)->pt<40) w1 = 0.976;
+      if(vLep.at(0)->pt<37) w1= 0.880;
+      else if(vLep.at(0)->pt<40) w1 = 0.976;
       else w1 = 0.996;
     }
     //weight for second electron
     if(eta2<0.8) w2 = 0.980;
     else if(eta2<1.5) w2  = 0.986;
     else{
-      if(vSSLep.at(1)->pt<37) w2= 0.880;
-      else if(vSSLep.at(1)->pt<40) w2 = 0.976;
+      if(vLep.at(1)->pt<37) w2= 0.880;
+      else if(vLep.at(1)->pt<40) w2 = 0.976;
       else w2 = 0.996;
     }
     sf = w1*w2;

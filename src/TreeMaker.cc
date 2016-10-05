@@ -28,6 +28,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("trigSF",&trigSF_);
   tree->Branch("IDSF",&IDSF_);
   tree->Branch("IsoSF",&IsoSF_);
+  tree->Branch("GsfSF",&gsfSF_);
   tree->Branch("JetTaggingSF",&JetTaggingSF_);
 
   tree->Branch("PUWeight",&puweight_);
@@ -39,7 +40,10 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Lep1Charge",&Lep1Charge_);
   tree->Branch("Lep1Loose",&Lep1Loose_);
   tree->Branch("Lep1Tight",&Lep1Tight_);
-
+  tree->Branch("Lep1MinDR",&Lep1MinDR_);
+  tree->Branch("Lep1RelIso",&Lep1RelIso_);
+  tree->Branch("Lep1MiniIso",&Lep1MiniIso_);
+  tree->Branch("Lep1SusyIso",&Lep1SusyIso_);
 
   tree->Branch("Lep2Pt",&Lep2Pt_);
   tree->Branch("Lep2Eta",&Lep2Eta_);
@@ -49,10 +53,15 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Lep2Charge",&Lep2Charge_);
   tree->Branch("Lep2Loose",&Lep2Loose_);
   tree->Branch("Lep2Tight",&Lep2Tight_);
+  tree->Branch("Lep2MinDR",&Lep2MinDR_);
+  tree->Branch("Lep2RelIso",&Lep2RelIso_);
+  tree->Branch("Lep2MiniIso",&Lep2MiniIso_);
+  tree->Branch("Lep2SusyIso",&Lep2SusyIso_);
 
   //number of constiuents, cleaned ak4 jets and non ssdl leptons
   tree->Branch("nConst",&nConst_);
   tree->Branch("nNewConst",&nNewConst_);
+  tree->Branch("nNonSSLeps",&nNonSSLeps_);
 
   //tree->Branch("NTightLeptons",&NTightLeptons_);
   tree->Branch("nAK4Jets",&nAK4Jets_);
@@ -221,7 +230,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("Channel",&nMu_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc,int run, int lumi, int event){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp, int nTLtemp, float trSF, float idSF, float isoSF,float gsfSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc,int run, int lumi, int event){
 
   run_=run;
   lumi_=lumi;
@@ -236,6 +245,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   trigSF_=trSF;
   IDSF_ = idSF;
   IsoSF_ = isoSF;
+  gsfSF_ = gsfSF;
   puweight_=puwtemp;
 
   assert(vSSLep.size()>1);
@@ -245,12 +255,18 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   Lep1Phi_=vSSLep.at(0)->phi;
   Lep1Energy_=vSSLep.at(0)->energy;
   vSSLep.at(0)->isMu ? Lep1Flavor_=1 : Lep1Flavor_=0;
+  Lep1RelIso_ = vSSLep.at(0)->relIso;
+  Lep1MiniIso_ = vSSLep.at(0)->miniIso;
+  Lep1SusyIso_ = vSSLep.at(0)->susyIso;
 
   Lep2Pt_=vSSLep.at(1)->pt;
   Lep2Eta_=vSSLep.at(1)->eta;
   Lep2Phi_=vSSLep.at(1)->phi;
   Lep2Energy_=vSSLep.at(1)->energy;
   vSSLep.at(1)->isMu ? Lep2Flavor_=1 : Lep2Flavor_=0;
+  Lep2RelIso_ = vSSLep.at(1)->relIso;
+  Lep2MiniIso_ = vSSLep.at(1)->miniIso;
+  Lep2SusyIso_ = vSSLep.at(1)->susyIso;
 
   //if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
 
@@ -728,6 +744,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   if(nNewCleanAK4Jets_ > nCleanAK4Jets_) std::cout<<"something is broken because new ak4 collection is larger than old"<<std::endl;
   //new nConst
   nNewConst_ = newCleanAK4Jets.size() + vNonSSLep.size();
+  nNonSSLeps_ = vNonSSLep.size();
   newCleanAK4HT_=Lep1Pt_+Lep2Pt_;
   for(int i=0; i<nNewCleanAK4Jets_;i++){
     newCleanAK4HT_+=newCleanAK4Jets.at(i)->pt;
@@ -999,6 +1016,21 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   DilepMass_ = DilepMasstemp;
   AssocMass_ = amasst;
   nMu_= nMu;
+
+
+  //now get minDeltaR
+  float minDR1=9999;
+  float minDR2=9999;
+  for(unsigned int i =0; i< cleanAK4Jets.size();i++){
+    float dr1temp = pow( pow( Lep1Eta_ - cleanAK4Jets.at(i)->eta, 2) + pow(Lep1Phi_ - cleanAK4Jets.at(i)->phi,2), 0.5);
+    float dr2temp = pow( pow( Lep2Eta_ - cleanAK4Jets.at(i)->eta, 2) + pow(Lep2Phi_ - cleanAK4Jets.at(i)->phi,2), 0.5);
+    if(dr1temp<minDR1){ minDR1=dr1temp;}
+    if(dr2temp<minDR2){ minDR2=dr2temp;}
+  }
+
+  Lep1MinDR_ = minDR1;
+  Lep2MinDR_ = minDR2;
+
   tree->Fill();
 
 }

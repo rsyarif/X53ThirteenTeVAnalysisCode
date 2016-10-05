@@ -41,8 +41,8 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July12/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/";
 
   if(argc!=4) return 0;
   std::string argv1=argv[1];
@@ -308,13 +308,13 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muFakeRate;
   if(muID=="CBTight") muFakeRate=0.346;
-  else if(muID=="CBTightMiniIso") muFakeRate=0.427;
+  else if(muID=="CBTightMiniIso") muFakeRate=0.429;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.206;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.205;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -404,8 +404,8 @@ int main(int argc, char* argv[]){
     int TL;
     //make vector of good Leptons change based on data/mc   
     std::vector<TLepton*> goodLeptons;
-    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);//switch
-    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);
+    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
+    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
 
     //reorder the leptons by pt to remove flavor ordering
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
@@ -507,9 +507,10 @@ int main(int argc, char* argv[]){
     bool skip = true;
     if(data){
       if(mumu && tr->HLT_Mu27TkMu8) skip =false;
-      //if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
-      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
-      if(elel && tr->HLT_DoubleEle37_27) skip = false;     
+      if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
+      //if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
+      //if(elel && tr->HLT_DoubleEle37_27) skip = false;
+      if(elel && tr->HLT_DoubleEle33) skip = false; //switch to this because same bug affects ele37ele27
     }
     else{
       skip=false;
@@ -617,7 +618,14 @@ int main(int argc, char* argv[]){
     float lepIsoSF;
     if(data) lepIsoSF = 1.0;
     else lepIsoSF = getLepIsoSF(vSSLep);
-
+    //get gsf tracking sf
+    float gsfSF;
+    if(data) gsfSF=1.0;
+    else{
+      gsfSF=1.0;//set to one currently
+      if(vSSLep.at(0)->isEl) gsfSF*= getGsfSF(vSSLep.at(0));
+      if(vSSLep.at(1)->isEl) gsfSF*= getGsfSF(vSSLep.at(1));
+    }
     //now need to calculate nonPropmtWeight
     if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
@@ -662,7 +670,7 @@ int main(int argc, char* argv[]){
     float assocMass =  (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).second;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //fill histos for same cut level
     float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -705,7 +713,7 @@ int main(int argc, char* argv[]){
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //now fill corresponding histos
     fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -726,7 +734,7 @@ int main(int argc, char* argv[]){
     //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     //}
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
-    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
 
     if(tr->cleanedAK4Jets.size()>1){
       //now fill corresponding histos
@@ -974,7 +982,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  muons
   for(unsigned int uimu=0; uimu<muons.size(); uimu++){
     TMuon* imu = muons.at(uimu);
-    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso);
+    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso,imu->susyIso);
 
     if(muID=="CBTight"){
       iLep->Tight=imu->cutBasedTight();
@@ -1005,7 +1013,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  electrons
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
     TElectron* iel = electrons.at(uiel);
-    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso);
+    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso,iel->susyIso);
     iLep->isMu = false;
     iLep->isEl = true;
     if(elID=="CBTight"){

@@ -25,7 +25,7 @@ class TreeMaker {
   //event info
   int run_;
   int lumi_;
-  int event_;
+  long long event_;
 
   //weight
   float weight_;
@@ -37,6 +37,7 @@ class TreeMaker {
   float trigSF_;
   float IDSF_;
   float IsoSF_;
+  float gsfSF_;
   float JetTaggingSF_;
 
   float puweight_;
@@ -50,6 +51,10 @@ class TreeMaker {
   int Lep1Charge_;
   int Lep1Loose_;
   int Lep1Tight_;
+  float Lep1MinDR_;
+  float Lep1RelIso_;
+  float Lep1MiniIso_;
+  float Lep1SusyIso_;
 
   float Lep2Pt_;
   float Lep2Eta_;
@@ -59,10 +64,15 @@ class TreeMaker {
   int Lep2Charge_;
   int Lep2Loose_;
   int Lep2Tight_;
+  float Lep2MinDR_;
+  float Lep2RelIso_;
+  float Lep2MiniIso_;
+  float Lep2SusyIso_;
 
   int nConst_;
   int nAK4Jets_;
   int nNewConst_;
+  int nNonSSLeps_;
 
   float AK4HT_;
   float MET_;
@@ -233,7 +243,7 @@ class TreeMaker {
   //functions
   //WriteHists(TreeReader* tr, TTree* t, std::vector<TLepton*> vSSLep);
   void InitTree(std::string treename);
-  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight, float NpWeighttemp, int nTLtemp,float trSF, float idSF, float isoSF,float puwtemp,float amasst,std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets, bool mc,int run, int lumi, int event);
+  void FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4jets, std::vector<TJet*> cleanAK4jets, std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight,std::vector<TLepton*> vNonSSLep,float mcweight, float NpWeighttemp, int nTLtemp,float trSF, float idSF, float isoSF,float gsfSF,float puwtemp,float amasst,std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets, bool mc,int run, int lumi, int event);
 
 };
 
