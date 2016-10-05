@@ -8,6 +8,8 @@
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/plugins/CutClass.cc"
 #include "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/interface/TreeReader.h"
 #include "TGraphAsymmErrors.h"
+#include "TMath.h"
+#include "Math/ProbFunc.h"
 
 std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 
@@ -2295,16 +2297,14 @@ float getTrigSF(std::vector<TLepton*> vLep){
     if(eta1<0.8) w1 = 0.980;
     else if(eta1<1.5) w1  = 0.986;
     else{
-      if(vLep.at(0)->pt<37) w1= 0.880;
-      else if(vLep.at(0)->pt<40) w1 = 0.976;
+      if(vLep.at(0)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
       else w1 = 0.996;
     }
     //weight for second electron
     if(eta2<0.8) w2 = 0.980;
     else if(eta2<1.5) w2  = 0.986;
     else{
-      if(vLep.at(1)->pt<37) w2= 0.880;
-      else if(vLep.at(1)->pt<40) w2 = 0.976;
+      if(vLep.at(1)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
       else w2 = 0.996;
     }
     sf = w1*w2;
