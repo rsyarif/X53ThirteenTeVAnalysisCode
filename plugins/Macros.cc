@@ -2245,6 +2245,55 @@ float getGsfSF(TLepton* lep){
 
 }
 
+float getMu17Eff(TLepton* mu){
+  float pt = mu->pt;
+  float abseta = fabs(mu->eta);
+  float eff = 0.0;
+  if(abseta < 0.4){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.847649;
+    else if(pt>100) eff = 0.902537;
+    else if(pt>60) eff = 0.90607;
+    else if(pt>40) eff = 0.916117;
+    else if(pt>=35) eff = 0.916757;
+  }
+  else if(abseta < 0.9){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.915741;
+    else if(pt>100) eff = 0.930011;
+    else if(pt>60) eff = 0.946423;
+    else if(pt>40) eff = 0.948176;
+    else if(pt>=35) eff = 0.951504;
+  }
+  else if(abseta < 1.2){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.814732;
+    else if(pt>100) eff = 0.890936;
+    else if(pt>60) eff = 0.886419;
+    else if(pt>40) eff = 0.883023;
+    else if(pt>=35) eff = 0.889053;
+  }
+  else if(abseta < 2.1){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.710069;
+    else if(pt>100) eff = 0.86932;
+    else if(pt>60) eff = 0.920066;
+    else if(pt>40) eff = 0.929194;
+    else if(pt>=35) eff = 0.934919;
+  }
+  else if(abseta <= 2.4){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.0;
+    else if(pt>100) eff = 0.922062;
+    else if(pt>60) eff = 0.895586;
+    else if(pt>40) eff = 0.874371;
+    else if(pt>=35) eff = 0.862037;
+  }
+
+  return eff;
+
+}
+
 float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
@@ -2252,42 +2301,48 @@ float getTrigSF(std::vector<TLepton*> vLep){
   float eta2 = fabs(vLep.at(1)->eta);
 
   if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel    
+
+    //get conditional efficiency
+    float cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
+    float soup_eff = 0.0;
     
     if(eta1 > 2.1){
-      if(eta2>2.1) sf=0.955;
-      else if(eta2>1.2) sf=0.958;
-      else if(eta2>0.9) sf=0.962;
-      else if(eta2>0.4) sf=0.979;
-      else sf=0.991;
+      if(eta2>2.1) soup_eff=0.8745;
+      else if(eta2>1.2) soup_eff=0.8961;
+      else if(eta2>0.9) soup_eff=0.8891;
+      else if(eta2>0.4) soup_eff=0.9711;
+      else soup_eff=1.0;
     }
     else if(eta1 > 1.2){
-      if(eta2>2.1) sf=0.963;
-      else if(eta2>1.2) sf=0.961;
-      else if(eta2>0.9) sf=0.969;
-      else if(eta2>0.4) sf=0.972;
-      else sf=0.974;
+      if(eta2>2.1) soup_eff=0.8955;
+      else if(eta2>1.2) soup_eff=0.9376;
+      else if(eta2>0.9) soup_eff=0.9330;
+      else if(eta2>0.4) soup_eff=0.9565;
+      else soup_eff=0.9446;
     }
     else if(eta1 > 0.9){
-      if(eta2>2.1) sf=0.966;
-      else if(eta2>1.2) sf=0.969;
-      else if(eta2>0.9) sf=0.973;
-      else if(eta2>0.4) sf=0.978;
-      else sf=0.975;
+      if(eta2>2.1) soup_eff=0.9245;
+      else if(eta2>1.2) soup_eff=0.9577;
+      else if(eta2>0.9) soup_eff=0.9588;
+      else if(eta2>0.4) soup_eff=0.9713;
+      else soup_eff=0.9614;
     }
     else if(eta1 > 0.4){
-      if(eta2>2.1) sf=0.991;
-      else if(eta2>1.2) sf=0.970;
-      else if(eta2>0.9) sf=0.976;
-      else if(eta2>0.4) sf=0.975;
-      else sf=0.971;
+      if(eta2>2.1) soup_eff=0.9411;
+      else if(eta2>1.2) soup_eff=0.9593;
+      else if(eta2>0.9) soup_eff=0.9558;
+      else if(eta2>0.4) soup_eff=0.9665;
+      else soup_eff=0.9483;
     }
     else{
-      if(eta2>2.1) sf=1.003;
-      else if(eta2>1.2) sf=0.970;
-      else if(eta2>0.9) sf=0.973;
-      else if(eta2>0.4) sf=0.970;
-      else sf=0.966;
+      if(eta2>2.1) soup_eff=1.0;
+      else if(eta2>1.2) soup_eff=0.9649;
+      else if(eta2>0.9) soup_eff=0.9499;
+      else if(eta2>0.4) soup_eff=0.9658;
+      else soup_eff=0.9503;
     }
+
+    sf = cond_eff*soup_eff;
   }
 
   else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
