@@ -2294,6 +2294,55 @@ float getMu17Eff(TLepton* mu){
 
 }
 
+float getMu17EffNearbyPhi(TLepton* mu){
+  float pt = mu->pt;
+  float abseta = fabs(mu->eta);
+  float eff = 0.0;
+  if(abseta < 0.4){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.847649;
+    else if(pt>100) eff = 0.902537;
+    else if(pt>60) eff = 0.90607;
+    else if(pt>40) eff = 0.916117;
+    else if(pt>=35) eff = 0.916757;
+  }
+  else if(abseta < 0.9){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.915741;
+    else if(pt>100) eff = 0.930011;
+    else if(pt>60) eff = 0.946423;
+    else if(pt>40) eff = 0.948176;
+    else if(pt>=35) eff = 0.951504;
+  }
+  else if(abseta < 1.2){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.814732;
+    else if(pt>100) eff = 0.890936;
+    else if(pt>60) eff = 0.886419;
+    else if(pt>40) eff = 0.883023;
+    else if(pt>=35) eff = 0.889053;
+  }
+  else if(abseta < 2.1){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.710069;
+    else if(pt>100) eff = 0.86932;
+    else if(pt>60) eff = 0.920066;
+    else if(pt>40) eff = 0.929194;
+    else if(pt>=35) eff = 0.934919;
+  }
+  else if(abseta <= 2.4){
+    if ( pt >=500) eff= 0.0;
+    else if(pt>200) eff = 0.0;
+    else if(pt>100) eff = 0.922062;
+    else if(pt>60) eff = 0.895586;
+    else if(pt>40) eff = 0.874371;
+    else if(pt>=35) eff = 0.862037;
+  }
+
+  return eff;
+
+}
+
 float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
@@ -2303,7 +2352,10 @@ float getTrigSF(std::vector<TLepton*> vLep){
   if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel    
 
     //get conditional efficiency
-    float cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
+    float cond_eff = 0.0;
+    if(fabs(vLep.at(0)->phi - vLep.at(1)->phi) > 1 ) cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
+    else cond_eff = 1.0 - (1.0 - ((0.9)*getMu17EffNearbyPhi(vLep.at(0)) + (0.1)*getMu17Eff(vLep.at(0))) ) * (1.0 - getMu17Eff(vLep.at(1)));
+
     float soup_eff = 0.0;
     
     if(eta1 > 2.1){
