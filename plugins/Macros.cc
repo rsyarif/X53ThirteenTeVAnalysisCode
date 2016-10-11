@@ -2343,6 +2343,19 @@ float getMu17EffNearbyPhi(TLepton* mu){
 
 }
 
+float getAvgMu18(TLepton* mu){
+
+  float eta = fabs(mu->eta);
+  float eff = 0.0;
+  if(eta>2.1) eff = 0.902;
+  else if(eta > 1.2) eff = 0.944;
+  else if(eta > 0.9) eff = 0.871;
+  else if(eta > 0.4) eff = 0.935;
+  else eff = 0.897;
+
+  return eff
+}
+
 float getTrigSF(std::vector<TLepton*> vLep){
 
   float sf;
@@ -2354,7 +2367,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
     //get conditional efficiency
     float cond_eff = 0.0;
     if(fabs(vLep.at(0)->phi - vLep.at(1)->phi) > 1 ) cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
-    else cond_eff = 1.0 - (1.0 - ((0.9)*getMu17EffNearbyPhi(vLep.at(0)) + (0.1)*getMu17Eff(vLep.at(0))) ) * (1.0 - getMu17Eff(vLep.at(1)));
+    else cond_eff = 1.0 - (1.0 - (getAvgMu17(vLep.at(1)*getMu17EffNearbyPhi(vLep.at(0)) + (1 - getAvgMu17(vLep.at(1))*getMu17Eff(vLep.at(0))) ) * (1.0 - getMu17Eff(vLep.at(1)));
 
     float soup_eff = 0.0;
     
