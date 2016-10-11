@@ -2434,56 +2434,56 @@ float getTrigSF(std::vector<TLepton*> vLep){
 	if(vLep.at(1)->pt>500) muEff = 0.0;
 	else if(vLep.at(1)->pt>300) muEff = 0.7778;
 	else if(vLep.at(1)->pt>200) muEff = 0.7964;
-	else if(vLep.at(1)->pt>150) muEff = 0.8075;
-	else if(vLep.at(1)->pt>100) muEff = 0.7896;
+	else if(vLep.at(1)->pt>150) muEff = 0.8071;
+	else if(vLep.at(1)->pt>100) muEff = 0.7895;
 	else if(vLep.at(1)->pt>60) muEff = 0.8113;
-	else if(vLep.at(1)->pt>50) muEff = 0.7686;
-	else if(vLep.at(1)->pt>40) muEff = 0.7686;
-	else if(vLep.at(1)->pt>35) muEff = 0.7686;      
+	else if(vLep.at(1)->pt>50) muEff = 0.7684;
+	else if(vLep.at(1)->pt>40) muEff = 0.7692;
+	else if(vLep.at(1)->pt>35) muEff = 0.7607;      
       }
       else if(eta2>1.2){
 	if(vLep.at(1)->pt>500) muEff = 0.0;
 	else if(vLep.at(1)->pt>300) muEff = 0.8848;
 	else if(vLep.at(1)->pt>200) muEff = 0.8279;
 	else if(vLep.at(1)->pt>150) muEff = 0.8300;
-	else if(vLep.at(1)->pt>100) muEff = 0.8357;
+	else if(vLep.at(1)->pt>100) muEff = 0.8356;
 	else if(vLep.at(1)->pt>60) muEff = 0.8573;
-	else if(vLep.at(1)->pt>50) muEff = 0.8675;
-	else if(vLep.at(1)->pt>40) muEff = 0.8734;
-	else if(vLep.at(1)->pt>35) muEff = 0.8734;      
+	else if(vLep.at(1)->pt>50) muEff = 0.8674;
+	else if(vLep.at(1)->pt>40) muEff = 0.8735;
+	else if(vLep.at(1)->pt>35) muEff = 0.8638;      
       }
       else if(eta2>0.9){
 	if(vLep.at(1)->pt>500) muEff = 0.0;
 	else if(vLep.at(1)->pt>300) muEff = 0.8627;
-	else if(vLep.at(1)->pt>200) muEff = 0.8777;
+	else if(vLep.at(1)->pt>200) muEff = 0.8776;
 	else if(vLep.at(1)->pt>150) muEff = 0.8986;
 	else if(vLep.at(1)->pt>100) muEff = 0.8949;
-	else if(vLep.at(1)->pt>60) muEff = 0.9026;
-	else if(vLep.at(1)->pt>50) muEff = 0.9163;
-	else if(vLep.at(1)->pt>40) muEff = 0.9098;
-	else if(vLep.at(1)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(1)->pt>60) muEff = 0.9025;
+	else if(vLep.at(1)->pt>50) muEff = 0.9165;
+	else if(vLep.at(1)->pt>40) muEff = 0.9097;
+	else if(vLep.at(1)->pt>35) muEff = 0.9080;      
       }
       else if(eta2>0.4){
 	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8627;
-	else if(vLep.at(1)->pt>200) muEff = 0.8777;
-	else if(vLep.at(1)->pt>150) muEff = 0.8986;
-	else if(vLep.at(1)->pt>100) muEff = 0.8949;
-	else if(vLep.at(1)->pt>60) muEff = 0.9026;
-	else if(vLep.at(1)->pt>50) muEff = 0.9163;
-	else if(vLep.at(1)->pt>40) muEff = 0.9098;
-	else if(vLep.at(1)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(1)->pt>300) muEff = 0.9341;
+	else if(vLep.at(1)->pt>200) muEff = 0.9494;
+	else if(vLep.at(1)->pt>150) muEff = 0.9376;
+	else if(vLep.at(1)->pt>100) muEff = 0.9385;
+	else if(vLep.at(1)->pt>60) muEff = 0.9431;
+	else if(vLep.at(1)->pt>50) muEff = 0.9502;
+	else if(vLep.at(1)->pt>40) muEff = 0.9465;
+	else if(vLep.at(1)->pt>35) muEff = 0.9433;      
       }
       else if(eta2>=0.0){
 	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8627;
-	else if(vLep.at(1)->pt>200) muEff = 0.8777;
-	else if(vLep.at(1)->pt>150) muEff = 0.8986;
-	else if(vLep.at(1)->pt>100) muEff = 0.8949;
-	else if(vLep.at(1)->pt>60) muEff = 0.9026;
-	else if(vLep.at(1)->pt>50) muEff = 0.9163;
-	else if(vLep.at(1)->pt>40) muEff = 0.9098;
-	else if(vLep.at(1)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(1)->pt>300) muEff = 0.9433;
+	else if(vLep.at(1)->pt>200) muEff = 0.9076;
+	else if(vLep.at(1)->pt>150) muEff = 0.9175;
+	else if(vLep.at(1)->pt>100) muEff = 0.9106;
+	else if(vLep.at(1)->pt>60) muEff = 0.9141;
+	else if(vLep.at(1)->pt>50) muEff = 0.9156;
+	else if(vLep.at(1)->pt>40) muEff = 0.9081;
+	else if(vLep.at(1)->pt>35) muEff = 0.9111;      
       }
 
     }
@@ -2494,74 +2494,69 @@ float getTrigSF(std::vector<TLepton*> vLep){
 	if(vLep.at(1)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
 	else elEff = 0.996;
       }
-
       //now muon efficiency
       if(eta1>2.1){
 	if(vLep.at(0)->pt>500) muEff = 0.0;
 	else if(vLep.at(0)->pt>300) muEff = 0.7778;
 	else if(vLep.at(0)->pt>200) muEff = 0.7964;
-	else if(vLep.at(0)->pt>150) muEff = 0.8075;
-	else if(vLep.at(0)->pt>100) muEff = 0.7896;
+	else if(vLep.at(0)->pt>150) muEff = 0.8071;
+	else if(vLep.at(0)->pt>100) muEff = 0.7895;
 	else if(vLep.at(0)->pt>60) muEff = 0.8113;
-	else if(vLep.at(0)->pt>50) muEff = 0.7686;
-	else if(vLep.at(0)->pt>40) muEff = 0.7686;
-	else if(vLep.at(0)->pt>35) muEff = 0.7686;      
+	else if(vLep.at(0)->pt>50) muEff = 0.7684;
+	else if(vLep.at(0)->pt>40) muEff = 0.7692;
+	else if(vLep.at(0)->pt>35) muEff = 0.7607;      
       }
       else if(eta1>1.2){
 	if(vLep.at(0)->pt>500) muEff = 0.0;
 	else if(vLep.at(0)->pt>300) muEff = 0.8848;
 	else if(vLep.at(0)->pt>200) muEff = 0.8279;
 	else if(vLep.at(0)->pt>150) muEff = 0.8300;
-	else if(vLep.at(0)->pt>100) muEff = 0.8357;
+	else if(vLep.at(0)->pt>100) muEff = 0.8356;
 	else if(vLep.at(0)->pt>60) muEff = 0.8573;
-	else if(vLep.at(0)->pt>50) muEff = 0.8675;
-	else if(vLep.at(0)->pt>40) muEff = 0.8734;
-	else if(vLep.at(0)->pt>35) muEff = 0.8734;      
+	else if(vLep.at(0)->pt>50) muEff = 0.8674;
+	else if(vLep.at(0)->pt>40) muEff = 0.8735;
+	else if(vLep.at(0)->pt>35) muEff = 0.8638;      
       }
       else if(eta1>0.9){
 	if(vLep.at(0)->pt>500) muEff = 0.0;
 	else if(vLep.at(0)->pt>300) muEff = 0.8627;
-	else if(vLep.at(0)->pt>200) muEff = 0.8777;
+	else if(vLep.at(0)->pt>200) muEff = 0.8776;
 	else if(vLep.at(0)->pt>150) muEff = 0.8986;
 	else if(vLep.at(0)->pt>100) muEff = 0.8949;
-	else if(vLep.at(0)->pt>60) muEff = 0.9026;
-	else if(vLep.at(0)->pt>50) muEff = 0.9163;
-	else if(vLep.at(0)->pt>40) muEff = 0.9098;
-	else if(vLep.at(0)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(0)->pt>60) muEff = 0.9025;
+	else if(vLep.at(0)->pt>50) muEff = 0.9165;
+	else if(vLep.at(0)->pt>40) muEff = 0.9097;
+	else if(vLep.at(0)->pt>35) muEff = 0.9080;      
       }
       else if(eta1>0.4){
 	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8627;
-	else if(vLep.at(0)->pt>200) muEff = 0.8777;
-	else if(vLep.at(0)->pt>150) muEff = 0.8986;
-	else if(vLep.at(0)->pt>100) muEff = 0.8949;
-	else if(vLep.at(0)->pt>60) muEff = 0.9026;
-	else if(vLep.at(0)->pt>50) muEff = 0.9163;
-	else if(vLep.at(0)->pt>40) muEff = 0.9098;
-	else if(vLep.at(0)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(0)->pt>300) muEff = 0.9341;
+	else if(vLep.at(0)->pt>200) muEff = 0.9494;
+	else if(vLep.at(0)->pt>150) muEff = 0.9376;
+	else if(vLep.at(0)->pt>100) muEff = 0.9385;
+	else if(vLep.at(0)->pt>60) muEff = 0.9431;
+	else if(vLep.at(0)->pt>50) muEff = 0.9502;
+	else if(vLep.at(0)->pt>40) muEff = 0.9465;
+	else if(vLep.at(0)->pt>35) muEff = 0.9433;      
       }
       else if(eta1>=0.0){
 	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8627;
-	else if(vLep.at(0)->pt>200) muEff = 0.8777;
-	else if(vLep.at(0)->pt>150) muEff = 0.8986;
-	else if(vLep.at(0)->pt>100) muEff = 0.8949;
-	else if(vLep.at(0)->pt>60) muEff = 0.9026;
-	else if(vLep.at(0)->pt>50) muEff = 0.9163;
-	else if(vLep.at(0)->pt>40) muEff = 0.9098;
-	else if(vLep.at(0)->pt>35) muEff = 0.9098;      
+	else if(vLep.at(0)->pt>300) muEff = 0.9433;
+	else if(vLep.at(0)->pt>200) muEff = 0.9076;
+	else if(vLep.at(0)->pt>150) muEff = 0.9175;
+	else if(vLep.at(0)->pt>100) muEff = 0.9106;
+	else if(vLep.at(0)->pt>60) muEff = 0.9141;
+	else if(vLep.at(0)->pt>50) muEff = 0.9156;
+	else if(vLep.at(0)->pt>40) muEff = 0.9081;
+	else if(vLep.at(0)->pt>35) muEff = 0.9111;      
       }
 
-
-    }
-
-   
-    
+    }//end check on electron being subleading or leading    
 
     //scale factor is combined efficiency (AND of reco'ing both el and mu)
     sf = muEff*elEff;
 
-  }
+  }//end cross channel
 
   return sf;
 
