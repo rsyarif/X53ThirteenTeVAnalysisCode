@@ -70,7 +70,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   ////std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i], (*elSusyIso)[i]) );
 
   }
 
@@ -79,7 +79,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     allMuons.push_back(new TMuon((*muPt)[i],
 				 (*muEta)[i], (*muPhi)[i], (*muEnergy)[i],(*muCharge)[i], (*muIsLoose)[i],(*muIsTight)[i],
 				 (*muGlobal)[i],(*muPF)[i],(*muTracker)[i],(*muChi2)[i], (*muNValMuHits)[i],  (*muNMatchedStations)[i],
-				 (*muDxy)[i], (*muDz)[i],(*muSIP3d)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i], (*muMiniIso)[i]));
+				 (*muDxy)[i], (*muDz)[i],(*muSIP3d)[i],(*muNValPixelHits)[i],(*muNTrackerLayers)[i],(*muRelIso)[i], (*muMiniIso)[i], (*muSusyIso)[i]) );
   }
 
   //make all jets
@@ -91,7 +91,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   //make AK8, that is, boosted jets 
   for(unsigned int i=0; i<nAK8Jets; i++){
-    allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], (*AK8JetTrimMass)[i], (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], (*AK8JetFiltMass)[i], (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau3)[i], (*AK8JetNSubjets)[i]));
+    allAK8Jets.push_back(new TBoostedJet( (*AK8JetPt)[i], (*AK8JetEta)[i], (*AK8JetPhi)[i], (*AK8JetEnergy)[i], 999, (*AK8JetPruneMass)[i], (*AK8JetSDMass)[i], 999, (*AK8JetTau1)[i],(*AK8JetTau2)[i], (*AK8JetTau3)[i], (*AK8JetNSubjets)[i]));
     int firstsub = (*AK8JetSubjetIndex)[i];
     int nsubs = (*AK8JetNSubjets)[i];
     for(int j = firstsub; j< firstsub + nsubs;j++){
@@ -237,6 +237,7 @@ void TreeReader::Init(TTree *treetemp)
   elrhoIso = 0;
   elMiniIso = 0;
   elMiniIsoDB = 0;
+  elSusyIso = 0;
   elAEff= 0;
   elSihih = 0;
   elChargeConsistent = 0;
@@ -283,6 +284,7 @@ void TreeReader::Init(TTree *treetemp)
   muRelIso = 0;
   muMiniIso = 0;
   muMiniIsoDB = 0;
+  muSusyIso = 0;
   muCharge = 0;
   muGlobal = 0;
   muPF     = 0;
@@ -311,10 +313,10 @@ void TreeReader::Init(TTree *treetemp)
   AK8JetEta = 0;
   AK8JetPhi = 0;
   AK8JetPt = 0;
-  AK8JetTrimMass = 0;
+  //AK8JetTrimMass = 0;
   AK8JetPruneMass = 0;
   AK8JetSDMass = 0;
-  AK8JetFiltMass=0;
+  //AK8JetFiltMass=0;
   AK8JetTau1=0;
   AK8JetTau2=0;
   AK8JetTau3=0;
@@ -378,6 +380,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elRhoIso_DileptonCalc", &elrhoIso, &b_elrhoIso_DileptonCalc);
   tree->SetBranchAddress("elMiniIsoEA_DileptonCalc", &elMiniIso, &b_elMiniIso_DileptonCalc);
   tree->SetBranchAddress("elMiniIsoDB_DileptonCalc", &elMiniIsoDB, &b_elMiniIsoDB_DileptonCalc);
+  tree->SetBranchAddress("elMiniIsoSUSY_DileptonCalc", &elSusyIso, &b_elSusyIso_DileptonCalc);
   tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
   tree->SetBranchAddress("elMVA_DileptonCalc", &elMVA, &b_elMVA_DileptonCalc);
@@ -402,6 +405,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("muRelIso_DileptonCalc", &muRelIso, &b_muRelIso_DileptonCalc);
   tree->SetBranchAddress("muMiniIsoEA_DileptonCalc", &muMiniIso, &b_muMiniIso_DileptonCalc);
   tree->SetBranchAddress("muMiniIsoDB_DileptonCalc", &muMiniIsoDB, &b_muMiniIsoDB_DileptonCalc);
+  tree->SetBranchAddress("muMiniIsoSUSY_DileptonCalc", &muSusyIso, &b_muSusyIso_DileptonCalc);
   tree->SetBranchAddress("muIsTight_DileptonCalc",&muIsTight,&b_muIsTight_DileptonCalc);
   tree->SetBranchAddress("muIsLoose_DileptonCalc",&muIsLoose,&b_muIsLoose_DileptonCalc);
 
@@ -422,10 +426,10 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("theJetAK8Eta_JetSubCalc", &AK8JetEta, &b_AK8JetEta_JetSubCalc);
   tree->SetBranchAddress("theJetAK8Phi_JetSubCalc", &AK8JetPhi, &b_AK8JetPhi_JetSubCalc);
   tree->SetBranchAddress("theJetAK8Pt_JetSubCalc", &AK8JetPt, &b_AK8JetPt_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8TrimmedMass_JetSubCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_JetSubCalc);
+  //tree->SetBranchAddress("theJetAK8TrimmedMass_JetSubCalc", &AK8JetTrimMass, &b_AK8JetTrimMass_JetSubCalc);
   tree->SetBranchAddress("theJetAK8SoftDropMass_JetSubCalc", &AK8JetSDMass, &b_AK8JetSDMass_JetSubCalc);
   tree->SetBranchAddress("theJetAK8PrunedMass_JetSubCalc", &AK8JetPruneMass, &b_AK8JetPruneMass_JetSubCalc);
-  tree->SetBranchAddress("theJetAK8FilteredMass_JetSubCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_JetSubCalc);
+  //tree->SetBranchAddress("theJetAK8FilteredMass_JetSubCalc", &AK8JetFiltMass, &b_AK8JetFiltMass_JetSubCalc);
   tree->SetBranchAddress("theJetAK8NjettinessTau1_JetSubCalc", &AK8JetTau1, &b_AK8JetTau1_JetSubCalc);
   tree->SetBranchAddress("theJetAK8NjettinessTau2_JetSubCalc", &AK8JetTau2, &b_AK8JetTau2_JetSubCalc);
   tree->SetBranchAddress("theJetAK8NjettinessTau3_JetSubCalc", &AK8JetTau3, &b_AK8JetTau3_JetSubCalc);
@@ -504,7 +508,7 @@ void TreeReader::Init(TTree *treetemp)
   //double electron
   tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc", &HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);
   tree->SetBranchAddress("HLT_DoubleEle37_27_DileptonCalc", &HLT_DoubleEle37_27,&b_HLT_DoubleEle37_27_DileptonCalc);
-  tree->SetBranchAddress("HLT_DoubleEle33_MW_DileptonCalc",&HLT_DoubleEle33,&b_HLT_DoubleEle33_MW_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle33_MW_DileptonCalc",&HLT_DoubleEle33_MW,&b_HLT_DoubleEle33_MW_DileptonCalc);
   tree->SetBranchAddress("HLT_Ele17_Ele12_DZ_DileptonCalc",&HLT_Ele17Ele12,&b_HLT_Ele17Ele12_DileptonCalc);
   tree->SetBranchAddress("HLT_DoubleEle8_Mass8_HT300_DileptonCalc", &HLT_DoubleEle8_HT300,&b_HLT_DoubleEle8_HT300_DileptonCalc);
   //single electron
