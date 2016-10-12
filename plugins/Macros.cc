@@ -2510,7 +2510,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
 	else if(vLep.at(1)->pt>40) muEff = 0.9081;
 	else if(vLep.at(1)->pt>35) muEff = 0.9111;      
       }
-
+      //std::cout<<"weight for leading electron with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<elEff<<" weight for subleading muon with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<muEff<<" total sf = "<<sf<<std::endl;
     }
     else{ //elEff is for subleading
       if(eta2<0.8) elEff = 0.980;
@@ -2575,6 +2575,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
 	else if(vLep.at(0)->pt>40) muEff = 0.9081;
 	else if(vLep.at(0)->pt>35) muEff = 0.9111;      
       }
+      std::cout<<"weight for leading muon with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<muEff<<" weight for subleading electron with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<elEff<<" total sf = "<<sf<<std::endl;
 
     }//end check on electron being subleading or leading    
 
