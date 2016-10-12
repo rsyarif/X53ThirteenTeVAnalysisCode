@@ -1706,7 +1706,7 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
   else  channel<<"";
 
   //std::string cutstring= " PUWeight* MCWeight*ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
-  std::string cutstring= " PUWeight * IDSF * IsoSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
+  std::string cutstring= " PUWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
@@ -2366,9 +2366,20 @@ float getTrigSF(std::vector<TLepton*> vLep){
 
     //get conditional efficiency
     float cond_eff = 0.0;
-    if(fabs(vLep.at(0)->phi - vLep.at(1)->phi) > 1 ) cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
-    else cond_eff = 1.0 - (1.0 - ( getAvgMu17(vLep.at(1)) * getMu17EffNearbyPhi(vLep.at(0)) + (1 - getAvgMu17(vLep.at(1)) * getMu17Eff(vLep.at(0)) ) ) * (1.0 - getMu17Eff(vLep.at(1)) ) );
-
+    float mu17_lep1 = 0.0;
+    float mu17_lep2 = 0.0;
+    if(fabs(vLep.at(0)->phi - vLep.at(1)->phi) > 1 ){
+      mu17_lep1 = getMu17Eff(vLep.at(0));
+      mu17_lep2 = getMu17Eff(vLep.at(1));
+      cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
+    } 
+    else {
+      mu17_lep2 = getMu17Eff(vLep.at(1));
+      mu17_lep1 = getMu17Eff(vLep.at(1))*getMu17EffNearbyPhi(vLep.at(0)) +  (1.0 - getMu17Eff(vLep.at(1))) * (getMu17Eff(vLep.at(0)));
+      cond_eff = 1.0 - (1.0 - ( getMu17Eff(vLep.at(1)) * getMu17EffNearbyPhi(vLep.at(0)) + (1 - getMu17Eff(vLep.at(1)) )* getMu17Eff(vLep.at(0)) ) ) * (1.0 - getMu17Eff(vLep.at(1)) ) ;
+    }
+    //std::cout<<"eff1: "<<getMu17Eff(vLep.at(0))<<" eff2: "<<getMu17Eff(vLep.at(1))<<" eff3: "<<getMu17EffNearbyPhi(vLep.at(0))<<std::endl;
+    //std::cout<<"cond_Eff: "<<cond_eff<<" and new condeff: "<< (1.0 - (1.0-mu17_lep1)*(1.0-mu17_lep2))<<std::endl;
     float soup_eff = 0.0;
     
     if(eta1 > 2.1){
@@ -2406,8 +2417,8 @@ float getTrigSF(std::vector<TLepton*> vLep){
       else if(eta2>0.4) soup_eff=0.9658;
       else soup_eff=0.9503;
     }
-
     sf = cond_eff*soup_eff;
+    //std::cout<<"soup eff for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<"and  for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<soup_eff<<" conditional eff is: "<<cond_eff<<"and total sf is: "<<sf<<std::endl;
   }
 
   else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
@@ -2424,10 +2435,11 @@ float getTrigSF(std::vector<TLepton*> vLep){
     if(eta2<0.8) w2 = 0.980;
     else if(eta2<1.5) w2  = 0.986;
     else{
-      if(vLep.at(1)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
+      if(vLep.at(1)->pt<40) w2= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
       else w2 = 0.996;
     }
     sf = w1*w2;
+    //std::cout<<"weight for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<w1<<" weight for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<w2<<" total sf = "<<sf<<std::endl;
   }
   else{ //cross channel
 
@@ -2570,7 +2582,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
     sf = muEff*elEff;
 
   }//end cross channel
-
+  //std::cout<<"scale factor at end of function: "<<sf<<std::endl;
   return sf;
 
 }
