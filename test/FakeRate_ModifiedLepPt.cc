@@ -206,8 +206,6 @@ int main(int argc, char* argv[]){
       LepPhi_= lep->phi;
       LepE_  = lep->energy;
       LepCharge_ = lep->charge;
-      LepIsTight_ = (int) lep->Tight;
-      LepIsLoose_ = (int) lep->Loose;
       LepMiniIso_ = lep->miniIso;
       LepSusyIso_ = lep->susyIso;
 
@@ -265,8 +263,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
     }
     else if(ID=="CBTightMiniIso"){
-      iLep->Tight=imu->cutBasedTightMiniIso();
-      iLep->Loose=imu->cutBasedLooseMiniIso();
+      iLep->Tight=imu->cutBasedTight();
+      iLep->Loose=imu->cutBasedLoose();
     }
     iLep->isMu = true;
     iLep->isEl = false;
@@ -337,8 +335,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Loose=true;
     }
     else if(ID=="MVATightRC"){
-      iLep->Tight=iel->mvaTightRCIso();
-      iLep->Loose=iel->mvaLooseRCIso();
+      iLep->Tight=iel->mvaTightRC();
+      iLep->Loose=iel->mvaLooseRC();
     }
     else if(ID=="MVALooseRC"){
       iLep->Tight=iel->mvaLooseRCIso();
