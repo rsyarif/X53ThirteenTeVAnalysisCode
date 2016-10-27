@@ -20,7 +20,7 @@
 #include "TGraphAsymmErrors.h"
 
 //eaxample usage:
-//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTight")' 
+//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTightMiniIso")' 
 
 void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0);
 void DrawTriggerEff(Sample* s, TFile* outfile);
@@ -265,10 +265,14 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //check bin contents vs error hist - just doing this here since looping over bins anyway
     std::cout<<"Bin: "<<ibin<<" err hist content: "<<h_err->GetBinContent(ibin)<<" summed bkg: "<<(h_ttX->GetBinContent(ibin)+h_bos->GetBinContent(ibin)+h_cmid->GetBinContent(ibin)+h_npf->GetBinContent(ibin))<<" NP bkg: "<<h_npf->GetBinContent(ibin)<<" CMID: "<<h_cmid->GetBinContent(ibin)<<" TTX: "<<h_ttX->GetBinContent(ibin)<<" BOSON: "<<h_bos->GetBinContent(ibin)<<std::endl;
     //nonprompt
-    float etemp = pow(h_npf->GetBinError(ibin),2); //stat
+    float etemp =0.0;
+    //check for zero bin
+    if( h_npf->GetBinContent(ibin)!=0) etemp = pow(h_npf->GetBinError(ibin),2); //stat
+    else etemp = 1.8*1.8; //add poisson error
     etemp = etemp + pow( 0.5*h_npf->GetBinContent(ibin),2);//sys
     //chargemisID
-    etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
+    if(h_cmid->GetBinContent(ibin)!=0) etemp = etemp + pow(h_cmid->GetBinError(ibin),2);//stat
+    else etemp = etemp+ 1.8*1.8; //poisson error for zero bin
     etemp = etemp + pow(0.3*h_cmid->GetBinContent(ibin),2);//sys
     //TTZ
     etemp = etemp + pow(h_ttz->GetBinError(ibin),2);//stat
