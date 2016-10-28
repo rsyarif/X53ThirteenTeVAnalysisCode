@@ -7,7 +7,7 @@ class TMuon : public TLepton{
 public:
 
   //constructor
-  TMuon(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int isLtemp, int isTtemp, bool globaltemp,bool pftemp,bool trackertemp,double chi2temp, int nMuHtemp, int nMatchStattemp, double dxytemp, double dztemp, double siptemp, int ValPixtemp,int nTracktemp, double relIsotemp, double miniIsotemp);
+  TMuon(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int isLtemp, int isTtemp, bool globaltemp,bool pftemp,bool trackertemp,double chi2temp, int nMuHtemp, int nMatchStattemp, double dxytemp, double dztemp, double siptemp, int ValPixtemp,int nTracktemp, double relIsotemp, double miniIsotemp, double susyisotemp);
 
   //built-in ID flags
   int isLoose;
@@ -27,6 +27,7 @@ public:
   int    nTrackerLayers;
   double relIso;
   double miniIso;
+  double susyIso;
 
   bool cutBasedLoose();
   bool cutBasedLooseMiniIso();

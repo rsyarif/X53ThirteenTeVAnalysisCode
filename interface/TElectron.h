@@ -6,7 +6,7 @@
 class TElectron : public TLepton{
 public:
   //constructor
-  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp, double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double miniIsotemp);
+  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp, double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double miniIsotemp, double susyisotemp);
   //varibles for charge
   int gsfCharge;
   int ctfCharge;
@@ -42,10 +42,12 @@ public:
   // mvaID value and ID flags
   double mvaValue;
   double miniIso;
+  double susyIso;
 
   bool mvaTight();
   bool mvaLoose();
   bool mvaTightIso();
+  bool mvaTightMedIso();
   bool mvaLooseIso();
 
   bool mvaTightNew();
@@ -61,6 +63,7 @@ public:
   bool mvaTightCCIso();
   bool mvaLooseCCIso();
   bool mvaTightRCIso();
+  bool mvaTightRCMedIso();
   bool mvaTightLCIso();
   bool mvaLooseRCIso();
   bool mvaLooseLCIso();

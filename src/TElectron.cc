@@ -1,8 +1,8 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp):
-  TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp),
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp, double susyisotemp):
+  TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp,miniIsotemp,miniIsotemp,susyisotemp),
   gsfCharge(gsfCharget),
   ctfCharge(ctfCharget),
   scpixCharge(scpixCharget),
@@ -24,7 +24,8 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   passConversion(passConv),
   chargeConsistency(chargeconsistencytemp),
   mvaValue(mvatemp),
-  miniIso(miniIsotemp)
+  miniIso(miniIsotemp),
+  susyIso(susyisotemp)
 {
   setLV();
 
@@ -83,6 +84,12 @@ bool TElectron::mvaTight(){
 //standard plus ISO
 bool TElectron::mvaTightIso(){
   bool pass = mvaTight() && miniIso<0.1;
+  return pass;
+}
+
+//standard plus medium ISO
+bool TElectron::mvaTightMedIso(){
+  bool pass = mvaTight() && miniIso<0.2;
   return pass;
 }
 
@@ -255,6 +262,14 @@ bool TElectron::mvaTightRCIso(){
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mvaTightIso() && cc;
+  return pass;
+}
+
+bool TElectron::mvaTightRCMedIso(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaTightMedIso() && cc;
   return pass;
 }
 

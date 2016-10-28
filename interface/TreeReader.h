@@ -53,7 +53,7 @@ class TreeReader{
   TBranch* b_run_CommonCalc;
   int lumi;
   TBranch* b_lumi_CommonCalc;
-  int event;
+  long long event;
   TBranch* b_event_CommonCalc;
 
   //pileup
@@ -131,6 +131,8 @@ class TreeReader{
   TBranch        *b_elMiniIsoDB_DileptonCalc;
   std::vector<double>  *elAEff;
   TBranch        *b_elAEff_DileptonCalc;
+  std::vector<double>  *elSusyIso;
+  TBranch        *b_elSusyIso_DileptonCalc;
   //mva value
   std::vector<double> *elMVA;
   TBranch        *b_elMVA_DileptonCalc;
@@ -174,6 +176,8 @@ class TreeReader{
   TBranch        *b_muMiniIso_DileptonCalc;
   std::vector<double>  *muMiniIsoDB;
   TBranch        *b_muMiniIsoDB_DileptonCalc;
+  std::vector<double>  *muSusyIso;
+  TBranch        *b_muSusyIso_DileptonCalc;
   std::vector<int>     *muIsTight;
   TBranch        *b_muIsTight_DileptonCalc;
   std::vector<int>     *muIsLoose;
@@ -240,10 +244,10 @@ class TreeReader{
   TBranch        *b_AK8JetPhi_JetSubCalc;
   std::vector<double>  *AK8JetPt;
   TBranch        *b_AK8JetPt_JetSubCalc;
-  std::vector<double>  *AK8JetTrimMass;
-  TBranch        *b_AK8JetTrimMass_JetSubCalc;
-  std::vector<double>  *AK8JetFiltMass;
-  TBranch        *b_AK8JetFiltMass_JetSubCalc;
+  //std::vector<double>  *AK8JetTrimMass;
+  //TBranch        *b_AK8JetTrimMass_JetSubCalc;
+  // std::vector<double>  *AK8JetFiltMass;
+  // TBranch        *b_AK8JetFiltMass_JetSubCalc;
   std::vector<double>  *AK8JetPruneMass;
   TBranch        *b_AK8JetPruneMass_JetSubCalc;
   std::vector<double>  *AK8JetSDMass;

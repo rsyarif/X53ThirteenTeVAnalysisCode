@@ -281,7 +281,8 @@ int main(int argc, char* argv[]){
 
 
   //load eta weights in:
-  std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_"+elID+"_corrected.root";
+  //std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_"+elID+"_corrected.root";
+  std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_MVATightRC_corrected.root";//force for right now, will fix later
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
@@ -301,6 +302,7 @@ int main(int argc, char* argv[]){
   float elPromptRate;
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
   else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.839;
+  else if(elID=="MVATightMedIsoRC") elPromptRate = 0.859;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -315,6 +317,7 @@ int main(int argc, char* argv[]){
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
   else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.205;
+  else if(elID=="MVATightMedIsoRC") elFakeRate = 0.354;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
@@ -506,7 +509,7 @@ int main(int argc, char* argv[]){
     //require OR of triggers but make each channel consistent
     bool skip = true;
     if(data){
-      if(mumu && tr->HLT_Mu27TkMu8) skip =false;
+      if(mumu && tr->HLT_Mu30TkMu11) skip =false;
       if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
       //if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
       //if(elel && tr->HLT_DoubleEle37_27) skip = false;
@@ -619,7 +622,7 @@ int main(int argc, char* argv[]){
     if(data) lepIsoSF = 1.0;
     else lepIsoSF = getLepIsoSF(vSSLep);
     //get gsf tracking sf
-    float gsfSF;
+    float gsfSF = 1.0;
     if(data) gsfSF=1.0;
     else{
       gsfSF=1.0;//set to one currently
@@ -672,7 +675,7 @@ int main(int argc, char* argv[]){
     //fill tree for post ssdl cut since that is all that we've applied so far
     tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //fill histos for same cut level
-    float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight;
+    float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight * gsfSF;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_ssdl_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elmu) fillHistos(hists_ssdl_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -1074,6 +1077,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     }  
     else if(elID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRCIso();
+      iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(elID=="MVATightMedIsoRC"){
+      iLep->Tight=iel->mvaTightRCMedIso();
       iLep->Loose=iel->mvaLooseRCIso();
     }
     else if(elID=="MVALooseRC"){
