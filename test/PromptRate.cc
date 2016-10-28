@@ -61,8 +61,8 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/ljmet_Data_MuMu.root";
-    else filename="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016B/July2/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel) filename="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/ljmet_Data_MuMu.root";
+    else            filename="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/ljmet_Data_ElEl.root";
   }
   else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
@@ -79,6 +79,22 @@ int main(int argc, char* argv[]){
 
   //open output file
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
+
+  //output tree
+  TTree* outTree = new TTree("FakeRate","FakeRate");
+  float LepPt_,LepEta_,LepPhi_,LepE_,LepMiniIso_,LepMinDR_,LepSusyIso_;
+  int LepIsLoose_,LepIsTight_,LepCharge_;
+  outTree->Branch("LepPt",&LepPt_);
+  outTree->Branch("LepEta",&LepEta_);
+  outTree->Branch("LepPhi",&LepPhi_);
+  outTree->Branch("LepE",&LepE_);
+  outTree->Branch("LepCharge",&LepCharge_);
+  outTree->Branch("LepMiniIso",&LepMiniIso_);
+  outTree->Branch("LepSusyIso",&LepSusyIso_);
+  outTree->Branch("LepIsLoose",&LepIsLoose_);
+  outTree->Branch("LepIsTight",&LepIsTight_);
+  outTree->Branch("LepMinDR",&LepMinDR_);
+
 
   //get tree reader to read in data
   TreeReader* tr= new TreeReader(filename.c_str(),!data);
@@ -157,6 +173,28 @@ int main(int argc, char* argv[]){
       }//end check on at least one tight
     }//end checl on number of Aram Leptons
 
+    //fill tree
+    TLepton* probe = leptons.at(1);
+    LepPt_ = probe->pt;
+    LepEta_ = probe->eta;
+    LepPhi_ = probe->phi;
+    LepE_ = probe->energy;
+    LepCharge_ = probe->charge;
+    LepMiniIso_ = probe->miniIso;
+    LepSusyIso_ = probe->susyIso;
+    LepIsTight_ = probe->Tight;
+    LepIsLoose_ = probe->Loose;
+
+    //find minDR
+    float minDR=999;
+    for(unsigned int i=0; i< tr->cleanedAK4Jets.size();i++){
+      float drtemp = pow( pow(probe->eta - tr->cleanedAK4Jets.at(i)->eta, 2) + pow( probe->phi - tr->cleanedAK4Jets.at(0)->phi, 2) , 0.5);
+      if(drtemp<minDR) minDR = drtemp;
+    }
+    LepMinDR_ = minDR;
+    outTree->Fill();
+
+
     //now fill histograms, tag lepton will always be first so get element 1 for probe
     ptDenHist->Fill(leptons.at(1)->pt,tr->MCWeight);
     if(leptons.at(1)->Tight){
@@ -179,6 +217,7 @@ int main(int argc, char* argv[]){
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
 
   //append everything to output file
+  fout->WriteTObject(outTree);
   fout->Append(ptNumHist);
   fout->Append(ptDenHist);
   fout->Append(etaNumHist);
@@ -204,7 +243,7 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
     //fill with  muons
     for(unsigned int uimu=0; uimu<muons.size(); uimu++){
       TMuon* imu = muons.at(uimu);
-      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso,imu->susyIso);
       //skip if same as tag
       if(imu->pt==tag->pt && imu->eta==tag->eta && imu->phi==tag->eta) continue;
       //skip if probe has same sign charge as tag
@@ -214,8 +253,8 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Loose=imu->cutBasedLoose();
       }
       else if(ID=="CBTightMiniIso"){
-	iLep->Tight=imu->cutBasedTightMiniIso();
-	iLep->Loose=imu->cutBasedLooseMiniIso();
+	iLep->Tight=imu->cutBasedTight();
+	iLep->Loose=imu->cutBasedLoose();
       }
       else if(ID=="CBLoose"){
 	iLep->Tight=imu->cutBasedLoose();
@@ -235,7 +274,7 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
     //fill with  electrons
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
-      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso,iel->susyIso);
       //skip if same as tag
       if(iel->pt==tag->pt && iel->eta==tag->eta && iel->phi==tag->eta) continue;
       if(ID=="CBTight"){
@@ -263,8 +302,8 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Loose=iel->mvaLooseIso();
       }
       else if(ID=="MVATightRC"){
-	iLep->Tight=iel->mvaTightRCIso();
-	iLep->Loose=iel->mvaLooseRCIso();
+	iLep->Tight=iel->mvaTightRC();
+	iLep->Loose=iel->mvaLooseRC();
       }
       else if(ID=="MVATightNoIso"){
 	iLep->Tight=iel->mvaTight();
@@ -359,7 +398,7 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
     //fill with  muons
     for(unsigned int uimu=0; uimu<muons.size(); uimu++){
       TMuon* imu = muons.at(uimu);
-      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso,imu->susyIso);
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
 	iLep->Loose=imu->cutBasedLoose();
@@ -386,7 +425,7 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
     //fill with  electrons
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
-      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso,iel->susyIso);
 
       if(ID=="CBTight"){
 	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
@@ -467,7 +506,7 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
   }
 
   //make sure there is at least one tight lepton in the event or return dummy
-  TLepton* dummy = new TLepton(-999,-999,-999,-999,-999);
+  TLepton* dummy = new TLepton(-999,-999,-999,-999,-999,-999,-999,-999);
   if(Leptons.size()==0) return dummy;
   
   //if at least one tight sort the leptons by phi
@@ -489,7 +528,7 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
     //fill with  muons
     for(unsigned int uimu=0; uimu<muons.size(); uimu++){
       TMuon* imu = muons.at(uimu);
-      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+      TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso,imu->susyIso);
 
       if(ID=="CBTight"){
 	iLep->Tight=imu->cutBasedTight();
@@ -517,7 +556,7 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
     //fill with  electrons
     for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
       TElectron* iel = electrons.at(uiel);
-      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+      TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso,iel->susyIso);
       if(ID=="CBTight"){
 	iLep->Tight=iel->cutBasedTight25nsSpring15MC();
 	iLep->Loose=iel->cutBasedLoose25nsSpring15MC();

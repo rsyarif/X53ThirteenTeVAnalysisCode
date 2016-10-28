@@ -9,7 +9,7 @@ theta=True
 
 for mass in masses:
     for chi in chiralities:
-        for i in range(0,6):
+        for i in range(0,1):
             ht=100*i
 
             command="./makeLimitRootFiles.o %i %s %i" % (mass,chi,ht)

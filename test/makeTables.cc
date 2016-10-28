@@ -23,7 +23,7 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 6.26; //fb^-1
+  float lumi = 12.9; //fb^-1
 
   //get list of signal samples starting with ssdl cut
   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
@@ -76,7 +76,7 @@ std::string tableHeader(std::vector<std::string> vC, CutClass* cC, std::string c
 
   std::stringstream str;
 
-  str<<"\\begin{table}\n"<<"\\centering\n"<<"\\topcaption{"<<caption<<"}\n"<<"\\begin{tabular}{|";
+  str<<"\\begin{table}\n"<<"\\centering\n\\scriptsize\n"<<"\\topcaption{"<<caption<<"}\n"<<"\\begin{tabular}{|";
   for(size_t i =0; i< (vC.size()+1); i++){
     str<<"c|";
   }
@@ -340,11 +340,11 @@ std::stringstream& printChargeMisIDTable_hhpt(std::stringstream& table){
 
 std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, std::vector<std::string> vCutString){
 
-  tablestring<<"\\begin{table}\n\\centering\n\\begin{tabular}{|cccc|c|c|}";
+  tablestring<<"\\begin{table}\n\\centering\n\\scriptsize\n\\begin{tabular}{|c|cccc|c|c|}\\hline\\hline\n";
   //caption
   std::string caption;
-  caption = "Summary of expected and observed events for all channels. We show also the representative yields for an 800 \\GeV \\xft. All systematic uncertainties are included.";
-  tablestring<<"PSS MC&NonPrompt&ChargeMisID& Total Background & 800 \\GeV \\xft&Observed\\\\\n";
+  caption = "Summary of expected and observed events for all channels. We show also the representative yields for an 1000 \\GeV \\xft. All systematic uncertainties are included.";
+  tablestring<<"PSS MC&NonPrompt&ChargeMisID& Total Background & 1000 \\GeV \\xft&Observed\\\\\n";
   std::string label;
   //label
   label = "\\label{tab:FinalYields}";
@@ -432,10 +432,14 @@ std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sa
     //ok now I have all background, so get observed with no errors
    float obs =  (cutData->nEvents).at( (cutData->nEvents).size()-1);
 
-
+   //write channel
+   if(nmu==0) tablestring<<"Di-electron&";
+   else if(nmu==1) tablestring<<"Electron-Muon&";
+   else if(nmu==2) tablestring<<"Di-muon&";
+   else tablestring<<"All&";
     //now write table line -- BLIND FOR NOW
-   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
-   //tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & XXX\\\\\n"; 
+   //tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & "<<obs<<"\\\\\n"; 
+   tablestring<<"$"<<events_mctot<<"\\pm"<<pow(errors_mctot,0.5)<<"$&$"<<events_nptot<<"\\pm"<<pow(errors_nptot,0.5)<<"$&$"<<events_cmtot<<"\\pm"<<pow(errors_cmtot,0.5)<<"$ &$ "<<events_tot<<"\\pm"<<pow(errors_tot,0.5)<<"$&"<<sig<<" & XXX\\\\\n"; 
   }//end loop over channels
 
   tablestring<<"\\hline \n\\end{tabular} \n"<<label<<'\n'<<"\\end{table} \n\n";

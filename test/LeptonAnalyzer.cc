@@ -47,9 +47,9 @@ int main(int argc, char* argv[]){
   }
 
   TString filename;                                
-  if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016B/June18/ljmet_trees/ljmet_Data_All.root";
+  if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/ljmet_Data_ElMu.root";
   else if(argv1.find("DataFR")!=std::string::npos) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/June18/ljmet_trees/ljmet_FakeRate_Mu.root";
-  else filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/June18/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  else filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July12/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -123,6 +123,8 @@ int main(int argc, char* argv[]){
   TH1F* hEtaNumMVAIDTIso_CC_El = new TH1F("hEtaNumMVAIDTIso_CC_El","#eta of mva Tight + Iso CC Electrons",15,-3,3);
   TH1F* hEtaNumMVAIDTIso_RC_El = new TH1F("hEtaNumMVAIDTIso_RC_El","#eta of mva Tight + Iso RC Electrons",15,-3,3);
 
+  TH1F* hMiniIsoNumMVAIDT_El = new TH1F("hMiniIsoNumMVAIDT_El","miniIsolation of mva Tight Electrons",200,0,5);
+
   TH1F* hEtaDen_El = new TH1F("hEtaDen_El","#eta of All Electrons",15,-3,3);
 
   //histograms for charge checks
@@ -163,7 +165,10 @@ int main(int argc, char* argv[]){
     
     //only do muon cut flow if either cross trigger of one of muon triggers fired
     bool MuTrigFire = false;
-    if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) MuTrigFire=true;
+    if(data) {
+      if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_Mu27TkMu8 || tr->HLT_Mu30TkMu11 || tr->HLT_Mu40TkMu11) MuTrigFire=true;
+    }
+    else MuTrigFire = true;
 
     if(MuTrigFire){
       for(std::vector<TMuon*>::size_type i=0; i<tr->looseMuons.size();i++){
@@ -197,7 +202,10 @@ int main(int argc, char* argv[]){
 
     //only do electron cuts if electron trigger fired
     bool ElTrigFire = false;
-    if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) ElTrigFire=true;
+    if(data){
+      if( tr->HLT_Mu8Ele23 || tr->HLT_Mu23Ele12 || tr->HLT_Mu8Ele17 || tr->HLT_Mu17Ele12 || tr->HLT_Mu30Ele30 || tr->HLT_DoubleEle33 || tr->HLT_Ele17Ele12) ElTrigFire=true;
+    }
+    else ElTrigFire = true;
 
     if(ElTrigFire){
       //loop for cutBasedID
@@ -256,6 +264,7 @@ int main(int argc, char* argv[]){
 	if(iel->mvaTight()){
 	  hPtNumMVAIDT_El->Fill(iel->pt);
 	  hEtaNumMVAIDT_El->Fill(iel->eta);
+	  hMiniIsoNumMVAIDT_El->Fill(iel->miniIso);
 	}
 
 
@@ -322,7 +331,7 @@ int main(int argc, char* argv[]){
     }// end el trig check
 
     //now check charge info for electrons
-    for(std::vector<TLepton*>::size_type i =0; i<tr->allElectrons.size(); i++){
+    for(std::vector<TElectron*>::size_type i =0; i<tr->allElectrons.size(); i++){
 
       TElectron* iel = tr->allElectrons.at(i);
       if(!iel->mvaTightIso()) continue;

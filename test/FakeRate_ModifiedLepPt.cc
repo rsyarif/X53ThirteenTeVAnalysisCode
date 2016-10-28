@@ -208,6 +208,8 @@ int main(int argc, char* argv[]){
       LepCharge_ = lep->charge;
       LepMiniIso_ = lep->miniIso;
       LepSusyIso_ = lep->susyIso;
+      LepIsTight_ = (int) lep->Tight;
+      LepIsLoose_ = (int) lep->Loose;
 
       //find minDR
       float minDR=999;
