@@ -9,7 +9,7 @@ LIBS        = libObjects.so
 
 PWD         = $(shell pwd)
 
-TOOLDIR     = $(PWD)/tools
+TOOLDIR     = $(PWD)/../
 
 T53Analyzer:
 	$(CXX) -g -DDEBUG $(ROOTIL) -L$(PWD)/../lib -I$(TOOLDIR) -lObjects -lz -O2 -Wall -o X53Analyzer.o X53Analyzer.cc
