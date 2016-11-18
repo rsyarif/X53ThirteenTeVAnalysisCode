@@ -150,18 +150,64 @@ int main(int argc, char* argv[]){
   sig_samples["X53Tm1600LH"]=eosarea+"ljmet_X53TToAll_M-1600_left.root";
 
   //data samples
-  data_samples["Data"]=eosdataarea+"ljmet_Data_All.root";
-  data_samples["DataElEl"]=eosdataarea+"ljmet_Data_ElEl.root";
-  data_samples["DataElMu"]=eosdataarea+"ljmet_Data_ElMu.root";
-  data_samples["DataMuMu"]=eosdataarea+"ljmet_Data_MuMu.root";
-  data_samples["NonPromptData"]=eosdataarea+"ljmet_Data_All.root";
-  data_samples["NonPromptDataElEl"]=eosdataarea+"ljmet_Data_ElEl.root";
-  data_samples["NonPromptDataElMu"]=eosdataarea+"ljmet_Data_ElMu.root";
-  data_samples["NonPromptDataMuMu"]=eosdataarea+"ljmet_Data_MuMu.root";
+  data_samples["Data"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
+  data_samples["DataElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
+  data_samples["DataElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
+  data_samples["DataMuMu2016B"]=eosdataarea+"ljmet_Data_MuMu_2016B.root";
+  data_samples["DataElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
+  data_samples["DataElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
+  data_samples["DataMuMu2016C"]=eosdataarea+"ljmet_Data_MuMu_2016C.root";
+  data_samples["DataElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
+  data_samples["DataElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
+  data_samples["DataMuMu2016D"]=eosdataarea+"ljmet_Data_MuMu_2016D.root";
+  data_samples["DataElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
+  data_samples["DataElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
+  data_samples["DataMuMu2016E"]=eosdataarea+"ljmet_Data_MuMu_2016E.root";
+  data_samples["DataElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
+  data_samples["DataElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
+  data_samples["DataMuMu2016F"]=eosdataarea+"ljmet_Data_MuMu_2016F.root";
+  data_samples["DataElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
+  data_samples["DataElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
+  data_samples["DataMuMu2016G"]=eosdataarea+"ljmet_Data_MuMu_2016G.root";
+  data_samples["DataElEl2016H"]=eosdataarea+"ljmet_Data_ElEl_2016H.root";
+  data_samples["DataElMu2016H"]=eosdataarea+"ljmet_Data_ElMu_2016H.root";
+  data_samples["DataMuMu2016H"]=eosdataarea+"ljmet_Data_MuMu_2016H.root";
 
-  data_samples["ChargeMisID"]=eosdataarea+"ljmet_Data_All.root";
-  data_samples["ChargeMisIDElEl"]=eosdataarea+"ljmet_Data_ElEl.root";
-  data_samples["ChargeMisIDElMu"]=eosdataarea+"ljmet_Data_ElMu.root";
+  data_samples["NonPromptData"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
+  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
+  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
+  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_MuMu_2016B.root";
+  data_samples["NonPromptDataElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
+  data_samples["NonPromptDataElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
+  data_samples["NonPromptDataMuMu2016C"]=eosdataarea+"ljmet_Data_MuMu_2016C.root";
+  data_samples["NonPromptDataElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
+  data_samples["NonPromptDataElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
+  data_samples["NonPromptDataMuMu2016D"]=eosdataarea+"ljmet_Data_MuMu_2016D.root";
+  data_samples["NonPromptDataElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
+  data_samples["NonPromptDataElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
+  data_samples["NonPromptDataMuMu2016E"]=eosdataarea+"ljmet_Data_MuMu_2016E.root";
+  data_samples["NonPromptDataElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
+  data_samples["NonPromptDataElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
+  data_samples["NonPromptDataMuMu2016F"]=eosdataarea+"ljmet_Data_MuMu_2016F.root";
+  data_samples["NonPromptDataElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
+  data_samples["NonPromptDataElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
+  data_samples["NonPromptDataMuMu2016G"]=eosdataarea+"ljmet_Data_MuMu_2016G.root";
+
+  data_samples["ChargeMisID"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
+  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
+  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
+  data_samples["ChargeMisIDElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
+  data_samples["ChargeMisIDElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
+  data_samples["ChargeMisIDElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
+  data_samples["ChargeMisIDElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
+  data_samples["ChargeMisIDElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
+  data_samples["ChargeMisIDElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
+  data_samples["ChargeMisIDElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
+  data_samples["ChargeMisIDElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
+  data_samples["ChargeMisIDElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
+  data_samples["ChargeMisIDElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
+  data_samples["ChargeMisIDElEl2016H"]=eosdataarea+"ljmet_Data_ElEl_2016H.root";
+  data_samples["ChargeMisIDElMu2016H"]=eosdataarea+"ljmet_Data_ElMu_2016H.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -509,11 +555,16 @@ int main(int argc, char* argv[]){
     //require OR of triggers but make each channel consistent
     bool skip = true;
     if(data){
-      if(mumu && tr->HLT_Mu30TkMu11) skip =false;
-      if(elmu && tr->HLT_Mu30Ele30) skip = false; //switch to this because of bug in mu27ele37
-      //if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false;
-      //if(elel && tr->HLT_DoubleEle37_27) skip = false;
-      if(elel && tr->HLT_DoubleEle33) skip = false; //switch to this because same bug affects ele37ele27
+      if(tr->run <=276811) {//preICHEP triggers
+	if(mumu && tr->HLT_Mu30TkMu11) skip =false;
+	if(elmu && tr->HLT_Mu30Ele30) skip = false; 
+	if(elel && tr->HLT_DoubleEle33) skip = false; 
+      }
+      else{ //postICHEP triggers
+	if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
+	if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
+	if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
+      }
     }
     else{
       skip=false;
