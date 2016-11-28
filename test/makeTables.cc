@@ -26,8 +26,8 @@ void makeTables(){
   float lumi1 = 12.9; //fb^-1
   float lumi2 = 23.3; //fb^-1
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig2016BD = getInclusiveSigSampleVecForTable("sZVeto",lumi1,"MVATightRC","CBTightMiniIso");
-  std::vector<Sample*> vSig2016EH = getInclusiveSigSampleVecForTable("sZVeto",lumi2,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vSig2016BD = getInclusiveSigSampleVecForTable("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
+  std::vector<Sample*> vSig2016EH = getInclusiveSigSampleVecForTable("sZVeto",lumi2,"MVATightRC","CBTightMiniIso","");
 
   //get vector of background samples
   std::vector<Sample*> vMCBkg2016BD = getMCBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
