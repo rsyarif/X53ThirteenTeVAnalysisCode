@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <stdexcept>
 #include "plugins/Sample.cc"
 #include "plugins/CutClass.cc"
 #include "interface/TreeReader.h"
@@ -1631,6 +1632,157 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
 
 }
 
+std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+
+   //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
+  std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
+
+  //************** MC *************
+ //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
+  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398600 * 0.464706);
+  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252673*0.515587);
+  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back(9984160 *0.296787);
+  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(989025 *0.417453);
+  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(2000000 * 1);
+  //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
+  //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6638328 * 1);
+  vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 1);
+  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 118350* 1);
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
+  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(249200*0.885963);
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(249800*0.876645);
+  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000* 0.8554);
+  
+  //now make vector to hold weights;
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(ui) / vNEvts.at(ui) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+
+  //now make samples and add to vector
+  std::vector<Sample*> vSample;
+  //TFile* ttfile = new TFile(MCarea+"test/TTbar.root");
+  //Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
+  //vSample.push_back(ttSample);
+
+  std::string ttZfilename = MCarea+"test/TTZ_Mu"+muID+"_El"+elID+".root";
+  TFile* ttZfile = new TFile(ttZfilename.c_str());
+  Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
+  vSample.push_back(ttZSample);
+
+  std::string ttWfilename = MCarea+"test/TTW_Mu"+muID+"_El"+elID+".root";
+  TFile* ttwfile = new TFile(ttWfilename.c_str());
+  Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
+  vSample.push_back(ttwSample);
+
+  std::string tthfilename = MCarea+"test/TTH_Mu"+muID+"_El"+elID+".root";
+  TFile* tthfile = new TFile(tthfilename.c_str());
+  Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
+  vSample.push_back(tthSample);
+
+  std::string ttttfilename = MCarea+"test/TTTT_Mu"+muID+"_El"+elID+".root";
+  TFile* ttttfile = new TFile(ttttfilename.c_str());
+  Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
+  vSample.push_back(ttttSample);
+
+
+  std::string wzfilename=MCarea+"test/WZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wzfile = new TFile(wzfilename.c_str());
+  Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
+  vSample.push_back(wzSample);
+
+  //TFile* wjfile = new TFile(MCarea+"test/WJets_Mu"+muID+"_El"+elID+".root");
+  //Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
+  //vSample.push_back(wjSample);
+
+  /*std::string dyfilename =  MCarea+"test/DYJets_Mu"+muID+"_El"+elID+".root";
+  TFile* dyjfile = new TFile(dyfilename.c_str());
+  Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
+  vSample.push_back(dyjSample);*/
+  
+  std::string zzfilename = MCarea+"test/ZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* zzjfile = new TFile(zzfilename.c_str());
+  Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(zzjSample);
+
+  //std::string vhfilename = MCarea+"test/VH_Mu"+muID+"_El"+elID+".root";
+  //TFile* vhjfile = new TFile(vhfilename.c_str());
+  //Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
+  //std::cout<<"weight for VH is: "<<vWeights.at(6)<<std::endl;
+  //vSample.push_back(vhjSample);
+
+  std::string wpwpfilename = MCarea+"test/WpWp_Mu"+muID+"_El"+elID+".root";
+  TFile* wpwpfile = new TFile(wpwpfilename.c_str());
+  Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wpwpSample);
+
+  /*std::string wwmpifilename = MCarea+"test/WW-mpi_Mu"+muID+"_El"+elID+".root";
+  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
+  Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wwmpiSample);*/
+
+
+  std::string wwzfilename = MCarea+"test/WWZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wwzfile = new TFile(wwzfilename.c_str());
+  Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wwzSample);
+
+  std::string wzzfilename = MCarea+"test/WZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wzzfile = new TFile(wzzfilename.c_str());
+  Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
+  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(wzzSample);
+
+  std::string zzzfilename = MCarea+"test/ZZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* zzzfile = new TFile(zzzfilename.c_str());
+  Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
+  std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  vSample.push_back(zzzSample);
+
+
+  return vSample;
+
+}
+
+std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+
+   //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
+  std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
+
+  //******* Non Prompt**********
+  vBkgNames.push_back("NonPrompt"); vXsec.push_back(1); vNEvts.push_back(1);
+  vBkgNames.push_back("ChargeMisID"); vXsec.push_back(1); vNEvts.push_back(1);
+  //now make vector to hold weights;
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(ui) / vNEvts.at(ui) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+
+  //now make samples and add to vector
+  std::vector<Sample*> vSample;
+
+  //********** Nonprompt ***************
+  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+".root";
+  TFile* npfile = new TFile(npfilename.c_str());
+  Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
+  vSample.push_back(npSample);
+
+  //********ChargeMisID**********
+  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
+  TFile* cmidfile = new TFile(cmidfilename.c_str());
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  vSample.push_back(cmidSample);
+
+
+  return vSample;
+
+}
+
 
 std::vector<std::string> getCutString(){
 
@@ -1796,6 +1948,41 @@ std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<st
 
 };
 
+std::vector<CutClass*> appendCutClassVectors(std::vector<CutClass*> vCC1, std::vector<CutClass*> vCC2){
+  std::vector<CutClass*> vCC;
+  for(int i =0; i< vCC1.size();i++){
+    vCC.push_back(vCC1.at(i));
+  }
+  for(int i=0;i<vCC2.size();i++){
+    vCC.push_back(vCC2.at(i));
+  }
+  return vCC;
+}
+
+std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vector<CutClass*> vCC2){
+  //NB: This is only good for MC!
+  std::vector<CutClass*> vCC;
+  //first check that the sizes match
+  if(vCC1.size() != vCC2.size()){    
+    throw std::invalid_argument( "Error! Trying to add CutClass vectors of different size!");
+  }
+  
+  for(unsigned int i=0; i< vCC1.size() < i++){
+    //check sample names are the same
+    if(vCC1.at(i)->samplename!=vCC2.at(i)->samplename){
+      throw std::invalid_argument("Error! Sample names are not consistent");
+    }
+    std::vector<float> vEvtsNew, vErrNew;
+    for(unsigned int j=0; j< vCC.at(i)->nEvents;j++){          
+      vEvtsNew.push_back( vCC1.at(i)->nEvents.at(j) + vCC2.at(i)->nEvents.at(j)); //add the number of events for each
+      float errNew = pow( vCC1.at(i)->vErr.at(j)*vCC1.at(i)->vErr.at(j) + vCC2.at(i)->vErr.at(j)*vCC2.at(i)->vErr.at(j), 0.5);
+      vErrNew.push_back(errNew);
+    }
+    CutClass* c = new CutClass(vCC1.at(i)->name,vCC1.at(i)->cutname,vEvtsNew,vErrNew,vCC1.at(i)->xsec);
+    vCC.push_back(c)
+  }    
+  return vCC;
+}
 
 /*std::vector<float> getEtaWeights(TreeReader* tr, TTree* t, TFile* outfile){
 
