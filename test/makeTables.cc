@@ -23,13 +23,16 @@ void makeTables(){
   //set precision
 
   //set desired luminosity
-  float lumi = 12.9; //fb^-1
-
+  float lumi1 = 12.9; //fb^-1
+  float lumi2 = 23.3; //fb^-1
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vSig2016BD = getInclusiveSigSampleVecForTable("sZVeto",lumi1,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vSig2016EH = getInclusiveSigSampleVecForTable("sZVeto",lumi2,"MVATightRC","CBTightMiniIso");
 
   //get vector of background samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vMCBkg2016BD = getMCBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
+  std::vector<Sample*> vMCBkg2016EH = getMCBkgSampleVec("sZVeto",lumi2,"MVATightRC","CBTightMiniIso","");
+  std::vector<Sample*> vDDBkg =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
   //get vector of data
   Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
 
@@ -47,9 +50,15 @@ void makeTables(){
   tables<<std::fixed<<std::setprecision(2);
   for(int nmu=-1; nmu<3; nmu++){
     //now make a vector of cutClass for bkg
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    std::vector<CutClass*> vCutMCBkg2016BD = getCutClassVector(vMCBkg2016BD,vCutString,nmu);
+    std::vector<CutClass*> vCutMCBkg2016EH = getCutClassVector(vMCBkg2016EH,vCutString,nmu);
+    std::vector<CutClass*> vCutMCBkg = addCutClassVectors(vCutMCBkg2016BD,vCutMCBkg2016EH);
+    std::vector<CutClass*> vCutDDBkg = getCutClassVector(vDDBkg,vCutString,nmu);
+    std::vector<CutClass*> vCutBkg = appendCutClassVectors(vCutMCBkg,vCutDDBkg);
     //now make a vector of cutClass for sig
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    std::vector<CutClass*> vCutSig2016BD = getCutClassVector(vSig2016BD,vCutString,nmu);
+    std::vector<CutClass*> vCutSig2016EH = getCutClassVector(vSig2016EH,vCutString,nmu);
+    std::vector<CutClass*> vCutSig = addCutClassVectors(vCutSig2016BD,vCutSig2016EH);
     //now print background table
     tables<<std::fixed<<std::setprecision(2);
     printTable(tables,vCutBkg,vCutString,nmu,Bkg);
