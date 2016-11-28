@@ -18,7 +18,7 @@
 #include "JetAnalyzer.cc"
 #include "GenAnalyzer.cc"
 #include "../interface/TreeMaker.h"
-#include "../plugins/Macros.cc"
+#include "../plugins/AnalyzerMacros.cc"
 #include "../plugins/EventFilterFromFile_MuonEG.cc"
 #include "../plugins/EventFilterFromFile_DoubleMu.cc"
 #include "../plugins/EventFilterFromFile_DoubleEG.cc"
@@ -42,12 +42,13 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 int main(int argc, char* argv[]){
 
   std::string eosarea="root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/";
 
-  if(argc!=4) return 0;
+  if(argc!=5) return 0;
   std::string argv1=argv[1];
   std::string elID = argv[2];
   std::string muID = argv[3];
+  std::string era = argv[4];
 
   typedef std::map<std::string,std::string> StringMap;
   
@@ -151,63 +152,74 @@ int main(int argc, char* argv[]){
 
   //data samples
   data_samples["Data"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["DataElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
-  data_samples["DataElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
-  data_samples["DataMuMu2016B"]=eosdataarea+"ljmet_Data_MuMu_2016B.root";
-  data_samples["DataElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
-  data_samples["DataElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
-  data_samples["DataMuMu2016C"]=eosdataarea+"ljmet_Data_MuMu_2016C.root";
-  data_samples["DataElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
-  data_samples["DataElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
-  data_samples["DataMuMu2016D"]=eosdataarea+"ljmet_Data_MuMu_2016D.root";
-  data_samples["DataElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
-  data_samples["DataElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
-  data_samples["DataMuMu2016E"]=eosdataarea+"ljmet_Data_MuMu_2016E.root";
-  data_samples["DataElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
-  data_samples["DataElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
-  data_samples["DataMuMu2016F"]=eosdataarea+"ljmet_Data_MuMu_2016F.root";
-  data_samples["DataElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
-  data_samples["DataElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
-  data_samples["DataMuMu2016G"]=eosdataarea+"ljmet_Data_MuMu_2016G.root";
-  data_samples["DataElEl2016H"]=eosdataarea+"ljmet_Data_ElEl_2016H.root";
-  data_samples["DataElMu2016H"]=eosdataarea+"ljmet_Data_ElMu_2016H.root";
-  data_samples["DataMuMu2016H"]=eosdataarea+"ljmet_Data_MuMu_2016H.root";
+  data_samples["DataElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+  data_samples["DataElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-23Sep2016-v3.root";
+  data_samples["DataMuMu2016B"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016B-23Sep2016-v3.root";
+  data_samples["DataElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
+  data_samples["DataElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-23Sep2016-v1.root";
+  data_samples["DataMuMu2016C"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016C-23Sep2016-v1.root";
+  data_samples["DataElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
+  data_samples["DataElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-23Sep2016-v1.root";
+  data_samples["DataMuMu2016D"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016D-23Sep2016-v1.root";
+  data_samples["DataElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
+  data_samples["DataElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-23Sep2016-v1.root";
+  data_samples["DataMuMu2016E"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016E-23Sep2016-v1.root";
+  data_samples["DataElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
+  data_samples["DataElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-23Sep2016-v1.root";
+  data_samples["DataMuMu2016F"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016F-23Sep2016-v1.root";
+  data_samples["DataElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
+  data_samples["DataElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-23Sep2016-v1.root";
+  data_samples["DataMuMu2016G"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016G-23Sep2016-v1.root";
+  data_samples["DataElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
+  data_samples["DataElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v2.root";
+  data_samples["DataMuMu2016H2"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v2.root";
+  data_samples["DataElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+  data_samples["DataElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v3.root";
+  data_samples["DataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v3.root";
 
   data_samples["NonPromptData"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
-  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
-  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_MuMu_2016B.root";
-  data_samples["NonPromptDataElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
-  data_samples["NonPromptDataElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
-  data_samples["NonPromptDataMuMu2016C"]=eosdataarea+"ljmet_Data_MuMu_2016C.root";
-  data_samples["NonPromptDataElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
-  data_samples["NonPromptDataElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
-  data_samples["NonPromptDataMuMu2016D"]=eosdataarea+"ljmet_Data_MuMu_2016D.root";
-  data_samples["NonPromptDataElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
-  data_samples["NonPromptDataElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
-  data_samples["NonPromptDataMuMu2016E"]=eosdataarea+"ljmet_Data_MuMu_2016E.root";
-  data_samples["NonPromptDataElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
-  data_samples["NonPromptDataElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
-  data_samples["NonPromptDataMuMu2016F"]=eosdataarea+"ljmet_Data_MuMu_2016F.root";
-  data_samples["NonPromptDataElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
-  data_samples["NonPromptDataElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
-  data_samples["NonPromptDataMuMu2016G"]=eosdataarea+"ljmet_Data_MuMu_2016G.root";
+  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-23Sep2016-v3.root";
+  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016B-23Sep2016-v3.root";
+  data_samples["NonPromptDataElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
+  data_samples["NonPromptDataElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-23Sep2016-v1.root";
+  data_samples["NonPromptDataMuMu2016C"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016C-23Sep2016-v1.root";
+  data_samples["NonPromptDataElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
+  data_samples["NonPromptDataElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-23Sep2016-v1.root";
+  data_samples["NonPromptDataMuMu2016D"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016D-23Sep2016-v1.root";
+  data_samples["NonPromptDataElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
+  data_samples["NonPromptDataElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-23Sep2016-v1.root";
+  data_samples["NonPromptDataMuMu2016E"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016E-23Sep2016-v1.root";
+  data_samples["NonPromptDataElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
+  data_samples["NonPromptDataElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-23Sep2016-v1.root";
+  data_samples["NonPromptDataMuMu2016F"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016F-23Sep2016-v1.root";
+  data_samples["NonPromptDataElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
+  data_samples["NonPromptDataElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-23Sep2016-v1.root";
+  data_samples["NonPromptDataMuMu2016G"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016G-23Sep2016-v1.root";
+  data_samples["NonPromptDataElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
+  data_samples["NonPromptDataElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v2.root";
+  data_samples["NonPromptDataMuMu2016H2"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v2.root";
+  data_samples["NonPromptDataElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+  data_samples["NonPromptDataElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v3.root";
+  data_samples["NonPromptDataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v3.root";
 
   data_samples["ChargeMisID"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
-  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
-  data_samples["ChargeMisIDElEl2016C"]=eosdataarea+"ljmet_Data_ElEl_2016C.root";
-  data_samples["ChargeMisIDElMu2016C"]=eosdataarea+"ljmet_Data_ElMu_2016C.root";
-  data_samples["ChargeMisIDElEl2016D"]=eosdataarea+"ljmet_Data_ElEl_2016D.root";
-  data_samples["ChargeMisIDElMu2016D"]=eosdataarea+"ljmet_Data_ElMu_2016D.root";
-  data_samples["ChargeMisIDElEl2016E"]=eosdataarea+"ljmet_Data_ElEl_2016E.root";
-  data_samples["ChargeMisIDElMu2016E"]=eosdataarea+"ljmet_Data_ElMu_2016E.root";
-  data_samples["ChargeMisIDElEl2016F"]=eosdataarea+"ljmet_Data_ElEl_2016F.root";
-  data_samples["ChargeMisIDElMu2016F"]=eosdataarea+"ljmet_Data_ElMu_2016F.root";
-  data_samples["ChargeMisIDElEl2016G"]=eosdataarea+"ljmet_Data_ElEl_2016G.root";
-  data_samples["ChargeMisIDElMu2016G"]=eosdataarea+"ljmet_Data_ElMu_2016G.root";
-  data_samples["ChargeMisIDElEl2016H"]=eosdataarea+"ljmet_Data_ElEl_2016H.root";
-  data_samples["ChargeMisIDElMu2016H"]=eosdataarea+"ljmet_Data_ElMu_2016H.root";
+  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-23Sep2016-v3.root";
+  data_samples["ChargeMisIDElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-23Sep2016-v1.root";
+  data_samples["ChargeMisIDElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
+  data_samples["ChargeMisIDElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v2.root";
+  data_samples["ChargeMisIDElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+  data_samples["ChargeMisIDElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-PromptReco-v3.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -217,7 +229,7 @@ int main(int argc, char* argv[]){
 
   //check usage
   bool correctusage=true;
-  if(argc!=4 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
+  if(argc!=5 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
   if(!correctusage){
     std::cout<<"Need to specify electron and muon ID as well as supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
@@ -229,7 +241,7 @@ int main(int argc, char* argv[]){
       std::cout<<iter->first<<std::endl;
     }  
     std::cout<<"********* OR Specify \'NonPromptMC\' to run over MC using Data-Driven Method"<<std::endl;
-    std::cout<<" Examples:\n       ./X53Analyzer.o TTJets CBTight CBMed\n       ./X53Analyzer.o NonPromptMC MVATight CBTight"<<std::endl;
+    std::cout<<" Examples:\n       ./X53Analyzer.o TTJets CBTight CBMed 2016B-D \n       ./X53Analyzer.o NonPromptMC MVATight CBTight 2016E-H"<<std::endl;
     return 0;
   }
 
@@ -249,12 +261,8 @@ int main(int argc, char* argv[]){
 
   //make output file
   std::stringstream outnamestream;
-  if(bg_np){
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
-  }
-  else{
-    outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<".root";
-  }
+  outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root";
+
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
 
@@ -451,10 +459,19 @@ int main(int argc, char* argv[]){
     //weight for non prompt method
     float NPweight=0;
     int TL;
-    //make vector of good Leptons change based on data/mc   
+    //make vector of good Leptons change based on era
     std::vector<TLepton*> goodLeptons;
-    if(data) goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
-    else goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
+    if(era=="2016B-D"){
+      goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
+    }
+    else if(era=="2016E-H"){
+      goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);//switch
+    }
+    else{//era not configured correctly
+      std::cout<<"Era not set correctly. You picked: "<<era<<", but it should be either 2016B-D or 2016E-H"<<std::endl;
+      return 0;
+    }
+    //goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
 
     //reorder the leptons by pt to remove flavor ordering
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
@@ -555,12 +572,12 @@ int main(int argc, char* argv[]){
     //require OR of triggers but make each channel consistent
     bool skip = true;
     if(data){
-      if(tr->run <=276811) {//preICHEP triggers
+      if(era=="2016B-D") {//preICHEP triggers
 	if(mumu && tr->HLT_Mu30TkMu11) skip =false;
 	if(elmu && tr->HLT_Mu30Ele30) skip = false; 
 	if(elel && tr->HLT_DoubleEle33) skip = false; 
       }
-      else{ //postICHEP triggers
+      else{ //postICHEP triggers - already checked era is either one of 2016B-D or 2016E-H so don't need second explicit check here
 	if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
 	if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
 	if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
@@ -663,7 +680,7 @@ int main(int argc, char* argv[]){
     //get trigger scale factors
     float trigSF; 
     if(data) trigSF = 1.0;
-    else trigSF = getTrigSF(vSSLep);
+    else trigSF = getTrigSF(vSSLep,era);
 
     //now get lepton ID Scale Factors
     float lepIDSF;
