@@ -149,7 +149,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   ////std::cout<<"making loose muons"<<std::endl;
   //make loose muons
     for(unsigned int imu =0; imu<allMuons.size(); imu++){
-    if(allMuons.at(imu)->cutBasedLoose()) looseMuons.push_back(allMuons.at(imu));
+    if(allMuons.at(imu)->cutBasedLooseMiniIso()) looseMuons.push_back(allMuons.at(imu));
   }
 
   //now from allElectrons make goodElectrons
