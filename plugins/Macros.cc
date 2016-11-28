@@ -603,9 +603,9 @@ std::vector<TH1F*> getNPHistos(int nMu){
 }
 
 
-Sample* getDataSample(std::string cut,std::string elID, std::string muID){
+Sample* getDataSample(std::string cut,std::string elID, std::string muID,std::string era){
 
-  std::string filename = area+"test/Data_Mu"+muID+"_El"+elID+".root";
+  std::string filename = area+"test/Data_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* tfile = new TFile(filename.c_str());
   Sample* dataSample = new Sample("Data",tfile,1,1,cut,kBlack,1);
   return dataSample;
@@ -918,7 +918,7 @@ std::vector<Sample*> get74XInclusiveSigSampleVecForTable(std::string cut, float 
   return vSigSamples;
 
 }
-std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID){
+std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
   //make names vector
   std::vector<std::string> vSigNames;
   std::vector<float> vXsec;
@@ -1492,7 +1492,7 @@ std::vector<Sample*> get74XBkgSampleVec(std::string cut, float lumi, std::string
 }
 
 
-std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID){  
+std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
 
    //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
