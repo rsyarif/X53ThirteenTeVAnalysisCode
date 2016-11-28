@@ -42,7 +42,7 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 int main(int argc, char* argv[]){
 
   std::string eosarea="root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/";
 
   if(argc!=4) return 0;
   std::string argv1=argv[1];
@@ -177,9 +177,9 @@ int main(int argc, char* argv[]){
   data_samples["DataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v3.root";
 
   data_samples["NonPromptData"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
-  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
-  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_MuMu_2016B.root";
+  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-23Sep2016-v3.root";
+  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016B-23Sep2016-v3.root";
   data_samples["NonPromptDataElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
   data_samples["NonPromptDataElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-23Sep2016-v1.root";
   data_samples["NonPromptDataMuMu2016C"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016C-23Sep2016-v1.root";
@@ -203,8 +203,8 @@ int main(int argc, char* argv[]){
   data_samples["NonPromptDataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-PromptReco-v3.root";
 
   data_samples["ChargeMisID"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_ElEl_2016B.root";
-  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_ElMu_2016B.root";
+  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-23Sep2016-v3.root";
   data_samples["ChargeMisIDElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
   data_samples["ChargeMisIDElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-23Sep2016-v1.root";
   data_samples["ChargeMisIDElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
