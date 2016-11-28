@@ -5,9 +5,9 @@
 #include <string>
 #include <cmath>
 #include <stdexcept>
-#include "plugins/Sample.cc"
-#include "plugins/CutClass.cc"
-#include "interface/TreeReader.h"
+#include "../plugins/Sample.cc"
+#include "../plugins/CutClass.cc"
+#include "../interface/TreeReader.h"
 #include "TGraphAsymmErrors.h"
 #include "TMath.h"
 #include "Math/ProbFunc.h"
@@ -1767,15 +1767,15 @@ std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string 
   std::vector<Sample*> vSample;
 
   //********** Nonprompt ***************
-  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+".root";
+  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* npfile = new TFile(npfilename.c_str());
-  Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
+  Sample* npSample = new Sample(vBkgNames.at(0),npfile,vWeights.at(0),vXsec.at(0),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
-  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
+  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  Sample* cmidSample = new Sample(vBkgNames.at(1),cmidfile,vWeights.at(1),vXsec.at(1),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 
@@ -1812,7 +1812,7 @@ std::vector<std::string> getCutString(){
   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 900)";
   vString.push_back(htcut);
 
-  std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
+  //std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
   //vString.push_back(centrallepcut);
   return vString;
 }
@@ -1952,9 +1952,11 @@ std::vector<CutClass*> appendCutClassVectors(std::vector<CutClass*> vCC1, std::v
   std::vector<CutClass*> vCC;
   for(int i =0; i< vCC1.size();i++){
     vCC.push_back(vCC1.at(i));
+    std::cout<<"appending first vector, number "<<i<<" of "<<vCC1.size()<<std::endl;
   }
-  for(int i=0;i<vCC2.size();i++){
-    vCC.push_back(vCC2.at(i));
+  for(int j=0;j<vCC2.size();j++){
+    vCC.push_back(vCC2.at(j));
+    std::cout<<"appending second vector, number "<<j<<" of "<<vCC2.size()<<std::endl;
   }
   return vCC;
 }
@@ -1967,19 +1969,20 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
     throw std::invalid_argument( "Error! Trying to add CutClass vectors of different size!");
   }
   
-  for(unsigned int i=0; i< vCC1.size() < i++){
+  for(unsigned int i=0; i< vCC1.size() ; i++){
     //check sample names are the same
     if(vCC1.at(i)->samplename!=vCC2.at(i)->samplename){
       throw std::invalid_argument("Error! Sample names are not consistent");
     }
     std::vector<float> vEvtsNew, vErrNew;
-    for(unsigned int j=0; j< vCC.at(i)->nEvents;j++){          
+    for(unsigned int j=0; j< vCC1.at(i)->nEvents.size();j++){
+      std::cout<<"adding events for sample number: "<<i<<" on cut number "<<j<<" of "<<vCC1.at(i)->nEvents.size()<<" cuts for "<<vCC1.size()<<" samples"<<std::endl;
       vEvtsNew.push_back( vCC1.at(i)->nEvents.at(j) + vCC2.at(i)->nEvents.at(j)); //add the number of events for each
       float errNew = pow( vCC1.at(i)->vErr.at(j)*vCC1.at(i)->vErr.at(j) + vCC2.at(i)->vErr.at(j)*vCC2.at(i)->vErr.at(j), 0.5);
       vErrNew.push_back(errNew);
     }
-    CutClass* c = new CutClass(vCC1.at(i)->name,vCC1.at(i)->cutname,vEvtsNew,vErrNew,vCC1.at(i)->xsec);
-    vCC.push_back(c)
+    CutClass* c = new CutClass(vCC1.at(i)->samplename,vCC1.at(i)->cutname,vEvtsNew,vErrNew,vCC1.at(i)->xsec);
+    vCC.push_back(c);
   }    
   return vCC;
 }

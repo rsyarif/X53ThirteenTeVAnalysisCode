@@ -32,9 +32,9 @@ void makeTables(){
   //get vector of background samples
   std::vector<Sample*> vMCBkg2016BD = getMCBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
   std::vector<Sample*> vMCBkg2016EH = getMCBkgSampleVec("sZVeto",lumi2,"MVATightRC","CBTightMiniIso","");
-  std::vector<Sample*> vDDBkg =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
+  std::vector<Sample*> vDDBkg =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","2016Full");
   //get vector of data
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso","2016Full");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -51,8 +51,11 @@ void makeTables(){
   for(int nmu=-1; nmu<3; nmu++){
     //now make a vector of cutClass for bkg
     std::vector<CutClass*> vCutMCBkg2016BD = getCutClassVector(vMCBkg2016BD,vCutString,nmu);
+    std::cout<<"made 2016bd mc bkg"<<std::endl;
     std::vector<CutClass*> vCutMCBkg2016EH = getCutClassVector(vMCBkg2016EH,vCutString,nmu);
+    std::cout<<"made 2016eh mc bkg with size "<<std::endl;
     std::vector<CutClass*> vCutMCBkg = addCutClassVectors(vCutMCBkg2016BD,vCutMCBkg2016EH);
+    std::cout<<"added mc bkg"<<std::endl;
     std::vector<CutClass*> vCutDDBkg = getCutClassVector(vDDBkg,vCutString,nmu);
     std::vector<CutClass*> vCutBkg = appendCutClassVectors(vCutMCBkg,vCutDDBkg);
     //now make a vector of cutClass for sig
@@ -69,7 +72,7 @@ void makeTables(){
   }
   
   tables<<std::fixed<<std::setprecision(2);
-  printFinalTable(tables,vBkg,vSig,dataSample,vCutString);
+  //printFinalTable(tables,vBkg,vSig,dataSample,vCutString);
 
   //make charge misID table
   tables<<"\n";
