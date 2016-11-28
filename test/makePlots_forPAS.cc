@@ -39,14 +39,22 @@ void makePlots_forPAS(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi = 12.9; //fb^-1  
+  float lumi1 = 12.9; //fb^-1  
+  float lumi2 = 23.3; //fb^-1  
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
 
-  std::vector<Sample*> vBkgSamples = getBkgSampleVec("sZVeto", lumi, elID, muID);
-  std::vector<Sample*> vSigSamples = getInclusiveSigSampleVecForTable("sZVeto", lumi, elID, muID);
-  Sample* dataSample = getDataSample("sZVeto",elID,muID);
+  std::vector<Sample*> vMCBkgSamples1 = getMCBkgSampleVec("sZVeto", lumi1, elID, muID,"");
+  std::vector<Sample*> vMCBkgSamples2 = getMCBkgSampleVec("sZVeto", lumi2, elID, muID,"");
+  std::vector<Sample*> vMCBkgSamples = appendSampleVectors(vMCBkgSamples1,vMCBkgSamples2);
+  std::vector<Sample*> vDDBkgSamples = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016Full");
+  std::vector<Sample*> vBkgSamples = appendSampleVectors(vMCBkgSamples, vDDBkgSamples);
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"");
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"");
+  std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
+
+  Sample* dataSample = getDataSample("sZVeto",elID,muID,"2016Full");
 
   for(int j=2; j <3; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
@@ -196,12 +204,11 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
     else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
     else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str()); std::cout<<"command:t->Project(h,"<<var->name<<","<<cutstring.str()<<std::endl;}
-    //set negative nonprompt bins to zero - less than or equal to set overflow bin to zero
-    //if(s->name=="NonPrompt"){
+    //set negative bins to zero - less than or equal to set overflow bin to zero
     for(int hbin=0; hbin <= h->GetNbinsX(); hbin++){
       if(h->GetBinContent(hbin+1)<0) h->SetBinContent(hbin+1,0);
     }
-      //}
+
 
     //scale by weight - don't scale for data
     //skip non prompt if using data non prompt
@@ -399,6 +406,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     }
   }
   //draw signal:
+  TH1F* hSigRH = new TH1F("hSigRH",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TH1F* hSigLH = new TH1F("hSigLH",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
     
     Sample* s = vSig.at(i1);
@@ -417,18 +426,35 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     //aesthetics
     h->SetFillStyle(0);
     h->SetLineColor(s->color);
+    hSigRH->SetLineColor(s->color);
+    hSigLH->SetLineColor(s->color);    
     h->SetLineWidth(2);
+    hSigRH->SetLineWidth(2);
+    hSigLH->SetLineWidth(2);
     h->SetLineStyle(s->linestyle);
+    hSigRH->SetLineStyle(s->linestyle);
+    hSigLH->SetLineStyle(s->linestyle);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
     h->GetYaxis()->SetTitle(var->Yaxis.c_str());
-    //add to legend
-    leg->AddEntry(h,(vSig.at(i1)->name).c_str(),"l");
+    //add to signal histo
+    if(s->name.find("RH")==std::string::npos){
+      hSigLH->Add(h);
+    }
+    else{
+      hSigRH->Add(h);
+    }
+    
     //assert(h);
     //tStack->Add(h);
 
-    h->Draw("hist same");
-
+    //h->Draw("hist same");
   }
+  hSigRH->Draw("hist same");
+  hSigLH->Draw("hist same");
+  //add to legend
+  leg->AddEntry(hSigRH,"RH TeV X_{5/3}","l");
+  leg->AddEntry(hSigLH,"LH TeV X_{5/3}","l");
+
 
   //Draw data
   TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -472,7 +498,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"12.9 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"36.2 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();

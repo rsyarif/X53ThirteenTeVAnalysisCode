@@ -95,7 +95,7 @@ std::vector<Variable*> getVariableVec(){
   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
   vVar.push_back(ncleanak4jets);
 
-
+  /*
   //new ak4 jets
   Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(newCleanak4jet1pt);
@@ -184,7 +184,7 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(ak8jet2filtmass);
   Variable* ak8jet2sdmass = new Variable("AK8Jet2SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
   vVar.push_back(ak8jet2sdmass);
-
+  */
 
   //Variable* nnonssleps = new Variable("nNonSSLeps",17,0,17,"N_{Non-SS Leps}","N_{Events}");
   //vVar.push_back(nnonssleps);
@@ -3157,6 +3157,17 @@ void writeHistos(TFile* f, std::vector<TH1F*> hists){
     f->WriteTObject(hists.at(i));
   }
 };
+
+std::vector<Sample*> appendSampleVectors(std::vector<Sample*> vS1,std::vector<Sample*> vS2){
+  std::vector<Sample*> vS;
+  for(int i=0; i<vS1.size();i++){
+    vS.push_back(vS1.at(i));
+  }
+  for(int i=0;i<vS2.size();i++){
+    vS.push_back(vS2.at(i));
+  }
+  return vS;
+}
 
 std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID){  
 
