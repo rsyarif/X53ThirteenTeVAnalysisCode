@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include "TH1.h"
-#include "plugins/Variable.cc"
+#include "../plugins/Variable.cc"
 #include <assert.h>
 
 class Sample {
