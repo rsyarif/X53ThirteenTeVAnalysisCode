@@ -4,11 +4,11 @@ import glob
 
 #make list of card files
 
-allfiles = glob.glob('./*2016B-D.root')
+
 
 
 def makeCfgs(ch):
-
+    allfiles = glob.glob('./*'+ch+'*2016B-D.root')
     for card in allfiles:
     #open template file
         #print card,"theta_template_"+ch+".py"
@@ -38,6 +38,7 @@ def makeCfgs(ch):
         filename = "X53X53_"
         filename += (card.split("_2016B-D.root")[0]).split("Limits_")[1]
         card2016EH = card.replace('2016B-D','2016E-H')
+        card2016EH = card2016EH.replace('SL35','SL30')
         exptxt = filename+"_expected.txt"
         obstxt = filename+"_observed.txt"
         htmlout = filename+"_html"
@@ -59,7 +60,7 @@ def makeCfgs(ch):
         outfile.close()
 
 
-chans = ['All','ee','emu','mumu']
+chans = ['All']#,'ee','emu','mumu']
 
 for chan in chans:
     makeCfgs(chan)

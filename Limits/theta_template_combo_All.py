@@ -7,7 +7,7 @@ def getSSDLModel2016BD():
     model.set_signal_processes('sig')
     
     procs = model.processes
-    
+    print procs
     
     for proc in procs:
         
@@ -22,19 +22,19 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelBD')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumuBD')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelBD')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumuBD')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elel')
-            model.add_lognormal_uncertainty('LepTrig2016BD_elmu',math.log(1.03),proc,'elmu')
-            model.add_lognormal_uncertainty('LepTrig2016BD_mumu',math.log(1.03),proc,'mumu')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elelBD')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elmu',math.log(1.03),proc,'elmuBD')
+            model.add_lognormal_uncertainty('LepTrig2016BD_mumu',math.log(1.03),proc,'mumuBD')
             
         #individual
             if(proc=='TTZ'):
@@ -85,25 +85,25 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelBD')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumuBD')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelBD')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumuBD')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elel')
-            model.add_lognormal_uncertainty('LepTrig2016BD_elmu',math.log(1.03),proc,'elmu')
-            model.add_lognormal_uncertainty('LepTrig2016BD_mumu',math.log(1.03),proc,'mumu')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elelBD')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elmu',math.log(1.03),proc,'elmuBD')
+            model.add_lognormal_uncertainty('LepTrig2016BD_mumu',math.log(1.03),proc,'mumuBD')
 
 
     return model
 
 
-def getSSDLModel_2016EH():
+def getSSDLModel2016EH():
     model = build_model_from_rootfile('SSDLROOTFILE2016EH',include_mc_uncertainties=True)
 
 
@@ -125,19 +125,19 @@ def getSSDLModel_2016EH():
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelEH')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumuEH')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelEH')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumuEH')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elel')
-            model.add_lognormal_uncertainty('LepTrig2016EH_elmu',math.log(1.03),proc,'elmu')
-            model.add_lognormal_uncertainty('LepTrig2016EH_mumu',math.log(1.03),proc,'mumu')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elelEH')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elmu',math.log(1.03),proc,'elmuEH')
+            model.add_lognormal_uncertainty('LepTrig2016EH_mumu',math.log(1.03),proc,'mumuEH')
             
         #individual
             if(proc=='TTZ'):
@@ -188,33 +188,33 @@ def getSSDLModel_2016EH():
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelEH')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.02),proc,'mumuEH')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmu')
-            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumu')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelEH')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIsoSys',math.log(1.02),proc,'mumuEH')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elel')
-            model.add_lognormal_uncertainty('LepTrig2016EH_elmu',math.log(1.03),proc,'elmu')
-            model.add_lognormal_uncertainty('LepTrig2016EH_mumu',math.log(1.03),proc,'mumu')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elelEH')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elmu',math.log(1.03),proc,'elmuEH')
+            model.add_lognormal_uncertainty('LepTrig2016EH_mumu',math.log(1.03),proc,'mumuEH')
 
 
     return model
 
-ssdlModel1 = getSSDLModel2016BD()
-ssdlModel12= getSSDLModel2016EH()
+ssdlModel = getSSDLModel2016BD()
+ssdlModel2= getSSDLModel2016EH()
 
 
-ssdlModel1.combine(ssdlModel2)
+ssdlModel.combine(ssdlModel2)
                                         
-model_summary(ssdlModel1)
+model_summary(ssdlModel)
 
 #Bayesian Limits
-plot_exp, plot_obs = bayesian_limits(ssdlModel,'all', n_toy = 5000, n_data = 500)
+plot_exp, plot_obs = bayesian_limits(ssdlModel,'all', n_toy = 10000, n_data = 1000)
 
 plot_exp.write_txt('EXPTXTFILE')
 plot_obs.write_txt('OBSTXTFILE')
