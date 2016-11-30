@@ -24,12 +24,10 @@ int main(int argc, char* argv[]){
   //debug, set to true by hand until sure script is working
   bool debug_ = true;
 
-  //set desired lumi
-  float lumi = 6.26; // fb^{-1}
 
   //check ot make sure enough arguments have been passed
-  if(!argc==3){
-    std::cout<<"Need to supply 2 arguments: X53 Mass and Chirality! Exiting....."<<std::endl;
+  if(argc<3){
+    std::cout<<"Need to supply at least 2 arguments: X53 Mass and Chirality! Exiting....."<<std::endl;
     return 0;
   }
 
@@ -43,14 +41,22 @@ int main(int argc, char* argv[]){
 
 
   //set cuts by hand
-  float lep1cut = 40.0;
+  float lep1cut = 40.0;  
   float lep2cut = 30.0;
+  std::istringstream arg4(argv[4]);
+  float lep2shift=0;
+  arg4>>lep2shift;
+  lep2cut = lep2cut+ lep2shift;
   std::istringstream arg3(argv[3]);
   float HTshift=0;
   if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg3>>HTshift;}
   float HTcut   = 900.0+HTshift;
 
+  //get desired lumi
+  float lumi = std::atof(argv[5]); // fb^{-1}
+  //get era
+  std::string era(argv[6]);
   /*  std::istringstream arg4(argv[4]);
   int nConstShift=0;
   if(!(arg4>>nConstShift)){ std::cout<<"Invalid number for nConst shift! Exiting..."<<std::endl; return 0;}
@@ -60,9 +66,11 @@ int main(int argc, char* argv[]){
   int nConst = 5;
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vBkg = getBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso");
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso");
+  std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso","");//dummy era now for MC
+  std::vector<Sample*> vDDBkg = getDDBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIso",era);
+  std::vector<Sample*> vBkg = appendSampleVectors(vMCBkg,vDDBkg);
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIso","");//dummy era now for MC
+  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso",era);
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
@@ -93,19 +101,19 @@ int main(int argc, char* argv[]){
   //output root file
   std::stringstream rootfilename_all;
   rootfilename_all<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_all<<"_thetamuMiniIso.root";
+  rootfilename_all<<"_"<<era<<".root";
 
   std::stringstream rootfilename_elel;
   rootfilename_elel<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_elel<<"_thetamuMiniIso.root";
+  rootfilename_elel<<"_"<<era<<".root";
 
   std::stringstream rootfilename_elmu;
   rootfilename_elmu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_elmu<<"_thetamuMiniIso.root";
+  rootfilename_elmu<<"_"<<era<<".root";
 
   std::stringstream rootfilename_mumu;
   rootfilename_mumu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
-  rootfilename_mumu<<"_thetamuMiniIso.root";
+  rootfilename_mumu<<"_"<<era<<".root";
 
   TFile* fout = new TFile((rootfilename_all.str()).c_str(),"RECREATE");
   TFile* fout_elel = new TFile((rootfilename_elel.str()).c_str(),"RECREATE");
@@ -208,35 +216,35 @@ int main(int argc, char* argv[]){
   float errChargeMisID0=0;  float errChargeMisID1=0;  float errChargeMisID2=0;
 
   //need one histogram per process which has it's own unique systematic values
-  float nTTW0;  float nTTW1;  float nTTW2;
-  float errTTW0;  float errTTW1;  float errTTW2;
+  float nTTW0=0;  float nTTW1=0;  float nTTW2=0;
+  float errTTW0=0;  float errTTW1=0;  float errTTW2=0;
 
-  float nTTZ0;  float nTTZ1;  float nTTZ2;
-  float errTTZ0;  float errTTZ1;  float errTTZ2;
+  float nTTZ0=0;  float nTTZ1=0;  float nTTZ2=0;
+  float errTTZ0=0;  float errTTZ1=0;  float errTTZ2=0;
 
-  float nTTH0;  float nTTH1;  float nTTH2;
-  float errTTH0;  float errTTH1;  float errTTH2;
+  float nTTH0=0;  float nTTH1=0;  float nTTH2=0;
+  float errTTH0=0;  float errTTH1=0;  float errTTH2=0;
 
-  float nTTTT0;  float nTTTT1;  float nTTTT2;
-  float errTTTT0;  float errTTTT1;  float errTTTT2;
+  float nTTTT0=0;  float nTTTT1=0;  float nTTTT2=0;
+  float errTTTT0=0;  float errTTTT1=0;  float errTTTT2=0;
 
-  float nWZ0;  float nWZ1;  float nWZ2;
-  float errWZ0;  float errWZ1;  float errWZ2;
+  float nWZ0=0;  float nWZ1=0;  float nWZ2=0;
+  float errWZ0=0;  float errWZ1=0;  float errWZ2=0;
 
-  float nZZ0;  float nZZ1;  float nZZ2;
-  float errZZ0;  float errZZ1;  float errZZ2;
+  float nZZ0=0;  float nZZ1=0;  float nZZ2=0;
+  float errZZ0=0;  float errZZ1=0;  float errZZ2=0;
 
-  float nWpWp0;  float nWpWp1;  float nWpWp2;
-  float errWpWp0;  float errWpWp1;  float errWpWp2;
+  float nWpWp0=0;  float nWpWp1=0;  float nWpWp2=0;
+  float errWpWp0=0;  float errWpWp1=0;  float errWpWp2=0;
 
-  float nWWZ0;  float nWWZ1;  float nWWZ2;
-  float errWWZ0;  float errWWZ1;  float errWWZ2;
+  float nWWZ0=0;  float nWWZ1=0;  float nWWZ2=0;
+  float errWWZ0=0;  float errWWZ1=0;  float errWWZ2=0;
 
-  float nWZZ0;  float nWZZ1;  float nWZZ2;
-  float errWZZ0;  float errWZZ1;  float errWZZ2;
+  float nWZZ0=0;  float nWZZ1=0;  float nWZZ2=0;
+  float errWZZ0=0;  float errWZZ1=0;  float errWZZ2=0;
 
-  float nZZZ0;  float nZZZ1;  float nZZZ2;
-  float errZZZ0;  float errZZZ1;  float errZZZ2;
+  //float nZZZ0=0;  float nZZZ1=0;  float nZZZ2=0;
+  //float errZZZ0=0;  float errZZZ1=0;  float errZZZ2=0;
 
 
   for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elel.size(); i++){
@@ -284,10 +292,10 @@ int main(int argc, char* argv[]){
       nWZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
       errWZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
     }
-    if(vCutBkg_elel.at(i)->samplename=="ZZZ"){
-      nZZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
-      errZZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
-    }
+    //if(vCutBkg_elel.at(i)->samplename=="ZZZ"){
+    //nZZZ0 = vCutBkg_elel.at(i)->nEvents.at(0);
+    //errZZZ0 = vCutBkg_elel.at(i)->vErr.at(0);
+    //}
   }//end loop over elel bkg vector
 
   for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elmu.size(); i++){
@@ -335,10 +343,10 @@ int main(int argc, char* argv[]){
       nWZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
       errWZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
     }
-    if(vCutBkg_elmu.at(i)->samplename=="ZZZ"){
-      nZZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
-      errZZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
-    }
+    //if(vCutBkg_elmu.at(i)->samplename=="ZZZ"){
+    //nZZZ1 = vCutBkg_elmu.at(i)->nEvents.at(0);
+    // errZZZ1 = vCutBkg_elmu.at(i)->vErr.at(0);
+    //}
   }//end loop over elmu bkg vector
 
   for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_mumu.size(); i++){
@@ -386,10 +394,10 @@ int main(int argc, char* argv[]){
       nWZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
       errWZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
     }
-    if(vCutBkg_mumu.at(i)->samplename=="ZZZ"){
-      nZZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
-      errZZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
-    }
+    //if(vCutBkg_mumu.at(i)->samplename=="ZZZ"){
+    //nZZZ2 = vCutBkg_mumu.at(i)->nEvents.at(0);
+    //errZZZ2 = vCutBkg_mumu.at(i)->vErr.at(0);
+    //}
   }//end loop over mumu bkg vector
 
   /* for(std::vector<CutClass*>::size_type i =0; i< vCutBkg_elmu.size(); i++){
