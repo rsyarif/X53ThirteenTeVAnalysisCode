@@ -4,15 +4,21 @@ import os
 
 masses = [700,800,900,1000,1100,1200,1300,1400,1500]
 chiralities = ['RH','LH']
-
+eras = ['2016B-D','2016E-H']
 theta=True
 
 for mass in masses:
     for chi in chiralities:
-        for i in range(0,1):
-            ht=100*i
-
-            command="./makeLimitRootFiles.o %i %s %i" % (mass,chi,ht)
-            print command
-            os.system(command)
+        for era in eras:
+            for i in range(0,6):
+                ht=100*i
+                if era=='2016B-D':
+                    lep2 = 5
+                    lumi = 12.9
+                else:
+                    lep2 = 0
+                    lumi = 23.3
+                command="./makeLimitRootFiles.o %i %s %i %i %.2f %s" % (mass,chi,ht,lep2,lumi,era)
+                print command
+                os.system(command)
             
