@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
   TString filename;                                
   if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/ljmet_Data_ElMu.root";
   else if(argv1.find("DataFR")!=std::string::npos) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/June18/ljmet_trees/ljmet_FakeRate_Mu.root";
-  else filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/July12/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  else filename = "root://cmseos.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]){
 
   //outfile
   std::string outname;
-  if(data && !fr)outname="LeptonEfficiency_Signal_Data_Run2015D.root"; 
+  if(data && !fr)outname="LeptonEfficiency_Signal_Data_Run2016.root"; 
   else if(data && fr)outname="LeptonEfficiency_Signal_FakeRate.root"; 
   else outname="LeptonEfficiency_Signal_MC_"+mass+"_"+chirality+".root"; 
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
@@ -72,6 +72,8 @@ int main(int argc, char* argv[]){
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",13,0,13);
   TH1F* h_MuCutFlow_MiniIso = new TH1F("h_MuCutFlow_MiniIso","Muon Cut Flow MiniIso",13,0,13);
   TH1F* hPtNum_Mu = new TH1F("hPtNum_Mu","p_{T} of Tight Muons",60,0,600);
+  TH1F* hPtNumTightIso_Mu = new TH1F("hPtNumTightIso_Mu","p_{T} of Tight + MiniIso < 0.1 Muons",60,0,600);
+  TH1F* hPtNumMedIso_Mu = new TH1F("hPtNumMedIso_Mu","p_{T} of Tight + MiniIso < 0.2 Muons",60,0,600);
   TH1F* hPtDen_Mu = new TH1F("hPtDen_Mu","p_{T} of Loose Muons",60,0,600);
   TH1F* hEtaNum_Mu = new TH1F("hEtaNum_Mu","#eta of Tight Muons",15,-3,3);
   TH1F* hEtaDen_Mu = new TH1F("hEtaDen_Mu","#eta of Loose Muons",15,-3,3);
@@ -191,6 +193,12 @@ int main(int argc, char* argv[]){
 	  hEtaNum_Mu->Fill(imu->eta);
 	}
 	if(imu->cutBasedTight_NoIso()){
+	  if(imu->miniIso<0.2){
+	    hPtNumMedIso_Mu->Fill(imu->pt);
+	  }
+	  if(imu->miniIso<0.1){
+	    hPtNumTightIso_Mu->Fill(imu->pt);
+	  }
 	  hMiniIso_Mu->Fill(imu->miniIso);
 	  hRelIso_Mu->Fill(imu->relIso);
 	}
@@ -572,13 +580,13 @@ void doMuCutFlow(TH1F*& hist, TMuon* mu){
   else hist->AddBinContent(2);
   if(mu->eta>2.4)              return;
   else hist->AddBinContent(3);
-  if(!mu->Global)              return;
+  if(!(mu->Global && mu->PFMuon))              return;
   else hist->AddBinContent(4);
   if(mu->chi2 > 10)            return;
   else hist->AddBinContent(5);
-  if(mu->dz > 0.5)             return;
+  if(fabs(mu->dz) > 0.5)             return;
   else hist->AddBinContent(6);
-  if(mu->dxy > 0.2)            return;
+  if(fabs(mu->dxy) > 0.2)            return;
   else hist->AddBinContent(7);
   if(mu->nValMuHits < 1)       return;
   else hist->AddBinContent(8);
@@ -603,13 +611,13 @@ void doMuCutFlow_MiniIso(TH1F*& hist, TMuon* mu){
   else hist->AddBinContent(2);
   if(mu->eta>2.4)              return;
   else hist->AddBinContent(3);
-  if(!mu->Global)              return;
+  if(!(mu->Global && mu->PFMuon))              return;
   else hist->AddBinContent(4);
   if(mu->chi2 > 10)            return;
   else hist->AddBinContent(5);
-  if(mu->dz > 0.5)             return;
+  if(fabs(mu->dz) > 0.5)             return;
   else hist->AddBinContent(6);
-  if(mu->dxy > 0.2)            return;
+  if(fabs(mu->dxy) > 0.2)            return;
   else hist->AddBinContent(7);
   if(mu->nValMuHits < 1)       return;
   else hist->AddBinContent(8);
