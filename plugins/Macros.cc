@@ -19,12 +19,12 @@ std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1ptEl = new Variable("Lep1PtEl",6,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
-  vVar.push_back(lep1ptEl);
-  Variable* lep1ptMu = new Variable("Lep1PtMu",6,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
-  vVar.push_back(lep1ptMu);
+  //Variable* lep1ptEl = new Variable("Lep1PtEl",30,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
+  //vVar.push_back(lep1ptEl);
+  //Variable* lep1ptMu = new Variable("Lep1PtMu",30,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
+  //vVar.push_back(lep1ptMu);
 
-  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep1pt = new Variable("Lep1Pt",30,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
@@ -37,7 +37,7 @@ std::vector<Variable*> getVariableVec(){
   Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
   vVar.push_back(lep1SusyIso);
 
-  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
+  Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -72,14 +72,14 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(nak4jets);*/
 
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -97,14 +97,14 @@ std::vector<Variable*> getVariableVec(){
 
   /*
   //new ak4 jets
-  Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(newCleanak4jet1pt);
   Variable* newCleanak4jet1eta = new Variable("newCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(newCleanak4jet1eta);
   Variable* newCleanak4jet1phi = new Variable("newCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(newCleanak4jet1phi);
 
-  Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(newCleanak4jet2pt);
   Variable* newCleanak4jet2eta = new Variable("newCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(newCleanak4jet2eta);
@@ -118,7 +118,7 @@ std::vector<Variable*> getVariableVec(){
 
 
   //ak8jets
-  Variable* ak8jet1pt = new Variable("AK8Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* ak8jet1pt = new Variable("AK8Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(ak8jet1pt);
   Variable* ak8jet1eta = new Variable("AK8Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(ak8jet1eta);
@@ -152,7 +152,7 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(ak8jet1sdmass);
 
 
-  Variable* ak8jet2pt = new Variable("AK8Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* ak8jet2pt = new Variable("AK8Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(ak8jet2pt);
   Variable* ak8jet2eta = new Variable("AK8Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(ak8jet2eta);
@@ -190,14 +190,14 @@ std::vector<Variable*> getVariableVec(){
   //vVar.push_back(nnonssleps);
 
   //simple cleaned jet variables
-  /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(simpleCleanak4jet1pt);
   Variable* simpleCleanak4jet1eta = new Variable("simpleCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(simpleCleanak4jet1eta);
   Variable* simpleCleanak4jet1phi = new Variable("simpleCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(simpleCleanak4jet1phi);
 
-  Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(simpleCleanak4jet2pt);
   Variable* simpleCleanak4jet2eta = new Variable("simpleCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(simpleCleanak4jet2eta);
@@ -240,14 +240,14 @@ std::vector<Variable*> getVariableVecForBoosted(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* lep1pt = new Variable("Lep1Pt",30,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
 
-  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -255,14 +255,14 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(lep2phi);
   /*
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -276,14 +276,14 @@ std::vector<Variable*> getVariableVecForBoosted(){
 */
 
   //new ak4 jets
-  Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(newCleanak4jet1pt);
   Variable* newCleanak4jet1eta = new Variable("newCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(newCleanak4jet1eta);
   Variable* newCleanak4jet1phi = new Variable("newCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(newCleanak4jet1phi);
 
-  Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(newCleanak4jet2pt);
   Variable* newCleanak4jet2eta = new Variable("newCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(newCleanak4jet2eta);
@@ -297,7 +297,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
 
 
   //ak8jets
-  Variable* ak8jet1pt = new Variable("AK8Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* ak8jet1pt = new Variable("AK8Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(ak8jet1pt);
   Variable* ak8jet1eta = new Variable("AK8Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(ak8jet1eta);
@@ -331,7 +331,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(ak8jet1sdmass);
 
 
-  Variable* ak8jet2pt = new Variable("AK8Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* ak8jet2pt = new Variable("AK8Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(ak8jet2pt);
   Variable* ak8jet2eta = new Variable("AK8Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(ak8jet2eta);
@@ -366,7 +366,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
 
 
   //topJetjets
-  Variable* topjet1pt = new Variable("TopJet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* topjet1pt = new Variable("TopJet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(topjet1pt);
   Variable* topjet1eta = new Variable("TopJet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(topjet1eta);
@@ -400,7 +400,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(topjet1sdmass);
 
 
-  Variable* topjet2pt = new Variable("TopJet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* topjet2pt = new Variable("TopJet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(topjet2pt);
   Variable* topjet2eta = new Variable("TopJet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(topjet2eta);
@@ -434,7 +434,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(topjet2sdmass);
 
   //wjets
-  Variable* wjet1pt = new Variable("WJet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* wjet1pt = new Variable("WJet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(wjet1pt);
   Variable* wjet1eta = new Variable("WJet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(wjet1eta);
@@ -468,7 +468,7 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(wjet1sdmass);
 
 
-  Variable* wjet2pt = new Variable("WJet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+  Variable* wjet2pt = new Variable("WJet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(wjet2pt);
   Variable* wjet2eta = new Variable("WJet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(wjet2eta);
@@ -533,14 +533,14 @@ std::vector<Variable*> getVariablesForClosureTest(){
 
   std::vector<Variable*> vVar;
 
-  Variable* lep1pt = new Variable("Lep1Pt",6,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep1pt = new Variable("Lep1Pt",30,0,600,"Leading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep1pt);
   /*Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);*/
 
-  Variable* lep2pt = new Variable("Lep2Pt",6,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
+  Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events}");
   vVar.push_back(lep2pt);
   /*Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
@@ -548,14 +548,14 @@ std::vector<Variable*> getVariablesForClosureTest(){
   vVar.push_back(lep2phi);*/
 
   //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",6,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet1pt);
   /*Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
   vVar.push_back(cleanak4jet1phi);*/
 
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",6,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
   vVar.push_back(cleanak4jet2pt);
   /*Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
@@ -1950,11 +1950,11 @@ std::vector<CutClass*> getCutClassVector(std::vector<Sample*> vS, std::vector<st
 
 std::vector<CutClass*> appendCutClassVectors(std::vector<CutClass*> vCC1, std::vector<CutClass*> vCC2){
   std::vector<CutClass*> vCC;
-  for(int i =0; i< vCC1.size();i++){
+  for(unsigned int i =0; i< vCC1.size();i++){
     vCC.push_back(vCC1.at(i));
     std::cout<<"appending first vector, number "<<i<<" of "<<vCC1.size()<<std::endl;
   }
-  for(int j=0;j<vCC2.size();j++){
+  for(unsigned int j=0;j<vCC2.size();j++){
     vCC.push_back(vCC2.at(j));
     std::cout<<"appending second vector, number "<<j<<" of "<<vCC2.size()<<std::endl;
   }
@@ -3160,10 +3160,10 @@ void writeHistos(TFile* f, std::vector<TH1F*> hists){
 
 std::vector<Sample*> appendSampleVectors(std::vector<Sample*> vS1,std::vector<Sample*> vS2){
   std::vector<Sample*> vS;
-  for(int i=0; i<vS1.size();i++){
+  for(unsigned int i=0; i<vS1.size();i++){
     vS.push_back(vS1.at(i));
   }
-  for(int i=0;i<vS2.size();i++){
+  for(unsigned int i=0;i<vS2.size();i++){
     vS.push_back(vS2.at(i));
   }
   return vS;

@@ -121,10 +121,14 @@ int main(int argc, char* argv[]){
   TFile* fout_mumu = new TFile((rootfilename_mumu.str()).c_str(),"RECREATE");
 
   //write observed
+  TString erast="";
+  if(era=="2016B-D") erast="BD";
+  else erast="EH";
+		       
   //TH1F* All__DATA = new TH1F("All__DATA","",3,0,3);
-  TH1F* elel__DATA = new TH1F("elel__DATA","",1,0,1);
-  TH1F* elmu__DATA = new TH1F("elmu__DATA","",1,0,1);
-  TH1F* mumu__DATA = new TH1F("mumu__DATA","",1,0,1);
+  TH1F* elel__DATA = new TH1F("elel"+erast+"__DATA","",1,0,1);
+  TH1F* elmu__DATA = new TH1F("elmu"+erast+"__DATA","",1,0,1);
+  TH1F* mumu__DATA = new TH1F("mumu"+erast+"__DATA","",1,0,1);
 
   //CutClass* cutData = makeCutClass(dataSample,vCutString,-1);
   //int nData = (cutData->nEvents).at(0);
@@ -176,17 +180,17 @@ int main(int argc, char* argv[]){
   //float errAll_sig = cutSig_all->vErr.at(0);
   //All_sig->SetBinContent(1,all_sig); All_sig->SetBinError(1,errAll_sig);
 
-  TH1F* elel__sig = new TH1F("elel__sig","",1,0,1);
+  TH1F* elel__sig = new TH1F("elel"+erast+"__sig","",1,0,1);
   float nSig_elel = cutSig_elel->nEvents.at(0) / cutSig_elel->xsec;
   float errElel_sig = cutSig_elel->vErr.at(0);
   elel__sig->SetBinContent(1,nSig_elel); elel__sig->SetBinError(1,errElel_sig);
 
-  TH1F* elmu__sig = new TH1F("elmu__sig","",1,0,1);
+  TH1F* elmu__sig = new TH1F("elmu"+erast+"__sig","",1,0,1);
   float nSig_elmu = cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec;
   float errElmu_sig = cutSig_elmu->vErr.at(0);
   elmu__sig->SetBinContent(1,nSig_elmu); elmu__sig->SetBinError(1,errElmu_sig);
 
-  TH1F* mumu__sig = new TH1F("mumu__sig","",1,0,1);
+  TH1F* mumu__sig = new TH1F("mumu"+erast+"__sig","",1,0,1);
   float nSig_mumu = cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec;
   float errMumu_sig = cutSig_mumu->vErr.at(0);
   mumu__sig->SetBinContent(1,nSig_mumu); mumu__sig->SetBinError(1,errMumu_sig);
@@ -441,91 +445,91 @@ int main(int argc, char* argv[]){
 
   //now histograms for the different background processes
   //TH1F* All__FakeRate = new TH1F("All__FakeRate","",3,0,3);
-  TH1F* elel__FakeRate = new TH1F("elel__FakeRate","",1,0,1);
-  TH1F* elmu__FakeRate = new TH1F("elmu__FakeRate","",1,0,1);
-  TH1F* mumu__FakeRate = new TH1F("mumu__FakeRate","",1,0,1);
+  TH1F* elel__FakeRate = new TH1F("elel"+erast+"__FakeRate","",1,0,1);
+  TH1F* elmu__FakeRate = new TH1F("elmu"+erast+"__FakeRate","",1,0,1);
+  TH1F* mumu__FakeRate = new TH1F("mumu"+erast+"__FakeRate","",1,0,1);
   elel__FakeRate->SetBinContent(1,nFakeRate0);  elel__FakeRate->SetBinError(1,errFakeRate0);
   elmu__FakeRate->SetBinContent(1,nFakeRate1);  elmu__FakeRate->SetBinError(1,errFakeRate1);
   mumu__FakeRate->SetBinContent(1,nFakeRate2);  mumu__FakeRate->SetBinError(1,errFakeRate2);
 
   //TH1F* All__ChargeMisID = new TH1F("All__ChargeMisID","",3,0,3);
-  TH1F* elel__ChargeMisID = new TH1F("elel__ChargeMisID","",1,0,1);
-  TH1F* elmu__ChargeMisID = new TH1F("elmu__ChargeMisID","",1,0,1);
-  TH1F* mumu__ChargeMisID = new TH1F("mumu__ChargeMisID","",1,0,1);
+  TH1F* elel__ChargeMisID = new TH1F("elel"+erast+"__ChargeMisID","",1,0,1);
+  TH1F* elmu__ChargeMisID = new TH1F("elmu"+erast+"__ChargeMisID","",1,0,1);
+  TH1F* mumu__ChargeMisID = new TH1F("mumu"+erast+"__ChargeMisID","",1,0,1);
   elel__ChargeMisID->SetBinContent(1,nChargeMisID0);  elel__ChargeMisID->SetBinError(1,errChargeMisID0);
   elmu__ChargeMisID->SetBinContent(1,nChargeMisID1);  elmu__ChargeMisID->SetBinError(1,errChargeMisID1);
   mumu__ChargeMisID->SetBinContent(1,nChargeMisID2);  mumu__ChargeMisID->SetBinError(1,errChargeMisID2);
 
 
   //TH1F* All__TTW = new TH1F("All__TTW","",3,0,3);
-  TH1F* elel__TTW = new TH1F("elel__TTW","",1,0,1);
-  TH1F* elmu__TTW = new TH1F("elmu__TTW","",1,0,1);
-  TH1F* mumu__TTW = new TH1F("mumu__TTW","",1,0,1);
+  TH1F* elel__TTW = new TH1F("elel"+erast+"__TTW","",1,0,1);
+  TH1F* elmu__TTW = new TH1F("elmu"+erast+"__TTW","",1,0,1);
+  TH1F* mumu__TTW = new TH1F("mumu"+erast+"__TTW","",1,0,1);
   elel__TTW->SetBinContent(1,nTTW0);  elel__TTW->SetBinError(1,errTTW0);
   elmu__TTW->SetBinContent(1,nTTW1);  elmu__TTW->SetBinError(1,errTTW1);
   mumu__TTW->SetBinContent(1,nTTW2);  mumu__TTW->SetBinError(1,errTTW2);
 
   //TH1F* All__TTZ = new TH1F("All__TTZ","",3,0,3);
-  TH1F* elel__TTZ = new TH1F("elel__TTZ","",1,0,1);
-  TH1F* elmu__TTZ = new TH1F("elmu__TTZ","",1,0,1);
-  TH1F* mumu__TTZ = new TH1F("mumu__TTZ","",1,0,1);
+  TH1F* elel__TTZ = new TH1F("elel"+erast+"__TTZ","",1,0,1);
+  TH1F* elmu__TTZ = new TH1F("elmu"+erast+"__TTZ","",1,0,1);
+  TH1F* mumu__TTZ = new TH1F("mumu"+erast+"__TTZ","",1,0,1);
   elel__TTZ->SetBinContent(1,nTTZ0);  elel__TTZ->SetBinError(1,errTTZ0);
   elmu__TTZ->SetBinContent(1,nTTZ1);  elmu__TTZ->SetBinError(1,errTTZ1);
   mumu__TTZ->SetBinContent(1,nTTZ2);  mumu__TTZ->SetBinError(1,errTTZ2);
 
   //TH1F* All__TTH = new TH1F("All__TTH","",3,0,3);
-  TH1F* elel__TTH = new TH1F("elel__TTH","",1,0,1);
-  TH1F* elmu__TTH = new TH1F("elmu__TTH","",1,0,1);
-  TH1F* mumu__TTH = new TH1F("mumu__TTH","",1,0,1);
+  TH1F* elel__TTH = new TH1F("elel"+erast+"__TTH","",1,0,1);
+  TH1F* elmu__TTH = new TH1F("elmu"+erast+"__TTH","",1,0,1);
+  TH1F* mumu__TTH = new TH1F("mumu"+erast+"__TTH","",1,0,1);
   elel__TTH->SetBinContent(1,nTTH0);  elel__TTH->SetBinError(1,errTTH0);
   elmu__TTH->SetBinContent(1,nTTH1);  elmu__TTH->SetBinError(1,errTTH1);
   mumu__TTH->SetBinContent(1,nTTH2);  mumu__TTH->SetBinError(1,errTTH2);
 
   //TH1F* All__TTTT = new TH1F("All__TTTT","",3,0,3);
-  TH1F* elel__TTTT = new TH1F("elel__TTTT","",1,0,1);
-  TH1F* elmu__TTTT = new TH1F("elmu__TTTT","",1,0,1);
-  TH1F* mumu__TTTT = new TH1F("mumu__TTTT","",1,0,1);
+  TH1F* elel__TTTT = new TH1F("elel"+erast+"__TTTT","",1,0,1);
+  TH1F* elmu__TTTT = new TH1F("elmu"+erast+"__TTTT","",1,0,1);
+  TH1F* mumu__TTTT = new TH1F("mumu"+erast+"__TTTT","",1,0,1);
   elel__TTTT->SetBinContent(1,nTTTT0);  elel__TTTT->SetBinError(1,errTTTT0);
   elmu__TTTT->SetBinContent(1,nTTTT1);  elmu__TTTT->SetBinError(1,errTTTT1);
   mumu__TTTT->SetBinContent(1,nTTTT2);  mumu__TTTT->SetBinError(1,errTTTT2);
 
   //TH1F* All__WZ = new TH1F("All__WZ","",3,0,3);
-  TH1F* elel__WZ = new TH1F("elel__WZ","",1,0,1);
-  TH1F* elmu__WZ = new TH1F("elmu__WZ","",1,0,1);
-  TH1F* mumu__WZ = new TH1F("mumu__WZ","",1,0,1);
+  TH1F* elel__WZ = new TH1F("elel"+erast+"__WZ","",1,0,1);
+  TH1F* elmu__WZ = new TH1F("elmu"+erast+"__WZ","",1,0,1);
+  TH1F* mumu__WZ = new TH1F("mumu"+erast+"__WZ","",1,0,1);
   elel__WZ->SetBinContent(1,nWZ0);  elel__WZ->SetBinError(1,errWZ0);
   elmu__WZ->SetBinContent(1,nWZ1);  elmu__WZ->SetBinError(1,errWZ1);
   mumu__WZ->SetBinContent(1,nWZ2);  mumu__WZ->SetBinError(1,errWZ2);
 
   //TH1F* All__ZZ = new TH1F("All__ZZ","",3,0,3);
-  TH1F* elel__ZZ = new TH1F("elel__ZZ","",1,0,1);
-  TH1F* elmu__ZZ = new TH1F("elmu__ZZ","",1,0,1);
-  TH1F* mumu__ZZ = new TH1F("mumu__ZZ","",1,0,1);
+  TH1F* elel__ZZ = new TH1F("elel"+erast+"__ZZ","",1,0,1);
+  TH1F* elmu__ZZ = new TH1F("elmu"+erast+"__ZZ","",1,0,1);
+  TH1F* mumu__ZZ = new TH1F("mumu"+erast+"__ZZ","",1,0,1);
   elel__ZZ->SetBinContent(1,nZZ0);  elel__ZZ->SetBinError(1,errZZ0);
   elmu__ZZ->SetBinContent(1,nZZ1);  elmu__ZZ->SetBinError(1,errZZ1);
   mumu__ZZ->SetBinContent(1,nZZ2);  mumu__ZZ->SetBinError(1,errZZ2);
 
   //TH1F* All__WpWp = new TH1F("All__WpWp","",3,0,3);
-  TH1F* elel__WpWp = new TH1F("elel__WpWp","",1,0,1);
-  TH1F* elmu__WpWp = new TH1F("elmu__WpWp","",1,0,1);
-  TH1F* mumu__WpWp = new TH1F("mumu__WpWp","",1,0,1);
+  TH1F* elel__WpWp = new TH1F("elel"+erast+"__WpWp","",1,0,1);
+  TH1F* elmu__WpWp = new TH1F("elmu"+erast+"__WpWp","",1,0,1);
+  TH1F* mumu__WpWp = new TH1F("mumu"+erast+"__WpWp","",1,0,1);
   elel__WpWp->SetBinContent(1,nWpWp0);  elel__WpWp->SetBinError(1,errWpWp0);
   elmu__WpWp->SetBinContent(1,nWpWp1);  elmu__WpWp->SetBinError(1,errWpWp1);
   mumu__WpWp->SetBinContent(1,nWpWp2);  mumu__WpWp->SetBinError(1,errWpWp2);
 
 
   //TH1F* All__WZ = new TH1F("All__WZ","",3,0,3);
-  TH1F* elel__WWZ = new TH1F("elel__WWZ","",1,0,1);
-  TH1F* elmu__WWZ = new TH1F("elmu__WWZ","",1,0,1);
-  TH1F* mumu__WWZ = new TH1F("mumu__WWZ","",1,0,1);
+  TH1F* elel__WWZ = new TH1F("elel"+erast+"__WWZ","",1,0,1);
+  TH1F* elmu__WWZ = new TH1F("elmu"+erast+"__WWZ","",1,0,1);
+  TH1F* mumu__WWZ = new TH1F("mumu"+erast+"__WWZ","",1,0,1);
   elel__WWZ->SetBinContent(1,nWWZ0);  elel__WWZ->SetBinError(1,errWWZ0);
   elmu__WWZ->SetBinContent(1,nWWZ1);  elmu__WWZ->SetBinError(1,errWWZ1);
   mumu__WWZ->SetBinContent(1,nWWZ2);  mumu__WWZ->SetBinError(1,errWWZ2);
 
   //TH1F* All__WZZ = new TH1F("All__WZZ","",3,0,3);
-  TH1F* elel__WZZ = new TH1F("elel__WZZ","",1,0,1);
-  TH1F* elmu__WZZ = new TH1F("elmu__WZZ","",1,0,1);
-  TH1F* mumu__WZZ = new TH1F("mumu__WZZ","",1,0,1);
+  TH1F* elel__WZZ = new TH1F("elel"+erast+"__WZZ","",1,0,1);
+  TH1F* elmu__WZZ = new TH1F("elmu"+erast+"__WZZ","",1,0,1);
+  TH1F* mumu__WZZ = new TH1F("mumu"+erast+"__WZZ","",1,0,1);
   elel__WZZ->SetBinContent(1,nWZZ0);  elel__WZZ->SetBinError(1,errWZZ0);
   elmu__WZZ->SetBinContent(1,nWZZ1);  elmu__WZZ->SetBinError(1,errWZZ1);
   mumu__WZZ->SetBinContent(1,nWZZ2);  mumu__WZZ->SetBinError(1,errWZZ2);
