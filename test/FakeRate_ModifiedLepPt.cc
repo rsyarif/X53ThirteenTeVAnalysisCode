@@ -265,8 +265,8 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Loose=true; //in case 'loose ID' is specified as 'tight', take any muon as loose ID
     }
     else if(ID=="CBTightMiniIso"){
-      iLep->Tight=imu->cutBasedTight();
-      iLep->Loose=imu->cutBasedLoose();
+      iLep->Tight=imu->cutBasedTight_NoIso();
+      iLep->Loose=imu->cutBasedLooseMiniIso();
     }
     iLep->isMu = true;
     iLep->isEl = false;
@@ -338,7 +338,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     }
     else if(ID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRC();
-      iLep->Loose=iel->mvaLooseRC();
+      iLep->Loose=iel->mvaLooseRCIso();
     }
     else if(ID=="MVALooseRC"){
       iLep->Tight=iel->mvaLooseRCIso();
