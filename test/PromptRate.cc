@@ -26,7 +26,7 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  if(argc!=4){
+  if(argc<4){
     std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons as well as the ID used. The four possible ways of running are\n"
 	     <<"./PromptRate.o Data El ID\n"
 	     <<"./PromptRate.o Data Mu ID\n"
@@ -39,9 +39,10 @@ int main(int argc, char* argv[]){
   std::string argv1 = argv[1];
   std::string argv2 = argv[2];
   std::string ID = argv[3];
+  std::string argv4 = argv[4];
 
   bool correctusage=false;
-  if(argc==4 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("El")!=std::string::npos || argv2.find("Mu")!=std::string::npos)  ) correctusage=true;
+  if(argc>=4 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("El")!=std::string::npos || argv2.find("Mu")!=std::string::npos)  ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and whether running for electrons or muons. The four possible ways of running are\n"
 	     <<"./PromptRate.o Data El\n"
@@ -61,19 +62,38 @@ int main(int argc, char* argv[]){
   else MuonChannel=false;
   if(argv1=="Data") {
     data=true;
-    if(MuonChannel) filename="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/ljmet_Data_MuMu.root";
-    else            filename="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Aug19/ljmet_trees/ljmet_Data_ElEl.root";
+    if(MuonChannel){
+      if(argv4=="2016B") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016B-23Sep2016-v3.root";
+      else if(argv4=="2016C") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016C-23Sep2016-v1.root";
+      else if(argv4=="2016D") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016D-23Sep2016-v1.root";
+      else if(argv4=="2016E") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016E-23Sep2016-v1.root";
+      else if(argv4=="2016F") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016F-23Sep2016-v1.root";
+      else if(argv4=="2016G") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016G-23Sep2016-v1.root";
+      else if(argv4=="2016H2") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016H-PromptReco-v2.root";
+      else if(argv4=="2016H3") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleMuon-Run2016H-PromptReco-v3.root";
+    }
+    else{            
+      if(argv4=="2016B") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+      else if(argv4=="2016C") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
+      else if(argv4=="2016D") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
+      else if(argv4=="2016E") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
+      else if(argv4=="2016F") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
+      else if(argv4=="2016G") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
+      else if(argv4=="2016H2") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
+      else if(argv4=="2016H3") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+
+    }
   }
   else {filename="/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Nov17/ljmet_trees/ljmet_DYJets.root"; data=false;}
   bool FiftyNs=data;
   //make filename for output root file
   std::string outname;
   if(MuonChannel){
-    if(data)outname="PromptRate_Data_Run2015D_Muons_"+ID+"_SortByPhi.root"; 
+    if(data)outname="PromptRate_Data_"+argv4+"_Muons_"+ID+"_SortByPhi.root"; 
     else outname="PromptRate_MC_Muons_"+ID+"_SortByPhi.root"; 
   }
   else{
-    if(data)outname="PromptRate_Data_Run2015D_Electrons_"+ID+"_SortByPhi.root"; 
+    if(data)outname="PromptRate_Data_"+argv4+"_Electrons_"+ID+"_SortByPhi.root"; 
     else outname="PromptRate_MC_Electrons_"+ID+"_SortByPhi.root"; 
   }
 
@@ -253,8 +273,8 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 	iLep->Loose=imu->cutBasedLoose();
       }
       else if(ID=="CBTightMiniIso"){
-	iLep->Tight=imu->cutBasedTight();
-	iLep->Loose=imu->cutBasedLoose();
+	iLep->Tight=imu->cutBasedTight_NoIso();
+	iLep->Loose=imu->cutBasedLooseMiniIso();
       }
       else if(ID=="CBLoose"){
 	iLep->Tight=imu->cutBasedLoose();
