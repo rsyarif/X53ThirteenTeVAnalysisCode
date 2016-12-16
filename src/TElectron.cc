@@ -1,7 +1,7 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double miniIsotemp, double susyisotemp):
+TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double mva80Xtemp, double miniIsotemp, double susyisotemp):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp,miniIsotemp,miniIsotemp,susyisotemp),
   gsfCharge(gsfCharget),
   ctfCharge(ctfCharget),
@@ -24,6 +24,7 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
   passConversion(passConv),
   chargeConsistency(chargeconsistencytemp),
   mvaValue(mvatemp),
+  mvaValue80X(mva80Xtemp),
   miniIso(miniIsotemp),
   susyIso(susyisotemp)
 {
