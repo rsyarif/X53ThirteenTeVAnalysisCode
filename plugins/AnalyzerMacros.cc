@@ -2246,9 +2246,7 @@ float getGsfSF(TLepton* lep){
 
 }
 
-float getMu17Eff(TLepton* mu){
-  float pt = mu->pt;
-  float abseta = fabs(mu->eta);
+float getMu17Eff(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
     if ( pt >=500) eff= 0.0;
@@ -2295,9 +2293,7 @@ float getMu17Eff(TLepton* mu){
 
 }
 
-float getMu17EffNearbyPhi(TLepton* mu){
-  float pt = mu->pt;
-  float abseta = fabs(mu->eta);
+float getMu17EffNearbyPhi(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
     if ( pt >=500) eff= 0.0;
@@ -2357,68 +2353,81 @@ float getAvgMu17(TLepton* mu){
   return eff;
 }
 
+float getDimuonEff2016BD(float pt1, float eta1, float pt2, float eta2){
+  //get conditional efficiency
+  float cond_eff = 0.0;
+  float mu17_lep1 = 0.0;
+  float mu17_lep2 = 0.0;
+  if(fabs(phi1 - phi2) > 1 ){
+    mu17_lep1 = getMu17Eff(pt1,eta1);
+    mu17_lep2 = getMu17Eff(pt2,eta2);
+    cond_eff = 1.0 - (1.0 - getMu17Eff(pt1,eta1))*(1.0 - getMu17Eff(pt2,eta2));
+  } 
+  else {
+    mu17_lep2 = getMu17Eff(pt2,eta2);
+    mu17_lep1 = getMu17Eff(pt2,eta2)*getMu17EffNearbyPhi(pt1,eta1) +  (1.0 - getMu17Eff(pt2,eta2)) * (getMu17Eff(pt1,eta1));
+    cond_eff = 1.0 - (1.0 - ( getMu17Eff(pt2,eta2) * getMu17EffNearbyPhi(pt1,eta1) + (1 - getMu17Eff(pt2,eta2) )* getMu17Eff(pt1,eta1) ) ) * (1.0 - getMu17Eff(pt2,eta2) ) ;
+  }
+  
+  float soup_eff = 0.0;    
+  if(eta1 > 2.1){
+    if(eta2>2.1) soup_eff=0.8745;
+    else if(eta2>1.2) soup_eff=0.8961;
+    else if(eta2>0.9) soup_eff=0.8891;
+    else if(eta2>0.4) soup_eff=0.9711;
+    else soup_eff=1.0;
+  }
+  else if(eta1 > 1.2){
+    if(eta2>2.1) soup_eff=0.8955;
+    else if(eta2>1.2) soup_eff=0.9376;
+    else if(eta2>0.9) soup_eff=0.9330;
+    else if(eta2>0.4) soup_eff=0.9565;
+    else soup_eff=0.9446;
+  }
+  else if(eta1 > 0.9){
+    if(eta2>2.1) soup_eff=0.9245;
+    else if(eta2>1.2) soup_eff=0.9577;
+    else if(eta2>0.9) soup_eff=0.9588;
+    else if(eta2>0.4) soup_eff=0.9713;
+    else soup_eff=0.9614;
+  }
+  else if(eta1 > 0.4){
+    if(eta2>2.1) soup_eff=0.9411;
+    else if(eta2>1.2) soup_eff=0.9593;
+    else if(eta2>0.9) soup_eff=0.9558;
+    else if(eta2>0.4) soup_eff=0.9665;
+    else soup_eff=0.9483;
+  }
+  else{
+    if(eta2>2.1) soup_eff=1.0;
+    else if(eta2>1.2) soup_eff=0.9649;
+    else if(eta2>0.9) soup_eff=0.9499;
+    else if(eta2>0.4) soup_eff=0.9658;
+    else soup_eff=0.9503;
+  }
+  sf = cond_eff*soup_eff;
+  
+}
+
+float getDimuonEff(float pt1, float eta1, float phi1, float pt2, float eta2,float phi2, std::string era){
+  float eff = 0.0;
+  if(era=="2016BD") eff = getDimuonEff2016BD(pt1,eta1,phi1,pt2,eta2,phi2);
+  else eff = getDimuonEff2016BD(pt1,eta1,phi1,pt2,eta2,phi2); // DUMMY FOR NOW - TAKING BOTH TO BE THE SAME
+  return eff;
+}
+
 float getTrigSF(std::vector<TLepton*> vLep,std::string era){
 
-  float sf;
+  float sf=0.0;
   float eta1 = fabs(vLep.at(0)->eta);
   float eta2 = fabs(vLep.at(1)->eta);
+  float pt1 = vLep.at(0)->pt;
+  float pt2 = vLep.at(1)->pt;
+  float phi1 = vLep.at(0)->phi;
+  float phi2 = vLep.at(1)->phi;
 
   if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel    
-
-    //get conditional efficiency
-    float cond_eff = 0.0;
-    float mu17_lep1 = 0.0;
-    float mu17_lep2 = 0.0;
-    if(fabs(vLep.at(0)->phi - vLep.at(1)->phi) > 1 ){
-      mu17_lep1 = getMu17Eff(vLep.at(0));
-      mu17_lep2 = getMu17Eff(vLep.at(1));
-      cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
-    } 
-    else {
-      mu17_lep2 = getMu17Eff(vLep.at(1));
-      mu17_lep1 = getMu17Eff(vLep.at(1))*getMu17EffNearbyPhi(vLep.at(0)) +  (1.0 - getMu17Eff(vLep.at(1))) * (getMu17Eff(vLep.at(0)));
-      cond_eff = 1.0 - (1.0 - ( getMu17Eff(vLep.at(1)) * getMu17EffNearbyPhi(vLep.at(0)) + (1 - getMu17Eff(vLep.at(1)) )* getMu17Eff(vLep.at(0)) ) ) * (1.0 - getMu17Eff(vLep.at(1)) ) ;
-    }
-    //std::cout<<"eff1: "<<getMu17Eff(vLep.at(0))<<" eff2: "<<getMu17Eff(vLep.at(1))<<" eff3: "<<getMu17EffNearbyPhi(vLep.at(0))<<std::endl;
-    //std::cout<<"cond_Eff: "<<cond_eff<<" and new condeff: "<< (1.0 - (1.0-mu17_lep1)*(1.0-mu17_lep2))<<std::endl;
-    float soup_eff = 0.0;
-    
-    if(eta1 > 2.1){
-      if(eta2>2.1) soup_eff=0.8745;
-      else if(eta2>1.2) soup_eff=0.8961;
-      else if(eta2>0.9) soup_eff=0.8891;
-      else if(eta2>0.4) soup_eff=0.9711;
-      else soup_eff=1.0;
-    }
-    else if(eta1 > 1.2){
-      if(eta2>2.1) soup_eff=0.8955;
-      else if(eta2>1.2) soup_eff=0.9376;
-      else if(eta2>0.9) soup_eff=0.9330;
-      else if(eta2>0.4) soup_eff=0.9565;
-      else soup_eff=0.9446;
-    }
-    else if(eta1 > 0.9){
-      if(eta2>2.1) soup_eff=0.9245;
-      else if(eta2>1.2) soup_eff=0.9577;
-      else if(eta2>0.9) soup_eff=0.9588;
-      else if(eta2>0.4) soup_eff=0.9713;
-      else soup_eff=0.9614;
-    }
-    else if(eta1 > 0.4){
-      if(eta2>2.1) soup_eff=0.9411;
-      else if(eta2>1.2) soup_eff=0.9593;
-      else if(eta2>0.9) soup_eff=0.9558;
-      else if(eta2>0.4) soup_eff=0.9665;
-      else soup_eff=0.9483;
-    }
-    else{
-      if(eta2>2.1) soup_eff=1.0;
-      else if(eta2>1.2) soup_eff=0.9649;
-      else if(eta2>0.9) soup_eff=0.9499;
-      else if(eta2>0.4) soup_eff=0.9658;
-      else soup_eff=0.9503;
-    }
-    sf = cond_eff*soup_eff;
+    sf = getDimuonEff(pt1,eta1,phi1,pt2,eta2,phi2,era);
     //std::cout<<"soup eff for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<"and  for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<soup_eff<<" conditional eff is: "<<cond_eff<<"and total sf is: "<<sf<<std::endl;
   }
 
