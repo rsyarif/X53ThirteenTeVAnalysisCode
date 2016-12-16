@@ -17,6 +17,16 @@ bool TMuon::cutBasedLoose(){
   return true;
 }
 
+bool TMuon::cutBasedLoose_NoIso(){
+  //  if (pt < 20)              return false;
+  if(fabs(eta)>2.4)          return false;
+  if(!PFMuon)                return false;
+  if(!(Tracker || Global))   return false;
+  //added iso cut
+  //  if(relIso > 0.4)           return false;
+  return true;
+}
+
 bool TMuon::cutBasedLooseMiniIso(){
   //  if (pt < 20)              return false;
   if(fabs(eta)>2.4)          return false;

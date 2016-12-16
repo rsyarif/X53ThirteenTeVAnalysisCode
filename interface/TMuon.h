@@ -30,6 +30,7 @@ public:
   double susyIso;
 
   bool cutBasedLoose();
+  bool cutBasedLoose_NoIso();
   bool cutBasedLooseMiniIso();
   bool cutBasedTight();
   bool cutBasedTight_NoIso();
