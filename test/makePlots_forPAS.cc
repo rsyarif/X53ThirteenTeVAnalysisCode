@@ -48,7 +48,9 @@ void makePlots_forPAS(std::string elID, std::string muID){
   std::vector<Sample*> vMCBkgSamples1 = getMCBkgSampleVec("sZVeto", lumi1, elID, muID,"");
   std::vector<Sample*> vMCBkgSamples2 = getMCBkgSampleVec("sZVeto", lumi2, elID, muID,"");
   std::vector<Sample*> vMCBkgSamples = appendSampleVectors(vMCBkgSamples1,vMCBkgSamples2);
-  std::vector<Sample*> vDDBkgSamples = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016Full");
+  std::vector<Sample*> vDDBkgSamples1 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016B-D");
+  std::vector<Sample*> vDDBkgSamples2 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016E-H");
+  std::vector<Sample*> vDDBkgSamples = appendSampleVectors(vDDBkgSamples1,vDDBkgSamples2);
   std::vector<Sample*> vBkgSamples = appendSampleVectors(vMCBkgSamples, vDDBkgSamples);
   std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"");
   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"");
@@ -106,7 +108,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     else if(cutIndex==2){
       if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
       else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && cleanAK4HT < 900 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
     }
     else if(cutIndex==3){
       if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
@@ -117,7 +119,7 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
   else {
     if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && cleanAK4HT < 900 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
     else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }

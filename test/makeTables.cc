@@ -19,22 +19,24 @@ void makeTables(){
 
   //make output file
   std::ofstream outfile;
-  outfile.open("table_miniIso.txt");
+  outfile.open("table_miniIsoTight.txt");
   //set precision
 
   //set desired luminosity
   float lumi1 = 12.9; //fb^-1
   float lumi2 = 23.3; //fb^-1
   //get list of signal samples starting with ssdl cut
-  std::vector<Sample*> vSig2016BD = getInclusiveSigSampleVecForTable("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
-  std::vector<Sample*> vSig2016EH = getInclusiveSigSampleVecForTable("sZVeto",lumi2,"MVATightRC","CBTightMiniIso","");
+  std::vector<Sample*> vSig2016BD = getInclusiveSigSampleVecForTable("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016B-D");
+  std::vector<Sample*> vSig2016EH = getInclusiveSigSampleVecForTable("sZVeto",lumi2,"MVATightRC","CBTightMiniIsoTight","2016E-H");
 
   //get vector of background samples
-  std::vector<Sample*> vMCBkg2016BD = getMCBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","");
-  std::vector<Sample*> vMCBkg2016EH = getMCBkgSampleVec("sZVeto",lumi2,"MVATightRC","CBTightMiniIso","");
-  std::vector<Sample*> vDDBkg =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIso","2016Full");
+  std::vector<Sample*> vMCBkg2016BD = getMCBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016B-D");
+  std::vector<Sample*> vMCBkg2016EH = getMCBkgSampleVec("sZVeto",lumi2,"MVATightRC","CBTightMiniIsoTight","2016E-H");
+  std::vector<Sample*> vDDBkg2016BD =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016B-D");
+  std::vector<Sample*> vDDBkg2016EH =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016E-H");
   //get vector of data
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIso","2016Full");
+  Sample* dataSample2016BD = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight","2016B-D");
+  Sample* dataSample2016EH = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight","2016E-H");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -51,13 +53,14 @@ void makeTables(){
   for(int nmu=-1; nmu<3; nmu++){
     //now make a vector of cutClass for bkg
     std::vector<CutClass*> vCutMCBkg2016BD = getCutClassVector(vMCBkg2016BD,vCutString,nmu);
-    std::cout<<"made 2016bd mc bkg"<<std::endl;
+    std::vector<CutClass*> vCutDDBkg2016BD = getCutClassVector(vDDBkg2016BD,vCutString,nmu);
+    std::vector<CutClass*> vCutBkg2016BD = appendCutClassVectors(vCutMCBkg2016BD,vCutDDBkg2016BD);
+
     std::vector<CutClass*> vCutMCBkg2016EH = getCutClassVector(vMCBkg2016EH,vCutString,nmu);
-    std::cout<<"made 2016eh mc bkg with size "<<std::endl;
-    std::vector<CutClass*> vCutMCBkg = addCutClassVectors(vCutMCBkg2016BD,vCutMCBkg2016EH);
-    std::cout<<"added mc bkg"<<std::endl;
-    std::vector<CutClass*> vCutDDBkg = getCutClassVector(vDDBkg,vCutString,nmu);
-    std::vector<CutClass*> vCutBkg = appendCutClassVectors(vCutMCBkg,vCutDDBkg);
+    std::vector<CutClass*> vCutDDBkg2016EH = getCutClassVector(vDDBkg2016EH,vCutString,nmu);
+    std::vector<CutClass*> vCutBkg2016EH = appendCutClassVectors(vCutMCBkg2016EH,vCutDDBkg2016EH);
+
+    std::vector<CutClass*> vCutBkg = addCutClassVectors(vCutBkg2016BD,vCutBkg2016EH);
     //now make a vector of cutClass for sig
     std::vector<CutClass*> vCutSig2016BD = getCutClassVector(vSig2016BD,vCutString,nmu);
     std::vector<CutClass*> vCutSig2016EH = getCutClassVector(vSig2016EH,vCutString,nmu);
