@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
   TString filename;                                
   if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/ljmet_Data_ElMu.root";
   else if(argv1.find("DataFR")!=std::string::npos) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/June18/ljmet_trees/ljmet_FakeRate_Mu.root";
-  else filename = "root://cmseos.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  else filename = "root://cmseos.fnal.gov//store/user/clint/Spring16/25ns/Dec14/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
@@ -67,6 +67,23 @@ int main(int argc, char* argv[]){
   else if(data && fr)outname="LeptonEfficiency_Signal_FakeRate.root"; 
   else outname="LeptonEfficiency_Signal_MC_"+mass+"_"+chirality+".root"; 
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
+  TTree* outTree_mu = new TTree("MuonVariables","MuonVariables");
+  TTree* outTree_el = new TTree("ElectronVariables","ElectronVariables");
+  std::vector<float> elPt, elMVA, elMVA80X, elMiniIso,elEta,elPhi;
+  outTree_el->Branch("pT",&elPt);
+  outTree_el->Branch("eta",&elEta);
+  outTree_el->Branch("phi",&elPhi);
+  outTree_el->Branch("mva",&elMVA);
+  outTree_el->Branch("mva80X",&elMVA80X);
+  outTree_el->Branch("miniIso",&elMiniIso);
+  std::vector<float> muPt,muEta,muPhi,muIsLoose,muIsTight, muMiniIso;
+  outTree_mu->Branch("pT",&muPt);
+  outTree_mu->Branch("eta",&muEta);
+  outTree_mu->Branch("phi",&muPhi);
+  outTree_mu->Branch("isLoose",&muIsLoose);
+  outTree_mu->Branch("isTight",&muIsTight);
+  outTree_el->Branch("miniIso",&muMiniIso);
+
 
   //setup histograms for muons
   TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Muon Cut Flow",13,0,13);
@@ -173,6 +190,22 @@ int main(int argc, char* argv[]){
     else MuTrigFire = true;
 
     if(MuTrigFire){
+      for(std::vector<TMuon*>::size_type i=0; i<tr->allMuons.size();i++){
+	TMuon* imu = tr->allMuons.at(i);
+	bool matched = false;
+	if(data) matched = true;
+	else{
+	  matched = matchToGenLep(imu,tr->genParticles);
+	}
+	if(!matched) continue;
+	//fill vectors
+	muPt.push_back(imu->pt);
+	muEta.push_back(imu->eta);
+	muPhi.push_back(imu->phi);
+	muMiniIso.push_back(imu->miniIso);
+	muIsLoose.push_back(imu->cutBasedLoose_NoIso());
+	muIsTight.push_back(imu->cutBasedTight_NoIso());	
+      }
       for(std::vector<TMuon*>::size_type i=0; i<tr->looseMuons.size();i++){
 	//increment to total number of loose muons so we can scale hist correctly at the end
 	nLooseMuons+=1;
@@ -216,6 +249,25 @@ int main(int argc, char* argv[]){
     else ElTrigFire = true;
 
     if(ElTrigFire){
+      //tree stuff
+      for(std::vector<TElectron*>::size_type i=0; i<tr->allElectrons.size();i++){
+	TElectron* iel = tr->allElectrons.at(i);
+	bool matched = false;
+	if(data) matched = true;
+	else{
+	  matched = matchToGenLep(iel,tr->genParticles);
+	}
+	if(!matched) continue;
+	//fill vectors
+	elPt.push_back(iel->pt);
+	elEta.push_back(iel->eta);
+	elPhi.push_back(iel->phi);
+	elMiniIso.push_back(iel->miniIso);
+	elMVA.push_back(iel->mvaValue80X);
+	elMVA80X.push_back(iel->mvaValue80X);
+	
+      }
+
       //loop for cutBasedID
       for(std::vector<TElectron*>::size_type i=0; i< tr->allElectrons.size(); i++){
 	
@@ -404,8 +456,12 @@ int main(int argc, char* argv[]){
       }
       
     }//end loop over electrons
-
-
+    //fill trees
+    outTree_mu->Fill();
+    outTree_el->Fill();
+    //now clear vectors
+    elPt.clear();elEta.clear();elPhi.clear();elMVA.clear();elMVA80X.clear();elMiniIso.clear();
+    muPt.clear();muEta.clear();muPhi.clear();muIsLoose.clear();muIsTight.clear();muMiniIso.clear();
   }//end event loop
   
   //scale cutflow diagrams
