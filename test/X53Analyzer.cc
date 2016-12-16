@@ -336,7 +336,7 @@ int main(int argc, char* argv[]){
 
   //load eta weights in:
   //std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_"+elID+"_corrected.root";
-  std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_MVATightRC_corrected.root";//force for right now, will fix later
+  std::string cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVATightRC_corrected.root";//force for right now, will fix later
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
@@ -350,6 +350,7 @@ int main(int argc, char* argv[]){
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
   else if(muID=="CBTightMiniIso") muPromptRate=0.956;
+  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.956;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
@@ -365,12 +366,13 @@ int main(int argc, char* argv[]){
   float muFakeRate;
   if(muID=="CBTight") muFakeRate=0.346;
   else if(muID=="CBTightMiniIso") muFakeRate=0.429;
+  else if(muID=="CBTightMiniIsoTight") muFakeRate=0.220;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elFakeRate;
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.205;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.204;
   else if(elID=="MVATightMedIsoRC") elFakeRate = 0.354;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
@@ -1061,6 +1063,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     }
     else if(muID=="CBTightMiniIso"){
       iLep->Tight=imu->cutBasedTightMiniIso();
+      iLep->Loose=imu->cutBasedLooseMiniIso();
+    }
+    else if(muID=="CBTightMiniIsoTight"){
+      iLep->Tight=imu->cutBasedTightMiniIsoTight();
       iLep->Loose=imu->cutBasedLooseMiniIso();
     }
     else if(muID=="CBLoose"){
