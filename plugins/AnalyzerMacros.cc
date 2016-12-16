@@ -2416,6 +2416,201 @@ float getDimuonEff(float pt1, float eta1, float phi1, float pt2, float eta2,floa
   return eff;
 }
 
+
+
+float getElTrigEffCrossTrigger2016BD(float pt, float eta){
+  float eff = 0.0;
+  if(eta<0.8) eff = 0.980;
+  else if(eta<1.5) eff  = 0.986;
+  else{
+    if(pt<40) eff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
+    else eff = 0.996;
+  }
+
+  return eff;
+}
+
+float getElTrigEffCrossTrigger(float pt, float eta, std::string era){
+  float eff = 0.0;
+  if(era=="2016BD") eff = getElTrigEffCrossTrigger2016BD(pt,eta);
+  else eff = getElTrigEffCrossTrigger2016BD(pt,eta); //DUMMY FOR NOW UNTIL ELE37/27 IS MEASURED
+  return eff;
+}
+
+float getMu30TrigEffCrossTrigger2016BD(float pt, float eta){
+  float eff = 0.0;
+  if(eta>2.1){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.788576;
+    else if(pt>100) eff = 0.844717;
+    else if(pt>60) eff = 0.811642;
+    else if(pt>40) eff = 0.77286;
+    else if(pt>35) eff = 0.74;      
+  }
+  else if(eta>1.2){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.83069;
+    else if(pt>100) eff = 0.85201;
+    else if(pt>60) eff = 0.861616;
+    else if(pt>40) eff = 0.863448;
+    else if(pt>35) eff = 0.855331;
+  }
+  else if(eta>0.9){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.887252;
+    else if(pt>100) eff = 0.896462;
+    else if(pt>60) eff = 0.892491;
+    else if(pt>40) eff = 0.889381;
+    else if(pt>35) eff = 0.886375;
+  }
+  else if(eta>0.4){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.945461;
+    else if(pt>100) eff = 0.941453;
+    else if(pt>60) eff = 0.933822;
+    else if(pt>40) eff = 0.929781;
+    else if(pt>35) eff = 0.930585;
+  }
+  else if(eta>=0.0){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.910231;
+    else if(pt>100) eff = 0.917603;
+    else if(pt>60) eff = 0.897996;
+    else if(pt>40) eff = 0.892769;
+    else if(pt>35) eff = 0.893203;
+  }
+  
+  return eff;
+}
+
+float getMu37TrigEffCrossTrigger2016EH(float pt, float eta){
+  float eff = 0.0;
+  if(eta>2.1){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.883261;
+    else if(pt>100) eff = 0.877213;
+    else if(pt>60) eff = 0.833743;
+    else if(pt>50) eff = 0.808066;
+    else if(pt>45) eff = 0.794639;
+    else if(pt>40) eff = 0.777351;      
+  }
+  else if(eta>1.2){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.875563;
+    else if(pt>100) eff = 0.892047;
+    else if(pt>60) eff = 0.880572;
+    else if(pt>50) eff = 0.878517;
+    else if(pt>45) eff = 0.873032;
+    else if(pt>40) eff = 0.867863;      
+  }
+  else if(eta>0.9){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.927957;
+    else if(pt>100) eff = 0.924746;
+    else if(pt>60) eff = 0.916465;
+    else if(pt>50) eff = 0.914022;
+    else if(pt>45) eff = 0.911902;
+    else if(pt>40) eff = 0.909554;      
+  }
+  else if(eta>0.4){
+    if(pt>500) eff = 0.749999;
+    else if(pt>200) eff = 0.945496;
+    else if(pt>100) eff = 0.953964;
+    else if(pt>60) eff = 0.944774;
+    else if(pt>50) eff = 0.940919;
+    else if(pt>45) eff = 0.939682;
+    else if(pt>40) eff = 0.938967;      
+  }
+  else if(eta>=0.0){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.934597;
+    else if(pt>100) eff = 0.937984;
+    else if(pt>60) eff = 0.924658;
+    else if(pt>50) eff = 0.919307;
+    else if(pt>45) eff = 0.916509;
+    else if(pt>40) eff = 0.912645;      
+  }
+  
+  return eff;
+}
+
+float getMu27TrigEffCrossTrigger2016EH(float pt, float eta){
+  float eff = 0.0;
+  if(eta>2.1){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.888282;
+    else if(pt>100) eff = 0.877998;
+    else if(pt>60) eff = 0.835833;
+    else if(pt>50) eff = 0.812649;
+    else if(pt>45) eff = 0.794894;
+    else if(pt>40) eff = 0.769179;      
+    else if(pt>35) eff = 0.742564;
+    else if(pt>30) eff = 0.721449;
+  }
+  else if(eta>1.2){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.875563;
+    else if(pt>100) eff = 0.892119;
+    else if(pt>60) eff = 0.88078;
+    else if(pt>50) eff = 0.879145;
+    else if(pt>45) eff = 0.872835;
+    else if(pt>40) eff = 0.862494;      
+    else if(pt>35) eff = 0.847611;
+    else if(pt>30) eff = 0.833704;
+  }
+  else if(eta>0.9){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.927957;
+    else if(pt>100) eff = 0.924819;
+    else if(pt>60) eff = 0.916465;
+    else if(pt>50) eff = 0.914733;
+    else if(pt>45) eff = 0.912828;
+    else if(pt>40) eff = 0.910669;      
+    else if(pt>35) eff = 0.906175;
+    else if(pt>30) eff = 0.901209;
+  }
+  else if(eta>0.4){
+    if(pt>500) eff = 0.749999;
+    else if(pt>200) eff = 0.945496;
+    else if(pt>100) eff = 0.953984;
+    else if(pt>60) eff = 0.944812;
+    else if(pt>50) eff = 0.939432;
+    else if(pt>45) eff = 0.939972;
+    else if(pt>40) eff = 0.941307;      
+    else if(pt>35) eff = 0.942165;
+    else if(pt>30) eff = 0.939723;
+  }
+  else if(eta>=0.0){
+    if(pt>500) eff = 1.0;
+    else if(pt>200) eff = 0.934597;
+    else if(pt>100) eff = 0.937984;
+    else if(pt>60) eff = 0.924709;
+    else if(pt>50) eff = 0.919417;
+    else if(pt>45) eff = 0.917068;
+    else if(pt>40) eff = 0.917991;      
+    else if(pt>35) eff = 0.917587;
+    else if(pt>30) eff = 0.91219;
+  }
+  
+  return eff;
+}
+
+
+float getLeadingMuTrigEffCrossTrigger(float pt, float eta, std::string era){
+  float eff = 0.0;
+  if(era=="2016BD") eff = getMu30TrigEffCrossTrigger2016BD(pt,eta);
+  else eff = getMu37TrigEffCrossTrigger2016EH(pt,eta);
+  return eff;
+}
+
+float getSubLeadingMuTrigEffCrossTrigger(float pt, float eta, std::string era){
+  float eff = 0.0;
+  if(era=="2016BD") eff = getMu30TrigEffCrossTrigger2016BD(pt,eta);
+  else eff = getMu27TrigEffCrossTrigger2016EH(pt,eta);
+  return eff;
+}
+
+
 float getTrigSF(std::vector<TLepton*> vLep,std::string era){
 
   float sf=0.0;
@@ -2457,143 +2652,17 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
     float muEff = 0.0;
     //get efficiency - first check if leading lepton is electron
     if(vLep.at(0)->isEl){
-      //first electron efficiency
-      if(eta1<0.8) elEff = 0.980;
-      else if(eta1<1.5) elEff  = 0.986;
-      else{
-	if(vLep.at(0)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
-	else elEff = 0.996;
-      }
-      //now muon efficiency
-      if(eta2>2.1){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.7778;
-	else if(vLep.at(1)->pt>200) muEff = 0.7964;
-	else if(vLep.at(1)->pt>150) muEff = 0.8071;
-	else if(vLep.at(1)->pt>100) muEff = 0.7895;
-	else if(vLep.at(1)->pt>60) muEff = 0.8113;
-	else if(vLep.at(1)->pt>50) muEff = 0.7684;
-	else if(vLep.at(1)->pt>40) muEff = 0.7692;
-	else if(vLep.at(1)->pt>35) muEff = 0.7607;      
-      }
-      else if(eta2>1.2){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8848;
-	else if(vLep.at(1)->pt>200) muEff = 0.8279;
-	else if(vLep.at(1)->pt>150) muEff = 0.8300;
-	else if(vLep.at(1)->pt>100) muEff = 0.8356;
-	else if(vLep.at(1)->pt>60) muEff = 0.8573;
-	else if(vLep.at(1)->pt>50) muEff = 0.8674;
-	else if(vLep.at(1)->pt>40) muEff = 0.8735;
-	else if(vLep.at(1)->pt>35) muEff = 0.8638;      
-      }
-      else if(eta2>0.9){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8627;
-	else if(vLep.at(1)->pt>200) muEff = 0.8776;
-	else if(vLep.at(1)->pt>150) muEff = 0.8986;
-	else if(vLep.at(1)->pt>100) muEff = 0.8949;
-	else if(vLep.at(1)->pt>60) muEff = 0.9025;
-	else if(vLep.at(1)->pt>50) muEff = 0.9165;
-	else if(vLep.at(1)->pt>40) muEff = 0.9097;
-	else if(vLep.at(1)->pt>35) muEff = 0.9080;      
-      }
-      else if(eta2>0.4){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.9341;
-	else if(vLep.at(1)->pt>200) muEff = 0.9494;
-	else if(vLep.at(1)->pt>150) muEff = 0.9376;
-	else if(vLep.at(1)->pt>100) muEff = 0.9385;
-	else if(vLep.at(1)->pt>60) muEff = 0.9431;
-	else if(vLep.at(1)->pt>50) muEff = 0.9502;
-	else if(vLep.at(1)->pt>40) muEff = 0.9465;
-	else if(vLep.at(1)->pt>35) muEff = 0.9433;      
-      }
-      else if(eta2>=0.0){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.9433;
-	else if(vLep.at(1)->pt>200) muEff = 0.9076;
-	else if(vLep.at(1)->pt>150) muEff = 0.9175;
-	else if(vLep.at(1)->pt>100) muEff = 0.9106;
-	else if(vLep.at(1)->pt>60) muEff = 0.9141;
-	else if(vLep.at(1)->pt>50) muEff = 0.9156;
-	else if(vLep.at(1)->pt>40) muEff = 0.9081;
-	else if(vLep.at(1)->pt>35) muEff = 0.9111;      
-      }
-      //std::cout<<"weight for leading electron with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<elEff<<" weight for subleading muon with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<muEff<<" total sf = "<<sf<<std::endl;
+      elEff = getElTrigEffCrossTrigger(pt1,eta1,era);
+      muEff = getSubLeadingMuTrigEffCrossTrigger(pt2,eta2,eta);
     }
     else{ //elEff is for subleading
-      if(eta2<0.8) elEff = 0.980;
-      else if(eta2<1.5) elEff  = 0.986;
-      else{
-	if(vLep.at(1)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
-	else elEff = 0.996;
-      }
-      //now muon efficiency
-      if(eta1>2.1){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.7778;
-	else if(vLep.at(0)->pt>200) muEff = 0.7964;
-	else if(vLep.at(0)->pt>150) muEff = 0.8071;
-	else if(vLep.at(0)->pt>100) muEff = 0.7895;
-	else if(vLep.at(0)->pt>60) muEff = 0.8113;
-	else if(vLep.at(0)->pt>50) muEff = 0.7684;
-	else if(vLep.at(0)->pt>40) muEff = 0.7692;
-	else if(vLep.at(0)->pt>35) muEff = 0.7607;      
-      }
-      else if(eta1>1.2){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8848;
-	else if(vLep.at(0)->pt>200) muEff = 0.8279;
-	else if(vLep.at(0)->pt>150) muEff = 0.8300;
-	else if(vLep.at(0)->pt>100) muEff = 0.8356;
-	else if(vLep.at(0)->pt>60) muEff = 0.8573;
-	else if(vLep.at(0)->pt>50) muEff = 0.8674;
-	else if(vLep.at(0)->pt>40) muEff = 0.8735;
-	else if(vLep.at(0)->pt>35) muEff = 0.8638;      
-      }
-      else if(eta1>0.9){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8627;
-	else if(vLep.at(0)->pt>200) muEff = 0.8776;
-	else if(vLep.at(0)->pt>150) muEff = 0.8986;
-	else if(vLep.at(0)->pt>100) muEff = 0.8949;
-	else if(vLep.at(0)->pt>60) muEff = 0.9025;
-	else if(vLep.at(0)->pt>50) muEff = 0.9165;
-	else if(vLep.at(0)->pt>40) muEff = 0.9097;
-	else if(vLep.at(0)->pt>35) muEff = 0.9080;      
-      }
-      else if(eta1>0.4){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.9341;
-	else if(vLep.at(0)->pt>200) muEff = 0.9494;
-	else if(vLep.at(0)->pt>150) muEff = 0.9376;
-	else if(vLep.at(0)->pt>100) muEff = 0.9385;
-	else if(vLep.at(0)->pt>60) muEff = 0.9431;
-	else if(vLep.at(0)->pt>50) muEff = 0.9502;
-	else if(vLep.at(0)->pt>40) muEff = 0.9465;
-	else if(vLep.at(0)->pt>35) muEff = 0.9433;      
-      }
-      else if(eta1>=0.0){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.9433;
-	else if(vLep.at(0)->pt>200) muEff = 0.9076;
-	else if(vLep.at(0)->pt>150) muEff = 0.9175;
-	else if(vLep.at(0)->pt>100) muEff = 0.9106;
-	else if(vLep.at(0)->pt>60) muEff = 0.9141;
-	else if(vLep.at(0)->pt>50) muEff = 0.9156;
-	else if(vLep.at(0)->pt>40) muEff = 0.9081;
-	else if(vLep.at(0)->pt>35) muEff = 0.9111;      
-      }
-      //std::cout<<"weight for leading muon with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<muEff<<" weight for subleading electron with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<elEff<<" total sf = "<<sf<<std::endl;
-
+      elEff = getElTrigEffCrossTrigger(pt2,eta2,era);
+      muEff = getLeadingMuTrigEffCrossTrigger(pt1,eta1,eta);
     }//end check on electron being subleading or leading    
-
-    //scale factor is combined efficiency (AND of reco'ing both el and mu)
+    
     sf = muEff*elEff;
-
+    
   }//end cross channel
-  //std::cout<<"scale factor at end of function: "<<sf<<std::endl;
   return sf;
 
 }
