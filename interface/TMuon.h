@@ -34,6 +34,7 @@ public:
   bool cutBasedTight();
   bool cutBasedTight_NoIso();
   bool cutBasedTightMiniIso();
+  bool cutBasedTightMiniIsoTight();
 
   void init();
 };
