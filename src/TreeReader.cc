@@ -70,7 +70,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   ////std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i], (*elMiniIso)[i], (*elSusyIso)[i]) );
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i],(*elMVA80X)[i], (*elMiniIso)[i], (*elSusyIso)[i]) );
 
   }
 
@@ -252,6 +252,7 @@ void TreeReader::Init(TTree *treetemp)
   elQuality = 0;
   elVtxFitConv = 0;
   elMVA = 0;
+  elMVA80X = 0;
 
   //gen particles
   genEnergy = 0;
@@ -384,6 +385,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
   tree->SetBranchAddress("elMVA_DileptonCalc", &elMVA, &b_elMVA_DileptonCalc);
+  tree->SetBranchAddress("elMVA80X_DileptonCalc", &elMVA80X, &b_elMVA80X_DileptonCalc);
 
   //Muons                                                                                                                                                                                                         
   tree->SetBranchAddress("muCharge_DileptonCalc", &muCharge, &b_muCharge_DileptonCalc);

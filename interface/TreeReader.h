@@ -136,6 +136,8 @@ class TreeReader{
   //mva value
   std::vector<double> *elMVA;
   TBranch        *b_elMVA_DileptonCalc;
+  std::vector<double> *elMVA80X;
+  TBranch        *b_elMVA80X_DileptonCalc;
 
   //Muons 
   std::vector<int>     *muCharge;
