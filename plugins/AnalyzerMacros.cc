@@ -2421,11 +2421,11 @@ float getDimuonEff(float pt1, float eta1, float phi1, float pt2, float eta2,floa
 
 float getElTrigEffCrossTrigger2016BD(float pt, float eta){
   float eff = 0.0;
-  if(eta<0.8) eff = 0.980;
-  else if(eta<1.5) eff  = 0.986;
+  if(eta<0.8) eff = 0.9794;
+  else if(eta<1.5) eff  = 0.9855;
   else{
-    if(pt<40) eff= 0.9955*( ROOT::Math::normal_cdf(pt-34.157,1.62)); //take from fitted function
-    else eff = 0.996;
+    if(pt<40) eff= 0.9905*( ROOT::Math::normal_cdf(pt-33.64,1.476)); //take from fitted function
+    else eff = 0.9905;
   }
 
   return eff;
@@ -2631,18 +2631,18 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
     float w1 = 0.0;
     float w2 = 0.0;
     //do weight for first electron
-    if(eta1<0.8) w1 = 0.980;
-    else if(eta1<1.5) w1  = 0.986;
+    if(eta1<0.8) w1 = 0.9794;
+    else if(eta1<1.5) w1  = 0.9855;
     else{
-      if(vLep.at(0)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
-      else w1 = 0.996;
+      if(vLep.at(0)->pt<40) w1= 0.9905*( ROOT::Math::normal_cdf(vLep.at(0)->pt-33.64,1.476)); //take from fitted function
+      else w1 = 0.9905;
     }
     //weight for second electron
-    if(eta2<0.8) w2 = 0.980;
-    else if(eta2<1.5) w2  = 0.986;
+    if(eta2<0.8) w2 = 0.9794;
+    else if(eta2<1.5) w2  = 0.9855;
     else{
-      if(vLep.at(1)->pt<40) w2= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
-      else w2 = 0.996;
+      if(vLep.at(1)->pt<40) w2= 0.9905*( ROOT::Math::normal_cdf(vLep.at(1)->pt-33.64,1.476)); //take from fitted function
+      else w2 = 0.9905;
     }
     sf = w1*w2;
     //std::cout<<"weight for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<w1<<" weight for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<w2<<" total sf = "<<sf<<std::endl;
