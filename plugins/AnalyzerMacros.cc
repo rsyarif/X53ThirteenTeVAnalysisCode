@@ -2353,8 +2353,9 @@ float getAvgMu17(TLepton* mu){
   return eff;
 }
 
-float getDimuonEff2016BD(float pt1, float eta1, float pt2, float eta2){
+float getDimuonEff2016BD(float pt1, float eta1, float phi1, float pt2, float eta2, float phi2){
   //get conditional efficiency
+  float sf = 0.0;
   float cond_eff = 0.0;
   float mu17_lep1 = 0.0;
   float mu17_lep2 = 0.0;
@@ -2406,7 +2407,7 @@ float getDimuonEff2016BD(float pt1, float eta1, float pt2, float eta2){
     else soup_eff=0.9503;
   }
   sf = cond_eff*soup_eff;
-  
+  return sf;
 }
 
 float getDimuonEff(float pt1, float eta1, float phi1, float pt2, float eta2,float phi2, std::string era){
@@ -2423,7 +2424,7 @@ float getElTrigEffCrossTrigger2016BD(float pt, float eta){
   if(eta<0.8) eff = 0.980;
   else if(eta<1.5) eff  = 0.986;
   else{
-    if(pt<40) eff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
+    if(pt<40) eff= 0.9955*( ROOT::Math::normal_cdf(pt-34.157,1.62)); //take from fitted function
     else eff = 0.996;
   }
 
@@ -2653,11 +2654,11 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
     //get efficiency - first check if leading lepton is electron
     if(vLep.at(0)->isEl){
       elEff = getElTrigEffCrossTrigger(pt1,eta1,era);
-      muEff = getSubLeadingMuTrigEffCrossTrigger(pt2,eta2,eta);
+      muEff = getSubLeadingMuTrigEffCrossTrigger(pt2,eta2,era);
     }
     else{ //elEff is for subleading
       elEff = getElTrigEffCrossTrigger(pt2,eta2,era);
-      muEff = getLeadingMuTrigEffCrossTrigger(pt1,eta1,eta);
+      muEff = getLeadingMuTrigEffCrossTrigger(pt1,eta1,era);
     }//end check on electron being subleading or leading    
     
     sf = muEff*elEff;
@@ -2674,28 +2675,34 @@ float getLepIDSF(TLepton* lep){
   if(lep->isMu){
 
     if(lep->pt<40){
-      if(fabs(lep->eta)>2.1) sf = 0.9778;
-      else if(fabs(lep->eta)>1.2) sf = 0.9909;
-      else if(fabs(lep->eta)>0.9) sf = 0.9714;
-      else sf = 0.9794;
+      if(fabs(lep->eta)>2.1) sf = 0.9664;
+      else if(fabs(lep->eta)>1.2) sf = 0.9837;
+      else if(fabs(lep->eta)>0.9) sf = 0.9662;
+      else sf = 0.9807;
     }
     else if(lep->pt<50){
-      if(fabs(lep->eta)>2.1) sf = 0.9783;
-      else if(fabs(lep->eta)>1.2) sf = 0.993;
-      else if(fabs(lep->eta)>0.9) sf = 0.9741;
-      else sf = 0.9803;
+      if(fabs(lep->eta)>2.1) sf = 0.9662;
+      else if(fabs(lep->eta)>1.2) sf = 0.9849;
+      else if(fabs(lep->eta)>0.9) sf = 0.9681;
+      else sf = 0.9811;
     }
     else if(lep->pt<60){
-      if(fabs(lep->eta)>2.1) sf = 0.9758;
-      else if(fabs(lep->eta)>1.2) sf = 0.9918;
-      else if(fabs(lep->eta)>0.9) sf = 0.9743;
-      else sf = 0.9796;
+      if(fabs(lep->eta)>2.1) sf = 0.9629;
+      else if(fabs(lep->eta)>1.2) sf = 0.9821;
+      else if(fabs(lep->eta)>0.9) sf = 0.9682;
+      else sf = 0.9738;
     }
-    else{
-      if(fabs(lep->eta)>2.1) sf = 0.9753;
-      else if(fabs(lep->eta)>1.2) sf = 0.9868;
-      else if(fabs(lep->eta)>0.9) sf = 0.9718;
-      else sf =0.9744;
+    else if(lep->pt<100){
+      if(fabs(lep->eta)>2.1) sf = 0.9502;
+      else if(fabs(lep->eta)>1.2) sf = 0.9689;
+      else if(fabs(lep->eta)>0.9) sf = 0.9576;
+      else sf =0.9738;
+    }
+    else {
+      if(fabs(lep->eta)>2.1) sf = 0.9766;
+      else if(fabs(lep->eta)>1.2) sf = 1.0037;
+      else if(fabs(lep->eta)>0.9) sf = 0.9895;
+      else sf =0.9974;
     }    
 
   }
