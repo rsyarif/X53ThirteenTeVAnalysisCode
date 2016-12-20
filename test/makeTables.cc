@@ -9,7 +9,7 @@
 
 std::string tableHeader(std::vector<std::string> vC, CutClass* c, std::string caption);
 std::stringstream& printTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
-std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, std::vector<std::string> vCutString);
+std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkgBD, std::vector<Sample*> vSigBD,std::vector<Sample*> vBkgEH, std::vector<Sample*> vSigEH, Sample* dataSample, std::vector<std::string> vCutString,std::string era);
 std::stringstream& printEffTable(std::stringstream& tablestring,std::vector<CutClass*> vCC, std::vector<std::string> vCS, int nmu,bool sig);
 std::stringstream& printChargeMisIDTable_lpt(std::stringstream& chargeMisIDTable);
 std::stringstream& printChargeMisIDTable_hpt(std::stringstream& chargeMisIDTable);
@@ -34,9 +34,13 @@ void makeTables(){
   std::vector<Sample*> vMCBkg2016EH = getMCBkgSampleVec("sZVeto",lumi2,"MVATightRC","CBTightMiniIsoTight","2016E-H");
   std::vector<Sample*> vDDBkg2016BD =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016B-D");
   std::vector<Sample*> vDDBkg2016EH =  getDDBkgSampleVec("sZVeto",lumi1,"MVATightRC","CBTightMiniIsoTight","2016E-H");
+
+  std::vector<Sample*> vBkg2016BD = appendSampleVectors(vMCBkg2016BD,vDDBkg2016BD);
+  std::vector<Sample*> vBkg2016EH = appendSampleVectors(vMCBkg2016EH,vDDBkg2016EH);
   //get vector of data
   Sample* dataSample2016BD = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight","2016B-D");
   Sample* dataSample2016EH = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight","2016E-H");
+  Sample* dataSampleFull = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight","2016Full");
 
   //now get vector of cuts
   std::vector<std::string> vCutString = getCutString();
@@ -48,6 +52,10 @@ void makeTables(){
   bool Bkg=false;
   bool Sig=true;
   std::stringstream tables;
+  tables<<std::fixed<<std::setprecision(2);
+  printFinalTable(tables,vBkg2016BD,vSig2016BD,vBkg2016EH,vSig2016EH,dataSample2016BD,vCutString,"2016BD");
+  printFinalTable(tables,vBkg2016BD,vSig2016BD,vBkg2016EH,vSig2016EH,dataSample2016EH,vCutString,"2016EH");
+  printFinalTable(tables,vBkg2016BD,vSig2016BD,vBkg2016EH,vSig2016EH,dataSampleFull,vCutString,"2016Full");
   //set precision
   tables<<std::fixed<<std::setprecision(2);
   for(int nmu=-1; nmu<3; nmu++){
@@ -74,8 +82,6 @@ void makeTables(){
     printEffTable(tables,vCutSig,vCutString,nmu,Sig);
   }
   
-  tables<<std::fixed<<std::setprecision(2);
-  //printFinalTable(tables,vBkg,vSig,dataSample,vCutString);
 
   //make charge misID table
   tables<<"\n";
@@ -353,24 +359,39 @@ std::stringstream& printChargeMisIDTable_hhpt(std::stringstream& table){
 
 }
 
-std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, std::vector<std::string> vCutString){
+std::stringstream& printFinalTable(std::stringstream& tablestring,std::vector<Sample*> vBkgBD, std::vector<Sample*> vSigBD,std::vector<Sample*> vBkgEH, std::vector<Sample*> vSigEH, Sample* dataSample, std::vector<std::string> vCutString,std::string era){
 
   tablestring<<"\\begin{table}\n\\centering\n\\scriptsize\n\\begin{tabular}{|c|cccc|c|c|}\\hline\\hline\n";
   //caption
   std::string caption;
-  caption = "Summary of expected and observed events for all channels. We show also the representative yields for an 1000 \\GeV \\xft. All systematic uncertainties are included.";
+  caption = "Summary of expected and observed events for all channels for "+era+". We show also the representative yields for an 1000 \\GeV \\xft. All systematic uncertainties are included.";
   tablestring<<"PSS MC&NonPrompt&ChargeMisID& Total Background & 1000 \\GeV \\xft&Observed\\\\\n";
   std::string label;
   //label
-  label = "\\label{tab:FinalYields}";
+  label = "\\label{tab:FinalYields"+era+"}";
 
 
   for(int nmu=-1; nmu<3; nmu++){
     //now make a vector of cutClass for bkg
-    std::vector<CutClass*> vCutBkg = getCutClassVector(vBkg,vCutString,nmu);
+    std::vector<CutClass*> vCutBkgBD = getCutClassVector(vBkgBD,vCutString,nmu);
     //now make a vector of cutClass for sig
-    std::vector<CutClass*> vCutSig = getCutClassVector(vSig,vCutString,nmu);
+    std::vector<CutClass*> vCutSigBD = getCutClassVector(vSigBD,vCutString,nmu);
+    //now make a vector of cutClass for bkg
+    std::vector<CutClass*> vCutBkgEH = getCutClassVector(vBkgEH,vCutString,nmu);
+    //now make a vector of cutClass for sig
+    std::vector<CutClass*> vCutSigEH = getCutClassVector(vSigEH,vCutString,nmu);
     CutClass* cutSig = 0;
+
+    //now pick based on era
+    std::vector<CutClass*> vCutBkg;
+    if(era=="2016BD") vCutBkg = vCutBkgBD;
+    else if(era=="2016EH") vCutBkg = vCutBkgEH;
+    else{ vCutBkg = addCutClassVectors(vCutBkgBD,vCutBkgEH); //else full era
+    std::vector<CutClass*> vCutSig;
+    if(era=="2016BD") vCutSig = vCutSigBD;
+    else if(era=="2016EH") vCutSig = vCutSigEH;
+    else{ vCutSig = addCutClassVectors(vCutSigBD,vCutSigEH); //else full era
+
     for(unsigned int j=0; j<vCutSig.size();j++){
       if(vCutSig.at(j)->samplename.find("1000")!=std::string::npos && vCutSig.at(j)->samplename.find("RH")!=std::string::npos) cutSig = vCutSig.at(j);
     }
