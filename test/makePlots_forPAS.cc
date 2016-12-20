@@ -20,9 +20,9 @@
 #include "TGraphAsymmErrors.h"
 
 //eaxample usage:
-//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTightMiniIso")' 
+//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTightMiniIsoTight")' 
 
-void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
+void DrawAndSave(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample1,Sample* dataSample2, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
 void DrawTriggerEff(Sample* s, TFile* outfile);
 void DrawChargeMisIDGraph(TFile* outfile, std::string elID);
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
@@ -45,26 +45,27 @@ void makePlots_forPAS(std::string elID, std::string muID){
 
   std::vector<Variable*> vVariables = getVariableVec();
 
-  std::vector<Sample*> vMCBkgSamples1 = getMCBkgSampleVec("sZVeto", lumi1, elID, muID,"");
-  std::vector<Sample*> vMCBkgSamples2 = getMCBkgSampleVec("sZVeto", lumi2, elID, muID,"");
+  std::vector<Sample*> vMCBkgSamples1 = getMCBkgSampleVec("sZVeto", lumi1, elID, muID,"2016B-D");
+  std::vector<Sample*> vMCBkgSamples2 = getMCBkgSampleVec("sZVeto", lumi2, elID, muID,"2016E-H");
   std::vector<Sample*> vMCBkgSamples = appendSampleVectors(vMCBkgSamples1,vMCBkgSamples2);
   std::vector<Sample*> vDDBkgSamples1 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016B-D");
   std::vector<Sample*> vDDBkgSamples2 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016E-H");
   std::vector<Sample*> vDDBkgSamples = appendSampleVectors(vDDBkgSamples1,vDDBkgSamples2);
   std::vector<Sample*> vBkgSamples = appendSampleVectors(vMCBkgSamples, vDDBkgSamples);
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"");
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"");
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
   std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
 
-  Sample* dataSample = getDataSample("sZVeto",elID,muID,"2016Full");
+  Sample* dataSample1 = getDataSample("sZVeto",elID,muID,"2016B-D");
+  Sample* dataSample2 = getDataSample("sZVeto",elID,muID,"2016E-H");
 
   for(int j=2; j <3; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j,weightstring);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j,weightstring);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j,weightstring);
-      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample1,dataSample2, fout,elID,muID,-1,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample1,dataSample2, fout,elID,muID,0,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample1,dataSample2, fout,elID,muID,1,j,weightstring);
+      DrawAndSave(vVariables.at(i),vBkgSamples,vSigSamples,dataSample1,dataSample2, fout,elID,muID,2,j,weightstring);
       gROOT->Reset();
     }
   }
@@ -82,7 +83,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
 
 
 
-void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
+void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample1,Sample* dataSample2, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
 
   TCanvas* c1 = new TCanvas("c1","c1");
   
@@ -106,8 +107,8 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
     else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && cleanAK4HT < 900&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && cleanAK4HT < 900&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
       else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && cleanAK4HT < 900 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
     }
     else if(cutIndex==3){
@@ -459,12 +460,27 @@ void DrawAndSave(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> 
 
 
   //Draw data
-  TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TTree* tData = dataSample->tree;
+  TH1F* hData1 = new TH1F("hData1",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TTree* tData1 = dataSample1->tree;
+  TH1F* hData2 = new TH1F("hData2",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  TTree* tData2 = dataSample2->tree;
 
-  if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){tData->Project("hData","Lep1Pt",(cutstring.str()).c_str());}
-  else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ tData->Project("hData","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
-  else{  tData->Project("hData",(var->name).c_str(),(cutstring.str()).c_str());}
+  if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){
+    tData1->Project("hData1","Lep1Pt",(cutstring.str()).c_str());
+    tData2->Project("hData2","Lep1Pt",(cutstring.str()).c_str());
+  }
+  else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ 
+    tData1->Project("hData1","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;
+    tData2->Project("hData2","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;
+  }
+  else{  
+    tData1->Project("hData1",(var->name).c_str(),(cutstring.str()).c_str());
+    tData2->Project("hData2",(var->name).c_str(),(cutstring.str()).c_str());
+  }
+  //make new hist from two datat samples
+  TH1F* hData = (TH1F*) hData1->Clone("hData");
+  hData->Sumw2();
+  hData->Add(hData2);
   float ovf_d =  (hData)->GetBinContent( (hData)->GetNbinsX()+1) + (hData)->GetBinContent( (hData)->GetNbinsX()) ;
   (hData)->SetBinContent( (hData)->GetNbinsX(),ovf_d);
   TGraphAsymmErrors* gData = new TGraphAsymmErrors(hData);
