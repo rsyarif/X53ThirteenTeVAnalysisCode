@@ -96,7 +96,7 @@ bool TMuon::cutBasedTightMiniIsoTight(){
   if (nMatchedStations < 2) return false;
   if (nValPixelHits < 1)    return false;
   if (nTrackerLayers < 6)   return false;
-  if (miniIso > 0.2)        return false;
+  if (miniIso > 0.1)        return false;
   
   return true;
 }
