@@ -14,6 +14,9 @@ def drawComparison(histname):
     for era in eras:
         f = TFile('ChargeMisID_Data_'+era+'_Electrons_MVATightRC_corrected.root')
         h = f.Get(histname)
+        #fix high pt title
+        if histname=='hhpt_final':
+            h.SetTitle("Charge MisID Rate - Electrons with p_{T} > 200 GeV")
         #keep objects accessible
         files.append(f)
         hists.append(h)
@@ -96,6 +99,9 @@ def drawAllCombined(histname):
     lumitex.SetTextFont(42)
     lumitex.SetX(0.354)
     lumitex.Draw()
+    #print rate for table
+    for i in range(1,h.GetNbinsX()+1):
+        print "%.1f $<|\eta|<$ %.1f&  $%f \pm %f$" %(h.GetBinLowEdge(i),h.GetBinLowEdge(i+1), h.GetBinContent(i), h.GetBinError(i))
 
     if histname=='h_num_lpt':
         c.Print('ChargeMisID_pT-0to100_final.pdf')

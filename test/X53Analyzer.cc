@@ -349,14 +349,14 @@ int main(int argc, char* argv[]){
   //get fake rate according to ID
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
-  else if(muID=="CBTightMiniIso") muPromptRate=0.956;
-  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.956;
+  else if(muID=="CBTightMiniIso") muPromptRate=0.945;
+  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.932;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
   float elPromptRate;
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.839;
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.803; //averaged over all eras now
   else if(elID=="MVATightMedIsoRC") elPromptRate = 0.859;
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
