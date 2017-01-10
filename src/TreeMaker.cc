@@ -258,6 +258,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   Lep1RelIso_ = vSSLep.at(0)->relIso;
   Lep1MiniIso_ = vSSLep.at(0)->miniIso;
   Lep1SusyIso_ = vSSLep.at(0)->susyIso;
+  Lep1Charge_ = vSSLep.at(0)->charge;
 
   Lep2Pt_=vSSLep.at(1)->pt;
   Lep2Eta_=vSSLep.at(1)->eta;
@@ -267,7 +268,7 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   Lep2RelIso_ = vSSLep.at(1)->relIso;
   Lep2MiniIso_ = vSSLep.at(1)->miniIso;
   Lep2SusyIso_ = vSSLep.at(1)->susyIso;
-
+  Lep2Charge_ = vSSLep.at(1)->charge;
   //if(Lep2Pt_<20) std::cout<<"Lep2Pt "<<vSSLep.at(1)->pt<<std::endl;
 
   AK4HT_=HTtemp;
