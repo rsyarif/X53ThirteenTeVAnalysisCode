@@ -23,7 +23,7 @@ int main(int argc, char* argv[]){
 
   //example usage: ./FakeRate.o Data Electrons <ID>
   std::cout<<"dummy"<<std::endl;
-  if(argc!=4){
+  if(argc<4){
     std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option as well as electrons or muons and the ID used"<<std::endl;
     return 0;
   }
@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
   std::string argv1 = argv[1];
   std::string argv2 = argv[2];
   std::string ID = argv[3];
+  std::string argv4 = argv[4];
   if(argv1.find("Data")==std::string::npos && argv1.find("MC")==std::string::npos){
     std::cout<<"Error! You must specify whether running on 'Data' of 'MC' as option"<<std::endl;
     return 0;
@@ -48,8 +49,8 @@ int main(int argc, char* argv[]){
   //make output file
   std::vector<std::string> outname;
   if(data){
-    if(MuonChannel) outname.push_back("FakeRate_Data_Muons_"+ID+"_modifiedLepPt.root");
-    else outname.push_back("FakeRate_Data_Electrons_"+ID+"_modifiedLepPt.root");
+    if(MuonChannel) outname.push_back("FakeRate_Data_"+argv4+"Muons_"+ID+"_modifiedLepPt.root");
+    else outname.push_back("FakeRate_Data_"+argv4+"Electrons_"+ID+"_modifiedLepPt.root");
   }
 
   else{
@@ -79,8 +80,28 @@ int main(int argc, char* argv[]){
   //get correct file
   std::vector<std::string> filenames;
   if(argv1.find("Data")!=std::string::npos) {
-    if(MuonChannel) filenames.push_back("/eos/uscms/store/user/clint/FakeRate/25ns/Aug19/ljmet_trees/ljmet_FakeRate_Mu.root");
-    else if(!MuonChannel) filenames.push_back("/eos/uscms/store/user/clint/FakeRate/25ns/Aug19/ljmet_trees/ljmet_FakeRate_El.root");
+    if(MuonChannel)       {
+      if(argv4=="2016B") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016B-23Sep2016-v3.root");
+      else if(argv4=="2016C") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016C-23Sep2016-v1.root");
+      else if(argv4=="2016D") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016D-23Sep2016-v1.root");
+      else if(argv4=="2016E") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016E-23Sep2016-v1.root");
+      else if(argv4=="2016F") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016F-23Sep2016-v1.root");
+      else if(argv4=="2016G") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016G-23Sep2016-v1.root");
+      else if(argv4=="2016H2") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016H-PromptReco-v2.root");
+      else if(argv4=="2016H3") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleMuon-Run2016H-PromptReco-v3.root");
+    }
+    else if(!MuonChannel){
+      if(argv4=="2016B") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016B-23Sep2016-v3.root");
+      else if(argv4=="2016C") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016C-23Sep2016-v1.root");
+      else if(argv4=="2016D") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016D-23Sep2016-v1.root");
+      else if(argv4=="2016E") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016E-23Sep2016-v1.root");
+      else if(argv4=="2016F") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016F-23Sep2016-v1.root");
+      else if(argv4=="2016G") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016G-23Sep2016-v1.root");
+      else if(argv4=="2016H2") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016H-PromptReco-v2.root");
+      else if(argv4=="2016H3") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/Jan09/ljmet_trees/ljmet_FakeRate_DoubleEG-Run2016H-PromptReco-v3.root");
+
+    }
+    
   }
   else{
     //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT100To200.root");

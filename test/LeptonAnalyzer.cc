@@ -263,7 +263,7 @@ int main(int argc, char* argv[]){
 	elEta.push_back(iel->eta);
 	elPhi.push_back(iel->phi);
 	elMiniIso.push_back(iel->miniIso);
-	elMVA.push_back(iel->mvaValue80X);
+	elMVA.push_back(iel->mvaValue);
 	elMVA80X.push_back(iel->mvaValue80X);
 	
       }
