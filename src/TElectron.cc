@@ -82,6 +82,24 @@ bool TElectron::mva80XLoose(){
   return false;
 }
 
+bool TElectron::mvaJulieLoose(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+
+  if(fabs(eta)<0.8){
+    if(mvaValue80X>-0.041) return true;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue80X>0.383) return true;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvaValue80X>-0.515) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
+}
+
 bool TElectron::mvaTight(){
 
   //first veto on gap
@@ -118,6 +136,24 @@ bool TElectron::mva80XTight(){
   return false;
 }
 
+bool TElectron::mvaJulieTight(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+
+  if(fabs(eta)<0.8){
+    if(mvaValue80X>0.674) return true;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvaValue80X>0.795) return true;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvaValue80X>0.017) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
+}
+
 //standard plus ISO
 bool TElectron::mvaTightIso(){
   bool pass = mvaTight() && miniIso<0.1;
@@ -125,7 +161,12 @@ bool TElectron::mvaTightIso(){
 }
 
 bool TElectron::mva80XTightIso(){
-  bool pass = mvaTight() && miniIso<0.1;
+  bool pass = mva80XTight() && miniIso<0.1;
+  return pass;
+}
+
+bool TElectron::mvaJulieTightIso(){
+  bool pass = mvaJulieTight() && miniIso<0.1;
   return pass;
 }
 
@@ -141,6 +182,10 @@ bool TElectron::mvaLooseIso(){
 }
 bool TElectron::mva80XLooseIso(){
   bool pass = mva80XLoose() && miniIso<0.4;
+  return pass;
+}
+bool TElectron::mvaJulieLooseIso(){
+  bool pass = mvaJulieLoose() && miniIso<0.4;
   return pass;
 }
 
@@ -288,6 +333,14 @@ bool TElectron::mva80XLooseRC(){
   return pass;
 }
 
+bool TElectron::mvaJulieLooseRC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaJulieLoose() && cc;
+  return pass;
+}
+
 bool TElectron::mvaTightRC(){
   bool cc;
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
@@ -304,6 +357,14 @@ bool TElectron::mva80XTightRC(){
   return pass;
 }
 
+bool TElectron::mvaJulieTightRC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaJulieTight() && cc;
+  return pass;
+}
+
 bool TElectron::mvaLooseRCIso(){
   bool cc;
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
@@ -316,6 +377,13 @@ bool TElectron::mva80XLooseRCIso(){
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mva80XLooseIso() && cc;
+  return pass;
+}
+bool TElectron::mvaJulieLooseRCIso(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaJulieLooseIso() && cc;
   return pass;
 }
 
@@ -338,6 +406,13 @@ bool TElectron::mva80XTightRCIso(){
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mva80XTightIso() && cc;
+  return pass;
+}
+bool TElectron::mvaJulieTightRCIso(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mvaJulieTightIso() && cc;
   return pass;
 }
 

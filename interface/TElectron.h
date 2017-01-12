@@ -47,13 +47,17 @@ public:
 
   bool mvaTight();
   bool mva80XTight();
+  bool mvaJulieTight();
   bool mvaLoose();
   bool mva80XLoose();
+  bool mvaJulieLoose();
   bool mvaTightIso();
   bool mva80XTightIso();
+  bool mvaJulieTightIso();
   bool mvaTightMedIso();
   bool mvaLooseIso();
   bool mva80XLooseIso();
+  bool mvaJulieLooseIso();
 
   bool mvaTightNew();
   bool mvaLooseNew();
@@ -63,18 +67,22 @@ public:
 
   bool mvaTightRC();
   bool mva80XTightRC();
+  bool mvaJulieTightRC();
   bool mvaLooseRC();
   bool mva80XLooseRC();
+  bool mvaJulieLooseRC();
   bool mvaTightCC();
   bool mvaLooseCC();
   bool mvaTightCCIso();
   bool mvaLooseCCIso();
   bool mvaTightRCIso();
   bool mva80XTightRCIso();
+  bool mvaJulieTightRCIso();
   bool mvaTightRCMedIso();
   bool mvaTightLCIso();
   bool mvaLooseRCIso();
   bool mva80XLooseRCIso();
+  bool mvaJulieLooseRCIso();
   bool mvaLooseLCIso();
 
   //susy ids
