@@ -46,14 +46,18 @@ public:
   double susyIso;
 
   bool mvaTight();
+  bool mva2016Tight();
   bool mva80XTight();
   bool mvaJulieTight();
+  bool mvaJulieNewTight();
   bool mvaLoose();
   bool mva80XLoose();
   bool mvaJulieLoose();
   bool mvaTightIso();
   bool mva80XTightIso();
+  bool mva2016TightIso();
   bool mvaJulieTightIso();
+  bool mvaJulieNewTightIso();
   bool mvaTightMedIso();
   bool mvaLooseIso();
   bool mva80XLooseIso();
@@ -67,7 +71,9 @@ public:
 
   bool mvaTightRC();
   bool mva80XTightRC();
+  bool mva2016TightRC();
   bool mvaJulieTightRC();
+  bool mvaJulieNewTightRC();
   bool mvaLooseRC();
   bool mva80XLooseRC();
   bool mvaJulieLooseRC();
@@ -77,7 +83,9 @@ public:
   bool mvaLooseCCIso();
   bool mvaTightRCIso();
   bool mva80XTightRCIso();
+  bool mva2016TightRCIso();
   bool mvaJulieTightRCIso();
+  bool mvaJulieNewTightRCIso();
   bool mvaTightRCMedIso();
   bool mvaTightLCIso();
   bool mvaLooseRCIso();
