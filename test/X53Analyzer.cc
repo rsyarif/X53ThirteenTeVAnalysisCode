@@ -346,36 +346,66 @@ int main(int argc, char* argv[]){
   TH1F* hpu = (TH1F*) fpu->Get("h_weights");
   
 
-  //get fake rate according to ID
+  //get prompt rate according to ID * constant for muons ****
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
   else if(muID=="CBTightMiniIso") muPromptRate=0.956;
-  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.956;
+  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.940;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
-  float elPromptRate;
-  if(elID=="CBTight" || elID=="CBTightRC") elPromptRate = 0.7259;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRate = 0.839;
-  else if(elID=="MVATightMedIsoRC") elPromptRate = 0.859;
-  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRate = 0.8618;
-  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRate = 0.7956;
+  std::vector<float> elPromptRates;
+  if(elID=="CBTight" || elID=="CBTightRC") elPromptRates.push_back(0.7259);
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRates.push_back(0.839);
+  else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
+    elPromptRates.push_back(0.886);
+    elPromptRates.push_back(0.921);
+    elPromptRates.push_back(0.934);
+    elPromptRates.push_back(0.943);
+    elPromptRates.push_back(0.950);
+  }
+  else if(elID=="MVATightMedIsoRC") elPromptRates.push_back(0.859);
+  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRates.push_back(0.8618);
+  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRates.push_back(0.7956);
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //get fake rate according to ID
-  float muFakeRate;
-  if(muID=="CBTight") muFakeRate=0.346;
-  else if(muID=="CBTightMiniIso") muFakeRate=0.429;
-  else if(muID=="CBTightMiniIsoTight") muFakeRate=0.220;
+  std::vector<float> muFakeRatess;
+  if(muID=="CBTight") muFakeRates.push_back(0.346);
+  else if(muID=="CBTightMiniIso") muFakeRates.push_back(0.429);
+  else if(muID=="CBTightMiniIsoTight"){
+    muFakeRates.push_back(0.307);
+    muFakeRates.push_back(0.255);
+    muFakeRates.push_back(0.207);
+    muFakeRates.push_back(0.190);
+    muFakeRates.push_back(0.185);
+    muFakeRates.push_back(0.175);
+    muFakeRates.push_back(0.183);
+    muFakeRates.push_back(0.194);
+    muFakeRates.push_back(0.254);
+    muFakeRates.push_back(0.321);
+  }
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
-  float elFakeRate;
-  if(elID=="CBTight" || elID=="CBTightRC") elFakeRate = 0.43;
-  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRate = 0.204;
-  else if(elID=="MVATightMedIsoRC") elFakeRate = 0.354;
-  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRate = 0.28;
-  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRate = 0.20;
+  std::vector<float> elFakeRates;
+  if(elID=="CBTight" || elID=="CBTightRC") elFakeRates.push_back(0.43);
+  else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRates.push_back(0.204);
+  else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
+    elFakeRates.push_back(0.268);
+    elFakeRates.push_back(0.0);//ee-eb gap
+    elFakeRates.push_back(0.202);
+    elFakeRates.push_back(0.184);
+    elFakeRates.push_back(0.179);
+    elFakeRates.push_back(0.183);
+    elFakeRates.push_back(0.188);
+    elFakeRates.push_back(0.202);
+    elFakeRates.push_back(0.0);//ee-eb gap
+    elFakeRates.push_back(0.286);
+  }
+  else if(elID=="MVATightMedIsoRC") elFakeRates.push_back(0.354);
+  else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRates.push_back(0.28);
+  else if(elID=="SUSYTight" || elID=="SUSYTightRC") elFakeRates.push_back(0.20);
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //doGenPlots(fsig,t,tr);
@@ -699,7 +729,28 @@ int main(int argc, char* argv[]){
       if(vSSLep.at(0)->isEl) gsfSF*= getGsfSF(vSSLep.at(0));
       if(vSSLep.at(1)->isEl) gsfSF*= getGsfSF(vSSLep.at(1));
     }
-    //now need to calculate nonPropmtWeight
+
+    //now need to calculate nonPromptWeight - first get prompt rate for each lepton    
+    float lep1PromptRate=0.0;
+    float lep2PromptRate=0.0;
+    if(vSSLep.at(0)->isMu) lep1PromptRate=muPromptRate;
+    else{
+      if(vSSLep.at(0)->pt<40) lep1PromptRate=elPromptRates.at(0);
+      else if(vSSLep.at(0)->pt<50) lep1PromptRate=elPromptRates.at(1);
+      else if(vSSLep.at(0)->pt<60) lep1PromptRate=elPromptRates.at(2);
+      else if(vSSLep.at(0)->pt<70) lep1PromptRate=elPromptRates.at(3);
+      else lep1PromptRate = elPromptRates.at(4);
+    }
+
+    if(vSSLep.at(1)->isMu) lep2PromptRate=muPromptRate;
+    else {
+      if(vSSLep.at(1)->pt<40) lep2PromptRate=elPromptRates.at(0);
+      else if(vSSLep.at(1)->pt<50) lep2PromptRate=elPromptRates.at(1);
+      else if(vSSLep.at(1)->pt<60) lep2PromptRate=elPromptRates.at(2);
+      else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(3);
+      else lep2PromptRate = elPromptRates.at(4);
+    }
+
     if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
       if(mumu){//muon channel
