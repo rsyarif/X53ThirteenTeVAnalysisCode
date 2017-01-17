@@ -805,18 +805,27 @@ int main(int argc, char* argv[]){
 
     if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
-      if(mumu){//muon channel
-	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(muPromptRate,muFakeRate); TL = 3;}//both tight
+      if(mumu || elel){//muon channel
+	//updating to kinematic dependent fake/prompt rates for same flavor channels can treat as 'different' flavors where flavor is now leading/subleading
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL = 3;}//both tight
+	else if(vSSLep.at(0)->Tight && !(vSSLep.at(1)->Tight)) {NPweight = WeightOF_T10(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=2;}//leading tight
+	else if(!(vSSLep.at(0)->Tight) && vSSLep.at(1)->Tight) {NPweight = WeightOF_T01(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=1;}//subleading tight
+	else {NPweight = WeightOF_T00(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=0;}//both loose
+
+	/*	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(muPromptRate,muFakeRate); TL = 3;}//both tight
 	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(muPromptRate,muFakeRate); TL=2;}//one tight
-	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose
+	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose*/
       }
-      else if(elel){//electron channel
+      /*else if(elel){//electron channel
 
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(elPromptRate,elFakeRate); TL=3;}//both tight
 	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(elPromptRate,elFakeRate); TL=1;}//one tight
 	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
-      }
-      else{ //cross channel
+	}*/
+      else{ //cross channel - still important to save which flavor is which, kinematic effects happen 'in background'
+	float muPromptRate,muFakeRate,elPromptRate,elFakeRate;
+	if(vSSLep.at(0)->isMu){muPromptRate=lep1PromptRate;muFakeRate=lep1FakeRate;elPromptRate=lep2PromptRate;elFakeRate=lep2FakeRate} //for cross channel finding flavor of leading determines flavor of subleading
+	else {muPromptRate=lep2PromptRate;muFakeRate=lep2FakeRate;elPromptRate=lep1PromptRate;elFakeRate=lep1FakeRate}
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=3;} //both tight
 	else if ( (vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isEl && vSSLep.at(1)->Tight) )  {NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate);TL=2;} //if electron is tight, muon must be loose or we would be on line above so just see if either lepton is a tight electron
 	else if ( (vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isMu && vSSLep.at(1)->Tight) ) {NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line so just check for tight muon
