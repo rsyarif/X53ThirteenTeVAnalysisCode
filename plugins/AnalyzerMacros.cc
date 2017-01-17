@@ -2484,6 +2484,52 @@ float getMu30TrigEffCrossTrigger2016BD(float pt, float eta){
   return eff;
 }
 
+float getMu30TrigSFCrossTrigger2016BD(float pt, float eta){
+  float eff = 0.0;
+  if(eta>2.1){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.883891;
+    else if(pt>100) eff = 0.97691;
+    else if(pt>60) eff = 0.948464;
+    else if(pt>40) eff = 0.916142;
+    else if(pt>35) eff = 0.884849;      
+  }
+  else if(eta>1.2){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.945474;
+    else if(pt>100) eff = 0.955029;
+    else if(pt>60) eff = 0.970437;
+    else if(pt>40) eff = 0.977069;
+    else if(pt>35) eff = 0.972568;
+  }
+  else if(eta>0.9){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff =  0.93892;
+    else if(pt>100) eff = 0.943425;
+    else if(pt>60) eff = 0.937789;
+    else if(pt>40) eff = 0.937023;
+    else if(pt>35) eff = 0.93713;
+  }
+  else if(eta>0.4){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.990883;
+    else if(pt>100) eff = 0.989853;
+    else if(pt>60) eff =  0.981196;
+    else if(pt>40) eff =  0.976831;
+    else if(pt>35) eff =  0.977478;
+  }
+  else if(eta>=0.0){
+    if(pt>500) eff = 0.0;
+    else if(pt>200) eff = 0.970112;
+    else if(pt>100) eff = 0.978085;
+    else if(pt>60) eff = 0.949755;
+    else if(pt>40) eff = 0.94399;
+    else if(pt>35) eff = 0.944744;
+  }
+  
+  return eff;
+}
+
 float getMu37TrigEffCrossTrigger2016EH(float pt, float eta){
   float eff = 0.0;
   if(eta>2.1){
@@ -2675,34 +2721,34 @@ float getLepIDSF(TLepton* lep){
   if(lep->isMu){
 
     if(lep->pt<40){
-      if(fabs(lep->eta)>2.1) sf = 0.9664;
-      else if(fabs(lep->eta)>1.2) sf = 0.9837;
-      else if(fabs(lep->eta)>0.9) sf = 0.9662;
-      else sf = 0.9807;
+      if(fabs(lep->eta)>2.1) sf = 0.9711;
+      else if(fabs(lep->eta)>1.2) sf = 0.9865;
+      else if(fabs(lep->eta)>0.9) sf = 0.9707;
+      else sf = 0.9831;
     }
     else if(lep->pt<50){
-      if(fabs(lep->eta)>2.1) sf = 0.9662;
-      else if(fabs(lep->eta)>1.2) sf = 0.9849;
-      else if(fabs(lep->eta)>0.9) sf = 0.9681;
-      else sf = 0.9811;
+      if(fabs(lep->eta)>2.1) sf = 0.9718;
+      else if(fabs(lep->eta)>1.2) sf = 0.9874;
+      else if(fabs(lep->eta)>0.9) sf = 0.9724;
+      else sf = 0.9830;
     }
     else if(lep->pt<60){
-      if(fabs(lep->eta)>2.1) sf = 0.9629;
-      else if(fabs(lep->eta)>1.2) sf = 0.9821;
-      else if(fabs(lep->eta)>0.9) sf = 0.9682;
-      else sf = 0.9738;
+      if(fabs(lep->eta)>2.1) sf = 0.9676;
+      else if(fabs(lep->eta)>1.2) sf = 0.9849;
+      else if(fabs(lep->eta)>0.9) sf = 0.9729;
+      else sf = 0.9722;
     }
     else if(lep->pt<100){
-      if(fabs(lep->eta)>2.1) sf = 0.9502;
-      else if(fabs(lep->eta)>1.2) sf = 0.9689;
-      else if(fabs(lep->eta)>0.9) sf = 0.9576;
-      else sf =0.9738;
+      if(fabs(lep->eta)>2.1) sf = 0.9533;
+      else if(fabs(lep->eta)>1.2) sf = 0.9701;
+      else if(fabs(lep->eta)>0.9) sf = 0.9611;
+      else sf =0.9608;
     }
     else {
-      if(fabs(lep->eta)>2.1) sf = 0.9766;
-      else if(fabs(lep->eta)>1.2) sf = 1.0037;
-      else if(fabs(lep->eta)>0.9) sf = 0.9895;
-      else sf =0.9974;
+      if(fabs(lep->eta)>2.1) sf = 0.986;
+      else if(fabs(lep->eta)>1.2) sf = 1.0027;
+      else if(fabs(lep->eta)>0.9) sf = 0.9917;
+      else sf =0.9980;
     }    
 
   }
