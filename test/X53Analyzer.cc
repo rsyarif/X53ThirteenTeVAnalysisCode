@@ -750,6 +750,58 @@ int main(int argc, char* argv[]){
       else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(3);
       else lep2PromptRate = elPromptRates.at(4);
     }
+    //now get fake rate for each lepton
+    float lep1FakeRate = 0.0;
+    float lep2FakeRate = 0.0;
+    if(vSSLep.at(0)->isMu){
+      if(vSSLep.at(0)->eta < -2.1) lep1FakeRate=muFakeRates.at(0);
+      else if(vSSLep.at(0)->eta < -1.2) lep1FakeRate=muFakeRates.at(1);
+      else if(vSSLep.at(0)->eta < -0.9) lep1FakeRate=muFakeRates.at(2);
+      else if(vSSLep.at(0)->eta < -0.4) lep1FakeRate=muFakeRates.at(3);
+      else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=muFakeRates.at(5);
+      else if(vSSLep.at(0)->eta < 0.9) lep1FakeRate=muFakeRates.at(6);
+      else if(vSSLep.at(0)->eta < 1.2) lep1FakeRate=muFakeRates.at(7);
+      else if(vSSLep.at(0)->eta < 2.1) lep1FakeRate=muFakeRates.at(8);
+      else lep1FakeRate=muFakeRates.at(9);
+    }
+    else{ //leading is electron
+      if(vSSLep.at(0)->eta < -1.566) lep1FakeRate=elFakeRates.at(0);
+      else if(vSSLep.at(0)->eta < -1.4442) lep1FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(0)->eta < -0.8) lep1FakeRate=elFakeRates.at(2);
+      else if(vSSLep.at(0)->eta < -0.4) lep1FakeRate=elFakeRates.at(3);
+      else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=elFakeRates.at(4);
+      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=elFakeRates.at(5);
+      else if(vSSLep.at(0)->eta < 0.8) lep1FakeRate=elFakeRates.at(6);
+      else if(vSSLep.at(0)->eta < 1.4442) lep1FakeRate=elFakeRates.at(7);
+      else if(vSSLep.at(0)->eta < 1.566) lep1FakeRate=elFakeRates.at(8);
+      else lep1FakeRate=elFakeRates.at(9);
+    }
+    //now for subleading
+    if(vSSLep.at(1)->isMu){
+      if(vSSLep.at(1)->eta < -2.1) lep2FakeRate=muFakeRates.at(0);
+      else if(vSSLep.at(1)->eta < -1.2) lep2FakeRate=muFakeRates.at(1);
+      else if(vSSLep.at(1)->eta < -0.9) lep2FakeRate=muFakeRates.at(2);
+      else if(vSSLep.at(1)->eta < -0.4) lep2FakeRate=muFakeRates.at(3);
+      else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=muFakeRates.at(5);
+      else if(vSSLep.at(1)->eta < 0.9) lep2FakeRate=muFakeRates.at(6);
+      else if(vSSLep.at(1)->eta < 1.2) lep2FakeRate=muFakeRates.at(7);
+      else if(vSSLep.at(1)->eta < 2.1) lep2FakeRate=muFakeRates.at(8);
+      else lep2FakeRate=muFakeRates.at(9);
+    }
+    else{ //leading is electron
+      if(vSSLep.at(1)->eta < -1.566) lep2FakeRate=elFakeRates.at(0);
+      else if(vSSLep.at(1)->eta < -1.4442) lep2FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(1)->eta < -0.8) lep2FakeRate=elFakeRates.at(2);
+      else if(vSSLep.at(1)->eta < -0.4) lep2FakeRate=elFakeRates.at(3);
+      else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=elFakeRates.at(4);
+      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=elFakeRates.at(5);
+      else if(vSSLep.at(1)->eta < 0.8) lep2FakeRate=elFakeRates.at(6);
+      else if(vSSLep.at(1)->eta < 1.4442) lep2FakeRate=elFakeRates.at(7);
+      else if(vSSLep.at(1)->eta < 1.566) lep2FakeRate=elFakeRates.at(8);
+      else lep2FakeRate=elFakeRates.at(9);
+    }
 
     if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
