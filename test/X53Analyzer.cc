@@ -41,8 +41,8 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/Aug19/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/";
 
   if(argc!=5) return 0;
   std::string argv1=argv[1];
@@ -336,7 +336,7 @@ int main(int argc, char* argv[]){
 
   //load eta weights in:
   //std::string cmidFilename = "ChargeMisID_Data_Run2016_Electrons_"+elID+"_corrected.root";
-  std::string cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVATightRC_corrected.root";//force for right now, will fix later
+  std::string cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_"+elID+"_corrected.root";
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
@@ -370,7 +370,7 @@ int main(int argc, char* argv[]){
   else{std::cout<<"Didn't pick a valid electron ID. Exiting..."<<std::endl; return 0;}
 
   //get fake rate according to ID
-  std::vector<float> muFakeRatess;
+  std::vector<float> muFakeRates;
   if(muID=="CBTight") muFakeRates.push_back(0.346);
   else if(muID=="CBTightMiniIso") muFakeRates.push_back(0.429);
   else if(muID=="CBTightMiniIsoTight"){
@@ -615,10 +615,7 @@ int main(int argc, char* argv[]){
 	if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
       }
     }
-    else{
-      skip=false;
-    }
-    
+    else {skip=false};
     if(skip) continue;
     //now skip if not the channel from the corresponding dataset
     if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
@@ -824,8 +821,8 @@ int main(int argc, char* argv[]){
 	}*/
       else{ //cross channel - still important to save which flavor is which, kinematic effects happen 'in background'
 	float muPromptRate,muFakeRate,elPromptRate,elFakeRate;
-	if(vSSLep.at(0)->isMu){muPromptRate=lep1PromptRate;muFakeRate=lep1FakeRate;elPromptRate=lep2PromptRate;elFakeRate=lep2FakeRate} //for cross channel finding flavor of leading determines flavor of subleading
-	else {muPromptRate=lep2PromptRate;muFakeRate=lep2FakeRate;elPromptRate=lep1PromptRate;elFakeRate=lep1FakeRate}
+	if(vSSLep.at(0)->isMu){muPromptRate=lep1PromptRate;muFakeRate=lep1FakeRate;elPromptRate=lep2PromptRate;elFakeRate=lep2FakeRate;} //for cross channel finding flavor of leading determines flavor of subleading
+	else {muPromptRate=lep2PromptRate;muFakeRate=lep2FakeRate;elPromptRate=lep1PromptRate;elFakeRate=lep1FakeRate;}
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=3;} //both tight
 	else if ( (vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isEl && vSSLep.at(1)->Tight) )  {NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate);TL=2;} //if electron is tight, muon must be loose or we would be on line above so just see if either lepton is a tight electron
 	else if ( (vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isMu && vSSLep.at(1)->Tight) ) {NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line so just check for tight muon
@@ -1264,6 +1261,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     else if(elID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRCIso();
       iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(elID=="MVA2016TightRC"){
+      iLep->Tight=iel->mva2016TightRCIso();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
     }
     else if(elID=="MVATightMedIsoRC"){
       iLep->Tight=iel->mvaTightRCMedIso();
