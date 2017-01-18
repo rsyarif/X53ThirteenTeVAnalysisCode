@@ -358,10 +358,10 @@ int main(int argc, char* argv[]){
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRates.push_back(0.7259);
   else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRates.push_back(0.839);
   else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
-    elPromptRates.push_back(0.886);
-    elPromptRates.push_back(0.921);
-    elPromptRates.push_back(0.934);
-    elPromptRates.push_back(0.943);
+    elPromptRates.push_back(0.881);
+    elPromptRates.push_back(0.918);
+    elPromptRates.push_back(0.931);
+    elPromptRates.push_back(0.940);
     elPromptRates.push_back(0.950);
   }
   else if(elID=="MVATightMedIsoRC") elPromptRates.push_back(0.859);
@@ -392,7 +392,7 @@ int main(int argc, char* argv[]){
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRates.push_back(0.43);
   else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRates.push_back(0.204);
   else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
-    elFakeRates.push_back(0.268);
+    elFakeRates.push_back(0.233);
     elFakeRates.push_back(0.0);//ee-eb gap
     elFakeRates.push_back(0.202);
     elFakeRates.push_back(0.184);
@@ -401,7 +401,7 @@ int main(int argc, char* argv[]){
     elFakeRates.push_back(0.188);
     elFakeRates.push_back(0.202);
     elFakeRates.push_back(0.0);//ee-eb gap
-    elFakeRates.push_back(0.286);
+    elFakeRates.push_back(0.251);
   }
   else if(elID=="MVATightMedIsoRC") elFakeRates.push_back(0.354);
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRates.push_back(0.28);
@@ -615,7 +615,7 @@ int main(int argc, char* argv[]){
 	if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
       }
     }
-    else {skip=false};
+    else {skip=false;}
     if(skip) continue;
     //now skip if not the channel from the corresponding dataset
     if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
@@ -802,7 +802,7 @@ int main(int argc, char* argv[]){
 
     if(!bg_np) {NPweight=1.0;TL=-1;}
     else{
-      if(mumu || elel){//muon channel
+      if(mumu || elel){//same flavor channel
 	//updating to kinematic dependent fake/prompt rates for same flavor channels can treat as 'different' flavors where flavor is now leading/subleading
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL = 3;}//both tight
 	else if(vSSLep.at(0)->Tight && !(vSSLep.at(1)->Tight)) {NPweight = WeightOF_T10(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=2;}//leading tight
@@ -820,13 +820,13 @@ int main(int argc, char* argv[]){
 	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
 	}*/
       else{ //cross channel - still important to save which flavor is which, kinematic effects happen 'in background'
-	float muPromptRate,muFakeRate,elPromptRate,elFakeRate;
-	if(vSSLep.at(0)->isMu){muPromptRate=lep1PromptRate;muFakeRate=lep1FakeRate;elPromptRate=lep2PromptRate;elFakeRate=lep2FakeRate;} //for cross channel finding flavor of leading determines flavor of subleading
-	else {muPromptRate=lep2PromptRate;muFakeRate=lep2FakeRate;elPromptRate=lep1PromptRate;elFakeRate=lep1FakeRate;}
-	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=3;} //both tight
-	else if ( (vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isEl && vSSLep.at(1)->Tight) )  {NPweight = WeightOF_T10(elPromptRate,elFakeRate,muPromptRate,muFakeRate);TL=2;} //if electron is tight, muon must be loose or we would be on line above so just see if either lepton is a tight electron
-	else if ( (vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isMu && vSSLep.at(1)->Tight) ) {NPweight = WeightOF_T01(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line so just check for tight muon
-	else {NPweight = WeightOF_T00(elPromptRate,elFakeRate,muPromptRate,muFakeRate); TL=0;}//otherwise both are loose
+	float muPR,muFR,elPR,elFR;
+	if(vSSLep.at(0)->isMu){muPR=lep1PromptRate;muFR=lep1FakeRate;elPR=lep2PromptRate;elFR=lep2FakeRate;} //for cross channel finding flavor of leading determines flavor of subleading
+	else {muPR=lep2PromptRate;muFR=lep2FakeRate;elPR=lep1PromptRate;elFR=lep1FakeRate;}
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(elPR,elFR,muPR,muFR); TL=3;} //both tight
+	else if ( (vSSLep.at(0)->isEl && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isEl && vSSLep.at(1)->Tight) )  {NPweight = WeightOF_T10(elPR,elFR,muPR,muFR);TL=2;} //if electron is tight, muon must be loose or we would be on line above so just see if either lepton is a tight electron
+	else if ( (vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isMu && vSSLep.at(1)->Tight) ) {NPweight = WeightOF_T01(elPR,elFR,muPR,muFR); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line so just check for tight muon
+	else {NPweight = WeightOF_T00(elPR,elFR,muPR,muFR); TL=0;}//otherwise both are loose
       }
     }
       
