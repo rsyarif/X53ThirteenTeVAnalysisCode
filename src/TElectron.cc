@@ -148,7 +148,7 @@ bool TElectron::mva2016Tight(){
     if(mvaValue80X>0.744) return true;
   }
   else if(fabs(eta)<2.4){
-    if(mvaValue80X>0.017) return true;
+    if(mvaValue80X>0.17) return true;
   }
   //if none of the above conditions is met return false
   return false;
@@ -165,7 +165,7 @@ bool TElectron::mvaJulieTight(){
     if(mvaValue80X>0.795) return true;
   }
   else if(fabs(eta)<2.4){
-    if(mvaValue80X>0.017) return true;
+    if(mvaValue80X>0.17) return true;
   }
   //if none of the above conditions is met return false
   return false;
