@@ -2810,25 +2810,12 @@ float getLepIsoSF(TLepton* lep){
   if(lep->isMu) sf = 1.0; //no scale factor for muon iso
   else{
     if(fabs(lep->eta) > 2.0){
-      if(lep->pt>50) sf = 1.02;
-      else if(lep->pt>40) sf = 1.033;
-      else if (lep->pt>30) sf = 1.042;
+      if(lep->pt>200) sf = 0.997;
+      else if(lep->pt>40) sf = 1.0;
+      else if (lep->pt>30) sf = 0.9874;
     }
-    else if(fabs(lep->eta) > 1.566){
-      if(lep->pt>50) sf = 1.002;
-      else if(lep->pt>40) sf = 1.006;
-      else if (lep->pt>30) sf = 1.011;
-    }
-    else if(fabs(lep->eta) > 0.8){
-      if(lep->pt>50) sf = 0.9982;
-      else if(lep->pt>40) sf = 0.9914;
-      else if (lep->pt>30) sf = 0.9904;
-    }
-    else if(fabs(lep->eta) >= 0.0){
-      if(lep->pt>50) sf = 0.9848;
-      else if(lep->pt>40) sf = 0.9791;
-      else if (lep->pt>30) sf = 0.9794;
-    }
+    else sf=1.0; //it's one for all other bins
+    
   }
 
   return sf;
