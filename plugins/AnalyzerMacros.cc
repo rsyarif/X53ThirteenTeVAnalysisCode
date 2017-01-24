@@ -2312,7 +2312,7 @@ float getMu17EffMC(float pt, float abseta){
   else if(abseta < 0.9){
     if ( pt >=500) eff= 0.0;
     else if(pt>200) eff = 0.957081;
-    else if(pt>100) eff = 0.957001
+    else if(pt>100) eff = 0.957001;
     else if(pt>60) eff = 0.959748;
     else if(pt>40) eff = 0.962925;
     else if(pt>=35) eff = 0.963928;
@@ -2463,17 +2463,11 @@ float getDimuonEff2016BD(float pt1, float eta1, float phi1, float pt2, float eta
   float sf = 0.0;
   float cond_eff_data = 0.0;
   float cond_eff_mc = 0.0;
-  float mu17_lep1 = 0.0;
-  float mu17_lep2 = 0.0;
   if(fabs(phi1 - phi2) > 1 ){
-    mu17_lep1 = getMu17Eff(pt1,eta1);
-    mu17_lep2 = getMu17Eff(pt2,eta2);
     cond_eff_data = 1.0 - (1.0 - getMu17EffData(pt1,eta1))*(1.0 - getMu17EffData(pt2,eta2));
     cond_eff_mc = 1.0 - (1.0 - getMu17EffMC(pt1,eta1))*(1.0 - getMu17EffMC(pt2,eta2));
   } 
   else {
-    mu17_lep2 = getMu17Eff(pt2,eta2);
-    mu17_lep1 = getMu17Eff(pt2,eta2)*getMu17EffNearbyPhi(pt1,eta1) +  (1.0 - getMu17Eff(pt2,eta2)) * (getMu17Eff(pt1,eta1));
     cond_eff_data = 1.0 - (1.0 - ( getMu17EffData(pt2,eta2) * getMu17EffNearbyPhiData(pt1,eta1) + (1 - getMu17EffData(pt2,eta2) )* getMu17EffData(pt1,eta1) ) ) * (1.0 - getMu17EffData(pt2,eta2) ) ;
     cond_eff_mc = 1.0 - (1.0 - ( getMu17EffMC(pt2,eta2) * getMu17EffNearbyPhiMC(pt1,eta1) + (1 - getMu17EffMC(pt2,eta2) )* getMu17EffMC(pt1,eta1) ) ) * (1.0 - getMu17EffMC(pt2,eta2) ) ;
   }
