@@ -2246,99 +2246,199 @@ float getGsfSF(TLepton* lep){
 
 }
 
-float getMu17Eff(float pt, float abseta){
+float getMu17EffData(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.894828;
-    else if(pt>100) eff = 0.95419;
-    else if(pt>60) eff = 0.946549;
-    else if(pt>40) eff = 0.952923;
-    else if(pt>=35) eff = 0.955707;
-    else eff = 0.951149;
+    else if(pt>200) eff = 0.834333;
+    else if(pt>100) eff = 0.900924;
+    else if(pt>60) eff = 0.903286;
+    else if(pt>40) eff =  0.912421;
+    else if(pt>=35) eff = 0.91533;
+    else eff = 0.912142;
   }
   else if(abseta < 0.9){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.759935;
-    else if(pt>100) eff = 0.970093;
-    else if(pt>60) eff = 0.985091;
-    else if(pt>40) eff = 0.98226;
-    else if(pt>=35) eff = 0.982517;
-    else eff = 0.978883;
+    else if(pt>200) eff = 0.727319;
+    else if(pt>100) eff =  0.92838;
+    else if(pt>60) eff = 0.945439;
+    else if(pt>40) eff = 0.945843;
+    else if(pt>=35) eff = 0.947075;
+    else eff = 0.945442;
   }
   else if(abseta < 1.2){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.815397;
-    else if(pt>100) eff = 0.926449;
-    else if(pt>60) eff = 0.922873;
-    else if(pt>40) eff = 0.917978;
-    else if(pt>=35) eff = 0.919787;
-    else eff = 0.916103;
+    else if(pt>200) eff = 0.79981;
+    else if(pt>100) eff =  0.90117;
+    else if(pt>60) eff = 0.898373 ;
+    else if(pt>40) eff = 0.893675 ;
+    else if(pt>=35) eff = 0.895495;
+    else eff = 0.890953;
   }
   else if(abseta < 2.1){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff =  1.07285;
-    else if(pt>100) eff = 0.935223;
-    else if(pt>60) eff = 0.961217;
-    else if(pt>40) eff = 0.976646;
-    else if(pt>=35) eff = 0.979737;
-    else eff = 0.980897;
+    else if(pt>200) eff =  1.0;
+    else if(pt>100) eff = 0.891117;
+    else if(pt>60) eff = 0.917323;
+    else if(pt>40) eff = 0.931366;
+    else if(pt>=35) eff =0.932818;
+    else eff = 0.933015;
   }
   else if(abseta <= 2.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 1.06855;
-    else if(pt>100) eff = 0.979584;
-    else if(pt>60) eff = 0.966023;
-    else if(pt>40) eff = 0.940292;
-    else if(pt>=35) eff = 0.932325;
-    else eff = 0.916713;
+    else if(pt>200) eff = 1.0;
+    else if(pt>100) eff = 0.924275;
+    else if(pt>60) eff = 0.910782;
+    else if(pt>40) eff = 0.879932;
+    else if(pt>=35) eff = 0.866578;
+    else eff = 0.846039;
   }
 
   return eff;
 
 }
 
-float getMu17EffNearbyPhi(float pt, float abseta){
+float getMu17EffMC(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.942681;
-    else if(pt>100) eff = 0.897462;
-    else if(pt>60) eff = 0.942251;
-    else if(pt>40) eff = 0.9456;
-    else if(pt>=35) eff = 0.941429;
+    else if(pt>200) eff = 0.932395;
+    else if(pt>100) eff = 0.944177;
+    else if(pt>60) eff = 0.954295 ;
+    else if(pt>40) eff = 0.957497;
+    else if(pt>=35) eff = 0.957751;
+    else eff = 0.958989;
   }
   else if(abseta < 0.9){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.86657;
-    else if(pt>100) eff = 0.95912;
-    else if(pt>60) eff = 0.914582;
-    else if(pt>40) eff = 0.972233;
-    else if(pt>=35) eff = 0.945942;
+    else if(pt>200) eff = 0.957081;
+    else if(pt>100) eff = 0.957001
+    else if(pt>60) eff = 0.959748;
+    else if(pt>40) eff = 0.962925;
+    else if(pt>=35) eff = 0.963928;
+    else eff = 0.965838;
   }
   else if(abseta < 1.2){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 1.000;
-    else if(pt>100) eff = 0.872508;
-    else if(pt>60) eff = 0.894153;
-    else if(pt>40) eff = 0.884886;
-    else if(pt>=35) eff = 0.753005;
+    else if(pt>200) eff = 0.980884;
+    else if(pt>100) eff = 0.972713;
+    else if(pt>60) eff = 0.973453;
+    else if(pt>40) eff = 0.973526;
+    else if(pt>=35) eff = 0.97359;
+    else eff =0.972546;
   }
   else if(abseta < 2.1){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.649847;
-    else if(pt>100) eff = 0.783815;
-    else if(pt>60) eff = 0.914594;
-    else if(pt>40) eff = 0.886344;
-    else if(pt>=35) eff = 0.918257;
+    else if(pt>200) eff =  0.932101;
+    else if(pt>100) eff =  0.952838;
+    else if(pt>60) eff = 0.954336;
+    else if(pt>40) eff = 0.953637;
+    else if(pt>=35) eff = 0.952111;
+    else eff = 0.951186;
   }
   else if(abseta <= 2.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.0;
-    else if(pt>100) eff = 0.798197;
-    else if(pt>60) eff =  0.841652;
-    else if(pt>40) eff = 0.729629;
-    else if(pt>=35) eff = 0.782926;
+    else if(pt>200) eff = 0.935849;
+    else if(pt>100) eff = 0.943539;
+    else if(pt>60) eff = 0.942816;
+    else if(pt>40) eff = 0.935807;
+    else if(pt>=35) eff = 0.92948;
+    else eff = 0.922905;
+  }
+
+  return eff;
+
+}
+
+
+float getMu17EffNearbyPhiData(float pt, float abseta){
+  float eff = 0.0;
+  if(abseta < 0.4){
+    if(pt>200) eff = 0.891609;
+    else if(pt>100) eff = 0.889164;
+    else if(pt>60) eff =  0.925135;
+    else if(pt>40) eff = 0.932446;
+    else if(pt>=35) eff = 0.933394;
+    else eff = 0.896896;
+  }
+  else if(abseta < 0.9){
+    if(pt>200) eff = 0.915328;
+    else if(pt>100) eff = 0.937656;
+    else if(pt>60) eff = 0.927412;
+    else if(pt>40) eff = 0.955635;
+    else if(pt>=35) eff = 0.942308;
+    else eff = 0.978809;
+  }
+  else if(abseta < 1.2){
+    if(pt>200) eff = 0.857144;
+    else if(pt>100) eff = 0.922488;
+    else if(pt>60) eff = 0.898345;
+    else if(pt>40) eff = 0.913704;
+    else if(pt>=35) eff = 0.940167;
+    else eff = 0.860298;
+  }
+  else if(abseta < 2.1){
+    if(pt>200) eff = 0.638807;
+    else if(pt>100) eff = 0.813527;
+    else if(pt>60) eff = 0.918241;
+    else if(pt>40) eff = 0.918656;
+    else if(pt>=35) eff = 0.948342;
+    else eff = 0.93803;
+  }
+  else if(abseta <= 2.4){
+    if(pt>200) eff = 0.599919;
+    else if(pt>100) eff = 0.806903;
+    else if(pt>60) eff =  0.835923;
+    else if(pt>40) eff = 0.796745;
+    else if(pt>=35) eff = 1.;
+    else eff = 0.806318;
+  }
+
+  return eff;
+
+}
+
+float getMu17EffNearbyPhiMC(float pt, float abseta){
+  float eff = 0.0;
+  if(abseta < 0.4){
+    if(pt>200) eff = 0.930309;
+    else if(pt>100) eff = 0.948507;
+    else if(pt>60) eff =  0.95718;
+    else if(pt>40) eff = 0.957901;
+    else if(pt>=35) eff = 0.952687;
+    else eff = 0.953507;
+  }
+  else if(abseta < 0.9){
+    if(pt>200) eff = 0.932319;
+    else if(pt>100) eff = 0.952987;
+    else if(pt>60) eff = 0.961281;
+    else if(pt>40) eff = 0.962954;
+    else if(pt>=35) eff = 0.965018;
+    else eff = 0.966145;
+  }
+  else if(abseta < 1.2){
+    if(pt>200) eff = 0.942255;
+    else if(pt>100) eff = 0.975508;
+    else if(pt>60) eff = 0.965795;
+    else if(pt>40) eff = 0.976901;
+    else if(pt>=35) eff = 0.969025;
+    else eff = 0.971571;
+  }
+  else if(abseta < 2.1){
+    if(pt>200) eff =  0.952413;
+    else if(pt>100) eff = 0.949975;
+    else if(pt>60) eff = 0.954618;
+    else if(pt>40) eff = 0.954047;
+    else if(pt>=35) eff = 0.952887;
+    else eff = 0.951593;
+  }
+  else if(abseta <= 2.4){
+    if(pt>200) eff = 0.933073;
+    else if(pt>100) eff = 0.937694;
+    else if(pt>60) eff =  0.936396;
+    else if(pt>40) eff = 0.937846;
+    else if(pt>=35) eff = 0.936747;
+    else eff = 0.919099;
   }
 
   return eff;
@@ -2361,20 +2461,23 @@ float getAvgMu17(TLepton* mu){
 float getDimuonEff2016BD(float pt1, float eta1, float phi1, float pt2, float eta2, float phi2){
   //get conditional efficiency
   float sf = 0.0;
-  float cond_eff = 0.0;
+  float cond_eff_data = 0.0;
+  float cond_eff_mc = 0.0;
   float mu17_lep1 = 0.0;
   float mu17_lep2 = 0.0;
   if(fabs(phi1 - phi2) > 1 ){
     mu17_lep1 = getMu17Eff(pt1,eta1);
     mu17_lep2 = getMu17Eff(pt2,eta2);
-    cond_eff = 1.0 - (1.0 - getMu17Eff(pt1,eta1))*(1.0 - getMu17Eff(pt2,eta2));
+    cond_eff_data = 1.0 - (1.0 - getMu17EffData(pt1,eta1))*(1.0 - getMu17EffData(pt2,eta2));
+    cond_eff_mc = 1.0 - (1.0 - getMu17EffMC(pt1,eta1))*(1.0 - getMu17EffMC(pt2,eta2));
   } 
   else {
     mu17_lep2 = getMu17Eff(pt2,eta2);
     mu17_lep1 = getMu17Eff(pt2,eta2)*getMu17EffNearbyPhi(pt1,eta1) +  (1.0 - getMu17Eff(pt2,eta2)) * (getMu17Eff(pt1,eta1));
-    cond_eff = 1.0 - (1.0 - ( getMu17Eff(pt2,eta2) * getMu17EffNearbyPhi(pt1,eta1) + (1 - getMu17Eff(pt2,eta2) )* getMu17Eff(pt1,eta1) ) ) * (1.0 - getMu17Eff(pt2,eta2) ) ;
+    cond_eff_data = 1.0 - (1.0 - ( getMu17EffData(pt2,eta2) * getMu17EffNearbyPhiData(pt1,eta1) + (1 - getMu17EffData(pt2,eta2) )* getMu17EffData(pt1,eta1) ) ) * (1.0 - getMu17EffData(pt2,eta2) ) ;
+    cond_eff_mc = 1.0 - (1.0 - ( getMu17EffMC(pt2,eta2) * getMu17EffNearbyPhiMC(pt1,eta1) + (1 - getMu17EffMC(pt2,eta2) )* getMu17EffMC(pt1,eta1) ) ) * (1.0 - getMu17EffMC(pt2,eta2) ) ;
   }
-  
+  float cond_eff = cond_eff_data / cond_eff_mc;
   float soup_eff = 0.0;    
   if(eta1 > 2.1){
     if(eta2>2.1) soup_eff=0.8947;
