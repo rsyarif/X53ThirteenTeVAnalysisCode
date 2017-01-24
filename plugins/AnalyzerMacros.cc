@@ -2677,18 +2677,18 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
     float w1 = 0.0;
     float w2 = 0.0;
     //do weight for first electron
-    if(eta1<0.8) w1 = 0.9794;
-    else if(eta1<1.5) w1  = 0.9855;
+    if(eta1<0.8) w1 = 97.97/99.18; //divide by plateau efficiencies
+    else if(eta1<1.5) w1  =  98.60/99.42; //divide by plateau efficiencies
     else{
-      if(vLep.at(0)->pt<40) w1= 0.9905*( ROOT::Math::normal_cdf(vLep.at(0)->pt-33.64,1.476)); //take from fitted function
-      else w1 = 0.9905;
+      if(vLep.at(0)->pt<40) w1= (99.20/99.40)*( ROOT::Math::normal_cdf(vLep.at(0)->pt-33.66,1.529)); //take from fitted function, but divide by mc plateau since mc has turned on
+      else w1 = 99.20/99.40;
     }
     //weight for second electron
-    if(eta2<0.8) w2 = 0.9794;
-    else if(eta2<1.5) w2  = 0.9855;
+    if(eta2<0.8) w2 = 97.97/99.18;
+    else if(eta2<1.5) w2  = 98.60/99.42;
     else{
-      if(vLep.at(1)->pt<40) w2= 0.9905*( ROOT::Math::normal_cdf(vLep.at(1)->pt-33.64,1.476)); //take from fitted function
-      else w2 = 0.9905;
+      if(vLep.at(1)->pt<40) w2= (99.20/99.40)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-33.66,1.529)); //take from fitted function
+      else w2 = 99.20/99.40;
     }
     sf = w1*w2;
     //std::cout<<"weight for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<w1<<" weight for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<w2<<" total sf = "<<sf<<std::endl;
