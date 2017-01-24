@@ -490,6 +490,8 @@ int main(int argc, char* argv[]){
     
     //weight for non prompt method
     float NPweight=0;
+    float NPAltWeight=0;
+    float NPSUSYWeight=0;
     int TL;
     //make vector of good Leptons change based on era
     std::vector<TLepton*> goodLeptons;
@@ -603,19 +605,19 @@ int main(int argc, char* argv[]){
 
     //require OR of triggers but make each channel consistent
     bool skip = true;
-    if(data){
-      if(era=="2016B-D") {//preICHEP triggers
-	if(mumu && tr->HLT_Mu30TkMu11) skip =false;
-	if(elmu && tr->HLT_Mu30Ele30) skip = false; 
-	if(elel && tr->HLT_DoubleEle33) skip = false; 
-      }
-      else{ //postICHEP triggers - already checked era is either one of 2016B-D or 2016E-H so don't need second explicit check here
-	if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
-	if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
-	if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
-      }
+
+    if(era=="2016B-D") {//preICHEP triggers
+      if(mumu && tr->HLT_Mu30TkMu11) skip =false;
+      if(elmu && tr->HLT_Mu30Ele30) skip = false; 
+      if(elel && tr->HLT_DoubleEle33) skip = false; 
     }
-    else {skip=false;}
+    else{ //postICHEP triggers - already checked era is either one of 2016B-D or 2016E-H so don't need second explicit check here
+      if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
+      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
+      if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
+    }
+    
+    
     if(skip) continue;
     //now skip if not the channel from the corresponding dataset
     if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
@@ -800,15 +802,23 @@ int main(int argc, char* argv[]){
       else lep2FakeRate=elFakeRates.at(9);
     }
 
-    if(!bg_np) {NPweight=1.0;TL=-1;}
+    if(!bg_np) {NPweight=1.0;NPAltWeight=1.0;NPSUSYWeight=1.0;TL=-1;}
     else{
+
+      //**********get susy alternative weight
+      if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) NPSUSYWeight=0;
+      else if(vSSLep.at(0)->Tight && !(vSSLep.at(1)->Tight)) NPSUSYWeight = lep2FakeRate / (1.0 - lep2FakeRate);
+      else if(!(vSSLep.at(0)->Tight) && vSSLep.at(1)->Tight) NPSUSYWeight = lep1FakeRate / (1.0 - lep1FakeRate);
+      else NPSUSYWeight = (lep1FakeRate / (1 - lep1FakeRate)) * ( lep2FakeRate/ (1 - lep2FakeRate));
+
       if(mumu || elel){//same flavor channel
 	//updating to kinematic dependent fake/prompt rates for same flavor channels can treat as 'different' flavors where flavor is now leading/subleading
 	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightOF_T11(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL = 3;}//both tight
 	else if(vSSLep.at(0)->Tight && !(vSSLep.at(1)->Tight)) {NPweight = WeightOF_T10(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=2;}//leading tight
 	else if(!(vSSLep.at(0)->Tight) && vSSLep.at(1)->Tight) {NPweight = WeightOF_T01(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=1;}//subleading tight
 	else {NPweight = WeightOF_T00(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=0;}//both loose
-
+	//make alt weight the same as above
+	NPAltWeight=NPweight;
 	/*	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPweight = WeightSF_T2(muPromptRate,muFakeRate); TL = 3;}//both tight
 	else if(vSSLep.at(0)->Tight || vSSLep.at(1)->Tight) {NPweight = WeightSF_T1(muPromptRate,muFakeRate); TL=2;}//one tight
 	else {NPweight = WeightSF_T0(muPromptRate,muFakeRate); TL=0;}//both loose*/
@@ -820,6 +830,13 @@ int main(int argc, char* argv[]){
 	else {NPweight = WeightSF_T0(elPromptRate,elFakeRate); TL=0;}//both loose
 	}*/
       else{ //cross channel - still important to save which flavor is which, kinematic effects happen 'in background'
+	//******** Making alternative weight***********
+	//updating to kinematic dependent fake/prompt rates for same flavor channels can treat as 'different' flavors where flavor is now leading/subleading
+	if(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight) {NPAltWeight = WeightOF_T11(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL = 3;}//both tight
+	else if(vSSLep.at(0)->Tight && !(vSSLep.at(1)->Tight)) {NPAltWeight = WeightOF_T10(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=2;}//leading tight
+	else if(!(vSSLep.at(0)->Tight) && vSSLep.at(1)->Tight) {NPAltWeight = WeightOF_T01(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=1;}//subleading tight
+	else {NPAltWeight = WeightOF_T00(lep1PromptRate,lep1FakeRate,lep2PromptRate,lep2FakeRate); TL=0;}//both loose
+	//******** Making origin np weight ************
 	float muPR,muFR,elPR,elFR;
 	if(vSSLep.at(0)->isMu){muPR=lep1PromptRate;muFR=lep1FakeRate;elPR=lep2PromptRate;elFR=lep2FakeRate;} //for cross channel finding flavor of leading determines flavor of subleading
 	else {muPR=lep2PromptRate;muFR=lep2FakeRate;elPR=lep1PromptRate;elFR=lep1FakeRate;}
@@ -828,7 +845,7 @@ int main(int argc, char* argv[]){
 	else if ( (vSSLep.at(0)->isMu && vSSLep.at(0)->Tight) || (vSSLep.at(1)->isMu && vSSLep.at(1)->Tight) ) {NPweight = WeightOF_T01(elPR,elFR,muPR,muFR); TL=1;}//if muon is tight, el must be loose or we would be on tight-tight line so just check for tight muon
 	else {NPweight = WeightOF_T00(elPR,elFR,muPR,muFR); TL=0;}//otherwise both are loose
       }
-    }
+    }//end np check
       
     //get pileup weight;
     float puweight=-11;
@@ -852,7 +869,7 @@ int main(int argc, char* argv[]){
     float assocMass =  (checkSecondaryZVeto(vSSLep,tr->looseMuons,tr->looseElectrons)).second;
 
     //fill tree for post ssdl cut since that is all that we've applied so far
-    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_ssdl->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,NPAltWeight,NPSUSYWeight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //fill histos for same cut level
     float totalweight = weight * NPweight * trigSF * lepIDSF * lepIsoSF* puweight * mcweight * gsfSF;
     fillHistos(hists_ssdl_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -895,7 +912,7 @@ int main(int argc, char* argv[]){
     //since we have the two same-sign leptons, now make sure neither of them reconstructs with any other tight lepton in the event to form a Z
     if(secondaryZVeto) continue;
     //fill tree for post secondary z veto
-    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_sZVeto->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,NPAltWeight,NPSUSYWeight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
     //now fill corresponding histos
     fillHistos(hists_sZVeto_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(elel) fillHistos(hists_sZVeto_elel, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -916,7 +933,7 @@ int main(int argc, char* argv[]){
     //else if(elmu) badEvent = EventFilterFromFile_MuonEG(tr->run,tr->lumi,tr->event);
     //}
     if(badEvent) {std::cout<<"filtering bad event"<<std::endl;continue;}
-    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
+    tm_DilepMassCut->FillTree(vSSLep, tr->allAK4Jets, tr->cleanedAK4Jets, tr->simpleCleanedAK4Jets, HT, tr->MET, dilepMass,nMu,weight,vNonSSLep,tr->MCWeight,NPweight,NPAltWeight,NPSUSYWeight,TL,trigSF,lepIDSF,lepIsoSF,gsfSF,puweight,assocMass,tr->allAK8Jets,tr->hadronicGenJets,!data,tr->run,tr->lumi,tr->event);
 
     if(tr->cleanedAK4Jets.size()>1){
       //now fill corresponding histos
