@@ -2550,43 +2550,43 @@ float getMu30TrigEffCrossTrigger2016BD(float pt, float eta){
   float eff = 0.0;
   if(eta>2.1){
     if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.788576;
-    else if(pt>100) eff = 0.844717;
-    else if(pt>60) eff = 0.811642;
-    else if(pt>40) eff = 0.77286;
-    else if(pt>35) eff = 0.74;      
+    else if(pt>200) eff = 0.883891;
+    else if(pt>100) eff = 0.97691;
+    else if(pt>60) eff = 0.948464;
+    else if(pt>40) eff = 0.916142;
+    else if(pt>35) eff =0.884849;      
   }
   else if(eta>1.2){
     if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.83069;
-    else if(pt>100) eff = 0.85201;
-    else if(pt>60) eff = 0.861616;
-    else if(pt>40) eff = 0.863448;
-    else if(pt>35) eff = 0.855331;
+    else if(pt>200) eff = 0.945474;
+    else if(pt>100) eff =0.955029;
+    else if(pt>60) eff = 0.970437;
+    else if(pt>40) eff = 0.977069;
+    else if(pt>35) eff = 0.972568;
   }
   else if(eta>0.9){
     if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.887252;
-    else if(pt>100) eff = 0.896462;
-    else if(pt>60) eff = 0.892491;
-    else if(pt>40) eff = 0.889381;
-    else if(pt>35) eff = 0.886375;
+    else if(pt>200) eff = 0.93892;
+    else if(pt>100) eff = 0.943425;
+    else if(pt>60) eff = 0.937789;
+    else if(pt>40) eff = 0.937023;
+    else if(pt>35) eff = 0.93713;
   }
   else if(eta>0.4){
     if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.945461;
-    else if(pt>100) eff = 0.941453;
-    else if(pt>60) eff = 0.933822;
-    else if(pt>40) eff = 0.929781;
-    else if(pt>35) eff = 0.930585;
+    else if(pt>200) eff = 0.990883;
+    else if(pt>100) eff = 0.989853;
+    else if(pt>60) eff = 0.981196;
+    else if(pt>40) eff = 0.976831;
+    else if(pt>35) eff = 0.977478;
   }
   else if(eta>=0.0){
     if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.910231;
-    else if(pt>100) eff = 0.917603;
-    else if(pt>60) eff = 0.897996;
-    else if(pt>40) eff = 0.892769;
-    else if(pt>35) eff = 0.893203;
+    else if(pt>200) eff = 0.970112;
+    else if(pt>100) eff =  0.978085;
+    else if(pt>60) eff = 0.949755;
+    else if(pt>40) eff = 0.94399;
+    else if(pt>35) eff = 0.944744;
   }
   
   return eff;
