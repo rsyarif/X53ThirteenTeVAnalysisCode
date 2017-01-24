@@ -2692,59 +2692,39 @@ float getMu37TrigEffCrossTrigger2016EH(float pt, float eta){
 float getMu27TrigEffCrossTrigger2016EH(float pt, float eta){
   float eff = 0.0;
   if(eta>2.1){
-    if(pt>500) eff = 0.0;
-    else if(pt>200) eff = 0.888282;
-    else if(pt>100) eff = 0.877998;
-    else if(pt>60) eff = 0.835833;
-    else if(pt>50) eff = 0.812649;
-    else if(pt>45) eff = 0.794894;
-    else if(pt>40) eff = 0.769179;      
-    else if(pt>35) eff = 0.742564;
-    else if(pt>30) eff = 0.721449;
+    if(pt>200) eff = 0.995647;
+    else if(pt>100) eff = 1.01539;
+    else if(pt>60) eff = 0.972176;
+    else if(pt>40) eff =  0.939755;      
+    else if(pt>30) eff = 0.894049;
   }
   else if(eta>1.2){
-    if(pt>500) eff = 1.0;
-    else if(pt>200) eff = 0.875563;
-    else if(pt>100) eff = 0.892119;
-    else if(pt>60) eff = 0.88078;
-    else if(pt>50) eff = 0.879145;
-    else if(pt>45) eff = 0.872835;
-    else if(pt>40) eff = 0.862494;      
-    else if(pt>35) eff = 0.847611;
-    else if(pt>30) eff = 0.833704;
+    if(pt>200) eff = 1.00204;
+    else if(pt>100) eff = 1.00024;
+    else if(pt>60) eff = 0.988377;
+    else if(pt>40) eff = 0.981811;      
+    else if(pt>30) eff = 0.962891;
   }
   else if(eta>0.9){
-    if(pt>500) eff = 1.0;
-    else if(pt>200) eff = 0.927957;
-    else if(pt>100) eff = 0.924819;
-    else if(pt>60) eff = 0.916465;
-    else if(pt>50) eff = 0.914733;
-    else if(pt>45) eff = 0.912828;
-    else if(pt>40) eff = 0.910669;      
-    else if(pt>35) eff = 0.906175;
-    else if(pt>30) eff = 0.901209;
+    if(pt>200) eff = 0.987375;
+    else if(pt>100) eff = 0.972605;
+    else if(pt>60) eff = 0.960727;
+    else if(pt>40) eff = 0.956786;      
+    else if(pt>30) eff = 0.952868;
   }
   else if(eta>0.4){
-    if(pt>500) eff = 0.749999;
-    else if(pt>200) eff = 0.945496;
-    else if(pt>100) eff = 0.953984;
-    else if(pt>60) eff = 0.944812;
-    else if(pt>50) eff = 0.939432;
-    else if(pt>45) eff = 0.939972;
-    else if(pt>40) eff = 0.941307;      
-    else if(pt>35) eff = 0.942165;
-    else if(pt>30) eff = 0.939723;
+    if(pt>200) eff = 0.995882;
+    else if(pt>100) eff = 1.00137;
+    else if(pt>60) eff = 0.989568;
+    else if(pt>40) eff = 0.982119;      
+    else if(pt>30) eff = 0.982987;
   }
   else if(eta>=0.0){
-    if(pt>500) eff = 1.0;
-    else if(pt>200) eff = 0.934597;
-    else if(pt>100) eff = 0.937984;
-    else if(pt>60) eff = 0.924709;
-    else if(pt>50) eff = 0.919417;
-    else if(pt>45) eff = 0.917068;
-    else if(pt>40) eff = 0.917991;      
-    else if(pt>35) eff = 0.917587;
-    else if(pt>30) eff = 0.91219;
+    if(pt>200) eff = 1.012;
+    else if(pt>100) eff = 0.999639;
+    else if(pt>60) eff =  0.974953;
+    else if(pt>40) eff =  0.964935;      
+    else if(pt>30) eff = 0.964917;
   }
   
   return eff;
