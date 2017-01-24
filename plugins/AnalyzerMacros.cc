@@ -2372,39 +2372,39 @@ float getDimuonEff2016BD(float pt1, float eta1, float phi1, float pt2, float eta
   
   float soup_eff = 0.0;    
   if(eta1 > 2.1){
-    if(eta2>2.1) soup_eff=0.8745;
-    else if(eta2>1.2) soup_eff=0.8961;
-    else if(eta2>0.9) soup_eff=0.8891;
-    else if(eta2>0.4) soup_eff=0.9711;
-    else soup_eff=1.0;
+    if(eta2>2.1) soup_eff=0.8947;
+    else if(eta2>1.2) soup_eff=0.9312;
+    else if(eta2>0.9) soup_eff=0.9367;
+    else if(eta2>0.4) soup_eff=0.9631;
+    else soup_eff=0.8853;
   }
   else if(eta1 > 1.2){
-    if(eta2>2.1) soup_eff=0.8955;
-    else if(eta2>1.2) soup_eff=0.9376;
-    else if(eta2>0.9) soup_eff=0.9330;
-    else if(eta2>0.4) soup_eff=0.9565;
-    else soup_eff=0.9446;
+    if(eta2>2.1) soup_eff=0.9359;
+    else if(eta2>1.2) soup_eff=1.0119;
+    else if(eta2>0.9) soup_eff=1.0614;
+    else if(eta2>0.4) soup_eff=1.0150;
+    else soup_eff=0.9782;
   }
   else if(eta1 > 0.9){
-    if(eta2>2.1) soup_eff=0.9245;
-    else if(eta2>1.2) soup_eff=0.9577;
-    else if(eta2>0.9) soup_eff=0.9588;
-    else if(eta2>0.4) soup_eff=0.9713;
-    else soup_eff=0.9614;
+    if(eta2>2.1) soup_eff=0.9098;
+    else if(eta2>1.2) soup_eff=1.0402;
+    else if(eta2>0.9) soup_eff=1.0010;
+    else if(eta2>0.4) soup_eff=0.9618;
+    else soup_eff=0.9667;
   }
   else if(eta1 > 0.4){
-    if(eta2>2.1) soup_eff=0.9411;
-    else if(eta2>1.2) soup_eff=0.9593;
-    else if(eta2>0.9) soup_eff=0.9558;
-    else if(eta2>0.4) soup_eff=0.9665;
-    else soup_eff=0.9483;
+    if(eta2>2.1) soup_eff=0.9670;
+    else if(eta2>1.2) soup_eff=1.0109;
+    else if(eta2>0.9) soup_eff=0.9762;
+    else if(eta2>0.4) soup_eff=0.9692;
+    else soup_eff=0.9715;
   }
   else{
-    if(eta2>2.1) soup_eff=1.0;
-    else if(eta2>1.2) soup_eff=0.9649;
-    else if(eta2>0.9) soup_eff=0.9499;
-    else if(eta2>0.4) soup_eff=0.9658;
-    else soup_eff=0.9503;
+    if(eta2>2.1) soup_eff=0.8769;
+    else if(eta2>1.2) soup_eff=0.9513;
+    else if(eta2>0.9) soup_eff=0.9645;
+    else if(eta2>0.4) soup_eff=0.9592;
+    else soup_eff=0.9565;
   }
   sf = cond_eff*soup_eff;
   return sf;
