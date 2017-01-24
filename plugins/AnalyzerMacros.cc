@@ -2753,65 +2753,42 @@ float getLepIDSF(TLepton* lep){
 
   }
   else{//electron
+    if(fabs(lep->eta)>2.4) sf =0; //shouldn't happen
+    if(fabs(lep->eta)>2.0){
+      if(lep->pt>200) sf = 0.9714;
+      else if(lep->pt>100) sf = 1.0129;
+      else if(lep->pt>60)  sf = 0.9784;
+      else if(lep->pt>50)  sf = 0.9728;
+      else if(lep->pt>40)  sf = 0.9704;
+      else if(lep->pt>30)  sf = 0.9629;
+    }
+    else if(fabs(lep->eta)>1.566){
+      if(lep->pt>200) sf = 1.0095;
+      else if(lep->pt>100) sf = 0.9916;
+      else if(lep->pt>60)  sf = 0.9714;
+      else if(lep->pt>50)  sf = 0.9701;
+      else if(lep->pt>40)  sf = 0.9645;
+      else if(lep->pt>30)  sf = 0.9475;
+    }
+    else if(fabs(lep->eta) > 1.4442) sf =0; //shouldn't happen
+    else if(fabs(lep->eta)>0.8){
+      if(lep->pt>200) sf = 0.9415;
+      else if(lep->pt>100) sf = 0.9742;
+      else if(lep->pt>60)  sf = 0.9562;
+      else if(lep->pt>50)  sf = 0.9513;
+      else if(lep->pt>40)  sf = 0.9522;
+      else if(lep->pt>30)  sf = 0.9465;
+    }
+    else{
+      if(lep->pt>200) sf = 0.9850;
+      else if(lep->pt>100) sf = 0.9851;
+      else if(lep->pt>60)  sf = 0.9766;
+      else if(lep->pt>50)  sf = 0.9734;
+      else if(lep->pt>40)  sf = 0.9733;
+      else if(lep->pt>30)  sf = 0.9707;
+    }
 
 
-    if(lep->eta>1.566){
-      if(lep->pt>300) sf = 0.9971;
-      else if(lep->pt>200) sf = 0.9916;
-      else if(lep->pt>100) sf = 1.0159;
-      else if(lep->pt>75)  sf = 0.9899;
-      else if(lep->pt>50)  sf = 0.9716;
-      else if(lep->pt>40)  sf = 0.9455;
-      else if(lep->pt>30)  sf = 0.9569;
-    }
-    else if(lep->eta > 1.442) sf = 0; //should never happen but this is dummy to prevent electrons in gap
-    else if(lep->eta>0.8){
-      if(lep->pt>300) sf = 0.943;
-      else if(lep->pt>200) sf = 0.9834;
-      else if(lep->pt>100) sf = 0.9961;
-      else if(lep->pt>75)  sf = 0.9970;
-      else if(lep->pt>50)  sf = 0.9788;
-      else if(lep->pt>40)  sf = 0.9668;
-      else if(lep->pt>30)  sf = 0.9756;
-    }
-    else if(lep->eta>0.0){
-      if(lep->pt>300) sf = 1.019;
-      else if(lep->pt>200) sf = 0.9742;
-      else if(lep->pt>100) sf = 0.9926;
-      else if(lep->pt>75)  sf = 0.9360;
-      else if(lep->pt>50)  sf = 0.9839;
-      else if(lep->pt>40)  sf = 0.9691;
-      else if(lep->pt>30)  sf = 0.9848;
-    }
-    else if(lep->eta> -0.8){
-      if(lep->pt>300) sf = 1.0099;
-      else if(lep->pt>200) sf = 0.9699;
-      else if(lep->pt>100) sf = 0.9842;
-      else if(lep->pt>75)  sf = 0.9810;
-      else if(lep->pt>50)  sf = 0.9689;
-      else if(lep->pt>40)  sf = 0.9613;
-      else if(lep->pt>30)  sf = 0.9561;
-    }
-    else if(lep->eta > -1.442){
-      if(lep->pt>300) sf = 0.9820;
-      else if(lep->pt>200) sf = 0.9785;
-      else if(lep->pt>100) sf = 0.9817;
-      else if(lep->pt>75)  sf = 1.0024;
-      else if(lep->pt>50)  sf = 0.9757;
-      else if(lep->pt>40)  sf = 0.9668;
-      else if(lep->pt>30)  sf = 0.9622;
-    }
-    else if(lep->eta > -1.566) sf = 0; //same dummy protection against gap as above
-    else if(lep->eta > -2.4){
-      if(lep->pt>300) sf = 0.883;
-      else if(lep->pt>200) sf = 0.9810;
-      else if(lep->pt>100) sf = 1.0028;
-      else if(lep->pt>75)  sf = 0.9651;
-      else if(lep->pt>50)  sf = 0.9615;
-      else if(lep->pt>40)  sf = 0.9509;
-      else if(lep->pt>30)  sf = 0.9523;
-    }
-    else sf=0; //lepton eta less than -2.4 shouldn't happen
   }
 
   return sf;
