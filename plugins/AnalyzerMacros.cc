@@ -2250,43 +2250,48 @@ float getMu17Eff(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.847649;
-    else if(pt>100) eff = 0.902537;
-    else if(pt>60) eff = 0.90607;
-    else if(pt>40) eff = 0.916117;
-    else if(pt>=35) eff = 0.916757;
+    else if(pt>200) eff = 0.894828;
+    else if(pt>100) eff = 0.95419;
+    else if(pt>60) eff = 0.946549;
+    else if(pt>40) eff = 0.952923;
+    else if(pt>=35) eff = 0.955707;
+    else eff = 0.951149;
   }
   else if(abseta < 0.9){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.915741;
-    else if(pt>100) eff = 0.930011;
-    else if(pt>60) eff = 0.946423;
-    else if(pt>40) eff = 0.948176;
-    else if(pt>=35) eff = 0.951504;
+    else if(pt>200) eff = 0.759935;
+    else if(pt>100) eff = 0.970093;
+    else if(pt>60) eff = 0.985091;
+    else if(pt>40) eff = 0.98226;
+    else if(pt>=35) eff = 0.982517;
+    else eff = 0.978883;
   }
   else if(abseta < 1.2){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.814732;
-    else if(pt>100) eff = 0.890936;
-    else if(pt>60) eff = 0.886419;
-    else if(pt>40) eff = 0.883023;
-    else if(pt>=35) eff = 0.889053;
+    else if(pt>200) eff = 0.815397;
+    else if(pt>100) eff = 0.926449;
+    else if(pt>60) eff = 0.922873;
+    else if(pt>40) eff = 0.917978;
+    else if(pt>=35) eff = 0.919787;
+    else eff = 0.916103;
   }
   else if(abseta < 2.1){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.710069;
-    else if(pt>100) eff = 0.86932;
-    else if(pt>60) eff = 0.920066;
-    else if(pt>40) eff = 0.929194;
-    else if(pt>=35) eff = 0.934919;
+    else if(pt>200) eff =  1.07285;
+    else if(pt>100) eff = 0.935223;
+    else if(pt>60) eff = 0.961217;
+    else if(pt>40) eff = 0.976646;
+    else if(pt>=35) eff = 0.979737;
+    else eff = 0.980897;
   }
   else if(abseta <= 2.4){
     if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.0;
-    else if(pt>100) eff = 0.922062;
-    else if(pt>60) eff = 0.895586;
-    else if(pt>40) eff = 0.874371;
-    else if(pt>=35) eff = 0.862037;
+    else if(pt>200) eff = 1.06855;
+    else if(pt>100) eff = 0.979584;
+    else if(pt>60) eff = 0.966023;
+    else if(pt>40) eff = 0.940292;
+    else if(pt>=35) eff = 0.932325;
+    else eff = 0.916713;
   }
 
   return eff;
