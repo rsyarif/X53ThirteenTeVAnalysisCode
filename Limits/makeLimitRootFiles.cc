@@ -66,11 +66,11 @@ int main(int argc, char* argv[]){
   int nConst = 5;
 
   //first get our favorite vectors of samples
-  std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIsoTight",era);
-  std::vector<Sample*> vDDBkg = getDDBkgSampleVec("sZVeto",lumi,"MVATightRC","CBTightMiniIsoTight",era);
+  std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
+  std::vector<Sample*> vDDBkg = getDDBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   std::vector<Sample*> vBkg = appendSampleVectors(vMCBkg,vDDBkg);
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVATightRC","CBTightMiniIsoTight",era);
-  Sample* dataSample = getDataSample("sZVeto","MVATightRC","CBTightMiniIsoTight",era);
+  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
+  Sample* dataSample = getDataSample("sZVeto","MVA2016TightRC","CBTightMiniIsoTight",era);
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
   //convert mass to string...probably a better way exists
