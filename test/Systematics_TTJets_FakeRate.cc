@@ -37,13 +37,12 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap samples;
-  std::string eosarea = "root://cmsxrootd.fnal.gov//store/user/clint/Spring16/25ns/July2/ljmet_trees/";
-  samples["TTJets"] = eosarea+"ljmet_FakeRate_TTJets.root";
-  samples["TTbar"] = eosarea+"ljmet_TTbar_part1.root";
-  samples["TTbar_ext1"] = eosarea+"ljmet_FakeRate_TTbar_ext1.root";
-  samples["TTbar_ext2"] = eosarea+"ljmet_FakeRate_TTbar_ext2.root";
-  samples["TTbar_ext3"] = eosarea+"ljmet_FakeRate_TTbar_ext3.root";
-  samples["TTbar_ext4"] = eosarea+"ljmet_FakeRate_TTbar_ext4.root";
+  std::string eosarea = "root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/";
+  samples["TTbar_pt0"] = eosarea+"ljmet_TTbar_pt0.root";
+  samples["TTbar_pt1"] = eosarea+"ljmet_TTbar_pt1.root";
+  samples["TTbar_pt2"] = eosarea+"ljmet_TTbar_pt2.root";
+  samples["TTbar_pt3"] = eosarea+"ljmet_TTbar_pt3.root";
+  samples["TTbar_pt4"] = eosarea+"ljmet_TTbar_pt4.root";
   samples["QCD_Pt-20to30_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-20to30_EMEnriched.root"; 
   samples["QCD_Pt-30to50_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-30to50_EMEnriched.root";
   samples["QCD_Pt-50to80_EMEnriched"] = eosarea+"ljmet_FakeRate_QCD_Pt-50to80_EMEnriched.root";
@@ -122,9 +121,9 @@ int main(int argc, char* argv[]){
       TElectron* iel = electrons.at(i);
       bool loose = false;
       bool tight = false;
-      if(elID=="MVATightRC"){
-	loose = iel->mvaLooseRCIso();
-	tight = iel->mvaTightRCIso();
+      if(elID=="MVA2016TightRC"){
+	loose = iel->mvaJulieLooseRCIso();
+	tight = iel->mva2016TightRCIso();
       }
       else{
 	std::cout<<"Didn't pick analysis ID! Are you sure? Exiting so you can think about it..."<<std::endl;
@@ -184,8 +183,8 @@ int main(int argc, char* argv[]){
 	}//end fake electrons
 	else{//real electron
 	  if(gp->isPrompt || gp->isFromPromptTau) continue; //skip prompt electrons or electrons from prompt taus
-	  std::cout<<"REAL Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<" promptMotherID: "<<gp->PromptMotherId<<std::endl;
-	  if(tight) std::cout<<"REAL Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
+	  //std::cout<<"REAL Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<" promptMotherID: "<<gp->PromptMotherId<<std::endl;
+	  //if(tight) std::cout<<"REAL Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
 	  
 	  if(gp->PromptMotherHasB){
 	    elDenHist_all->Fill(2.5,eventweight);	   
@@ -232,8 +231,8 @@ int main(int argc, char* argv[]){
 	loose = imu->cutBasedLoose();
 	tight = imu->cutBasedTight();
       }
-      else if(muID=="CBTightMiniIso"){
-	tight=imu->cutBasedTightMiniIso();
+      else if(muID=="CBTightMiniIsoTight"){
+	tight=imu->cutBasedTightMiniIsoTight();
 	loose=imu->cutBasedLooseMiniIso();
       }
       else{
@@ -296,8 +295,8 @@ int main(int argc, char* argv[]){
 	}//end fake muons
 	else{//real muon
 	  if(gp->isPrompt || gp->isFromPromptTau) continue; //skip prompt muons or muons from prompt taus
-	  std::cout<<"REAL Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
-	  if(tight) std::cout<<"REAL Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
+	  //std::cout<<"REAL Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
+	  //if(tight) std::cout<<"REAL Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
 	  
 	  if(gp->PromptMotherHasB){
 	    muDenHist_all->Fill(2.5,eventweight);	   

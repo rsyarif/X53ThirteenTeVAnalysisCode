@@ -39,17 +39,18 @@ int main(int argc, char* argv[]){
 
 
   bool bg_np = true;
-  std::string elID = "MVATightRC";
-  std::string muID = "CBTightMiniIso";
+  std::string elID = "MVA2016TightRC";
+  std::string muID = "CBTightMiniIsoTight";
 
   //get input sample
   std::string sample(argv[1]);
   std::string inputname, outname;
-  std::string eosname="root://cmseos.fnal.gov//eos/uscms/store/user/clint/Spring16/25ns/July2/ljmet_trees/";
-  if(sample=="TTbar"){ outname="SmartClosure_TTbar.root"; inputname=eosname+"ljmet_TTbar_part1.root";}
-  if(sample=="TTbar_ext1"){ outname="SmartClosure_TTbar_ext1.root"; inputname=eosname+"ljmet_TTbar_ext1.root";}
-  if(sample=="TTbar_ext2"){ outname="SmartClosure_TTbar_ext2.root"; inputname=eosname+"ljmet_TTbar_ext2.root";}
-  if(sample=="TTbar_ext3"){ outname="SmartClosure_TTbar_ext3.root"; inputname=eosname+"ljmet_TTbar_ext3.root";}
+  std::string eosname="root://cmseos.fnal.gov//eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/";
+  if(sample=="TTbar_pt5"){ outname="SmartClosure_TTbar_pt5.root"; inputname=eosname+"ljmet_TTbar_pt5.root";}
+  if(sample=="TTbar_pt6"){ outname="SmartClosure_TTbar_pt6.root"; inputname=eosname+"ljmet_TTbar_pt6.root";}
+  if(sample=="TTbar_pt7"){ outname="SmartClosure_TTbar_pt7.root"; inputname=eosname+"ljmet_TTbar_pt7.root";}
+  if(sample=="TTbar_pt8"){ outname="SmartClosure_TTbar_pt8.root"; inputname=eosname+"ljmet_TTbar_pt8.root";}
+  if(sample=="TTbar_pt9"){ outname="SmartClosure_TTbar_pt9.root"; inputname=eosname+"ljmet_TTbar_pt9.root";}
 
   //treereader
   bool mc = true;
@@ -349,7 +350,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  muons
   for(unsigned int uimu=0; uimu<muons.size(); uimu++){
     TMuon* imu = muons.at(uimu);
-    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge);
+    TLepton* iLep = new TLepton(imu->pt,imu->eta,imu->phi,imu->energy,imu->charge,imu->relIso,imu->miniIso,imu->susyIso);
 
     if(muID=="CBTight"){
       iLep->Tight=imu->cutBasedTight();
@@ -357,6 +358,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     }
     else if(muID=="CBTightMiniIso"){
       iLep->Tight=imu->cutBasedTightMiniIso();
+      iLep->Loose=imu->cutBasedLooseMiniIso();
+    }
+    else if(muID=="CBTightMiniIsoTight"){
+      iLep->Tight=imu->cutBasedTightMiniIsoTight();
       iLep->Loose=imu->cutBasedLooseMiniIso();
     }
     else if(muID=="CBLoose"){
@@ -410,7 +415,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
   //fill with  electrons
   for(unsigned int uiel=0; uiel<electrons.size(); uiel++){
     TElectron* iel = electrons.at(uiel);
-    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge);
+    TLepton* iLep = new TLepton(iel->pt,iel->eta,iel->phi,iel->energy,iel->charge,iel->relIsoEA,iel->miniIso,iel->susyIso);
     iLep->isMu = false;
     iLep->isEl = true;
     if(elID=="CBTight"){
@@ -472,6 +477,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     else if(elID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRCIso();
       iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(elID=="MVA2016TightRC"){
+      iLep->Tight=iel->mva2016TightRCIso();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
     }
     else if(elID=="MVALooseRC"){
       iLep->Tight=iel->mvaLooseRCIso();
