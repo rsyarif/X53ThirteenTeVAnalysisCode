@@ -31,16 +31,56 @@ int main(int argc, char* argv[]){
   bool mc = true;
   //make treereader
   std::string filename;
-  if(sample=="DYJets") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_DYJets.root";
-  else if(sample=="TTJets") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/Oct15v2/ljmet_trees/ljmet_TTJets.root";
+  if(sample=="DYJets_pt0") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt0.root";
+  else if(sample=="DYJets_pt1") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt1.root";
+  else if(sample=="DYJets_pt2") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt2.root";
+  else if(sample=="DYJets_pt3") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt3.root";
+  else if(sample=="DYJets_pt4") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt4.root";
+  else if(sample=="DYJets_pt5") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt5.root";
+  else if(sample=="DYJets_pt6") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt6.root";
+  else if(sample=="DYJets_pt7") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt7.root";
+  else if(sample=="DYJets_pt8") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt8.root";
+  else if(sample=="DYJets_pt9") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets_pt9.root";
+  else if(sample=="TTbar_pt0") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt0.root";
+  else if(sample=="TTbar_pt1") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt1.root";
+  else if(sample=="TTbar_pt2") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt2.root";
+  else if(sample=="TTbar_pt3") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt3.root";
+  else if(sample=="TTbar_pt4") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt4.root";
+  else if(sample=="TTbar_pt5") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt5.root";
+  else if(sample=="TTbar_pt6") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt6.root";
+  else if(sample=="TTbar_pt7") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt7.root";
+  else if(sample=="TTbar_pt8") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt8.root";
+  else if(sample=="TTbar_pt9") filename = "/eos/uscms/store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt9.root";
+
+
+
   else {std::cout<<"You didn't pick a valid sample! Exiting..."<<std::endl; return 0;}
   TreeReader* tr = new TreeReader(filename.c_str(),mc);
   TTree* t = tr->tree;
 
   //make outfile
   std::string outname;
-  if(sample=="DYJets") outname = "Systematics_ChargeMisID_DYJets.root";
-  else outname =  "Systematics_ChargeMisID_TTJets.root";
+  if(sample=="DYJets_pt0") outname = "Systematics_ChargeMisID_DYJets_pt0.root";
+  else if(sample=="DYJets_pt1") outname = "Systematics_ChargeMisID_DYJets_pt1.root";
+  else if(sample=="DYJets_pt2") outname = "Systematics_ChargeMisID_DYJets_pt2.root";
+  else if(sample=="DYJets_pt3") outname = "Systematics_ChargeMisID_DYJets_pt3.root";
+  else if(sample=="DYJets_pt4") outname = "Systematics_ChargeMisID_DYJets_pt4.root";
+  else if(sample=="DYJets_pt5") outname = "Systematics_ChargeMisID_DYJets_pt5.root";
+  else if(sample=="DYJets_pt6") outname = "Systematics_ChargeMisID_DYJets_pt6.root";
+  else if(sample=="DYJets_pt7") outname = "Systematics_ChargeMisID_DYJets_pt7.root";
+  else if(sample=="DYJets_pt8") outname = "Systematics_ChargeMisID_DYJets_pt8.root";
+  else if(sample=="DYJets_pt9") outname = "Systematics_ChargeMisID_DYJets_pt9.root";
+  else if(sample=="TTbar_pt0") outname = "Systematics_ChargeMisID_TTbar_pt0.root";
+  else if(sample=="TTbar_pt1") outname = "Systematics_ChargeMisID_TTbar_pt1.root";
+  else if(sample=="TTbar_pt2") outname = "Systematics_ChargeMisID_TTbar_pt2.root";
+  else if(sample=="TTbar_pt3") outname = "Systematics_ChargeMisID_TTbar_pt3.root";
+  else if(sample=="TTbar_pt4") outname = "Systematics_ChargeMisID_TTbar_pt4.root";
+  else if(sample=="TTbar_pt5") outname = "Systematics_ChargeMisID_TTbar_pt5.root";
+  else if(sample=="TTbar_pt6") outname = "Systematics_ChargeMisID_TTbar_pt6.root";
+  else if(sample=="TTbar_pt7") outname = "Systematics_ChargeMisID_TTbar_pt7.root";
+  else if(sample=="TTbar_pt8") outname = "Systematics_ChargeMisID_TTbar_pt8.root";
+  else if(sample=="TTbar_pt9") outname = "Systematics_ChargeMisID_TTbar_pt9.root";
+
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
 
@@ -73,8 +113,8 @@ int main(int argc, char* argv[]){
       TElectron* iel = electrons.at(i);
       //skip if not tight
       bool tight = false;
-      if(elID=="MVATightRC"){
-	if(iel->mvaTightRCIso()) tight = true;
+      if(elID=="MVA2016TightRC"){
+	if(iel->mva2016TightRCIso()) tight = true;
       }
       if(!tight) continue;
       
@@ -83,6 +123,9 @@ int main(int argc, char* argv[]){
       if(!matched) continue;
       //get matching gen particle
       TGenParticle* gp = getMatchedGenParticle(iel,tr->genParticles);
+      //skip if genParticle not close or prompt
+      float drtemp = pow( pow( iel->eta - gp->eta, 2 ) + pow( iel->phi - gp->phi, 2), 0.5);
+      if(drtemp > 0.3 || !(gp->isPrompt)) continue;
       //fill denominator hists
       etaDenHist->Fill(iel->eta,tr->MCWeight);
       ptDenHist->Fill(iel->pt,tr->MCWeight);
