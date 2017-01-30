@@ -37,7 +37,8 @@ int main(int argc, char* argv[]){
     return 0;
   }
 
-  //now get boolean for data or mc
+  std::cout<<"arg 1: "<<argv1<<" arg2: "<<argv2<<" arg3: "<<ID<<" arg4: "<<argv4<<std::endl;
+    //now get boolean for data or mc
   bool data=false;
   if(argv1.find("Data")!=std::string::npos) data=true;
 
@@ -55,24 +56,40 @@ int main(int argc, char* argv[]){
 
   else{
     if(MuonChannel){
-      //outname.push_back("FakeRate_MC_Muons_HT100To200_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Muons_HT200To300_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Muons_HT300To500_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Muons_HT500To700_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Muons_HT700To1000_"+ID+".root");
-      outname.push_back("FakeRate_MC_Muons_HT1000To1500_"+ID+".root");
-      //      outname.push_back("FakeRate_MC_Muons_HT1500To2000_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Muons_HT2000ToInf_"+ID+".root");
+      if(argv1=="WJets-MC") outname.push_back("FakeRate_WJets-MC_Muons"+ID+"modifiedLepPt.root");
+      else if(argv1=="DYJets-MC") outname.push_back("FakeRate_DYJets-MC_Muons"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt0") outname.push_back("FakeRate_TTbar-MC_Muons_pt0"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt1") outname.push_back("FakeRate_TTbar-MC_Muons_pt1"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt2") outname.push_back("FakeRate_TTbar-MC_Muons_pt2"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt3") outname.push_back("FakeRate_TTbar-MC_Muons_pt3"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt4") outname.push_back("FakeRate_TTbar-MC_Muons_pt4"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt5") outname.push_back("FakeRate_TTbar-MC_Muons_pt5"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt6") outname.push_back("FakeRate_TTbar-MC_Muons_pt6"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt7") outname.push_back("FakeRate_TTbar-MC_Muons_pt7"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt8") outname.push_back("FakeRate_TTbar-MC_Muons_pt8"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt9") outname.push_back("FakeRate_TTbar-MC_Muons_pt9"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt15to30") outname.push_back("FakeRate_QCD_Pt15to30_Muons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt30to50") outname.push_back("FakeRate_QCD_Pt30to50_Muons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt50to80") outname.push_back("FakeRate_QCD_Pt50to80_Muons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt80to120") outname.push_back("FakeRate_QCD_Pt80to120_Muons_"+ID+"modifiedLepPt.root");
     }
     else{
-      //outname.push_back("FakeRate_MC_Electrons_HT100To200_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT200To300_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT300To500_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT500To700_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT700To1000_"+ID+".root");
-      outname.push_back("FakeRate_MC_Electrons_HT1000To1500_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT1500To2000_"+ID+".root");
-      //outname.push_back("FakeRate_MC_Electrons_HT2000ToInf_"+ID+".root");
+      if(argv1=="WJets-MC") outname.push_back("FakeRate_WJets-MC_Electrons"+ID+"modifiedLepPt.root");
+      else if(argv1=="DYJets-MC") outname.push_back("FakeRate_DYJets-MC_Electrons"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt0") outname.push_back("FakeRate_TTbar-MC_Electrons_pt0"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt1") outname.push_back("FakeRate_TTbar-MC_Electrons_pt1"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt2") outname.push_back("FakeRate_TTbar-MC_Electrons_pt2"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt3") outname.push_back("FakeRate_TTbar-MC_Electrons_pt3"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt4") outname.push_back("FakeRate_TTbar-MC_Electrons_pt4"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt5") outname.push_back("FakeRate_TTbar-MC_Electrons_pt5"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt6") outname.push_back("FakeRate_TTbar-MC_Electrons_pt6"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt7") outname.push_back("FakeRate_TTbar-MC_Electrons_pt7"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt8") outname.push_back("FakeRate_TTbar-MC_Electrons_pt8"+ID+"modifiedLepPt.root");
+      else if(argv1=="TTbar-MC_pt9") outname.push_back("FakeRate_TTbar-MC_Electrons_pt9"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt15to30") outname.push_back("FakeRate_QCD_Pt15to30_Electrons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt30to50") outname.push_back("FakeRate_QCD_Pt30to50_Electrons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt50to80") outname.push_back("FakeRate_QCD_Pt50to80_Electrons_"+ID+"modifiedLepPt.root");
+      else if(argv1=="QCD_MC-Pt80to120") outname.push_back("FakeRate_QCD_Pt80to120_Electrons_"+ID+"modifiedLepPt.root");
     }
   }
 
@@ -104,14 +121,22 @@ int main(int argc, char* argv[]){
     
   }
   else{
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT100To200.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT200To300.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT300To500.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT500To700.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT700To1000.root");
-    filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT1000To1500.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT1500To2000.root");
-    //filenames.push_back("/eos/uscms/store/user/lpctlbsm/clint/Spring15/25ns/FakeRate/Oct08/ljmet_trees/ljmet_QCDHT2000ToInf.root");
+    if(argv1=="WJets-MC") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_WJets_SingleLep.root");
+    else if(argv1=="DYJets-MC") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets.root");
+    else if(argv1=="TTbar-MC_pt0") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt0.root");
+    else if(argv1=="TTbar-MC_pt1") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt1.root");
+    else if(argv1=="TTbar-MC_pt2") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt2.root");
+    else if(argv1=="TTbar-MC_pt3") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt3.root");
+    else if(argv1=="TTbar-MC_pt4") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt4.root");
+    else if(argv1=="TTbar-MC_pt5") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt5.root");
+    else if(argv1=="TTbar-MC_pt6") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt6.root");
+    else if(argv1=="TTbar-MC_pt7") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt7.root");
+    else if(argv1=="TTbar-MC_pt8") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt8.root");
+    else if(argv1=="TTbar-MC_pt9") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_TTbar_pt9.root");
+    else if(argv1=="QCD_MC-Pt15to30") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_QCD_Pt15to30_SingleLep.root");
+    else if(argv1=="QCD_MC-Pt30to50") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_QCD_Pt30to50_SingleLep.root");
+    else if(argv1=="QCD_MC-Pt50to80") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_QCD_Pt50to80_SingleLep.root");
+    else if(argv1=="QCD_MC-Pt80to120") filenames.push_back("root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_QCD_Pt80to120_SingleLep.root");
   }
 
   for(unsigned int i =0; i<filenames.size(); i++){
@@ -120,7 +145,7 @@ int main(int argc, char* argv[]){
 
     //output tree
     TTree* outTree = new TTree("FakeRate","FakeRate");
-    float LepPt_,LepEta_,LepPhi_,LepE_,LepMiniIso_,LepMinDR_,LepSusyIso_;
+    float LepPt_,LepEta_,LepPhi_,LepE_,LepMiniIso_,LepMinDR_,LepSusyIso_,m_T;
     int LepIsLoose_,LepIsTight_,LepCharge_;
     outTree->Branch("LepPt",&LepPt_);
     outTree->Branch("LepEta",&LepEta_);
@@ -132,9 +157,10 @@ int main(int argc, char* argv[]){
     outTree->Branch("LepIsLoose",&LepIsLoose_);
     outTree->Branch("LepIsTight",&LepIsTight_);
     outTree->Branch("LepMinDR",&LepMinDR_);
+    outTree->Branch("mT",&m_T);
 
     //get tree reader to read in data
-    TreeReader* tr= new TreeReader(filenames.at(i).c_str(),!data);
+    TreeReader* tr= new TreeReader(filenames.at(i).c_str(),false);
     TTree* t=tr->tree;
 
 
@@ -166,7 +192,11 @@ int main(int argc, char* argv[]){
       //bool elTrig = tr->HLT_Ele17Iso;
       bool elTrig = tr->HLT_Ele17;
       bool analyze = false;
-      if( (MuonChannel && muTrig) || (!MuonChannel && elTrig)) analyze = true;
+      if(data){
+	if((MuonChannel && muTrig) || (!MuonChannel && elTrig)) analyze = true;
+      }
+      else analyze=true;
+
       if (!analyze) continue;
 
       //make vector of leptons
@@ -179,8 +209,8 @@ int main(int argc, char* argv[]){
       //skip if not the correct flavor
       if(MuonChannel && !(leptons.at(0)->isMu)) continue;
       if(!MuonChannel && !(leptons.at(0)->isEl)) continue;
-      //skip if it has pt not between 25 and 35
-      if( !(lep->pt < 35 && lep->pt>25)) continue;
+      //skip if it has pt not between 25 and 35 - REMOVE THIS TO STUDY FAKE RATE VS PT
+      //if( !(lep->pt < 35 && lep->pt>25)) continue;
       etaHist_all->Fill(lep->eta);
 
       //make sure not much met in event to veto on leptons from Ws
@@ -188,6 +218,15 @@ int main(int argc, char* argv[]){
       etaHist_MET->Fill(lep->eta);
       //std::cout<<"lepton eta after MET cut : "<<lep->eta<<std::endl;      
       //check transverse mass is less than 25 GeV
+      //search through jet collection to check for jet mass
+      bool Zveto = ZVetoCheck(lep,tr->cleanedAK4Jets);
+      if(Zveto) continue;
+      etaHist_ZVeto->Fill(lep->eta);
+
+      //check for away jet
+      bool awayJet = AwayJetCheck(lep,tr->cleanedAK4Jets);
+      if(!awayJet) continue;
+      etaHist_AwayJet->Fill(lep->eta);
       
       float et = tr->MET+lep->energy;
       float pt1y = lep->pt*sin(lep->phi);
@@ -205,17 +244,8 @@ int main(int argc, char* argv[]){
 
       //std::cout<<"Clint mt: "<<mT<<" Aram mt: "<<mt<<std::endl;
 
-      if(mt>25) continue; //change to Arams value
+      //if(mt>25) continue; //change to Arams value
       etaHist_MT->Fill(lep->eta);      
-      //search through jet collection to check for jet mass
-      bool Zveto = ZVetoCheck(lep,tr->cleanedAK4Jets);
-      if(Zveto) continue;
-      etaHist_ZVeto->Fill(lep->eta);
-
-      //check for away jet
-      bool awayJet = AwayJetCheck(lep,tr->cleanedAK4Jets);
-      if(!awayJet) continue;
-      etaHist_AwayJet->Fill(lep->eta);
 
       //Now just fill histograms
       etaDenHist->Fill(lep->eta); ptDenHist->Fill(lep->pt);
@@ -231,7 +261,7 @@ int main(int argc, char* argv[]){
       LepSusyIso_ = lep->susyIso;
       LepIsTight_ = (int) lep->Tight;
       LepIsLoose_ = (int) lep->Loose;
-
+      m_T = mt;
       //find minDR
       float minDR=999;
       for(unsigned int i=0; i< tr->cleanedAK4Jets.size();i++){
@@ -360,6 +390,22 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     else if(ID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRC();
       iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(ID=="MVA2016TightRC"){
+      iLep->Tight=iel->mva2016TightRC();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
+    }
+    else if(ID=="MVA80XTightRC"){
+      iLep->Tight=iel->mva80XTightRC();
+      iLep->Loose=iel->mva80XLooseRCIso();
+    }
+    else if(ID=="MVAJulieTightRC"){
+      iLep->Tight=iel->mvaJulieTightRC();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
+    }
+    else if(ID=="MVAJulieNewTightRC"){
+      iLep->Tight=iel->mvaJulieNewTightRC();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
     }
     else if(ID=="MVALooseRC"){
       iLep->Tight=iel->mvaLooseRCIso();
