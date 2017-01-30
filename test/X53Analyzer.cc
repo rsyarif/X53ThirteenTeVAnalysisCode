@@ -537,7 +537,10 @@ int main(int argc, char* argv[]){
 
     //dummy check to make sure the vector got filled properly
     assert(vSSLep.size() > 1);
-
+    //make sure both are tight if not doing fakes background
+    if(!bg_np){
+      if( !(vSSLep.at(0)->Tight && vSSLep.at(1)->Tight)) continue;
+    }
 
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
@@ -1205,7 +1208,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     if(iLep->pt<ptCut) continue;
     //now save based on ID requirments if 'normal' running then require tight, else save if loose
     if(!doFakes){
-      if(iLep->Tight) Leptons.push_back(iLep);
+      if(iLep->Loose) Leptons.push_back(iLep);
     } 
     else{ //if doing fake estimate save if loose
       if(iLep->Loose) Leptons.push_back(iLep);
@@ -1306,7 +1309,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     if(iLep->pt<ptCut) continue;
     //now save based on elID requirments if 'normal' running then require tight, else save if loose
     if(!doFakes){
-      if(iLep->Tight) Leptons.push_back(iLep);
+      if(iLep->Loose) Leptons.push_back(iLep);
     } 
     else{ //if doing fake estimate save if loose
       if(iLep->Loose) Leptons.push_back(iLep);
