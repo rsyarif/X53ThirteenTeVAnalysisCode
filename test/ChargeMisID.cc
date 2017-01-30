@@ -53,17 +53,17 @@ int main(int argc, char* argv[]){
   if(argv1=="Data" && argv2=="50ns") {filename="root://cmseos.fnal.gov//store/user/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data"){
      data=true; FiftyNS=false;
-    if(argv2=="2016B") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
-    else if(argv2=="2016C") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
-    else if(argv2=="2016D") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
-    else if(argv2=="2016E") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
-    else if(argv2=="2016F") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
-    else if(argv2=="2016G") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
-    else if(argv2=="2016H2") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
-    else if(argv2=="2016H3") filename="root://cmseos.fnal.gov//store/user/clint/Run2016/Nov16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+    if(argv2=="2016B") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
+    else if(argv2=="2016C") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
+    else if(argv2=="2016D") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
+    else if(argv2=="2016E") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
+    else if(argv2=="2016F") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
+    else if(argv2=="2016G") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
+    else if(argv2=="2016H2") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
+    else if(argv2=="2016H3") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
   }
   else if(argv1=="MC" && argv2=="50ns") {filename="root://cmseos.fnal.gov//store/user/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/clint/Spring15/25ns/Nov16/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/clint/Spring15/25ns/Jan09/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -425,6 +425,22 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
     else if(ID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRCIso();
       iLep->Loose=iel->mvaLooseRCIso();
+    }
+    else if(ID=="MVA80XTightRC"){
+      iLep->Tight=iel->mva80XTightRCIso();
+      iLep->Loose=iel->mva80XLooseRCIso();
+    }
+    else if(ID=="MVA2016TightRC"){
+      iLep->Tight=iel->mva2016TightRCIso();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
+    }
+    else if(ID=="MVAJulieTightRC"){
+      iLep->Tight=iel->mvaJulieTightRCIso();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
+    }
+    else if(ID=="MVAJulieNewTightRC"){
+      iLep->Tight=iel->mvaJulieNewTightRCIso();
+      iLep->Loose=iel->mvaJulieLooseRCIso();
     }
     else if(ID=="MVATightLC"){
       iLep->Tight=iel->mvaTightLCIso();
