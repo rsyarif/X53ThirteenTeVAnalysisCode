@@ -15,7 +15,7 @@ def getSSDLModel2016BD():
         if(proc=="NonPrompt"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
-            model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.30),proc)
+            model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
         elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
         #Common
@@ -106,7 +106,7 @@ def getSSDLModel_2016EH():
         if(proc=="NonPrompt"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
-            model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.30),proc)
+            model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
         elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
         #Common
