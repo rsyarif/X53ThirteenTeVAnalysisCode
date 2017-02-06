@@ -85,6 +85,10 @@ void TreeMaker::InitTree(std::string treename){
   //cleaned jets
   tree->Branch("nCleanAK4Jets",&nCleanAK4Jets_);
   tree->Branch("cleanAK4HT",&cleanAK4HT_);
+  tree->Branch("cleanAK4HTScaleUp",&cleanAK4HTScaleUp_);
+  tree->Branch("cleanAK4HTScaleDown",&cleanAK4HTScaleDown_);
+  tree->Branch("cleanAK4HTSmearUp",&cleanAK4HTSmearUp_);
+  tree->Branch("cleanAK4HTSmearDown",&cleanAK4HTSmearDown_);
   tree->Branch("cleanAK4Jet1Pt",&cleanAK4Jet1Pt_);
   tree->Branch("cleanAK4Jet1Eta",&cleanAK4Jet1Eta_);
   tree->Branch("cleanAK4Jet1Phi",&cleanAK4Jet1Phi_);
@@ -315,11 +319,23 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   //cleaned jets
   nCleanAK4Jets_ = cleanAK4Jets.size();
   cleanAK4HT_=Lep1Pt_+Lep2Pt_;
+  cleanAK4HTScaleUp_ = Lep1Pt_+Lep2Pt_;
+  cleanAK4HTScaleDown_ = Lep1Pt_+Lep2Pt_;
+  cleanAK4HTSmearUp_ = Lep1Pt_+Lep2Pt_;
+  cleanAK4HTSmearDown_ = Lep1Pt_+Lep2Pt_;
   for(int i=0; i<nCleanAK4Jets_;i++){
     cleanAK4HT_+=cleanAK4Jets.at(i)->pt;
+    cleanAK4HTScaleUp_ += cleanAK4Jets.at(i)->scaleUpPt;
+    cleanAK4HTScaleDown_ += cleanAK4Jets.at(i)->scaleDownPt;
+    cleanAK4HTSmearUp_ += cleanAK4Jets.at(i)->smearUpPt;
+    cleanAK4HTSmearDown_ += cleanAK4Jets.at(i)->smearDownPt;
   }
   for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
     cleanAK4HT_+=vNonSSLep.at(ilep)->pt;
+    cleanAK4HTScaleUp_+=vNonSSLep.at(ilep)->pt;
+    cleanAK4HTScaleDown_+=vNonSSLep.at(ilep)->pt;
+    cleanAK4HTSmearUp_+=vNonSSLep.at(ilep)->pt;
+    cleanAK4HTSmearDown_+=vNonSSLep.at(ilep)->pt;
   }
 
   if(nCleanAK4Jets_>0){

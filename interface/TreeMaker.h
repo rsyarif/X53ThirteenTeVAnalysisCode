@@ -103,6 +103,10 @@ class TreeMaker {
 
   int nCleanAK4Jets_;
   float cleanAK4HT_;
+  float cleanAK4HTScaleUp_;
+  float cleanAK4HTScaleDown_;
+  float cleanAK4HTSmearUp_;
+  float cleanAK4HTSmearDown_;
 
   //collections for simple cleaned jets
   float simpleCleanAK4Jet1Pt_;

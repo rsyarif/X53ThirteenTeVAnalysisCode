@@ -105,8 +105,20 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   //make cleaned jets - original collection
   for (unsigned int i=0;i<nCleanedAK4Jets; i++){
     if( ( (*cleanedAK4JetPt)[i]<30) || fabs((*cleanedAK4JetEta)[i])>2.4) continue;
-    cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i]) );
-    
+    //make floats for scale/smear up/down - set to default and overwrite for MC
+    float scaleUpPt=(*cleanedAK4JetPt)[i];
+    float scaleDownPt=(*cleanedAK4JetPt)[i];
+    float smearUpPt=(*cleanedAK4JetPt)[i];
+    float smearDownPt=(*cleanedAK4JetPt)[i];
+    if(isMc){
+      //add collections for smeared/scaled jets for MC
+      scaleUpPt = (*cleanedAK4JetPtScaleUp)[i];
+      scaleDownPt = (*cleanedAK4JetPtScaleDown)[i];
+      smearUpPt = (*cleanedAK4JetPtSmearUp)[i];
+      smearDownPt = (*cleanedAK4JetPtSmearDown)[i];
+    }
+    cleanedAK4Jets.push_back(new TJet( (*cleanedAK4JetPt)[i], (*cleanedAK4JetEta)[i], (*cleanedAK4JetPhi)[i],(*cleanedAK4JetEnergy)[i],scaleUpPt,scaleDownPt,smearUpPt,smearDownPt) );
+      
   }
 
   //make cleaned jets - only save if not inside (i.e.dR<0.8 of AK8 jets) - DONE IN TREEMAKER NOW
@@ -308,6 +320,10 @@ void TreeReader::Init(TTree *treetemp)
   cleanedAK4JetEta = 0;
   cleanedAK4JetPhi = 0;
   cleanedAK4JetPt = 0;
+  cleanedAK4JetPtScaleUp = 0;
+  cleanedAK4JetPtScaleDown = 0;
+  cleanedAK4JetPtSmearUp = 0;
+  cleanedAK4JetPtSmearDown = 0;
 
   //ak8 jets
   AK8JetEnergy = 0;
@@ -422,6 +438,10 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("cleanedAK4JetEta_DileptonCalc", &cleanedAK4JetEta, &b_cleanedAK4JetEta_DileptonCalc);
   tree->SetBranchAddress("cleanedAK4JetPhi_DileptonCalc", &cleanedAK4JetPhi, &b_cleanedAK4JetPhi_DileptonCalc);
   tree->SetBranchAddress("cleanedAK4JetPt_DileptonCalc", &cleanedAK4JetPt, &b_cleanedAK4JetPt_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPtScaleUp_DileptonCalc", &cleanedAK4JetPtScaleUp, &b_cleanedAK4JetPtScaleUp_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPtScaleDown_DileptonCalc", &cleanedAK4JetPtScaleDown, &b_cleanedAK4JetPtScaleDown_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPtSmearUp_DileptonCalc", &cleanedAK4JetPtSmearUp, &b_cleanedAK4JetPtSmearUp_DileptonCalc);
+  tree->SetBranchAddress("cleanedAK4JetPtSmearDown_DileptonCalc", &cleanedAK4JetPtSmearDown, &b_cleanedAK4JetPtSmearDown_DileptonCalc);
 
   //ak8jets
   tree->SetBranchAddress("theJetAK8Energy_JetSubCalc", &AK8JetEnergy, &b_AK8JetEnergy_JetSubCalc);

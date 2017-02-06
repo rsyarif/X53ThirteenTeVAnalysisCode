@@ -8,12 +8,18 @@
 class TJet{
  public:
   TJet(double pttemp, double etatemp, double phitemp, double energytemp);
+  TJet(double pttemp, double etatemp, double phitemp, double energytemp,double jesUpPt, double jesDownPt, double jerUpPt, double jerDownPt);
   TJet(double pttemp, double etatemp, double phitemp, double bd, double drtemp, double mtemp,int bt);
   //kinematics
   double pt;
   double eta;
   double phi;
   double energy;
+  double scaleUpPt;
+  double scaleDownPt;
+  double smearUpPt;
+  double smearDownPt;
+  
   //below are primarily used for subjets, so won't be meaningful for ak4 jets
   double mass;
   double dR;
