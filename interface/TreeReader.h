@@ -28,7 +28,7 @@ class TreeReader{
   std::vector <TMuon*> allMuons, goodMuons,looseMuons;
   std::vector <TElectron*> allElectrons, goodElectrons, looseElectrons, cmsdasElectrons, loose50nsElectrons, good50nsElectrons;
   std::vector <TGenParticle*> genParticles;
-  std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets,newCleanedAK4Jets;
+  std::vector <TJet*> allAK4Jets,cleanedAK4Jets,simpleCleanedAK4Jets,newCleanedAK4Jets,cleanedAK4JetsScaleUp,cleanedAK4JetsScaleDown,cleanedAK4JetsSmearUp,cleanedAK4JetsSmearDown;
   std::vector <TJet*> genJets;
   std::vector <THadronicGenJet*> hadronicGenJets;
   std::vector<TBoostedJet*> allAK8Jets;
@@ -236,6 +236,14 @@ class TreeReader{
   TBranch        *b_cleanedAK4JetPhi_DileptonCalc;
   std::vector<double>  *cleanedAK4JetPt;
   TBranch        *b_cleanedAK4JetPt_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPtScaleUp;
+  TBranch        *b_cleanedAK4JetPtScaleUp_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPtScaleDown;
+  TBranch        *b_cleanedAK4JetPtScaleDown_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPtSmearUp;
+  TBranch        *b_cleanedAK4JetPtSmearUp_DileptonCalc;
+  std::vector<double>  *cleanedAK4JetPtSmearDown;
+  TBranch        *b_cleanedAK4JetPtSmearDown_DileptonCalc;
 
   //ak8 jets
   std::vector<double>  *AK8JetEnergy;
