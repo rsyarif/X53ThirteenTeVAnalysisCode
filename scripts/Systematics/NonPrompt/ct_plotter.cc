@@ -111,6 +111,8 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
 
   //now go to pad2 and draw ratio
   pad2->cd();
+  //sumw2
+  h_pred->Sumw2();
   TH1F* h_ratio = (TH1F*) h_obs->Clone("h_ratio");
   h_ratio->Divide(h_pred);
   h_ratio->GetYaxis()->SetRangeUser(0.5,1.5);
