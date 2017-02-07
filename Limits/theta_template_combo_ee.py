@@ -22,11 +22,11 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelBD')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelBD')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elel')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elelBD')
             
         #individual
             if(proc=='TTZ'):
@@ -35,19 +35,19 @@ def getSSDLModel2016BD():
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTW'):
                 model.add_lognormal_uncertainty('MC',math.log(1.20),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTH'):
                 model.add_lognormal_uncertainty('MC',math.log(1.14),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.08),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTTT'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.02),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.12),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.05),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.12),proc)
@@ -55,19 +55,19 @@ def getSSDLModel2016BD():
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WpWp'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WWZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
 
     #   signal
@@ -77,11 +77,11 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelBD')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelBD')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elel')
+            model.add_lognormal_uncertainty('LepTrig2016BD_elel',math.log(1.03),proc,'elelBD')
 
 
     return model
@@ -109,11 +109,11 @@ def getSSDLModel_2016EH():
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelEH')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelEH')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elel')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elelEH')
             
         #individual
             if(proc=='TTZ'):
@@ -122,19 +122,19 @@ def getSSDLModel_2016EH():
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTW'):
                 model.add_lognormal_uncertainty('MC',math.log(1.20),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTH'):
                 model.add_lognormal_uncertainty('MC',math.log(1.14),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.08),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTTT'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.02),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.12),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.05),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.12),proc)
@@ -142,19 +142,19 @@ def getSSDLModel_2016EH():
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WpWp'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WWZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZZ'):
                 model.add_lognormal_uncertainty('MC',math.log(1.50),proc)
-                model.add_lognormal_uncertainty('JES',math.log(1.06),proc)
+                model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
 
     #   signal
@@ -164,11 +164,11 @@ def getSSDLModel_2016EH():
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
         #lepton ID
-            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIdSys',math.log(1.02),proc,'elelEH')
         #lepton ISO
-            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elel')
+            model.add_lognormal_uncertainty('elIsoSys',math.log(1.02),proc,'elelEH')
         #lepton Trig
-            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elel')
+            model.add_lognormal_uncertainty('LepTrig2016EH_elel',math.log(1.03),proc,'elelEH')
 
 
     return model
