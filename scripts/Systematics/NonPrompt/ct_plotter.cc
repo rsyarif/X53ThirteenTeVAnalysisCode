@@ -22,9 +22,25 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
 
   TCanvas* c = new TCanvas();
   c->SetLogy();
-  std::string title = "Predicted vs. Observed H_{T} for "+flavor+" "+lepflavor+";H_{T};N_{Events}";
+  //make tpads
+  TPad* pad1 = new TPad("pad1","pad1",0.01,0.2,1,1);
+  TPad* pad2 = new TPad("pad2","pad2",0.01,0.,1,0.2);
+
+  pad1->SetTopMargin(0.1);
+  pad1->SetLogy();
+  pad2->SetTopMargin(0.0);
+  pad1->SetBottomMargin(0.0);
+  pad2->SetBottomMargin(0.3);
+  pad1->Draw();
+  pad2->Draw();
+  //cd to top pad for drawing
+  pad1->cd();
+
+  std::string title = "Predicted vs. Observed H_{T}^{Lep} for "+flavor+" "+lepflavor+";H_{T};N_{Events}";
   h_pred->SetTitle(title.c_str());
-  
+  h_pred->SetTitleSize(0.12);
+  h_pred->GetYaxis()->SetTitleOffset(1.4);
+  h_pred->GetYaxis()->CenterTitle();
   h_pred->SetLineColor(kRed+1);
   h_obs->SetMarkerStyle(20);
   h_obs->SetMarkerColor(kBlack);
@@ -84,7 +100,7 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
   h_pred->Draw("hist e");
   h_obs->Draw("pesame");
 
-  TLegend* leg = new TLegend(0.4,0.7,0.9,0.9);
+  TLegend* leg = new TLegend(0.4,0.6,0.9,0.8);
   leg->SetBorderSize(0);
   leg->SetFillStyle(0);
   std::string predleg = "Predicted Events for "+flavor+" "+lepflavor;
@@ -92,6 +108,29 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
   leg->AddEntry(h_obs,obsleg.c_str(),"p");
   leg->AddEntry(h_pred,predleg.c_str(),"l");
   leg->Draw("same");
+
+  //now go to pad2 and draw ratio
+  pad2->cd();
+  TH1F* h_ratio = (TH1F*) h_obs->Clone("h_ratio");
+  h_ratio->Divide(h_pred);
+  h_ratio->GetYaxis()->SetRangeUser(0.5,1.5);
+  h_ratio->GetYaxis()->SetTitle("Obs/Pred");
+  h_ratio->GetYaxis()->SetTitleOffset(0.4);
+  h_ratio->GetYaxis()->SetTitleSize(0.12);
+  h_ratio->GetYaxis()->CenterTitle();
+  h_ratio->GetYaxis()->SetLabelSize(0.10);
+  h_ratio->GetXaxis()->SetTitle("H_{T}^{Lep}");
+  h_ratio->GetXaxis()->SetTitleSize(0.12);
+  h_ratio->GetXaxis()->CenterTitle();
+  h_ratio->GetXaxis()->SetLabelSize(0.10);
+  h_ratio->GetYaxis()->SetNdivisions(205);
+  h_ratio->Draw("pe");
+  TLine* baseline = new TLine(0,1,5000,1);
+  baseline->SetLineColor(kBlack);
+  baseline->SetLineStyle(2);
+  baseline->Draw();
+
+  c->Update();
   c->Print(pdfname.c_str());
   delete c;
 
