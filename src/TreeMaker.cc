@@ -34,6 +34,8 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("JetTaggingSF",&JetTaggingSF_);
 
   tree->Branch("PUWeight",&puweight_);
+  tree->Branch("PUWeightUp",&puweightUp_);
+  tree->Branch("PUWeightDown",&puweightDown_);
 
   tree->Branch("Lep1Eta",&Lep1Eta_);
   tree->Branch("Lep1Phi",&Lep1Phi_);
@@ -237,7 +239,7 @@ void TreeMaker::InitTree(std::string treename){
   tree->Branch("nPV",&nPrimaryVert_);
 }
 
-void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp,float NPaltTemp,float SUSYNPTemp, int nTLtemp, float trSF, float idSF, float isoSF,float gsfSF, float puwtemp,float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc,int run, int lumi, int event,int nPV){
+void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jets, std::vector<TJet*> cleanAK4Jets,std::vector<TJet*> simpleCleanAK4Jets, float HTtemp, float METtemp, float DilepMasstemp, int nMu, float weight, std::vector<TLepton*> vNonSSLep,float mcweight, float NPWeighttemp,float NPaltTemp,float SUSYNPTemp, int nTLtemp, float trSF, float idSF, float isoSF,float gsfSF, float puwtemp,float puUptemp, float puDowntemp, float amasst, std::vector<TBoostedJet*> AK8Jets,std::vector<THadronicGenJet*> hadronicGenJets,bool mc,int run, int lumi, int event,int nPV){
 
   run_=run;
   lumi_=lumi;
@@ -256,6 +258,8 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   IsoSF_ = isoSF;
   gsfSF_ = gsfSF;
   puweight_=puwtemp;
+  puweightUp_ = puUptemp;
+  puweightDown_ = puDowntemp;
 
   assert(vSSLep.size()>1);
 
