@@ -12,8 +12,8 @@
 #include "TMath.h"
 #include "Math/ProbFunc.h"
 
-std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 
 std::vector<Variable*> getVariableVec(){
 
@@ -30,12 +30,12 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(lep1eta);
   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
   vVar.push_back(lep1phi);
-  Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-  vVar.push_back(lep1RelIso);
+  //Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+  //vVar.push_back(lep1RelIso);
   Variable* lep1MiniIso = new Variable("Lep1MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
   vVar.push_back(lep1MiniIso);
-  Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-  vVar.push_back(lep1SusyIso);
+  //Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+  //vVar.push_back(lep1SusyIso);
 
   Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
@@ -43,12 +43,12 @@ std::vector<Variable*> getVariableVec(){
   vVar.push_back(lep2eta);
   Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
   vVar.push_back(lep2phi);
-  Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-  vVar.push_back(lep2RelIso);
+  //Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+  //vVar.push_back(lep2RelIso);
   Variable* lep2MiniIso = new Variable("Lep2MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
   vVar.push_back(lep2MiniIso);
-  Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-  vVar.push_back(lep2SusyIso);
+  //Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+  //vVar.push_back(lep2SusyIso);
 
 
   /*Variable* ak4jet1pt = new Variable("AK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
@@ -213,27 +213,37 @@ std::vector<Variable*> getVariableVec(){
   Variable* nConst = new Variable("nConst",17,0,17,"N_{Const}","N_{Events}");
   vVar.push_back(nConst);
 
-  Variable* nNewConst = new Variable("nNewConst",17,0,17,"N_{Boosted Const}","N_{Events}");
-  vVar.push_back(nNewConst);
+  //Variable* nNewConst = new Variable("nNewConst",17,0,17,"N_{Boosted Const}","N_{Events}");
+  //vVar.push_back(nNewConst);
 
-  Variable* nConstDiff = new Variable("nNewConst - nConst",10,-5,5,"N_{Boosted Const} - N_{Const}","N_{Events}");
-  vVar.push_back(nConstDiff);
+  //Variable* nConstDiff = new Variable("nNewConst - nConst",10,-5,5,"N_{Boosted Const} - N_{Const}","N_{Events}");
+  //vVar.push_back(nConstDiff);
 
-  Variable* NTopTags = new Variable("NTopTags",5,0,5,"N_{Top Tagged Jets}","N_{Events}");
-  vVar.push_back(NTopTags);
+  //Variable* NTopTags = new Variable("NTopTags",5,0,5,"N_{Top Tagged Jets}","N_{Events}");
+  //vVar.push_back(NTopTags);
 
-  Variable* NWTags = new Variable("NWTags",5,0,5,"N_{W Tagged Jets}","N_{Events}");
-  vVar.push_back(NWTags);
+  //Variable* NWTags = new Variable("NWTags",5,0,5,"N_{W Tagged Jets}","N_{Events}");
+  //vVar.push_back(NWTags);
 
-  Variable* X53Mass = new Variable("X53Mass",50,100,2000,"M_{X53}","N_{Events}");
-  vVar.push_back(X53Mass);
+  //Variable* X53Mass = new Variable("X53Mass",50,100,2000,"M_{X53}","N_{Events}");
+  //vVar.push_back(X53Mass);
 
   Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
   vVar.push_back(met);
   Variable* dilepMass = new Variable("DilepMass",20,0,600,"Dilepton Mass (GeV)", "N_{Events} / 30 GeV");
   vVar.push_back(dilepMass);
-  return vVar;
+  
 
+  Variable* nPV = new Variable("nPV",60,0,60,"N_{PV}","N_{Events}/bin");
+  vVar.push_back(nPV);
+
+  Variable* lep1MinDR = new Variable("Lep1MinDR",70,0,7,"Min(#Delta_{R} (Lep1,jet))","N_{Events} / bin");
+  vVar.push_back(lep1MinDR);
+
+  Variable* lep2MinDR = new Variable("Lep2MinDR",70,0,7,"Min(#Delta_{R} (Lep2,jet))","N_{Events} / bin");
+  vVar.push_back(lep2MinDR);
+
+  return vVar;
 }
 
 std::vector<Variable*> getVariableVecForBoosted(){
@@ -1639,20 +1649,21 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 
   //************** MC *************
  //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
-  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398600 * 0.464706);
-  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252673*0.515587);
-  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back(9984160 *0.296787);
-  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(989025 *0.417453);
-  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(2000000 * 1);
+  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(1992438 * 0.465749);
+  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(2160168*0.515109);
+  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back( 3981250*0.981088);
+  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(250000 *0.41856);
+  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1993200 * 1);
   //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
   //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
-  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6638328 * 1);
-  vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 1);
-  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 118350* 1);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6669988* 1);
+  vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(6 * 1);
+  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(149681 * 1);
   vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
-  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(249200*0.885963);
-  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(249800*0.876645);
-  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000* 0.8554);
+  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(246800*0.876686);
+  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(249237* 0.855399);
+  //vBkgNames.push_back("WWW");    vXsec.push_back(0.01398); vNEvts.push_back(240000* 0.8554);
   
   //now make vector to hold weights;
   std::vector<float> vWeights;
@@ -1861,6 +1872,7 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
   //std::string cutstring= " PUWeight* MCWeight*ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
   std::string cutstring= " PUWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight * ChargeMisIDWeight * NPWeight* ( "+cut+channel.str()+")";
 
+
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
   
@@ -1952,11 +1964,11 @@ std::vector<CutClass*> appendCutClassVectors(std::vector<CutClass*> vCC1, std::v
   std::vector<CutClass*> vCC;
   for(unsigned int i =0; i< vCC1.size();i++){
     vCC.push_back(vCC1.at(i));
-    std::cout<<"appending first vector, number "<<i<<" of "<<vCC1.size()<<std::endl;
+    //std::cout<<"appending first vector, number "<<i<<" of "<<vCC1.size()<<std::endl;
   }
   for(unsigned int j=0;j<vCC2.size();j++){
     vCC.push_back(vCC2.at(j));
-    std::cout<<"appending second vector, number "<<j<<" of "<<vCC2.size()<<std::endl;
+    //std::cout<<"appending second vector, number "<<j<<" of "<<vCC2.size()<<std::endl;
   }
   return vCC;
 }
@@ -1976,7 +1988,7 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
     }
     std::vector<float> vEvtsNew, vErrNew;
     for(unsigned int j=0; j< vCC1.at(i)->nEvents.size();j++){
-      std::cout<<"adding events for sample number: "<<i<<" on cut number "<<j<<" of "<<vCC1.at(i)->nEvents.size()<<" cuts for "<<vCC1.size()<<" samples"<<std::endl;
+      //std::cout<<"adding events for sample number: "<<i<<" on cut number "<<j<<" of "<<vCC1.at(i)->nEvents.size()<<" cuts for "<<vCC1.size()<<" samples"<<std::endl;
       vEvtsNew.push_back( vCC1.at(i)->nEvents.at(j) + vCC2.at(i)->nEvents.at(j)); //add the number of events for each
       float errNew = pow( vCC1.at(i)->vErr.at(j)*vCC1.at(i)->vErr.at(j) + vCC2.at(i)->vErr.at(j)*vCC2.at(i)->vErr.at(j), 0.5);
       vErrNew.push_back(errNew);
@@ -2616,10 +2628,10 @@ float getTrigSF(std::vector<TLepton*> vLep){
     float w1 = 0.0;
     float w2 = 0.0;
     //do weight for first electron
-    if(eta1<0.8) w1 = 0.980;
-    else if(eta1<1.5) w1  = 0.986;
+    if(eta1<0.8) w1 = 97.97/99.18; //divide by plateau efficiencies
+    else if(eta1<1.5) w1  = 98.60/99.42; //divide by plateau efficiencies
     else{
-      if(vLep.at(0)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
+      if(vLep.at(0)->pt<40) w1= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function, but MC is in plateau so divide by that
       else w1 = 0.996;
     }
     //weight for second electron

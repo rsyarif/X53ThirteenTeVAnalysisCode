@@ -2301,8 +2301,7 @@ float getMu17EffData(float pt, float abseta){
 float getMu17EffMC(float pt, float abseta){
   float eff = 0.0;
   if(abseta < 0.4){
-    if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.932395;
+    if(pt>200) eff = 0.932395;
     else if(pt>100) eff = 0.944177;
     else if(pt>60) eff = 0.954295 ;
     else if(pt>40) eff = 0.957497;
@@ -2310,8 +2309,7 @@ float getMu17EffMC(float pt, float abseta){
     else eff = 0.958989;
   }
   else if(abseta < 0.9){
-    if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.957081;
+    if(pt>200) eff = 0.957081;
     else if(pt>100) eff = 0.957001;
     else if(pt>60) eff = 0.959748;
     else if(pt>40) eff = 0.962925;
@@ -2319,8 +2317,7 @@ float getMu17EffMC(float pt, float abseta){
     else eff = 0.965838;
   }
   else if(abseta < 1.2){
-    if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.980884;
+    if(pt>200) eff = 0.980884;
     else if(pt>100) eff = 0.972713;
     else if(pt>60) eff = 0.973453;
     else if(pt>40) eff = 0.973526;
@@ -2328,8 +2325,7 @@ float getMu17EffMC(float pt, float abseta){
     else eff =0.972546;
   }
   else if(abseta < 2.1){
-    if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff =  0.932101;
+    if(pt>200) eff =  0.932101;
     else if(pt>100) eff =  0.952838;
     else if(pt>60) eff = 0.954336;
     else if(pt>40) eff = 0.953637;
@@ -2337,8 +2333,7 @@ float getMu17EffMC(float pt, float abseta){
     else eff = 0.951186;
   }
   else if(abseta <= 2.4){
-    if ( pt >=500) eff= 0.0;
-    else if(pt>200) eff = 0.935849;
+    if(pt>200) eff = 0.935849;
     else if(pt>100) eff = 0.943539;
     else if(pt>60) eff = 0.942816;
     else if(pt>40) eff = 0.935807;
@@ -2471,7 +2466,12 @@ float getDimuonEff2016BD(float pt1, float eta1, float phi1, float pt2, float eta
     cond_eff_data = 1.0 - (1.0 - ( getMu17EffData(pt2,eta2) * getMu17EffNearbyPhiData(pt1,eta1) + (1 - getMu17EffData(pt2,eta2) )* getMu17EffData(pt1,eta1) ) ) * (1.0 - getMu17EffData(pt2,eta2) ) ;
     cond_eff_mc = 1.0 - (1.0 - ( getMu17EffMC(pt2,eta2) * getMu17EffNearbyPhiMC(pt1,eta1) + (1 - getMu17EffMC(pt2,eta2) )* getMu17EffMC(pt1,eta1) ) ) * (1.0 - getMu17EffMC(pt2,eta2) ) ;
   }
-  float cond_eff = cond_eff_data / cond_eff_mc;
+  float cond_eff;
+  if(cond_eff_mc!=0) cond_eff= cond_eff_data / cond_eff_mc;
+  else {
+    std::cout<<"mc eff is zero! lep1mu17: "<<getMu17EffMC(pt1,eta1)<<" lep1mu17-np: "<<getMu17EffNearbyPhiMC(pt1,eta1)<<" lep2mu17: "<<getMu17EffMC(pt2,eta2)<<" lep2mu17-np: "<<getMu17EffNearbyPhiMC(pt2,eta2)<<std::endl;
+      cond_eff = 0;
+  }
   float soup_eff = 0.0;    
   if(eta1 > 2.1){
     if(eta2>2.1) soup_eff=0.8947;
