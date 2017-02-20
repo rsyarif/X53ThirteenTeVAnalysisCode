@@ -68,13 +68,23 @@ int main(int argc, char* argv[]){
   filename = samples.find(sample)->second;
 
   
-  TreeReader* tr = new TreeReader(filename.c_str(),mc);
+  TreeReader* tr = new TreeReader(filename.c_str(),mc,false);
   //TreeReader* tr = new TreeReader("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_14/src/LJMet/Com/python/ljmet_test.root",mc);
   TTree* t = tr->tree;
   std::string outname = "FakeRate_"+sample+".root";
 
   TFile* outfile = new TFile(outname.c_str(),"RECREATE");
-
+  TTree* outTree = new TTree("FakeRateByFlavor","FakeRateByFlavor");
+  int flavorSource,lepFlavor,isTight;
+  float lepEta,lepPt,dxy,dz,sip3d;
+  outTree->Branch("LepFlavor",&lepFlavor);
+  outTree->Branch("LepSourceFlavor",&flavorSource);
+  outTree->Branch("LepEta",&lepEta);
+  outTree->Branch("LepPt",&lepPt);
+  outTree->Branch("LepIsTight",&isTight);
+  outTree->Branch("dXY",&dxy);
+  outTree->Branch("dZ",&dz);
+  outTree->Branch("SIP3D",&sip3d);
   TH1F* elNumHist_lpt = new TH1F("elNumHist_lpt","elNumHist_lpt",6,0,6);
   TH1F* elDenHist_lpt = new TH1F("elDenHist_lpt","elDenHist_lpt",6,0,6);
   TH1F* elNumHist_hpt = new TH1F("elNumHist_hpt","elNumHist_hpt",6,0,6);
@@ -121,6 +131,7 @@ int main(int argc, char* argv[]){
       TElectron* iel = electrons.at(i);
       bool loose = false;
       bool tight = false;
+      bool save=false;
       if(elID=="MVA2016TightRC"){
 	loose = iel->mvaJulieLooseRCIso();
 	tight = iel->mva2016TightRCIso();
@@ -134,10 +145,15 @@ int main(int argc, char* argv[]){
       if(iel->pt<25) continue;
       //skip if not at least loose
       if(!loose) continue;
-
-      //make sure it is not matched to a gen electron
-      //bool matched = matchToGenLep(iel, tr->genParticles);
-      //if(matched) continue;
+      //save variables for tree
+      isTight=tight;
+      lepPt=iel->pt;
+      lepEta=iel->eta;
+      lepFlavor=0;
+      dxy=iel->d0;
+      dz=iel->dZ;
+      sip3d=iel->SIP3d;
+      //get closest gen particle
       TGenParticle* gp = getMatchedGenParticle(iel,tr->genParticles);	
       
       float dR = pow( pow(gp->eta - iel->eta,2) + pow(gp->phi - iel->phi,2), 0.5);
@@ -156,8 +172,10 @@ int main(int argc, char* argv[]){
 
       //now by bin - first unmatched
       if(dR>0.3){//unmatched
-	  std::cout<<"UNMATCHED Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<" promptMotherID: "<<gp->PromptMotherId<<std::endl;
-	  if(tight) std::cout<<"UNMATCHED Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
+	save=true;
+	flavorSource=4;
+	//std::cout<<"UNMATCHED Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<" promptMotherID: "<<gp->PromptMotherId<<std::endl;
+	//if(tight) std::cout<<"UNMATCHED Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
 	elDenHist_all->Fill(4.5,eventweight);
 	if(iel->pt>35) elDenHist_hpt->Fill(4.5,eventweight);
 	else elDenHist_lpt->Fill(4.5,eventweight);
@@ -170,9 +188,11 @@ int main(int argc, char* argv[]){
       }//end if about unmatched
       else{ 
 	if(fabs(gp->id)!=11){//fake electron
+	  save=true;
+	  flavorSource=3;
 	  elDenHist_all->Fill(3.5,eventweight);
-	  std::cout<<"FAKE Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherID: "<<gp->PromptMotherId<<std::endl;
-	  if(tight) std::cout<<"FAKE Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
+	  //std::cout<<"FAKE Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherID: "<<gp->PromptMotherId<<std::endl;
+	  //if(tight) std::cout<<"FAKE Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
 	  if(iel->pt>35) elDenHist_hpt->Fill(3.5,eventweight);
 	  else elDenHist_lpt->Fill(3.5,eventweight);
 	  if(tight){
@@ -185,8 +205,9 @@ int main(int argc, char* argv[]){
 	  if(gp->isPrompt || gp->isFromPromptTau) continue; //skip prompt electrons or electrons from prompt taus
 	  //std::cout<<"REAL Electron Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<" promptMotherID: "<<gp->PromptMotherId<<std::endl;
 	  //if(tight) std::cout<<"REAL Electron passes tight ID with pT: "<<iel->pt<<" mva value: "<<iel->mvaValue<<" miniIso: "<<iel->miniIso<<std::endl;
-	  
+	  save=true;
 	  if(gp->PromptMotherHasB){
+	    flavorSource=2;
 	    elDenHist_all->Fill(2.5,eventweight);	   
 	    if(iel->pt>35) elDenHist_hpt->Fill(2.5,eventweight);
 	    else elDenHist_lpt->Fill(2.5,eventweight);
@@ -197,6 +218,7 @@ int main(int argc, char* argv[]){
 	    }
 	  }//end matched to b quarks
 	  else if(gp->PromptMotherHasC){
+	    flavorSource=1;
 	    elDenHist_all->Fill(1.5,eventweight);	   
 	    if(iel->pt>35) elDenHist_hpt->Fill(1.5,eventweight);
 	    else elDenHist_lpt->Fill(1.5,eventweight);
@@ -207,6 +229,7 @@ int main(int argc, char* argv[]){
 	    }
 	  }//end matched to c quarks
 	  else {// light quarks/gluons
+	    flavorSource=0;
 	    elDenHist_all->Fill(0.5,eventweight);	   
 	    if(iel->pt>35) elDenHist_hpt->Fill(0.5,eventweight);
 	    else elDenHist_lpt->Fill(0.5,eventweight);
@@ -219,12 +242,18 @@ int main(int argc, char* argv[]){
 	  
 	}//end check on real electrons
       }//end matched electrons
+
+      //fill tree for each nonPrompt electron
+      if(save){
+	outTree->Fill();
+      }
+
     }//electron loop
     
     std::vector<TMuon*> muons = tr->allMuons;
     for(unsigned int i=0; i<muons.size(); i++){
       TMuon* imu = muons.at(i);
-
+      bool save=false;
       bool loose=false;
       bool tight=false;
       if(muID=="CBTight"){
@@ -245,9 +274,15 @@ int main(int argc, char* argv[]){
       //skip if not at least loose
       if(!loose) continue;
 
-      //make sure it is not matched to a gen electron
-      /*bool matched = matchToGenLep(imu, tr->genParticles);
-	if(matched) continue;*/
+      //set variables for tree
+      lepPt=imu->pt;
+      isTight=tight;
+      lepEta=imu->eta;
+      lepFlavor=1;
+      dxy=imu->dxy;
+      dz=imu->dz;
+      sip3d=imu->SIP3d;
+      //get closest gen particle
       TGenParticle* gp = getMatchedGenParticle(imu,tr->genParticles);	
       
       float dR = pow( pow(gp->eta - imu->eta,2) + pow(gp->phi - imu->phi,2), 0.5);
@@ -267,8 +302,10 @@ int main(int argc, char* argv[]){
 
       //now do by bins, first unmatched
       if(dR>0.3){//unmatched
-	std::cout<<"UNMATCHED Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
-	if(tight) std::cout<<"UNMATCHED Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
+	save=true;
+	flavorSource=4;
+	//std::cout<<"UNMATCHED Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
+	//if(tight) std::cout<<"UNMATCHED Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
 
 	muDenHist_all->Fill(4.5,eventweight);
 	if(imu->pt>35) muDenHist_hpt->Fill(4.5,eventweight);
@@ -282,8 +319,10 @@ int main(int argc, char* argv[]){
       }//end if about unmatched
       else{ 
 	if(fabs(gp->id)!=13){//fake muon
-	  std::cout<<"FAKE Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
-	  if(tight) std::cout<<"FAKE Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
+	  save=true;
+	  flavorSource=3;
+	  //std::cout<<"FAKE Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
+	  //if(tight) std::cout<<"FAKE Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
 	  muDenHist_all->Fill(3.5,eventweight);	   
 	  if(imu->pt>35) muDenHist_hpt->Fill(3.5,eventweight);
 	  else muDenHist_lpt->Fill(3.5,eventweight);
@@ -297,8 +336,9 @@ int main(int argc, char* argv[]){
 	  if(gp->isPrompt || gp->isFromPromptTau) continue; //skip prompt muons or muons from prompt taus
 	  //std::cout<<"REAL Muon Closest Gen Particle Info: dR = "<<dR<<"; id = "<<gp->id<<"; status = "<<gp->status<<"; motherId = "<<gp->motherId<<"; promptMotherId: "<<gp->PromptMotherId<<std::endl;
 	  //if(tight) std::cout<<"REAL Muon passes tight ID with pT: "<<imu->pt<<" relIso: "<<imu->relIso<<std::endl;
-	  
+	  save=true;
 	  if(gp->PromptMotherHasB){
+	    flavorSource=2;
 	    muDenHist_all->Fill(2.5,eventweight);	   
 	    if(imu->pt>35) muDenHist_hpt->Fill(2.5,eventweight);
 	    else muDenHist_lpt->Fill(2.5,eventweight);
@@ -307,8 +347,9 @@ int main(int argc, char* argv[]){
 	      if(imu->pt>35) muNumHist_hpt->Fill(2.5,eventweight);
 	      else muNumHist_lpt->Fill(2.5,eventweight);
 	    }
-	  }//end matched to b quarks
+	  }//end matched to c quarks
 	  else if(gp->PromptMotherHasC){
+	    flavorSource=1;
 	    muDenHist_all->Fill(1.5,eventweight);	   
 	    if(imu->pt>35) muDenHist_hpt->Fill(1.5,eventweight);
 	    else muDenHist_lpt->Fill(1.5,eventweight);
@@ -319,6 +360,7 @@ int main(int argc, char* argv[]){
 	    }
 	  }//end matched to c quarks
 	  else {// light quarks/gluons
+	    flavorSource=0;
 	    muDenHist_all->Fill(0.5,eventweight);	   
 	    if(imu->pt>35) muDenHist_hpt->Fill(0.5,eventweight);
 	    else muDenHist_lpt->Fill(0.5,eventweight);
@@ -332,6 +374,9 @@ int main(int argc, char* argv[]){
 	}//end check on real muons
       }//end matched muons
 
+      if(save){
+	outTree->Fill();
+      }
 
     }//muon loop
 
@@ -383,7 +428,7 @@ int main(int argc, char* argv[]){
   outfile->Append(muDenHist_lpt);
   outfile->Append(muDenHist_hpt);
   outfile->Append(muDenHist_all);
- 
+  outfile->WriteTObject(outTree);
   outfile->Write();
 
   return 0;
