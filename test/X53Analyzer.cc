@@ -41,8 +41,8 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Moriond17/25ns/Feb01/ljmet_trees/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb01/ljmet_trees/";
 
   if(argc!=5) return 0;
   std::string argv1=argv[1];
@@ -274,7 +274,7 @@ int main(int argc, char* argv[]){
   tm_DilepMassCut->InitTree("tEvts_DilepMassCut");
 
   TreeReader* tr;
-  tr = new TreeReader(filename.c_str(),!data);
+  tr = new TreeReader(filename.c_str(),!data,true);
   
   TTree* t=tr->tree;
 
@@ -487,7 +487,9 @@ int main(int argc, char* argv[]){
     if(ient % 100000 ==0) std::cout<<"Completed "<<ient<<" out of "<<nEntries<<" events"<<std::endl;
     
     tr->GetEntry(ient);
-    
+    if(tr->run==275370 && tr->lumi==194 && tr->event==237865439){
+      std::cout<<"processing triple counted event in sample: "<<argv[1]<<std::endl;
+    }
     //weight for non prompt method
     float NPweight=0;
     float NPAltWeight=0;
@@ -623,9 +625,9 @@ int main(int argc, char* argv[]){
     
     if(skip) continue;
     //now skip if not the channel from the corresponding dataset
-    if((argv1=="DataMuMu" || argv1=="NonPromptDataMuMu") && !mumu) continue;
-    if((argv1=="DataElMu" || argv1=="NonPromptDataElMu" || argv1=="ChargeMisIDElMu") && !elmu) continue;
-    if((argv1=="DataElEl" || argv1=="NonPromptDataElEl" || argv1=="ChargeMisIDElEl") && !elel) continue;
+    if((argv1.find("DataMuMu")!=std::string::npos || argv1.find("NonPromptDataMuMu")!=std::string::npos) && !mumu) continue;
+    if((argv1.find("DataElMu")!=std::string::npos || argv1.find("NonPromptDataElMu")!=std::string::npos || argv1.find("ChargeMisIDElMu")!=std::string::npos) && !elmu) continue;
+    if((argv1.find("DataElEl")!=std::string::npos || argv1.find("NonPromptDataElEl")!=std::string::npos || argv1.find("ChargeMisIDElEl")!=std::string::npos) && !elel) continue;
 
     //now veto on bad events from met scanners - already done at ljmet for 80X
     bool badEvent = false;
@@ -655,8 +657,6 @@ int main(int argc, char* argv[]){
     if(badEvent) {std::cout<<"filtering bad event - run: "<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;continue;}
     
 
-    //now veto on dielectron events coming from Z bosons
-    //if(elel && (dilepMass>71.1 && dilepMass<111.1)) continue;
 
     //fill muon trigger histograms
     if(mumu){
@@ -849,7 +849,17 @@ int main(int argc, char* argv[]){
 	else {NPweight = WeightOF_T00(elPR,elFR,muPR,muFR); TL=0;}//otherwise both are loose
       }
     }//end np check
+
+
+    //DEBUGGIN STATEMENTS TO UNDERSTAND TL ASSIGNMENT
+    if(HT>900){ //just to lessen the number of events
       
+      if(bg_np) std::cout<<"Check for NonPrompt -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
+      else std::cout<<"Check for signal -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
+      std::cout<<"Lep1 tight: "<<vSSLep.at(0)->Tight<<" Lep2Tight"<<vSSLep.at(1)->Tight<<" TL: "<<TL<<std::endl;
+      
+    }
+
     //get pileup weight;
     float puweight=-11;
     if(data) puweight=1;
