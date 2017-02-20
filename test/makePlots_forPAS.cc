@@ -40,8 +40,8 @@ void makePlots_forPAS(std::string elID, std::string muID){
   
  
   //desired lumi:
-  float lumi1 = 12.9; //fb^-1  
-  float lumi2 = 23.9; //fb^-1  
+  float lumi1 = 12.6; //fb^-1  
+  float lumi2 = 23.2; //fb^-1  
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
@@ -532,7 +532,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"36.8 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"35.8 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
@@ -1025,10 +1025,10 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
   if(era=="2016B-D"){
-    lumitex->DrawLatex(0.65,0.96,"12.9 fb^{-1} (13 TeV)");
+    lumitex->DrawLatex(0.65,0.96,"12.6 fb^{-1} (13 TeV)");
   }
   else{
-    lumitex->DrawLatex(0.65,0.96,"23.9 fb^{-1} (13 TeV)");
+    lumitex->DrawLatex(0.65,0.96,"23.2 fb^{-1} (13 TeV)");
   }
   //draw latex for channels
   TLatex* chantex = new TLatex();
