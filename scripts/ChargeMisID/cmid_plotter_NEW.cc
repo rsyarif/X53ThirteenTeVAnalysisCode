@@ -55,13 +55,14 @@ void cmid_plotter_NEW(){
   text1->SetX(0.354);
   text2->SetX(0.354);
   std::vector<TString> eras; eras.push_back("2016B");eras.push_back("2016C");eras.push_back("2016D");eras.push_back("2016E");eras.push_back("2016F");eras.push_back("2016G");eras.push_back("2016H2");eras.push_back("2016H3");eras.push_back("All");
-
+  std::vector<TString> IDs; IDs.push_back("MVA2016TightRC");//IDs.push_back("MVATightRC"); IDs.push_back("MVA80XTightRC");IDs.push_back("MVAJulieTightRC"); IDs.push_back("MVAJulieNewTightRC");
+  for(unsigned int k=0; k<IDs.size();k++){ TString elID = IDs.at(k);
   for(unsigned int l=0; l< eras.size();l++){
 
     //open file
-    TFile* f = new TFile("../../test/ChargeMisID_Data_"+eras.at(l)+"_Electrons_MVATightRC.root");
+    TFile* f = new TFile("../../test/ChargeMisID_Data_"+eras.at(l)+"_Electrons_"+elID+".root");
     //outfile
-    TFile* fout = new TFile("ChargeMisID_Data_"+eras.at(l)+"_Electrons_MVATightRC_corrected.root","RECREATE");
+    TFile* fout = new TFile("ChargeMisID_Data_"+eras.at(l)+"_Electrons_"+elID+"_corrected.root","RECREATE");
     //get tree
     TTree* t = (TTree*) f->Get("ChargeMisID");
   
@@ -107,10 +108,11 @@ void cmid_plotter_NEW(){
 	}      
       }//end check on low pT
     }//end loop over tree
-    float cmid_lpt = nSS_lpt / nAll_lpt;
-    //now divide to get rate
+    float cmid_lpt = 0.5*nSS_lpt / nAll_lpt;
+    //now divide to get rate and scale by 0.5
     h_num_lpt->Sumw2();
     h_num_lpt->Divide(h_den_lpt);
+    h_num_lpt->Scale(0.5);
     
     TCanvas* c = new TCanvas();
     
@@ -246,7 +248,7 @@ void cmid_plotter_NEW(){
     text1->Draw();
     text2->Draw();
     fout->Append(h_hpt_32);
-    c->Print("ChargeMisID_vAbsEta_hpt_corr_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_vAbsEta_hpt_corr_"+eras.at(l)+"_"+elID+".pdf");
     
     
     TH1F* h_hhpt_32 = (TH1F*) h_num_hhpt->Clone("hhpt_final");
@@ -269,7 +271,7 @@ void cmid_plotter_NEW(){
     h_hhpt_32->Draw("pe");
     text1->Draw();
     text2->Draw();
-    c->Print("ChargeMisID_vAbsEta_hhpt_corr_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_vAbsEta_hhpt_corr_"+eras.at(l)+"_"+elID+".pdf");
     fout->Append(h_hhpt_32);
     
     h_num_lpt->SetMarkerStyle(20);
@@ -284,7 +286,7 @@ void cmid_plotter_NEW(){
     text1->Draw();
     text2->Draw();
     fout->Append(h_num_lpt);
-    c->Print("ChargeMisID_vAbsEta_lpt_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_vAbsEta_lpt_"+eras.at(l)+"_"+elID+".pdf");
     
     
     c->SetLogy();
@@ -308,7 +310,7 @@ void cmid_plotter_NEW(){
     h_numpt_hhpt->Draw("pe same");
     text1->Draw();
     text2->Draw();
-    c->Print("ChargeMisID_vPT_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_vPT_"+eras.at(l)+"_"+elID+".pdf");
     TH1F* h_pt_final = (TH1F*) h_numpt_hpt->Clone("h_pt_final");
     //correct bins by hand
     h_pt_final->SetBinContent(1,cmid_lpt);
@@ -353,7 +355,7 @@ void cmid_plotter_NEW(){
 	}
       } 
     }//end event loop
-    
+      
     
     TH1F* h_hmpt_32 = (TH1F*) h_num_hmpt->Clone("hmpt_final");
     //h_hmpt_32->Sumw2();                                                                                                                                                                                            
@@ -375,7 +377,7 @@ void cmid_plotter_NEW(){
     h_hmpt_32->Draw("pe");
     text1->Draw();
     text2->Draw();
-    c->Print("ChargeMisID_vAbsEta_hmpt_corr_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_vAbsEta_hmpt_corr_"+eras.at(l)+"_"+elID+".pdf");
     fout->Append(h_hmpt_32);      
     
     
@@ -390,11 +392,13 @@ void cmid_plotter_NEW(){
     leg->AddEntry(h_hmpt_32,"medium-high pairing","p");
     leg->AddEntry(h_hhpt_32,"low-high pairing","p");
     leg->Draw("same");
-    c->Print("ChargeMisID_PairComparison_hhpt_"+eras.at(l)+".pdf");
+    c->Print("ChargeMisID_PairComparison_hhpt_"+eras.at(l)+"_"+elID+".pdf");
     
     fout->Write();
     //fout->Close();
   }
+
+  }//end loop on IDs
 }
 
 
