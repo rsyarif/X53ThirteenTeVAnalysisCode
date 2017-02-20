@@ -316,7 +316,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_ttz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_ttz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttz->GetBinContent(ibin),2); //id plus iso
@@ -324,7 +324,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.19*h_ttw->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttw->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_ttw->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_ttw->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttw->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttw->GetBinContent(ibin),2); //id plus iso
@@ -332,7 +332,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.30*h_tth->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tth->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_tth->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_tth->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tth->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tth->GetBinContent(ibin),2); //id plus iso
@@ -340,7 +340,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.5*h_tttt->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_tttt->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_tttt->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tttt->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tttt->GetBinContent(ibin),2); //id plus iso
@@ -348,7 +348,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.24*h_wz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wz->GetBinContent(ibin),2); //id plus iso
@@ -356,7 +356,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.10*h_zz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_zz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_zz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_zz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zz->GetBinContent(ibin),2); //id plus iso
@@ -364,7 +364,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.50*h_wpwp->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wpwp->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wpwp->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wpwp->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wpwp->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wpwp->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wpwp->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wpwp->GetBinContent(ibin),2); //id plus iso
@@ -372,7 +372,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.50*h_wwz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wwz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wwz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wwz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wwz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wwz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wwz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wwz->GetBinContent(ibin),2); //id plus iso
@@ -380,7 +380,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.50*h_wzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wzz->GetBinContent(ibin),2); //id plus iso
@@ -388,7 +388,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp = etemp + pow(0.50*h_zzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_zzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_zzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_zzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso
@@ -815,7 +815,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.12*h_ttz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_ttz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_ttz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttz->GetBinContent(ibin),2); //id plus iso
@@ -823,7 +823,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.19*h_ttw->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_ttw->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_ttw->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_ttw->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_ttw->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_ttw->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_ttw->GetBinContent(ibin),2); //id plus iso
@@ -831,7 +831,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.30*h_tth->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tth->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_tth->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_tth->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tth->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tth->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tth->GetBinContent(ibin),2); //id plus iso
@@ -839,7 +839,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.5*h_tttt->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_tttt->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_tttt->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_tttt->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_tttt->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_tttt->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_tttt->GetBinContent(ibin),2); //id plus iso
@@ -847,7 +847,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.24*h_wz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wz->GetBinContent(ibin),2); //id plus iso
@@ -855,7 +855,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.10*h_zz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.04*h_zz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_zz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_zz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zz->GetBinContent(ibin),2); //id plus iso
@@ -863,7 +863,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.50*h_wpwp->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wpwp->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wpwp->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wpwp->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wpwp->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wpwp->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wpwp->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wpwp->GetBinContent(ibin),2); //id plus iso
@@ -871,7 +871,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.50*h_wwz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wwz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wwz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wwz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wwz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wwz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wwz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wwz->GetBinContent(ibin),2); //id plus iso
@@ -879,7 +879,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.50*h_wzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_wzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_wzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_wzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_wzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_wzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_wzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_wzz->GetBinContent(ibin),2); //id plus iso
@@ -887,7 +887,7 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
     etemp = etemp + pow(0.50*h_zzz->GetBinContent(ibin),2); //MC
     etemp = etemp + pow(0.09*h_zzz->GetBinContent(ibin),2); //JES
     etemp = etemp + pow(0.02*h_zzz->GetBinContent(ibin),2); //JER
-    etemp = etemp + pow(0.062*h_zzz->GetBinContent(ibin),2); //lumi
+    etemp = etemp + pow(0.026*h_zzz->GetBinContent(ibin),2); //lumi
     etemp = etemp + pow(0.06*h_zzz->GetBinContent(ibin),2); //pileup
     etemp = etemp + pow(0.03*h_zzz->GetBinContent(ibin),2); //trigger
     etemp = etemp + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso
