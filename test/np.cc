@@ -106,7 +106,7 @@ float getNEvents(TTree* t, int nMu, std::string cut, bool weight){
   return nEvts;
 };
 
-void np(std::string htCut="900",TString elID="MVATightRC",TString muID = "CBTightMiniIso"){
+void np(std::string htCut="1200",TString elID="MVA2016TightRC",TString muID = "CBTightMiniIsoTight"){
 
   TFile* f = new TFile("NonPromptData_Mu"+muID+"_El"+elID+"_2016B-D.root");
   TTree* t = (TTree*) f->Get("tEvts_sZVeto");
@@ -166,8 +166,8 @@ void np(std::string htCut="900",TString elID="MVATightRC",TString muID = "CBTigh
     std::cout<<"nt00: "<<nt00_1+nt00_2<<std::endl;
     std::cout<<"nt01: "<<nt01_1+nt01_2<<std::endl;
     std::cout<<"nt10: "<<nt10_1+nt10_2<<std::endl;
-    //std::cout<<"nt11: "<<nt11_1+nt00_2<<std::endl; - BLINDED FOR NOW
-    std::cout<<"nt11: XX"<<std::endl;
+    std::cout<<"nt11: "<<nt11_1+nt00_2<<std::endl;// - BLINDED FOR NOW
+    //std::cout<<"nt11: XX"<<std::endl;
     std::cout<<"total bkg: "<<nbkg_1+nbkg_2<<std::endl;
     TRandom* rand = new TRandom();
     TH1F* h_tot;
