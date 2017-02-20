@@ -12,12 +12,12 @@ def getSSDLModel2016BD():
     for proc in procs:
         
     #data driven
-        if(proc=="NonPrompt"):
+        if(proc=="FakeRate"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
-        elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
+        elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
@@ -87,7 +87,7 @@ def getSSDLModel2016BD():
     return model
 
 
-def getSSDLModel_2016EH():
+def getSSDLModel2016EH():
     model = build_model_from_rootfile('SSDLROOTFILE2016EH',include_mc_uncertainties=True)
 
 
@@ -99,12 +99,12 @@ def getSSDLModel_2016EH():
     for proc in procs:
         
     #data driven
-        if(proc=="NonPrompt"):
+        if(proc=="FakeRate"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
-        elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
+        elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
@@ -173,13 +173,13 @@ def getSSDLModel_2016EH():
 
     return model
 
-ssdlModel1 = getSSDLModel2016BD()
-ssdlModel12= getSSDLModel2016EH()
+ssdlModel = getSSDLModel2016BD()
+ssdlModel2= getSSDLModel2016EH()
 
 
-ssdlModel1.combine(ssdlModel2)
+ssdlModel.combine(ssdlModel2)
                                         
-model_summary(ssdlModel1)
+model_summary(ssdlModel)
 
 #Bayesian Limits
 plot_exp, plot_obs = bayesian_limits(ssdlModel,'all', n_toy = 5000, n_data = 500)

@@ -12,12 +12,12 @@ def getSSDLModel2016BD():
     for proc in procs:
         
     #data driven
-        if(proc=="NonPrompt"):
+        if(proc=="FakeRate"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
-        elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
+        elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
@@ -115,12 +115,12 @@ def getSSDLModel2016EH():
     for proc in procs:
         
     #data driven
-        if(proc=="NonPrompt"):
+        if(proc=="FakeRate"):
             model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.25),proc)
     #background MC
-        elif(proc!="NonPrompt" and proc!='ChargeMisID' and proc!='sig'):
+        elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
