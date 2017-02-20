@@ -20,8 +20,8 @@ class TreeReader{
  public:
 
   //constructor and desctructor
-  TreeReader(TTree *tree,bool mc);
-  TreeReader(const TString &filename,bool mc);
+  TreeReader(TTree *tree,bool mc,bool latestVers);
+  TreeReader(const TString &filename,bool mc,bool latestVers);
   virtual ~TreeReader();
 
   //high level collections
@@ -41,6 +41,7 @@ class TreeReader{
 
   TTree* tree;
   bool isMc;
+  bool latestVersion;
   //function to get the data
   Int_t GetEntry(Long64_t entry);
   //initialize the tree

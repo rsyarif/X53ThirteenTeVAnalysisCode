@@ -1,19 +1,21 @@
 #include "../interface/TreeReader.h"
 
-TreeReader::TreeReader(const TString &filename,bool mc)
+TreeReader::TreeReader(const TString &filename,bool mc,bool latestVers)
 {
 
   TFile *f = TFile::Open(filename);
   f->cd();
   TTree *treetemp = (TTree*)gDirectory->Get("ljmet");
   isMc=mc;
+  latestVersion=latestVers;
   Init(treetemp);
   
 }
 
-TreeReader::TreeReader(TTree *treetemp,bool mc)
+TreeReader::TreeReader(TTree *treetemp,bool mc,bool latestVers)
 {
   isMc=mc;
+  latestVersion=latestVers;
   Init(treetemp);
 }
 TreeReader::~TreeReader(){
@@ -110,7 +112,7 @@ Int_t TreeReader::GetEntry(Long64_t entry){
     float scaleDownPt=(*cleanedAK4JetPt)[i];
     float smearUpPt=(*cleanedAK4JetPt)[i];
     float smearDownPt=(*cleanedAK4JetPt)[i];
-    if(isMc){
+    if(isMc && latestVersion){
       //add collections for smeared/scaled jets for MC
       scaleUpPt = (*cleanedAK4JetPtScaleUp)[i];
       scaleDownPt = (*cleanedAK4JetPtScaleDown)[i];
