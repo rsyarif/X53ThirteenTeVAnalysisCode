@@ -9,6 +9,11 @@ float weight(float fr){
   return weight;
 };
 
+int getBin(TH1F* h, float val){
+  int bin = h->FindBin(val);
+  return val;
+}
+
 void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string flavor, std::string lepflavor){
 
   //rebin, currently bins are 5 GeV so rebin by 20 to make 100 GeV bins
