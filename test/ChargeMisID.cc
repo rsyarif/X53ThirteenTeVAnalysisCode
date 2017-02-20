@@ -63,7 +63,7 @@ int main(int argc, char* argv[]){
     else if(argv2=="2016H3") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
   }
   else if(argv1=="MC" && argv2=="50ns") {filename="root://cmseos.fnal.gov//store/user/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/clint/Spring15/25ns/Jan09/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str(),!data);
+  TreeReader* tr= new TreeReader(filename.c_str(),false);
   TTree* t=tr->tree;
 
   //now change back to output file
