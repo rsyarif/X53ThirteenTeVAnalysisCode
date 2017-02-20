@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
   TString filename;                                
   if(data && !fr) filename = "root://cmseos.fnal.gov//store/user/clint/Run2016/July20/ljmet_trees/ljmet_Data_ElMu.root";
   else if(argv1.find("DataFR")!=std::string::npos) filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/FakeRate/25ns/June18/ljmet_trees/ljmet_FakeRate_Mu.root";
-  else filename = "root://cmseos.fnal.gov//store/user/clint/Spring16/25ns/Dec14/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
+  else filename = "root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_X53X53m"+mass+chirality+"_Inc.root";
                   
   //load in tree reader
   TreeReader* tr = new TreeReader(filename,!data);
