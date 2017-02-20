@@ -121,24 +121,24 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
     }
     else if(cutIndex==3){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }
   std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
@@ -620,24 +620,24 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
     }
     else if(cutIndex==3){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
+      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
   }
   else {
     if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && cleanAK4HT < 900 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
   }
   std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
