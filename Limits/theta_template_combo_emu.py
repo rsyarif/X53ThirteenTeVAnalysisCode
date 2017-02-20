@@ -20,7 +20,7 @@ def getSSDLModel2016BD():
         elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
-            model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
+            model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
             model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
@@ -82,7 +82,7 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('JetRes',math.log(1.01),proc)
             model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
-            model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
+            model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)                                        
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
             model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
@@ -116,7 +116,7 @@ def getSSDLModel2016EH():
         elif(proc!="FakeRate" and proc!='ChargeMisID' and proc!='sig'):
         #Common
             model.add_lognormal_uncertainty('pileup',math.log(1.06),proc)
-            model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)
+            model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
             model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
@@ -178,7 +178,7 @@ def getSSDLModel2016EH():
             model.add_lognormal_uncertainty('JetRes',math.log(1.01),proc)
             model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
-            model.add_lognormal_uncertainty('lumi',math.log(1.12),proc)                                        
+            model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)                                        
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
             model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
