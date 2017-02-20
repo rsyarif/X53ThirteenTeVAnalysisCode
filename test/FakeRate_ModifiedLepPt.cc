@@ -145,7 +145,7 @@ int main(int argc, char* argv[]){
 
     //output tree
     TTree* outTree = new TTree("FakeRate","FakeRate");
-    float LepPt_,LepEta_,LepPhi_,LepE_,LepMiniIso_,LepMinDR_,LepSusyIso_,m_T;
+    float LepPt_,LepEta_,LepPhi_,LepE_,LepMiniIso_,LepMinDR_,LepSusyIso_,m_T,MET;
     int LepIsLoose_,LepIsTight_,LepCharge_;
     outTree->Branch("LepPt",&LepPt_);
     outTree->Branch("LepEta",&LepEta_);
@@ -158,6 +158,7 @@ int main(int argc, char* argv[]){
     outTree->Branch("LepIsTight",&LepIsTight_);
     outTree->Branch("LepMinDR",&LepMinDR_);
     outTree->Branch("mT",&m_T);
+    outTree->Branch("MET",&MET);
 
     //get tree reader to read in data
     TreeReader* tr= new TreeReader(filenames.at(i).c_str(),false);
@@ -213,8 +214,8 @@ int main(int argc, char* argv[]){
       //if( !(lep->pt < 35 && lep->pt>25)) continue;
       etaHist_all->Fill(lep->eta);
 
-      //make sure not much met in event to veto on leptons from Ws
-      if(tr->MET > 25) continue;
+      //make sure not much met in event to veto on leptons from Ws -relaxed for now to do more in depth studies
+      //if(tr->MET > 25) continue;
       etaHist_MET->Fill(lep->eta);
       //std::cout<<"lepton eta after MET cut : "<<lep->eta<<std::endl;      
       //check transverse mass is less than 25 GeV
@@ -262,6 +263,7 @@ int main(int argc, char* argv[]){
       LepIsTight_ = (int) lep->Tight;
       LepIsLoose_ = (int) lep->Loose;
       m_T = mt;
+      MET = tr->MET;
       //find minDR
       float minDR=999;
       for(unsigned int i=0; i< tr->cleanedAK4Jets.size();i++){
