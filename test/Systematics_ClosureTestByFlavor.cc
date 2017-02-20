@@ -54,10 +54,19 @@ int main(int argc, char* argv[]){
 
   //treereader
   bool mc = true;
-  TreeReader* tr = new TreeReader(inputname.c_str(),mc);
+  TreeReader* tr = new TreeReader(inputname.c_str(),mc,false);
   TTree* t = tr->tree;
   //output file
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
+  TTree* outTree = new TTree("ClosureTest","ClosureTest");
+  float st,lepEta,lepPt;
+  int lepFlavor,flavorSource,observed;
+  outTree->Branch("HT",&st);
+  outTree->Branch("LepPt",&lepPt);
+  outTree->Branch("LepEta",&lepEta);
+  outTree->Branch("LepFlavor",&lepFlavor);
+  outTree->Branch("LepFlavorSource",&flavorSource);
+  outTree->Branch("Observed",&observed);
   //histograms
   TH1F* h_el_obs_light = new TH1F("h_el_obs_light","",1000,0,5000);
   TH1F* h_el_obs_charm = new TH1F("h_el_obs_charm","",1000,0,5000);
@@ -167,7 +176,7 @@ int main(int argc, char* argv[]){
     if(secondaryZVeto) continue;
 
 
-    float st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
+    st = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
     for(unsigned int j=0; j < vNonSSLep.size(); j++){
       st = st + vNonSSLep.at(j)->pt;
     }
@@ -206,41 +215,49 @@ int main(int argc, char* argv[]){
       if(!t1) continue;
       //get flavor of lepton source
       TLepton::flavor source = vSSLep.at(1)->SourceFlavor;
+      lepPt=vSSLep.at(1)->pt;
+      lepEta=vSSLep.at(1)->eta;
       
       //separate into 'observed' where both are tight, and 'predicted' where fake lepton is loose only
       if(t2){ //lep2 is tight so this is 'observed'
+	observed=1;
 	//now fill observed histograms by flavor
 	if(vSSLep.at(1)->isEl){	
-	  if(source==TLepton::flavor::Light) {h_el_obs_light->Fill(st);h_pt_el_obs_light->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_el_obs_charm->Fill(st);h_pt_el_obs_charm->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_el_obs_bottom->Fill(st);h_pt_el_obs_bottom->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_el_obs_fake->Fill(st);h_pt_el_obs_fake->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_el_obs_unm->Fill(st);h_pt_el_obs_unm->Fill(vSSLep.at(1)->pt);}
+	  lepFlavor=0;
+	  if(source==TLepton::flavor::Light) {h_el_obs_light->Fill(st);h_pt_el_obs_light->Fill(vSSLep.at(1)->pt); flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_el_obs_charm->Fill(st);h_pt_el_obs_charm->Fill(vSSLep.at(1)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_el_obs_bottom->Fill(st);h_pt_el_obs_bottom->Fill(vSSLep.at(1)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_el_obs_fake->Fill(st);h_pt_el_obs_fake->Fill(vSSLep.at(1)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_el_obs_unm->Fill(st);h_pt_el_obs_unm->Fill(vSSLep.at(1)->pt);flavorSource=4;}
 	}
 	else{
-	  if(source==TLepton::flavor::Light) {h_mu_obs_light->Fill(st); h_pt_mu_obs_light->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_mu_obs_charm->Fill(st);h_pt_mu_obs_charm->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_mu_obs_bottom->Fill(st);h_pt_mu_obs_bottom->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_mu_obs_fake->Fill(st);h_pt_mu_obs_fake->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_mu_obs_unm->Fill(st);h_pt_mu_obs_unm->Fill(vSSLep.at(1)->pt);}
+	  lepFlavor=1;
+	  if(source==TLepton::flavor::Light) {h_mu_obs_light->Fill(st); h_pt_mu_obs_light->Fill(vSSLep.at(1)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_mu_obs_charm->Fill(st);h_pt_mu_obs_charm->Fill(vSSLep.at(1)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_mu_obs_bottom->Fill(st);h_pt_mu_obs_bottom->Fill(vSSLep.at(1)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_mu_obs_fake->Fill(st);h_pt_mu_obs_fake->Fill(vSSLep.at(1)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_mu_obs_unm->Fill(st);h_pt_mu_obs_unm->Fill(vSSLep.at(1)->pt);flavorSource=4;}
 	}
       }//end observed
       //so do predicted
       else{
+	observed=0;
 	//now fill predicted histograms by flavor
 	if(vSSLep.at(1)->isEl){	  
-	  if(source==TLepton::flavor::Light) {h_el_pred_light->Fill(st);h_pt_el_pred_light->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_el_pred_charm->Fill(st);h_pt_el_pred_charm->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_el_pred_bottom->Fill(st);h_pt_el_pred_bottom->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_el_pred_fake->Fill(st);h_pt_el_pred_fake->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_el_pred_unm->Fill(st);h_pt_el_pred_unm->Fill(vSSLep.at(1)->pt);}
+	  lepFlavor=0;
+	  if(source==TLepton::flavor::Light) {h_el_pred_light->Fill(st);h_pt_el_pred_light->Fill(vSSLep.at(1)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_el_pred_charm->Fill(st);h_pt_el_pred_charm->Fill(vSSLep.at(1)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_el_pred_bottom->Fill(st);h_pt_el_pred_bottom->Fill(vSSLep.at(1)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_el_pred_fake->Fill(st);h_pt_el_pred_fake->Fill(vSSLep.at(1)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_el_pred_unm->Fill(st);h_pt_el_pred_unm->Fill(vSSLep.at(1)->pt);flavorSource=4;}
 	}
 	else{
-	  if(source==TLepton::flavor::Light) {h_mu_pred_light->Fill(st); h_pt_mu_pred_light->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_mu_pred_charm->Fill(st);h_pt_mu_pred_charm->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_mu_pred_bottom->Fill(st);h_pt_mu_pred_bottom->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_mu_pred_fake->Fill(st);h_pt_mu_pred_fake->Fill(vSSLep.at(1)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_mu_pred_unm->Fill(st);h_pt_mu_pred_unm->Fill(vSSLep.at(1)->pt);}
+	  lepFlavor=1;
+	  if(source==TLepton::flavor::Light) {h_mu_pred_light->Fill(st); h_pt_mu_pred_light->Fill(vSSLep.at(1)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_mu_pred_charm->Fill(st);h_pt_mu_pred_charm->Fill(vSSLep.at(1)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_mu_pred_bottom->Fill(st);h_pt_mu_pred_bottom->Fill(vSSLep.at(1)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_mu_pred_fake->Fill(st);h_pt_mu_pred_fake->Fill(vSSLep.at(1)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_mu_pred_unm->Fill(st);h_pt_mu_pred_unm->Fill(vSSLep.at(1)->pt);flavorSource=4;}
 	}
       }//end predicted
       
@@ -253,45 +270,53 @@ int main(int argc, char* argv[]){
       
       //get flavor of lepton source
       TLepton::flavor source = vSSLep.at(0)->SourceFlavor;
-      
+      lepPt=vSSLep.at(0)->pt;
+      lepEta=vSSLep.at(0)->eta;      
       //separate into 'observed' where both are tight, and 'predicted' where fake lepton is loose only
       if(t1){ //lep1 is tight so this is 'observed'
+	observed=1;
 	//now fill observed histograms by flavor	  
 	if(vSSLep.at(0)->isEl){	
-	  if(source==TLepton::flavor::Light) {h_el_obs_light->Fill(st);h_pt_el_obs_light->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_el_obs_charm->Fill(st);h_pt_el_obs_charm->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_el_obs_bottom->Fill(st);h_pt_el_obs_bottom->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_el_obs_fake->Fill(st);h_pt_el_obs_fake->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_el_obs_unm->Fill(st);h_pt_el_obs_unm->Fill(vSSLep.at(0)->pt);}
+	  lepFlavor=0;
+	  if(source==TLepton::flavor::Light) {h_el_obs_light->Fill(st);h_pt_el_obs_light->Fill(vSSLep.at(0)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_el_obs_charm->Fill(st);h_pt_el_obs_charm->Fill(vSSLep.at(0)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_el_obs_bottom->Fill(st);h_pt_el_obs_bottom->Fill(vSSLep.at(0)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_el_obs_fake->Fill(st);h_pt_el_obs_fake->Fill(vSSLep.at(0)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_el_obs_unm->Fill(st);h_pt_el_obs_unm->Fill(vSSLep.at(0)->pt);flavorSource=4;}
 	}
 	else{
-	  if(source==TLepton::flavor::Light) {h_mu_obs_light->Fill(st); h_pt_mu_obs_light->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_mu_obs_charm->Fill(st);h_pt_mu_obs_charm->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_mu_obs_bottom->Fill(st);h_pt_mu_obs_bottom->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_mu_obs_fake->Fill(st);h_pt_mu_obs_fake->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_mu_obs_unm->Fill(st);h_pt_mu_obs_unm->Fill(vSSLep.at(0)->pt);}
+	  lepFlavor=1;
+	  if(source==TLepton::flavor::Light) {h_mu_obs_light->Fill(st); h_pt_mu_obs_light->Fill(vSSLep.at(0)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_mu_obs_charm->Fill(st);h_pt_mu_obs_charm->Fill(vSSLep.at(0)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_mu_obs_bottom->Fill(st);h_pt_mu_obs_bottom->Fill(vSSLep.at(0)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_mu_obs_fake->Fill(st);h_pt_mu_obs_fake->Fill(vSSLep.at(0)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_mu_obs_unm->Fill(st);h_pt_mu_obs_unm->Fill(vSSLep.at(0)->pt);flavorSource=4;}
 	}
       }//end observed
       //so do predicted
       else{
+	observed=0;
 	//now fill observed histograms by flavor	
 	if(vSSLep.at(0)->isEl){	
-	  if(source==TLepton::flavor::Light) {h_el_pred_light->Fill(st);h_pt_el_pred_light->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_el_pred_charm->Fill(st);h_pt_el_pred_charm->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_el_pred_bottom->Fill(st);h_pt_el_pred_bottom->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_el_pred_fake->Fill(st);h_pt_el_pred_fake->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_el_pred_unm->Fill(st);h_pt_el_pred_unm->Fill(vSSLep.at(0)->pt);}
+	  lepFlavor=0;
+	  if(source==TLepton::flavor::Light) {h_el_pred_light->Fill(st);h_pt_el_pred_light->Fill(vSSLep.at(0)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_el_pred_charm->Fill(st);h_pt_el_pred_charm->Fill(vSSLep.at(0)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_el_pred_bottom->Fill(st);h_pt_el_pred_bottom->Fill(vSSLep.at(0)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_el_pred_fake->Fill(st);h_pt_el_pred_fake->Fill(vSSLep.at(0)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_el_pred_unm->Fill(st);h_pt_el_pred_unm->Fill(vSSLep.at(0)->pt);flavorSource=4;}
 	}
 	else{
-	  if(source==TLepton::flavor::Light) {h_mu_pred_light->Fill(st); h_pt_mu_pred_light->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Charm) {h_mu_pred_charm->Fill(st);h_pt_mu_pred_charm->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Bottom) {h_mu_pred_bottom->Fill(st);h_pt_mu_pred_bottom->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Fake) {h_mu_pred_fake->Fill(st);h_pt_mu_pred_fake->Fill(vSSLep.at(0)->pt);}
-	  if(source==TLepton::flavor::Unmatched) {h_mu_pred_unm->Fill(st);h_pt_mu_pred_unm->Fill(vSSLep.at(0)->pt);}
+	  lepFlavor=1;
+	  if(source==TLepton::flavor::Light) {h_mu_pred_light->Fill(st); h_pt_mu_pred_light->Fill(vSSLep.at(0)->pt);flavorSource=0;}
+	  if(source==TLepton::flavor::Charm) {h_mu_pred_charm->Fill(st);h_pt_mu_pred_charm->Fill(vSSLep.at(0)->pt);flavorSource=1;}
+	  if(source==TLepton::flavor::Bottom) {h_mu_pred_bottom->Fill(st);h_pt_mu_pred_bottom->Fill(vSSLep.at(0)->pt);flavorSource=2;}
+	  if(source==TLepton::flavor::Fake) {h_mu_pred_fake->Fill(st);h_pt_mu_pred_fake->Fill(vSSLep.at(0)->pt);flavorSource=3;}
+	  if(source==TLepton::flavor::Unmatched) {h_mu_pred_unm->Fill(st);h_pt_mu_pred_unm->Fill(vSSLep.at(0)->pt);flavorSource=4;}
 	}
 
       }//end predicted
     }//end check on whether lep2 is prompt
+    outTree->Fill();
   }//end event loop
   //write tFile
   fout->WriteTObject(h_el_obs_light);
@@ -338,6 +363,7 @@ int main(int argc, char* argv[]){
   fout->WriteTObject(h_pt_mu_pred_fake);
   fout->WriteTObject(h_pt_mu_pred_unm);
 
+  fout->WriteTObject(outTree);
 
   fout->Close();
 }
