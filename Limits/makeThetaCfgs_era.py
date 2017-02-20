@@ -60,7 +60,7 @@ def makeCfgs(ch):
         outfile.close()
 
 
-chans = ['All']#,'ee','emu','mumu']
+chans = ['All','ee','emu','mumu']
 
 for chan in chans:
     makeCfgs(chan)
