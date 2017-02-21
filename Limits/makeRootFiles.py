@@ -15,10 +15,10 @@ for mass in masses:
                 ht=100*i
                 if era=='2016B-D':
                     lep2 = 5
-                    lumi = 12.2
+                    lumi = 17.68
                 else:
                     lep2 = 0
-                    lumi = 23.6
+                    lumi = 18.19
                 command="./makeLimitRootFiles.o %i %s %i %i %.2f %s" % (mass,chi,ht,lep2,lumi,era)
                 print command
                 os.system(command)
