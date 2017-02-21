@@ -53,17 +53,17 @@ int main(int argc, char* argv[]){
   if(argv1=="Data" && argv2=="50ns") {filename="root://cmseos.fnal.gov//store/user/clint/Run2015B/ljmet_trees/ljmet_Data_ElEl.root"; data=true; FiftyNS=true;}
   else  if(argv1=="Data"){
      data=true; FiftyNS=false;
-    if(argv2=="2016B") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016B-23Sep2016-v3.root";
-    else if(argv2=="2016C") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016C-23Sep2016-v1.root";
-    else if(argv2=="2016D") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016D-23Sep2016-v1.root";
-    else if(argv2=="2016E") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016E-23Sep2016-v1.root";
-    else if(argv2=="2016F") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016F-23Sep2016-v1.root";
-    else if(argv2=="2016G") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016G-23Sep2016-v1.root";
-    else if(argv2=="2016H2") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v2.root";
-    else if(argv2=="2016H3") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Jan09/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-PromptReco-v3.root";
+    if(argv2=="2016B") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016B-03Feb2017-v3.root";
+    else if(argv2=="2016C") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016C-03Feb2017-v1.root";
+    else if(argv2=="2016D") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016D-03Feb2017-v1.root";
+    else if(argv2=="2016E") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016E-03Feb2017-v1.root";
+    else if(argv2=="2016F") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016F-03Feb2017-v1.root";
+    else if(argv2=="2016G") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016G-03Feb2017-v1.root";
+    else if(argv2=="2016H2") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-03Feb2017-v2.root";
+    else if(argv2=="2016H3") filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/ljmet_Data_DoubleEG-Run2016H-03Feb2017-v3.root";
   }
   else if(argv1=="MC" && argv2=="50ns") {filename="root://cmseos.fnal.gov//store/user/clint/PHYS14/50ns/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=true;}
-  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Jan09/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
+  else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Feb16/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
 	     <<"./ChargeMisID.o Data 50ns \n"
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str(),false);
+  TreeReader* tr= new TreeReader(filename.c_str(),false,false);
   TTree* t=tr->tree;
 
   //now change back to output file
