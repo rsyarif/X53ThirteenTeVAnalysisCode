@@ -2814,8 +2814,8 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
 	else w2= (98.69/99.47)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-26.91,1.435)); //take from fitted function
       }
       else{
-	if(pt<35) eff= (0.9924/0.9940)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-27.60,1.62)); //take from fitted function
-	else eff = 0.9984;      
+	if(vLep.at(1)->pt<35) w2= (0.9924/0.9940)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-27.60,1.62)); //take from fitted function
+	else w2 = 0.9984;      
       }
     }
     sf = w1*w2;
