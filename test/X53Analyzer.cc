@@ -895,13 +895,13 @@ int main(int argc, char* argv[]){
 
     //get pileup weight;
     float puweight=-11;
-    float puewightUp=-11;
+    float puweightUp=-11;
     float puweightDown=-11;
     if(data) puweight=1;
     else{
       puweight = getPUWeight(hpu,(int)tr->nPU);
-      puweightUp = getPUweight(hpuUp,(int)tr->nPU);
-      puweightDown = getPUweight(hpuDown,(int)tr->nPU);
+      puweightUp = getPUWeight(hpuUp,(int)tr->nPU);
+      puweightDown = getPUWeight(hpuDown,(int)tr->nPU);
       //puweight=1;
     }
 
