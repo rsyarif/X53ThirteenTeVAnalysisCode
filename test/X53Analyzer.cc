@@ -389,16 +389,16 @@ int main(int argc, char* argv[]){
   if(muID=="CBTight") muFakeRates.push_back(0.346);
   else if(muID=="CBTightMiniIso") muFakeRates.push_back(0.429);
   else if(muID=="CBTightMiniIsoTight"){
-    muFakeRates.push_back(0.307);
-    muFakeRates.push_back(0.255);
-    muFakeRates.push_back(0.207);
+    muFakeRates.push_back(0.312);
+    muFakeRates.push_back(0.257);
+    muFakeRates.push_back(0.214);
     muFakeRates.push_back(0.190);
+    muFakeRates.push_back(0.187);
+    muFakeRates.push_back(0.177);
     muFakeRates.push_back(0.185);
-    muFakeRates.push_back(0.175);
-    muFakeRates.push_back(0.183);
-    muFakeRates.push_back(0.194);
-    muFakeRates.push_back(0.254);
-    muFakeRates.push_back(0.321);
+    muFakeRates.push_back(0.199);
+    muFakeRates.push_back(0.256);
+    muFakeRates.push_back(0.319);
   }
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
@@ -407,14 +407,14 @@ int main(int argc, char* argv[]){
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRates.push_back(0.43);
   else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRates.push_back(0.204);
   else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
-    elFakeRates.push_back(0.233);
+    elFakeRates.push_back(0.232);
     elFakeRates.push_back(0.0);//ee-eb gap
     elFakeRates.push_back(0.202);
-    elFakeRates.push_back(0.184);
-    elFakeRates.push_back(0.179);
-    elFakeRates.push_back(0.183);
-    elFakeRates.push_back(0.188);
-    elFakeRates.push_back(0.202);
+    elFakeRates.push_back(0.185);
+    elFakeRates.push_back(0.177);
+    elFakeRates.push_back(0.182);
+    elFakeRates.push_back(0.186);
+    elFakeRates.push_back(0.205);
     elFakeRates.push_back(0.0);//ee-eb gap
     elFakeRates.push_back(0.251);
   }
