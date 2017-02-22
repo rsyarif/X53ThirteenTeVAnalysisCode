@@ -2523,11 +2523,42 @@ float getDimuonEff(float pt1, float eta1, float phi1, float pt2, float eta2,floa
 
 float getElTrigEffCrossTrigger2016BD(float pt, float eta){
   float eff = 0.0;
-  if(eta<0.8) eff = 0.9794;
-  else if(eta<1.5) eff  = 0.9855;
+  if(eta<0.8) eff = 0.9878;
+  else if(eta<1.5) eff  = 0.9916;
   else{
-    if(pt<40) eff= 0.9905*( ROOT::Math::normal_cdf(pt-33.64,1.476)); //take from fitted function
-    else eff = 0.9905;
+    if(pt<40) eff= (0.9921/0.9940)*( ROOT::Math::normal_cdf(pt-33.50,1.524)); //take from fitted function
+    else eff = 0.9972;
+  }
+
+  return eff;
+}
+
+float getEl37TrigEffCrossTrigger2016EH(float pt, float eta){
+  float eff = 0.0;
+  if(eta<0.8) eff = 0.9932;
+  else if(eta<1.5) eff  = 0.9900;
+  else{
+    if(pt<45) eff= (0.9882/0.9944)*( ROOT::Math::normal_cdf(pt-37.55,1.650)); //take from fitted function
+    else eff = 0.9938;
+  }
+
+  return eff;
+}
+
+float getEl27TrigEffCrossTrigger2016EH(float pt, float eta){
+  float eff = 0.0;
+  if(eta<0.8) eff = 0.9942;
+  else if(eta<1.5){
+    if(pt<35){
+      eff= (0.9869/0.947)*( ROOT::Math::normal_cdf(pt-26.91,1.435)); //take from fitted function
+    }
+    else{
+    eff  = 0.9922;
+    }
+  }
+  else{
+    if(pt<35) eff= (0.9924/0.9940)*( ROOT::Math::normal_cdf(pt-27.60,1.62)); //take from fitted function
+    else eff = 0.9984;
   }
 
   return eff;
@@ -2536,7 +2567,14 @@ float getElTrigEffCrossTrigger2016BD(float pt, float eta){
 float getElTrigEffCrossTrigger(float pt, float eta, std::string era){
   float eff = 0.0;
   if(era=="2016BD") eff = getElTrigEffCrossTrigger2016BD(pt,eta);
-  else eff = getElTrigEffCrossTrigger2016BD(pt,eta); //DUMMY FOR NOW UNTIL ELE37/27 IS MEASURED
+  else eff = getEl37TrigEffCrossTrigger2016EH(pt,eta); //leading so ele37
+  return eff;
+}
+
+float getSubLeadingElTrigEffCrossTrigger(float pt, float eta, std::string era){
+  float eff = 0.0;
+  if(era=="2016BD") eff = getElTrigEffCrossTrigger2016BD(pt,eta); //no differences from leading
+  else eff = getEl27TrigEffCrossTrigger2016EH(pt,eta); //ele27
   return eff;
 }
 
@@ -2743,22 +2781,45 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
   else if(vLep.at(0)->isEl && vLep.at(1)->isEl){//dielectron channel
     float w1 = 0.0;
     float w2 = 0.0;
-    //do weight for first electron
-    if(eta1<0.8) w1 = 97.97/99.18; //divide by plateau efficiencies
-    else if(eta1<1.5) w1  =  98.60/99.42; //divide by plateau efficiencies
-    else{
-      if(vLep.at(0)->pt<40) w1= (99.20/99.40)*( ROOT::Math::normal_cdf(vLep.at(0)->pt-33.66,1.529)); //take from fitted function, but divide by mc plateau since mc has turned on
-      else w1 = 99.20/99.40;
+    if(era=="2016B-D"){
+      //do weight for first electron
+      if(eta1<0.8) w1 = 97.97/99.18; //divide by plateau efficiencies
+      else if(eta1<1.5) w1  =  98.58/99.42; //divide by plateau efficiencies
+      else{
+	if(vLep.at(0)->pt<40) w1= (99.21/99.40)*( ROOT::Math::normal_cdf(vLep.at(0)->pt-33.50,1.524)); //take from fitted function, but divide by mc plateau since mc has turned on
+	else w1 = 99.21/99.40;
+      }
+      //weight for second electron
+      if(eta2<0.8) w2 = 97.97/99.18;
+      else if(eta2<1.5) w2  = 98.58/99.42;
+      else{
+	if(vLep.at(1)->pt<40) w2= (99.21/99.40)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-33.50,1.524)); //take from fitted function
+	else w2 = 99.21/99.40;
+      }
     }
-    //weight for second electron
-    if(eta2<0.8) w2 = 97.97/99.18;
-    else if(eta2<1.5) w2  = 98.60/99.42;
-    else{
-      if(vLep.at(1)->pt<40) w2= (99.20/99.40)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-33.66,1.529)); //take from fitted function
-      else w2 = 99.20/99.40;
+    else{//asymmetric trigger
+      //do weight for first electron - Ele37 leg
+      if(eta1<0.8) w1 = 98.48/99.15; //divide by plateau efficiencies
+      else if(eta1<1.5){
+	w1  =  98.38/99.37; //divide by plateau efficiencies
+      }
+      else{
+	if(vLep.at(0)->pt<45) w1= (98.82/99.44)*( ROOT::Math::normal_cdf(vLep.at(0)->pt-37.55,1.650)); //take from fitted function, but divide by mc plateau since mc has turned on
+	else w1 = 98.82/99.44;
+      }
+      //weight for second electron - ele27 leg
+      if(eta2<0.8) w2 = 98.62/99.20;
+      else if(eta2<1.5){
+	if(vLep.at(1)->pt > 35) w2  = 98.69/99.47;
+	else w2= (98.69/99.47)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-26.91,1.435)); //take from fitted function
+      }
+      else{
+	if(pt<35) eff= (0.9924/0.9940)*( ROOT::Math::normal_cdf(vLep.at(1)->pt-27.60,1.62)); //take from fitted function
+	else eff = 0.9984;      
+      }
     }
     sf = w1*w2;
-    //std::cout<<"weight for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<w1<<" weight for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<w2<<" total sf = "<<sf<<std::endl;
+    //std::cout<<"weight for leading lepton with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<w1<<" weight for subleading  with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<w2<<" total sf = "<<sf<<std::endl;    
   }
   else{ //cross channel
 
@@ -2770,7 +2831,7 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
       muEff = getSubLeadingMuTrigEffCrossTrigger(pt2,eta2,era);
     }
     else{ //elEff is for subleading
-      elEff = getElTrigEffCrossTrigger(pt2,eta2,era);
+      elEff = getSubLeadingElTrigEffCrossTrigger(pt2,eta2,era);
       muEff = getLeadingMuTrigEffCrossTrigger(pt1,eta1,era);
     }//end check on electron being subleading or leading    
     
