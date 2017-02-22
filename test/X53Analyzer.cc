@@ -356,7 +356,7 @@ int main(int argc, char* argv[]){
   float muPromptRate;
   if(muID=="CBTight") muPromptRate=0.940;
   else if(muID=="CBTightMiniIso") muPromptRate=0.956;
-  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.940;
+  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.943;
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron fake rate
@@ -364,11 +364,20 @@ int main(int argc, char* argv[]){
   if(elID=="CBTight" || elID=="CBTightRC") elPromptRates.push_back(0.7259);
   else if(elID=="MVATightCC" || elID=="MVATightRC") elPromptRates.push_back(0.839);
   else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
-    elPromptRates.push_back(0.881);
-    elPromptRates.push_back(0.918);
-    elPromptRates.push_back(0.931);
-    elPromptRates.push_back(0.940);
-    elPromptRates.push_back(0.950);
+    elPromptRates.push_back(0.904);
+    elPromptRates.push_back(0.928);
+    elPromptRates.push_back(0.934);
+    elPromptRates.push_back(0.942);
+    elPromptRates.push_back(0.947);
+    elPromptRates.push_back(0.953);
+    elPromptRates.push_back(0.955);
+    elPromptRates.push_back(0.948);
+    elPromptRates.push_back(0.951);
+    elPromptRates.push_back(0.946);
+    elPromptRates.push_back(0.935);
+    elPromptRates.push_back(0.920);
+    elPromptRates.push_back(0.902);
+    elPromptRates.push_back(0.800);
   }
   else if(elID=="MVATightMedIsoRC") elPromptRates.push_back(0.859);
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRates.push_back(0.8618);
@@ -747,16 +756,34 @@ int main(int argc, char* argv[]){
       else if(vSSLep.at(0)->pt<50) lep1PromptRate=elPromptRates.at(1);
       else if(vSSLep.at(0)->pt<60) lep1PromptRate=elPromptRates.at(2);
       else if(vSSLep.at(0)->pt<70) lep1PromptRate=elPromptRates.at(3);
-      else lep1PromptRate = elPromptRates.at(4);
+      else if(vSSLep.at(0)->pt<80) lep1PromptRate=elPromptRates.at(4);
+      else if(vSSLep.at(0)->pt<90) lep1PromptRate=elPromptRates.at(5);
+      else if(vSSLep.at(0)->pt<100) lep1PromptRate=elPromptRates.at(6);
+      else if(vSSLep.at(0)->pt<125) lep1PromptRate=elPromptRates.at(7);
+      else if(vSSLep.at(0)->pt<150) lep1PromptRate=elPromptRates.at(8);
+      else if(vSSLep.at(0)->pt<200) lep1PromptRate=elPromptRates.at(9);
+      else if(vSSLep.at(0)->pt<300) lep1PromptRate=elPromptRates.at(10);
+      else if(vSSLep.at(0)->pt<400) lep1PromptRate=elPromptRates.at(11);
+      else if(vSSLep.at(0)->pt<500) lep1PromptRate=elPromptRates.at(12);
+      else lep1PromptRate = elPromptRates.at(13);
     }
 
     if(vSSLep.at(1)->isMu) lep2PromptRate=muPromptRate;
     else {
-      if(vSSLep.at(1)->pt<40) lep2PromptRate=elPromptRates.at(0);
+      if(vSSLep.at(1)->pt<40) lep1PromptRate=elPromptRates.at(0);
       else if(vSSLep.at(1)->pt<50) lep2PromptRate=elPromptRates.at(1);
       else if(vSSLep.at(1)->pt<60) lep2PromptRate=elPromptRates.at(2);
       else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(3);
-      else lep2PromptRate = elPromptRates.at(4);
+      else if(vSSLep.at(1)->pt<80) lep2PromptRate=elPromptRates.at(4);
+      else if(vSSLep.at(1)->pt<90) lep2PromptRate=elPromptRates.at(5);
+      else if(vSSLep.at(1)->pt<100) lep2PromptRate=elPromptRates.at(6);
+      else if(vSSLep.at(1)->pt<125) lep2PromptRate=elPromptRates.at(7);
+      else if(vSSLep.at(1)->pt<150) lep2PromptRate=elPromptRates.at(8);
+      else if(vSSLep.at(1)->pt<200) lep2PromptRate=elPromptRates.at(9);
+      else if(vSSLep.at(1)->pt<300) lep2PromptRate=elPromptRates.at(10);
+      else if(vSSLep.at(1)->pt<400) lep2PromptRate=elPromptRates.at(11);
+      else if(vSSLep.at(1)->pt<500) lep2PromptRate=elPromptRates.at(12);
+      else lep2PromptRate = elPromptRates.at(13);
     }
     //now get fake rate for each lepton
     float lep1FakeRate = 0.0;
