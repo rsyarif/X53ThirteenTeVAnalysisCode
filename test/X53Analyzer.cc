@@ -635,10 +635,17 @@ int main(int argc, char* argv[]){
       if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
       if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
       if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
-    }
-    
+    }   
     
     if(skip) continue;
+
+    //now make sure we are not double counting 2016F
+    bool overlap2016F = false;
+    if(era=="2016B-D" && tr->run >= 278273) overlap2016F = true;
+    else if(era=="2016E-H" && tr->run <278273) overlap2016F = true;
+    if(overlap2016F) continue;
+    
+
     //now skip if not the channel from the corresponding dataset
     if((argv1.find("DataMuMu")!=std::string::npos || argv1.find("NonPromptDataMuMu")!=std::string::npos) && !mumu) continue;
     if((argv1.find("DataElMu")!=std::string::npos || argv1.find("NonPromptDataElMu")!=std::string::npos || argv1.find("ChargeMisIDElMu")!=std::string::npos) && !elmu) continue;
