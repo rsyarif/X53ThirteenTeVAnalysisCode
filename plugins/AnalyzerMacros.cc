@@ -2527,7 +2527,7 @@ float getElTrigEffCrossTrigger2016BD(float pt, float eta){
   else if(eta<1.5) eff  = 0.9916;
   else{
     if(pt<40) eff= (0.9921/0.9940)*( ROOT::Math::normal_cdf(pt-33.50,1.524)); //take from fitted function
-    else eff = 0.9972;
+    else eff = 0.9981;
   }
 
   return eff;
