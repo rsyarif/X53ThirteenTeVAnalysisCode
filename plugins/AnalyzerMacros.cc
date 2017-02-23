@@ -2844,7 +2844,7 @@ float getTrigSF(std::vector<TLepton*> vLep,std::string era){
 
 float getLepIDSF(TLepton* lep){
 
-  float sf;
+  float sf=0.;
 
   if(lep->isMu){
 
@@ -2917,6 +2917,25 @@ float getLepIDSF(TLepton* lep){
     }
 
 
+  }
+
+  //now add tracking SF for muons
+  if(lep->isMu){
+    if(lep->eta <-2.1) sf= sf*0.991237;
+    else if(lep->eta <-1.6) sf= sf*0.994853;
+    else if(lep->eta <-1.2) sf= sf*0.996413;
+    else if(lep->eta <-0.9) sf= sf*0.997157;
+    else if(lep->eta <-0.6) sf= sf*0.997512;
+    else if(lep->eta <-0.3) sf= sf*0.997559;
+    else if(lep->eta <-0.2) sf= sf*0.996745;
+    else if(lep->eta <0.2) sf= sf*0.996997;
+    else if(lep->eta <0.3) sf= sf*0.99772;
+    else if(lep->eta <0.6) sf= sf*0.998604;
+    else if(lep->eta <0.9) sf= sf*0.998321;
+    else if(lep->eta <1.2) sf= sf*0.997682;
+    else if(lep->eta <1.6) sf= sf*0.995252;
+    else if(lep->eta <2.1) sf= sf*0.994919;
+    else if(lep->eta <2.4) sf= sf*0.987334;
   }
 
   return sf;
