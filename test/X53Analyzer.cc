@@ -346,10 +346,10 @@ int main(int argc, char* argv[]){
   TH1F* hpu = (TH1F*) fpu->Get("h_weights");
   //load pileup hist - down
   TFile* fpuDown = new TFile("PileupWeights_Down.root");
-  TH1F* hpuDown = (TH1F*) fpu->Get("h_weights");
+  TH1F* hpuDown = (TH1F*) fpuDown->Get("h_weights");
   //load pileup hist
   TFile* fpuUp = new TFile("PileupWeights_Up.root");
-  TH1F* hpuUp = (TH1F*) fpu->Get("h_weights");
+  TH1F* hpuUp = (TH1F*) fpuUp->Get("h_weights");
   
 
   //get prompt rate according to ID * constant for muons ****
@@ -641,8 +641,11 @@ int main(int argc, char* argv[]){
 
     //now make sure we are not double counting 2016F
     bool overlap2016F = false;
-    if(era=="2016B-D" && tr->run >= 278273) overlap2016F = true;
-    else if(era=="2016E-H" && tr->run <278273) overlap2016F = true;
+    if(data){
+      if(era=="2016B-D" && tr->run >= 278273) overlap2016F = true;
+      else if(era=="2016E-H" && tr->run <278273) overlap2016F = true;
+    }
+    else{};
     if(overlap2016F) continue;
     
 
@@ -777,7 +780,7 @@ int main(int argc, char* argv[]){
 
     if(vSSLep.at(1)->isMu) lep2PromptRate=muPromptRate;
     else {
-      if(vSSLep.at(1)->pt<40) lep1PromptRate=elPromptRates.at(0);
+      if(vSSLep.at(1)->pt<40) lep2PromptRate=elPromptRates.at(0);
       else if(vSSLep.at(1)->pt<50) lep2PromptRate=elPromptRates.at(1);
       else if(vSSLep.at(1)->pt<60) lep2PromptRate=elPromptRates.at(2);
       else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(3);
@@ -892,13 +895,13 @@ int main(int argc, char* argv[]){
 
 
     //DEBUGGIN STATEMENTS TO UNDERSTAND TL ASSIGNMENT
-    if(HT>900){ //just to lessen the number of events
+    //if(HT>900){ //just to lessen the number of events
       
-      if(bg_np) std::cout<<"Check for NonPrompt -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
-      else std::cout<<"Check for signal -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
-      std::cout<<"Lep1 tight: "<<vSSLep.at(0)->Tight<<" Lep2Tight"<<vSSLep.at(1)->Tight<<" TL: "<<TL<<std::endl;
+    //if(bg_np) std::cout<<"Check for NonPrompt -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
+    //else std::cout<<"Check for signal -run:"<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;
+    //std::cout<<"Lep1 tight: "<<vSSLep.at(0)->Tight<<" Lep2Tight"<<vSSLep.at(1)->Tight<<" TL: "<<TL<<std::endl;
       
-    }
+    //}
 
     //get pileup weight;
     float puweight=-11;
