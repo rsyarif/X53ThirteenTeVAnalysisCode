@@ -26,26 +26,27 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
   h_obs->SetMarkerStyle(20);
   h_obs->SetMarkerColor(kBlack);
 
+  //if(flavor=="unmatched") std::cout<<"unmatched observed events before lumi: "<<h_obs->Integral();
+
   //make lumi weight
-  float lumiweight = 35800 * (831.76 / 115091972);
-  if(flavor.find("qcd")==std::string::npos){
-    h_pred->Scale(lumiweight);
-    h_obs->Scale(lumiweight);
-  }
+  //sumw2
+  h_obs->Sumw2();
+  //h_pred->Sumw2();
+  float lumiweight = 35800*  (831.76 / 115091972);
+  h_pred->Scale(lumiweight);
+  h_obs->Scale(lumiweight);
   
-
-
-
-  double obserr=0;
-  float obs = h_obs->IntegralAndError(9,51,obserr);
-  double prederr=0;
-  float pred = h_pred->IntegralAndError(9,51,prederr);
+  Double_t obserr=0.;
+  float obs = h_obs->IntegralAndError(11,26,obserr);
+  Double_t prederr=0.;
+  float pred = h_pred->IntegralAndError(11,26,prederr);
+  //  std::cout<<"bin low edge: "<<h_pred->GetXaxis()->GetBinLowEdge(11)<<std::endl;
   std::cout<<std::fixed<<setprecision(2)<<lepflavor<<"&"<<flavor<<"&$"<<obs<<"\\pm"<<obserr<<"$&$"<<pred<<"\\pm"<<prederr<<"$\\\\"<<std::endl;
 
   double totobserr=0;
-  float totobs = h_obs->IntegralAndError(1,51,totobserr);
+  float totobs = h_obs->IntegralAndError(1,26,totobserr);
   double totprederr=0;
-  float totpred = h_pred->IntegralAndError(1,51,totprederr);
+  float totpred = h_pred->IntegralAndError(1,26,totprederr);
   std::cout<<std::fixed<<setprecision(2)<<lepflavor<<"&"<<flavor<<"&$"<<totobs<<"\\pm"<<totobserr<<"$&$"<<totpred<<"\\pm"<<totprederr<<"$\\\\"<<std::endl;
 
 
@@ -63,8 +64,6 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
 
   //now go to pad2 and draw ratio
   pad2->cd();
-  //sumw2
-  h_pred->Sumw2();
   TH1F* h_ratio = (TH1F*) h_obs->Clone("h_ratio");
   h_ratio->Divide(h_pred);
   h_ratio->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -79,7 +78,7 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
   h_ratio->GetXaxis()->SetLabelSize(0.10);
   h_ratio->GetYaxis()->SetNdivisions(205);
   h_ratio->Draw("pe");
-  TLine* baseline = new TLine(0,1,5000,1);
+  TLine* baseline = new TLine(0,1,3000,1);
   baseline->SetLineColor(kBlack);
   baseline->SetLineStyle(2);
   baseline->Draw();
@@ -172,6 +171,7 @@ void ct_plotter_wTree(){
 
   for(int i=0; i<t->GetEntries();i++){
     t->GetEntry(i);
+    if(LepFlavor==0 && (fabs(LepEta)>1.4442 && fabs(LepEta)<1.566) ) continue;
     if(LepFlavor==0){//electrons
       if(LepSourceFlavor==0){//light
 	if(Observed){
@@ -212,7 +212,7 @@ void ct_plotter_wTree(){
 	  h_el_pred_pt_bottom->Fill(LepPt,weight);
 	}
       }
-      else if(LepSourceFlavor==3){//unmatched
+      else if(LepSourceFlavor==4){//unmatched
 	if(Observed){
 	  h_el_obs_HT_unmatched->Fill(HT);
 	  h_el_obs_pt_unmatched->Fill(LepPt);
@@ -221,11 +221,12 @@ void ct_plotter_wTree(){
 	  int bin = h_rate_el_unmatched->FindBin(LepEta);
 	  float rate = h_rate_el_unmatched->GetBinContent(bin);
 	  float weight = rate / (1-rate);
+	  std::cout<<"rate: "<<rate<<"; weight: "<<weight<<"; eta: "<<LepEta<<std::endl;
 	  h_el_pred_HT_unmatched->Fill(HT,weight);
 	  h_el_pred_pt_unmatched->Fill(LepPt,weight);
 	}
       }
-      else if(LepSourceFlavor==4){//fake
+      else if(LepSourceFlavor==3){//fake
 	if(Observed){
 	  h_el_obs_HT_fake->Fill(HT);
 	  h_el_obs_pt_fake->Fill(LepPt);
@@ -280,7 +281,7 @@ void ct_plotter_wTree(){
 	  h_mu_pred_pt_bottom->Fill(LepPt,weight);
 	}
       }
-      else if(LepSourceFlavor==3){//unmatched
+      else if(LepSourceFlavor==4){//unmatched
 	if(Observed){
 	  h_mu_obs_HT_unmatched->Fill(HT);
 	  h_mu_obs_pt_unmatched->Fill(LepPt);
@@ -293,7 +294,7 @@ void ct_plotter_wTree(){
 	  h_mu_pred_pt_unmatched->Fill(LepPt,weight);
 	}
       }
-      else if(LepSourceFlavor==4){//fake
+      else if(LepSourceFlavor==3){//fake
 	if(Observed){
 	  h_mu_obs_HT_fake->Fill(HT);
 	  h_mu_obs_pt_fake->Fill(LepPt);
@@ -315,13 +316,13 @@ void ct_plotter_wTree(){
   DrawAndSave(h_el_pred_HT_light, h_el_obs_HT_light,"Closure_Light_Electrons.pdf","light","Electrons");
   DrawAndSave(h_el_pred_HT_charm, h_el_obs_HT_charm,"Closure_Charm_Electrons.pdf","charm","Electrons");
   DrawAndSave(h_el_pred_HT_bottom, h_el_obs_HT_bottom,"Closure_Bottom_Electrons.pdf","bottom","Electrons");
-  DrawAndSave(h_el_pred_HT_unmatched, h_el_obs_HT_unmatched,"Closure_Unmatched_Electrons.pdf","unmatched","Electrons");
+  DrawAndSave(h_el_pred_HT_unmatched, h_el_obs_HT_unmatched,"Closure_UnMatched_Electrons.pdf","unmatched","Electrons");
   DrawAndSave(h_el_pred_HT_fake, h_el_obs_HT_fake,"Closure_Fake_Electrons.pdf","fake","Electrons");
 
   DrawAndSave(h_mu_pred_HT_light, h_mu_obs_HT_light,"Closure_Light_Muons.pdf","light","Muons");
   DrawAndSave(h_mu_pred_HT_charm, h_mu_obs_HT_charm,"Closure_Charm_Muons.pdf","charm","Muons");
   DrawAndSave(h_mu_pred_HT_bottom, h_mu_obs_HT_bottom,"Closure_Bottom_Muons.pdf","bottom","Muons");
-  DrawAndSave(h_mu_pred_HT_unmatched, h_mu_obs_HT_unmatched,"Closure_Unmatched_Muons.pdf","unmatched","Muons");
+  DrawAndSave(h_mu_pred_HT_unmatched, h_mu_obs_HT_unmatched,"Closure_UnMatched_Muons.pdf","unmatched","Muons");
   DrawAndSave(h_mu_pred_HT_fake, h_mu_obs_HT_fake,"Closure_Fake_Muons.pdf","fake","Muons");
 
 }
