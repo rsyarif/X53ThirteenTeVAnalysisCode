@@ -42,6 +42,7 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 int main(int argc, char* argv[]){
 
   std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Moriond17/25ns/Feb01/ljmet_trees/";
+  std::string eosareasingle="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/dzou/Spring16/25ns/Mar27/ljmet_trees"; //location of Moriond17 tree for single x53
   std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/";
 
   if(argc!=5) return 0;
@@ -128,27 +129,28 @@ int main(int argc, char* argv[]){
   sig_samples["X53X53m1500LH_Inc"]=eosarea+"ljmet_X53X53m1500LH_Inc.root";
   sig_samples["X53X53m1600LH_Inc"]=eosarea+"ljmet_X53X53m1600LH_Inc.root";
 
-  
-  sig_samples["X53Tm700RH"]=eosarea+"ljmet_X53TToAll_M-700_right.root";
-  sig_samples["X53Tm800RH"]=eosarea+"ljmet_X53TToAll_M-800_right.root";
-  sig_samples["X53Tm900RH"]=eosarea+"ljmet_X53TToAll_M-900_right.root";
-  sig_samples["X53Tm1000RH"]=eosarea+"ljmet_X53TToAll_M-1000_right.root";
-  sig_samples["X53Tm1100RH"]=eosarea+"ljmet_X53TToAll_M-1100_right.root";
-  sig_samples["X53Tm1200RH"]=eosarea+"ljmet_X53TToAll_M-1200_right.root";
-  sig_samples["X53Tm1300RH"]=eosarea+"ljmet_X53TToAll_M-1300_right.root";
-  sig_samples["X53Tm1400RH"]=eosarea+"ljmet_X53TToAll_M-1400_right.root";
-  sig_samples["X53Tm1500RH"]=eosarea+"ljmet_X53TToAll_M-1500_right.root";
-  sig_samples["X53Tm1600RH"]=eosarea+"ljmet_X53TToAll_M-1600_right.root";
-  sig_samples["X53Tm700LH"]=eosarea+"ljmet_X53TToAll_M-700_left.root";
-  sig_samples["X53Tm800LH"]=eosarea+"ljmet_X53TToAll_M-800_left.root";
-  sig_samples["X53Tm900LH"]=eosarea+"ljmet_X53TToAll_M-900_left.root";
-  sig_samples["X53Tm1000LH"]=eosarea+"ljmet_X53TToAll_M-1000_left.root";
-  sig_samples["X53Tm1100LH"]=eosarea+"ljmet_X53TToAll_M-1100_left.root";
-  sig_samples["X53Tm1200LH"]=eosarea+"ljmet_X53TToAll_M-1200_left.root";
-  sig_samples["X53Tm1300LH"]=eosarea+"ljmet_X53TToAll_M-1300_left.root";
-  sig_samples["X53Tm1400LH"]=eosarea+"ljmet_X53TToAll_M-1400_left.root";
-  sig_samples["X53Tm1500LH"]=eosarea+"ljmet_X53TToAll_M-1500_left.root";
-  sig_samples["X53Tm1600LH"]=eosarea+"ljmet_X53TToAll_M-1600_left.root";
+
+  //dzou edit with single x53  
+  sig_samples["X53Tm700RH"]=eosareasingle+"ljmet_X53ToTW_RH_700_all.root";
+  sig_samples["X53Tm800RH"]=eosareasingle+"ljmet_X53ToTW_RH_800_all.root";
+  sig_samples["X53Tm900RH"]=eosareasingle+"ljmet_X53ToTW_RH_900_all.root";
+  sig_samples["X53Tm1000RH"]=eosareasingle+"ljmet_X53ToTW_RH_1000_all.root";
+  sig_samples["X53Tm1100RH"]=eosareasingle+"ljmet_X53ToTW_RH_1100_all.root";
+  sig_samples["X53Tm1200RH"]=eosareasingle+"ljmet_X53ToTW_RH_1200_all.root";
+  sig_samples["X53Tm1300RH"]=eosareasingle+"ljmet_X53ToTW_RH_1300_all.root";
+  sig_samples["X53Tm1400RH"]=eosareasingle+"ljmet_X53ToTW_RH_1400_all.root";
+  sig_samples["X53Tm1500RH"]=eosareasingle+"ljmet_X53ToTW_RH_1500_all.root";
+  sig_samples["X53Tm1600RH"]=eosareasingle+"ljmet_X53ToTW_RH_1600_all.root";
+  sig_samples["X53Tm700LH"]=eosareasingle+"ljmet_X53ToTW_LH_700_all.root";
+  sig_samples["X53Tm800LH"]=eosareasingle+"ljmet_X53ToTW_LH_800_all.root";
+  sig_samples["X53Tm900LH"]=eosareasingle+"ljmet_X53ToTW_LH_900_all.root";
+  sig_samples["X53Tm1000LH"]=eosareasingle+"ljmet_X53ToTW_LH_1000_all.root";
+  sig_samples["X53Tm1100LH"]=eosareasingle+"ljmet_X53ToTW_LH_1100_all.root";
+  sig_samples["X53Tm1200LH"]=eosareasingle+"ljmet_X53ToTW_LH_1200_all.root";
+  sig_samples["X53Tm1300LH"]=eosareasingle+"ljmet_X53ToTW_LH_1300_all.root";
+  sig_samples["X53Tm1400LH"]=eosareasingle+"ljmet_X53ToTW_LH_1400_all.root";
+  sig_samples["X53Tm1500LH"]=eosareasingle+"ljmet_X53ToTW_LH_1500_all.root";
+  sig_samples["X53Tm1600LH"]=eosareasingle+"ljmet_X53ToTW_LH_1600_all.root";
 
   //data samples
   data_samples["Data"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
