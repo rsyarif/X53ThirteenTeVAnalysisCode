@@ -13,7 +13,7 @@ def getSSDLModel2016BD():
         
     #data driven
         if(proc=="FakeRate"):
-            model.add_lognormal_uncertainty("FakeRate",math.log(1.40),proc)
+            model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.30),proc)
     #background MC
@@ -23,7 +23,7 @@ def getSSDLModel2016BD():
             model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.03),proc,'elmuBD')
         #lepton ISO
             model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuBD')
             model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuBD')
@@ -47,7 +47,7 @@ def getSSDLModel2016BD():
                 model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTTT'):
-                model.add_lognormal_uncertainty('TTTT-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.02),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZ'):
@@ -61,31 +61,32 @@ def getSSDLModel2016BD():
                 model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WpWp'):
-                model.add_lognormal_uncertainty('WpWp-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WWZ'):
-                model.add_lognormal_uncertainty('WWZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZZ'):
-                model.add_lognormal_uncertainty('WZZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZZ'):
-                model.add_lognormal_uncertainty('ZZZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
 
     #   signal
         else:
+            model.add_lognormal_uncertainty('Sig-PDF',math.log(SIGPDF),proc)
             model.add_lognormal_uncertainty('JetRes',math.log(1.01),proc)
             model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)                                        
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuBD')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuBD')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.03),proc,'elmuBD')
         #lepton ISO
             model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuBD')
             model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuBD')
@@ -109,7 +110,7 @@ def getSSDLModel2016EH():
         
     #data driven
         if(proc=="FakeRate"):
-            model.add_lognormal_uncertainty("FakeRate",math.log(1.40),proc)
+            model.add_lognormal_uncertainty("FakeRate",math.log(1.50),proc)
         elif(proc=="ChargeMisID"):
             model.add_lognormal_uncertainty("ChargeMisIDUnc",math.log(1.30),proc)
     #background MC
@@ -119,7 +120,7 @@ def getSSDLModel2016EH():
             model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.03),proc,'elmuEH')
         #lepton ISO
             model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuEH')
             model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuEH')
@@ -143,7 +144,7 @@ def getSSDLModel2016EH():
                 model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='TTTT'):
-                model.add_lognormal_uncertainty('TTTT-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.02),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZ'):
@@ -157,31 +158,32 @@ def getSSDLModel2016EH():
                 model.add_lognormal_uncertainty('JES',math.log(1.04),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WpWp'):
-                model.add_lognormal_uncertainty('WpWp-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WWZ'):
-                model.add_lognormal_uncertainty('WWZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='WZZ'):
-                model.add_lognormal_uncertainty('WZZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
             if(proc=='ZZZ'):
-                model.add_lognormal_uncertainty('ZZZ-Theory',math.log(1.50),proc)
+                model.add_lognormal_uncertainty('Theory',math.log(1.50),proc)
                 model.add_lognormal_uncertainty('JES',math.log(1.09),proc)
                 model.add_lognormal_uncertainty('JetRes',math.log(1.02),proc)
 
     #   signal
         else:
+            model.add_lognormal_uncertainty('Sig-PDF',math.log(SIGPDF),proc)
             model.add_lognormal_uncertainty('JetRes',math.log(1.01),proc)
             model.add_lognormal_uncertainty('JES',math.log(1.03),proc)
             model.add_lognormal_uncertainty('PU',math.log(1.01),proc)
             model.add_lognormal_uncertainty('lumi',math.log(1.026),proc)                                        
         #lepton ID
             model.add_lognormal_uncertainty('elIdSys',math.log(1.01),proc,'elmuEH')
-            model.add_lognormal_uncertainty('muIdSys',math.log(1.01),proc,'elmuEH')
+            model.add_lognormal_uncertainty('muIdSys',math.log(1.03),proc,'elmuEH')
         #lepton ISO
             model.add_lognormal_uncertainty('elIsoSys',math.log(1.01),proc,'elmuEH')
             model.add_lognormal_uncertainty('muIsoSys',math.log(1.01),proc,'elmuEH')
@@ -211,6 +213,19 @@ f = open('JSONNAME_discovery.json', 'w')
 disc = discovery(ssdlModel,use_data = False,input_expected='toys:XSEC',spid='sig',Z_error_max=0.1,ts_method=derll)
 print disc
 json.dump(disc, f)
+
+
+parVals = mle(ssdlModel, input = 'data', n=1, signal_process_groups = signal_process_groups)
+print parVals
+fpf = open('POSTFITFILE.json', 'w')
+json.dump(parVals[''], fpf)
+fpf.close()
+parameter_values = {}
+for p in ssdlModel.get_parameters([]):
+    parameter_values[p] = parVals[''][p][0][0]
+histos = evaluate_prediction(ssdlModel, parameter_values, include_signal = False)
+write_histograms_to_rootfile(histos, 'NUISANCEHISTOS.root')
+
 
 #print "Asymptotic Limits:"
 #print asymptotic_cls_limits(ssdlModel, signal_processes=[['sig']], beta_signal_expected=0.0, bootstrap_ssdlModel=True, input=None, n=1, options=None)
