@@ -14,26 +14,67 @@ def makeCfgs(ch):
         #print card,"theta_template_"+ch+".py"
         template = open("theta_template_combo_"+ch+".py",'r')
         mass = card.split("_M")[1].split("_")[0]
+        chi = card.split('_')[2]
         if mass=="700":
+            if chi=='LH':
+                sigpdf='1.036'
+            else:
+                sigpdf='1.033'
             xsec='0.442'
         elif mass=='800':
+            if chi=='LH':
+                sigpdf='1.031'
+            else:
+                sigpdf='1.025'
             xsec='0.190'
         elif mass=='900':
+            if chi=='LH':
+                sigpdf='1.025'
+            else:
+                sigpdf='1.022'
             xsec='0.0877'
         elif mass=='1000':
+            if chi=='LH':
+                sigpdf='1.022'
+            else:
+                sigpdf='1.019'
             xsec='0.0427'
         elif mass=='1100':
+            if chi=='LH':
+                sigpdf='1.018'
+            else:
+                sigpdf='1.021'
             xsec='0.0217'
         elif mass=='1200':
+            if chi=='LH':
+                sigpdf='1.018'
+            else:
+                sigpdf='1.023'
             xsec='0.0114'
         elif mass=='1300':
+            if chi=='LH':
+                sigpdf='1.020'
+            else:
+                sigpdf='1.017'
             xsec='0.00618'
         elif mass=='1400':
+            if chi=='LH':
+                sigpdf='1.015'
+            else:
+                sigpdf='1.019'
             xsec='0.00342'
         elif mass=='1500':
+            if chi=='LH':
+                sigpdf='1.021'
+            else:
+                sigpdf='1.018'
             xsec='0.00193'
         else:
             xsec='0.00111'
+            if chi=='LH':
+                sigpdf='1.14'
+            else:
+                sigpdf='1.14'
 
         filename = "X53X53_"
         filename += (card.split("_2016B-D.root")[0]).split("Limits_")[1]
@@ -43,6 +84,8 @@ def makeCfgs(ch):
         obstxt = filename+"_observed.txt"
         htmlout = filename+"_html"
         jsonname=filename
+        postfitfile = filename+'_postfit'
+        histofile = filename+'_nuisanceHistos'
         filename+=".py"
         #print filename
         outfile= open(filename,'w')
@@ -55,6 +98,9 @@ def makeCfgs(ch):
             line = line.replace('MASS',mass)
             line = line.replace('XSEC',xsec)
             line = line.replace('JSONNAME',jsonname)
+            line = line.replace('POSTFITFILE',postfitfile)
+            line = line.replace('NUISANCEHISTOS',histofile)
+            line = line.replace('SIGPDF',sigpdf)
             outfile.write(line)
         template.close()
         outfile.close()
