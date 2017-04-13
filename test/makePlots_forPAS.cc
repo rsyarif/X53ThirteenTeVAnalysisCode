@@ -8,6 +8,7 @@
 #include <sstream>
 #include <map>
 #include "THStack.h"
+#include "TChain.h"
 //#include "../plugins/Sample.cc"
 #include "../plugins/SetTDRStyle.cc"
 //#include "../plugins/Variable.cc"
@@ -20,7 +21,7 @@
 #include "TGraphAsymmErrors.h"
 
 //eaxample usage:
-//root -b -q -l 'makePlots_forPAS.cc("MVATightRC","CBTightMiniIsoTight")' 
+//root -b -q -l 'makePlots_forPAS.cc("MVA2016TightRC","CBTightMiniIsoTight")' 
 
 void DrawAndSaveCombined(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSampleBD,Sample* dataSampleEH, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
 void DrawAndSaveSingleEra(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="",std::string era="");
@@ -64,7 +65,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
   Sample* dataSampleEH = getDataSample("sZVeto",elID,muID,"2016E-H");
  
 
-  for(int j=2; j <3; j++){
+  for(int j=2; j <5; j++){
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,-1,j,weightstring);
@@ -81,7 +82,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,0,j,weightstring,"2016E-H");
       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,1,j,weightstring,"2016E-H");
       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,2,j,weightstring,"2016E-H");
-
+      
       gROOT->Reset();
     }
   }
@@ -121,24 +122,24 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
     }
     else if(cutIndex==3){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst <=4 && nConst >=2) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) ))";}
   }
   else {
-    if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    if(cutIndex==0){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) && (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) ))";}
   }
   std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
@@ -474,19 +475,15 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   hSigRH->Draw("hist same");
   hSigLH->Draw("hist same");
   //add to legend
-  leg->AddEntry(hSigRH,"RH TeV X_{5/3}","l");
-  leg->AddEntry(hSigLH,"LH TeV X_{5/3}","l");
+  leg->AddEntry(hSigRH,"RH 1.0 TeV X_{5/3}","l");
+  leg->AddEntry(hSigLH,"LH 1.0 TeV X_{5/3}","l");
 
 
-  //Draw data- merge trees
+  //Draw data- merge trees into chain
   TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-  TTree* tDataBD = dataSampleBD->tree;
-  TTree* tDataEH = dataSampleEH->tree;
-  TList* list = new TList;
-  list->Add(tDataBD);
-  list->Add(tDataEH);
-  TTree* tData = TTree::MergeTrees(list);
-  tData->SetName("tData");
+  TChain* tData = new TChain("tEvts_sZVeto");
+  tData->AddFile(dataSampleBD->file->GetName());
+  tData->AddFile(dataSampleEH->file->GetName());
 
   if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){
     tData->Project("hData","Lep1Pt",(cutstring.str()).c_str());
@@ -585,10 +582,10 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   if(cutIndex==0) cutname =  "sZVeto";
   if(cutIndex==1) cutname =  "QuarkoniaAndElElZVeto";
   if(cutIndex==2) cutname =  "TwoJets";
-  if(cutIndex==3) cutname =  "nConstituents";
-  if(cutIndex==4) cutname =  "LeadingLepPt100";
-  std::string pdfname = "./plots_forPAS_newLepSel/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
-  std::string pngname = "./plots_forPAS_newLepSel/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
+  if(cutIndex==3) cutname =  "nConst2to4";
+  if(cutIndex==4) cutname =  "nConst5plus";
+  std::string pdfname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
+  std::string pngname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
@@ -619,25 +616,25 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
   pad1->cd();
   std::stringstream cutstring;
   if(nMu>=0){
-    if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
+    if(cutIndex==0){cutstring<<"("<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) && (Channel=="<<nMu<<") ))";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
     }
     else if(cutIndex==3){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst >=5) )";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";
-      else cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5  && Lep1Pt > 100) )";}
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst <=4 && nConst >=2) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) ))";}
   }
   else {
-    if(cutIndex==0){cutstring<<"( "<<weightstring<<" (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) )";}
-    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) )";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 && Lep1Pt > 100 ) )";}
+    if(cutIndex==0){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) && (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) ))";}
   }
   std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
@@ -972,8 +969,8 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
   hSigRH->Draw("hist same");
   hSigLH->Draw("hist same");
   //add to legend
-  leg->AddEntry(hSigRH,"RH TeV X_{5/3}","l");
-  leg->AddEntry(hSigLH,"LH TeV X_{5/3}","l");
+  leg->AddEntry(hSigRH,"RH 1.0 TeV X_{5/3}","l");
+  leg->AddEntry(hSigLH,"LH 1.0 TeV X_{5/3}","l");
 
 
   //Draw data- merge trees
@@ -1080,10 +1077,10 @@ void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<
   if(cutIndex==0) cutname =  "sZVeto";
   if(cutIndex==1) cutname =  "QuarkoniaAndElElZVeto";
   if(cutIndex==2) cutname =  "TwoJets";
-  if(cutIndex==3) cutname =  "nConstituents";
-  if(cutIndex==4) cutname =  "LeadingLepPt100";
-  std::string pdfname = "./plots_forPAS_newLepSel/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+"_"+era+".pdf";
-  std::string pngname = "./plots_forPAS_newLepSel/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+"_"+era+".png";
+  if(cutIndex==3) cutname =  "nConst2to4";
+  if(cutIndex==4) cutname =  "nConst5plus";
+  std::string pdfname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+"_"+era+".pdf";
+  std::string pngname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+"_"+era+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
