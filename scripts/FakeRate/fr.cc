@@ -11,8 +11,8 @@ using namespace std;
 
 TGraphAsymmErrors* getEtaGraph(TTree* t, float looseMiniIsoCut,float tightMiniIsoCut,bool mu){
 
-  string cutstring = Form("LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
-  string loosecut = Form("LepMiniIso < %f",looseMiniIsoCut);
+  string cutstring = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
+  string loosecut = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepMiniIso < %f",looseMiniIsoCut);
   float muEtabins[11]{-2.4,-2.1,-1.2,-0.9,-0.4,0.0,0.4,0.9,1.2,2.1,2.4};
   float elEtabins[11]={-2.4,-1.566,-1.4442,-0.8,-0.4,0.0,0.4,0.8,1.4442,1.566,2.4};
   TH1F* num;
@@ -29,8 +29,8 @@ TGraphAsymmErrors* getEtaGraph(TTree* t, float looseMiniIsoCut,float tightMiniIs
 
 TGraphAsymmErrors* getPtGraph(TTree* t, float looseMiniIsoCut,float tightMiniIsoCut,bool mu){
 
-  string cutstring = Form("LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
-  string loosecut = Form("LepMiniIso < %f",looseMiniIsoCut);
+  string cutstring = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
+  string loosecut = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepMiniIso < %f",looseMiniIsoCut);
   TH1F* num= new TH1F("num","",20,0,200);
   TH1F* den= new TH1F("den","",20,0,200);
   t->Project("num","LepPt",cutstring.c_str());
@@ -42,8 +42,8 @@ TGraphAsymmErrors* getPtGraph(TTree* t, float looseMiniIsoCut,float tightMiniIso
 }
 
 std::pair<float,float> getFakeRate(TTree* t,float looseMiniIsoCut,float tightMiniIsoCut){
-  string cutstring = Form("LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
-  string loosecut = Form("LepMiniIso < %f",looseMiniIsoCut);
+  string cutstring = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepIsTight == 1 && LepMiniIso < %f",tightMiniIsoCut);
+  string loosecut = Form("MET < 25 && mT < 25 && LepPt > 25 && LepPt < 35 && LepMiniIso < %f",looseMiniIsoCut);
   TH1F* num = new TH1F("num","",1,0,10000);
   TH1F* den = new TH1F("den","",1,0,10000);
   t->Project("num","LepPt",cutstring.c_str());
@@ -65,7 +65,7 @@ void fr(){
   for(unsigned int i=0; i < eras.size(); i++){
     TString era = eras.at(i);
     std::cout<<"working on era: "<<era<<std::endl;
-    TFile* fEle = new TFile("../../test/FakeRate_Data_"+era+"Electrons_"+elID+"_modifiedLepPt.root");
+    TFile* fEle = new TFile("../../test/FakeRate_Data_"+era+"Electrons_"+elID+"_modifiedLepPt_IsoElTrig.root");
     TTree* tEle = (TTree*) fEle->Get("FakeRate");
     //make output file to save graph
     TFile* fout = new TFile("FakeRate_Graph_"+era+"_"+elID+".root","RECREATE");
