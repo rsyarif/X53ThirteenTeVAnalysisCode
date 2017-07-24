@@ -61,7 +61,7 @@ std::pair<float,float> getPromptRate(TTree* t,float looseMiniIsoCut,float tightM
 }
 
 void pr(){
-  std::string elID = "MVA2016TightRC";
+  std::string elID = "MVA80XTightRC";
 
   std::vector<TString> eras; eras.push_back("2016B");eras.push_back("2016C");eras.push_back("2016D");eras.push_back("2016E");eras.push_back("2016F");eras.push_back("2016G");eras.push_back("2016H2");eras.push_back("2016H3");eras.push_back("All");
   for(unsigned int i=0; i < eras.size(); i++){
