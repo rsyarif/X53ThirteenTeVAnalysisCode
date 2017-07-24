@@ -273,6 +273,7 @@ int main(int argc, char* argv[]){
   TreeMaker* tm_DilepMassCut = new TreeMaker();
   tm_DilepMassCut->InitTree("tEvts_DilepMassCut");
 
+
   TreeReader* tr;
   tr = new TreeReader(filename.c_str(),!data,true);
   
@@ -314,6 +315,7 @@ int main(int argc, char* argv[]){
 
   //histogram for pdf uncertainties
   TH2F* hist_pdfHT = new TH2F("hist_pdfHT","PDF Weights",500,0,5,30,0,3000);
+  TH2F* hist_pdfpreNConst = new TH2F("hist_pdfpreNConst","PDF Weights",500,0,5,30,0,3000);
   //histogram for scale uncertainties - one for all and then separate ones
   TH2F* hist_scaleHT = new TH2F("hist_scaleHT","MC Scale Uncertainties Combined",500,0,5,30,0,3000);//total
   TH1F* hist_scaleHT_nom = new TH1F("hist_scaleHT_nom","MC Scale Uncertainties ID:Nominal",30,0,3000);//1002
@@ -543,7 +545,6 @@ int main(int argc, char* argv[]){
 
 
     if(!samesign) continue;
-
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
@@ -1005,8 +1006,23 @@ int main(int argc, char* argv[]){
 
     if(vSSLep.at(0)->pt<40) continue; //skip events with leading lepton pt less than 40
     
+    //save pdf stuff before nConst cut
+    if(!data){
+      //now fill ppdf weight histogram
+      std::vector<double> pdfweights_preNC = (*tr->LHEWeights);
+      std::vector<int> pdfweightIDs_preNC = (*tr->LHEWeightIDs);
+      //now fill ppdf weight histogram
+      for(unsigned int i=0; i< pdfweightIDs_preNC.size(); i++){
+	int ID = pdfweightIDs_preNC.at(i);
+	if(!( (ID>2000 && i<2101 && outname.find("X53")==std::string::npos ) || (outname.find("X53")!=std::string::npos && ( ID> 111 && ID <212)) ) ) continue;
+	hist_pdfpreNConst->Fill(pdfweights_preNC.at(i),st);
+      }
+    }
+
+
     int nconst = tr->cleanedAK4Jets.size() + vNonSSLep.size();
     if(nconst<5) continue; //nconst cutl
+
 
     //now fill corresponding histos
     fillHistos(hists_nConst_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -1068,7 +1084,8 @@ int main(int argc, char* argv[]){
 	if(TL==2) npHistos_mumu.at(2)->Fill(st,mcweight);
 	if(TL==3) npHistos_mumu.at(3)->Fill(st,mcweight);
       }
-    }//end filling of nphistos
+    }//end filling of nphistos    
+
 
   }//end event loop
 
@@ -1076,7 +1093,6 @@ int main(int argc, char* argv[]){
   tm_ssdl->tree->Write();
   tm_sZVeto->tree->Write();
   tm_DilepMassCut->tree->Write();
-
   //write the nonprompt histograms
   for(unsigned int j=0; j<4; j++){
     fsig->WriteTObject(npHistos_all.at(j));
@@ -1131,6 +1147,7 @@ int main(int argc, char* argv[]){
 
   
   fsig->WriteTObject(hist_pdfHT);
+  fsig->WriteTObject(hist_pdfpreNConst);
   fsig->WriteTObject(hist_scaleHT);
   fsig->WriteTObject(hist_scaleHT_nom);
   fsig->WriteTObject(hist_scaleHT_1002);
