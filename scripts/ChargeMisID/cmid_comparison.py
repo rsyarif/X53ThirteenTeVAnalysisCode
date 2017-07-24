@@ -92,7 +92,7 @@ def drawAllCombined(histname,elID):
     cmstex.SetX(0.354)
     cmstex.Draw()
     #lumi latex
-    lumitex = TLatex(3.570061,23.08044,"36.8 fb^{-1} (13 TeV)")
+    lumitex = TLatex(3.570061,23.08044,"35.9 fb^{-1} (13 TeV)")
     lumitex.SetNDC()
     lumitex.SetTextSizePixels(24)
     lumitex.SetY(0.87)
@@ -116,7 +116,7 @@ def drawAllCombined(histname,elID):
         c.Print('ChargeMisID_vPT_final_'+elID+'.pdf')
 
 
-drawComparison('h_num_lpt','MVATightRC')
+'''drawComparison('h_num_lpt','MVATightRC')
 drawComparison('hpt_final','MVATightRC')
 drawComparison('hhpt_final','MVATightRC')
 drawComparison('h_pt_final','MVATightRC')
@@ -131,13 +131,13 @@ drawComparison('h_pt_final','MVAJulieTightRC')
 drawComparison('h_num_lpt','MVAJulieNewTightRC')
 drawComparison('hpt_final','MVAJulieNewTightRC')
 drawComparison('hhpt_final','MVAJulieNewTightRC')
-drawComparison('h_pt_final','MVAJulieNewTightRC')
+drawComparison('h_pt_final','MVAJulieNewTightRC')'''
 drawComparison('h_num_lpt','MVA2016TightRC')
 drawComparison('hpt_final','MVA2016TightRC')
 drawComparison('hhpt_final','MVA2016TightRC')
 drawComparison('h_pt_final','MVA2016TightRC')
 
-drawAllCombined('h_num_lpt','MVATightRC')
+'''drawAllCombined('h_num_lpt','MVATightRC')
 drawAllCombined('hpt_final','MVATightRC')
 drawAllCombined('hhpt_final','MVATightRC')
 drawAllCombined('h_pt_final','MVATightRC')
@@ -158,7 +158,7 @@ drawAllCombined('h_pt_final','MVAJulieTightRC')
 drawAllCombined('h_num_lpt','MVAJulieNewTightRC')
 drawAllCombined('hpt_final','MVAJulieNewTightRC')
 drawAllCombined('hhpt_final','MVAJulieNewTightRC')
-drawAllCombined('h_pt_final','MVAJulieNewTightRC')
+drawAllCombined('h_pt_final','MVAJulieNewTightRC')'''
 
 
 

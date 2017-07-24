@@ -98,7 +98,7 @@ def drawAllCombined(histname):
 
 def drawIDComparison():
     c = TCanvas()
-    leg = TLegend(0.5,0.1,0.9,0.5)
+    leg = TLegend(0.5,0.1,0.9,0.4)
     f1 = TFile('FakeRate_Graph_All_MVATightRC.root')
     h1 = f1.Get('ElectronFakeRate')
     f2 = TFile('FakeRate_Graph_All_MVA80XTightRC.root')
@@ -125,7 +125,7 @@ def drawIDComparison():
 
 def drawFakeRateVEtaComparison():    
     c = TCanvas()
-    leg = TLegend(0.3,0.5,0.7,0.9)
+    leg = TLegend(0.3,0.6,0.7,0.9)
     leg.SetBorderSize(0)
     leg.SetFillStyle(0)
     f1 = TFile('FakeRate_Graph_All_MVATightRC.root')
@@ -139,51 +139,72 @@ def drawFakeRateVEtaComparison():
     
     h1.SetLineColor(kRed)
     h2.SetLineColor(kBlue)
-    h3.SetLineColor(kGreen)
+    h3.SetLineColor(kBlack)
 #    h4.SetLineColor(kBlack)
 
     h1.SetMarkerColor(kRed)
     h2.SetMarkerColor(kBlue)
-    h3.SetMarkerColor(kGreen)
+    h3.SetMarkerColor(kBlack)
 #    h4.SetMarkerColor(kBlack)
+    #remove points fromEE-EB overlap
+    h3.RemovePoint(8)
+    h3.RemovePoint(1)
 
-    h1.Draw('apl')
-    h1.GetYaxis().SetRangeUser(0,0.5)
-    h1.SetTitle("Electron Fake Rate vs. #eta Comparison;#eta;Fake Rate")
-    h2.Draw('pl same')
-    h3.Draw('pl same')
+    h3.Draw('ap')
+    h3.GetYaxis().SetRangeUser(0,0.5)
+    h3.SetTitle("Electron Fake Rate vs. #eta;#eta;Fake Rate")
+    h3.GetYaxis().SetTitleOffset(1.25)
+    #h2.Draw('pl same')
+    #h3.Draw('pl same')
 #    h4.Draw('pl same')
     leg.AddEntry(h1,'74X MVA','lp')
     leg.AddEntry(h2,'80X MVA Nominal WP','lp')
     leg.AddEntry(h3,'80X MVA Custom WP','lp')
 #    leg.AddEntry(h4,'80X MVA Julie New WP','lp')
-    leg.Draw('same')
-    c.Print('Electron_FakeRate_vEta_IDComparison.pdf')
+    #leg.Draw('same')
+
+    #Draw CMS tex
+    latex2 = TLatex()
+    latex2.SetNDC()
+    latex2.SetTextSize(0.05)
+    latex2.SetTextAlign(11) # align right
+    latex2.DrawLatex(0.58, 0.93, "CMS Preliminary")
+
+
+    c.Print('Electron_FakeRate_vEta_Twiki.pdf')
 
     for i in range(0,h3.GetN()):
-        print "muon fake rate for eta %.1f is: %.3f" %(h3.GetX()[i],h3.GetY()[i])
+        print "electron fake rate for eta %.1f is: %.3f" %(h3.GetX()[i],h3.GetY()[i])
 
 
 def drawMuonFakeRateVEta():
     c = TCanvas()
     leg = TLegend(0.5,0.1,0.9,0.5)
-    f1 = TFile('FakeRate_Graph_All_MVATightRC.root')
+    f1 = TFile('FakeRate_Graph_All_MVA2016TightRC.root')
     h1 = f1.Get('MuonEtaFakeRate')
     h1.SetLineColor(kBlack)
     h1.SetMarkerColor(kBlack)
-    h1.Draw("apl")
-    h1.GetYaxis().SetRangeUser(0,0.5)
+    h1.Draw("ap")
+    h1.GetYaxis().SetRangeUser(0,0.5)    
     h1.SetTitle("Muon Fake Rate vs. #eta;#eta;Fake Rate")
-    c.Print("Muon_FakeRate_vEta.pdf")
+    h1.GetYaxis().SetTitleOffset(1.25)
+    #Draw CMS tex
+    latex2 = TLatex()
+    latex2.SetNDC()
+    latex2.SetTextSize(0.05)
+    latex2.SetTextAlign(11) # align right
+    latex2.DrawLatex(0.58, 0.93, "CMS Preliminary")
+
+    c.Print("Muon_FakeRate_vEta_Twiki.pdf")
 
     for i in range(0,h1.GetN()):
-        print "muon fake rate for etat %.1f is: %.3f" %(h1.GetX()[i],h1.GetY()[i])
+        print "muon fake rate for eta %.1f is: %.3f" %(h1.GetX()[i],h1.GetY()[i])
 
 
-drawComparison('MuonFakeRate')
-drawComparison('ElectronFakeRate')
-drawAllCombined('MuonFakeRate')
-drawAllCombined('ElectronFakeRate')
+#drawComparison('MuonFakeRate')
+#drawComparison('ElectronFakeRate')
+#drawAllCombined('MuonFakeRate')
+#drawAllCombined('ElectronFakeRate')
 
 drawIDComparison()
 drawFakeRateVEtaComparison()
