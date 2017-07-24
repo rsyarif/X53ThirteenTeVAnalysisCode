@@ -5,7 +5,7 @@ void dupCheck(){
   long long RUNPREF = 1000 * 1000;
   RUNPREF *= 1000 * 1000;
 
-  TFile* fd = new TFile("ChargeMisID_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* fd = new TFile("Data_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016Full.root");
 
   TTree* t = (TTree*) fd->Get("tEvts_ssdl");
   int run,lumi;
