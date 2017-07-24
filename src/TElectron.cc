@@ -49,7 +49,7 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 bool TElectron::mvaLoose(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue>0.913286) return true;
@@ -67,7 +67,7 @@ bool TElectron::mvaLoose(){
 bool TElectron::mva80XLoose(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>0.837) return true;
@@ -85,7 +85,7 @@ bool TElectron::mva80XLoose(){
 bool TElectron::mvaJulieLoose(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>-0.041) return true;
@@ -103,7 +103,7 @@ bool TElectron::mvaJulieLoose(){
 bool TElectron::mvaTight(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue>0.967083) return true;
@@ -121,7 +121,7 @@ bool TElectron::mvaTight(){
 bool TElectron::mva80XTight(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>0.941) return true;
@@ -139,7 +139,7 @@ bool TElectron::mva80XTight(){
 bool TElectron::mva2016Tight(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>0.674) return true;
@@ -156,7 +156,7 @@ bool TElectron::mva2016Tight(){
 bool TElectron::mvaJulieTight(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>0.674) return true;
@@ -174,7 +174,7 @@ bool TElectron::mvaJulieTight(){
 bool TElectron::mvaJulieNewTight(){
 
   //first veto on gap
-  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+  if(fabs(eta)>1.442 && fabs(eta)<1.566) return false;
 
   if(fabs(eta)<0.8){
     if(mvaValue80X>0.788) return true;
