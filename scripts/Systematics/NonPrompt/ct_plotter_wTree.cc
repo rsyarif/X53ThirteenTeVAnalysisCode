@@ -1,4 +1,98 @@
 
+void DrawCumulative(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string flavor, std::string lepflavor){
+
+  TCanvas* c = new TCanvas();
+  c->SetLogy();
+  //make tpads
+  TPad* pad1 = new TPad("pad1","pad1",0.01,0.2,1,1);
+  TPad* pad2 = new TPad("pad2","pad2",0.01,0.,1,0.2);
+
+  pad1->SetTopMargin(0.1);
+  pad1->SetLogy();
+  pad2->SetTopMargin(0.0);
+  pad1->SetBottomMargin(0.0);
+  pad2->SetBottomMargin(0.3);
+  pad1->Draw();
+  pad2->Draw();
+  //cd to top pad for drawing
+  pad1->cd();
+
+  std::string title = "Predicted vs. Observed H_{T}^{Lep} for "+flavor+" "+lepflavor+" - Cumulative;H_{T};N_{Events}";
+
+  //if(flavor=="unmatched") std::cout<<"unmatched observed events before lumi: "<<h_obs->Integral();
+
+  //make lumi weight
+  //sumw2
+  h_obs->Sumw2();
+  //h_pred->Sumw2();
+  float lumiweight = 35800*  (831.76 / 115091972);
+  h_pred->Scale(lumiweight);
+  h_obs->Scale(lumiweight);
+
+  //make cumulative
+  TH1F* h_pred_cum = (TH1F*) h_pred->Clone("h_pred_cum");
+  h_pred_cum->Sumw2();
+  TH1F* h_obs_cum = (TH1F*) h_pred->Clone("h_obs_cum");
+  h_obs_cum->Sumw2();
+  for(int i=1; i<=h_pred_cum->GetNbinsX();i++){
+    Double_t obserr=0.;
+    float obs = h_obs->IntegralAndError(i,26,obserr);
+    Double_t prederr=0.;
+    float pred = h_pred->IntegralAndError(i,26,prederr);
+    h_pred_cum->SetBinContent(i,pred);
+    h_pred_cum->SetBinError(i,prederr);
+    h_obs_cum->SetBinContent(i,obs);
+    h_obs_cum->SetBinError(i,obserr);
+  }
+
+  h_pred_cum->SetTitle(title.c_str());
+  h_pred_cum->SetTitleSize(0.12);
+  h_pred_cum->GetYaxis()->SetTitleOffset(1.4);
+  h_pred_cum->GetYaxis()->CenterTitle();
+  h_pred_cum->SetLineColor(kRed+1);
+  h_obs_cum->SetMarkerStyle(20);
+  h_obs_cum->SetMarkerColor(kBlack);
+  h_obs_cum->SetLineColor(kBlack);
+
+  h_pred_cum->Draw("hist e");
+  h_obs_cum->Draw("pesame");
+
+  TLegend* leg = new TLegend(0.4,0.6,0.9,0.8);
+  leg->SetBorderSize(0);
+  leg->SetFillStyle(0);
+  std::string predleg = "Predicted Events for "+flavor+" "+lepflavor;
+  std::string obsleg = "Observed Events for "+flavor+" "+lepflavor;
+  leg->AddEntry(h_obs_cum,obsleg.c_str(),"p");
+  leg->AddEntry(h_pred_cum,predleg.c_str(),"l");
+  leg->Draw("same");
+
+  //now go to pad2 and draw ratio
+  pad2->cd();
+  TH1F* h_ratio = (TH1F*) h_obs_cum->Clone("h_ratio");
+  h_ratio->Divide(h_pred_cum);
+  h_ratio->GetYaxis()->SetRangeUser(0.5,1.5);
+  h_ratio->GetYaxis()->SetTitle("Obs/Pred");
+  h_ratio->GetYaxis()->SetTitleOffset(0.4);
+  h_ratio->GetYaxis()->SetTitleSize(0.12);
+  h_ratio->GetYaxis()->CenterTitle();
+  h_ratio->GetYaxis()->SetLabelSize(0.10);
+  h_ratio->GetXaxis()->SetTitle("H_{T}^{Lep}");
+  h_ratio->GetXaxis()->SetTitleSize(0.12);
+  h_ratio->GetXaxis()->CenterTitle();
+  h_ratio->GetXaxis()->SetLabelSize(0.10);
+  h_ratio->GetYaxis()->SetNdivisions(205);
+  h_ratio->Draw("pe");
+  TLine* baseline = new TLine(0,1,3000,1);
+  baseline->SetLineColor(kBlack);
+  baseline->SetLineStyle(2);
+  baseline->Draw();
+
+  c->Update();
+  c->Print(pdfname.c_str());
+  delete c;
+
+}
+
 void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string flavor, std::string lepflavor){
 
   TCanvas* c = new TCanvas();
@@ -62,6 +156,14 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
   leg->AddEntry(h_pred,predleg.c_str(),"l");
   leg->Draw("same");
 
+  //latex
+  TLatex* cmstex = new TLatex();
+  cmstex->SetNDC();
+  cmstex->SetTextSize(0.06);
+  //draw latex
+  cmstex->DrawLatex(0.68,0.93,"CMS Preliminary");
+
+
   //now go to pad2 and draw ratio
   pad2->cd();
   TH1F* h_ratio = (TH1F*) h_obs->Clone("h_ratio");
@@ -91,6 +193,8 @@ void DrawAndSave(TH1F* h_pred, TH1F* h_obs, std::string pdfname, std::string fla
 
 
 void ct_plotter_wTree(){
+
+  gStyle->SetOptStat(kFALSE);
 
   TFile* fRates = new TFile("Sys_FakeRateByFlavor.root");
   
@@ -313,16 +417,29 @@ void ct_plotter_wTree(){
 
 
   //draw and save
-  DrawAndSave(h_el_pred_HT_light, h_el_obs_HT_light,"Closure_Light_Electrons.pdf","light","Electrons");
-  DrawAndSave(h_el_pred_HT_charm, h_el_obs_HT_charm,"Closure_Charm_Electrons.pdf","charm","Electrons");
-  DrawAndSave(h_el_pred_HT_bottom, h_el_obs_HT_bottom,"Closure_Bottom_Electrons.pdf","bottom","Electrons");
-  DrawAndSave(h_el_pred_HT_unmatched, h_el_obs_HT_unmatched,"Closure_UnMatched_Electrons.pdf","unmatched","Electrons");
-  DrawAndSave(h_el_pred_HT_fake, h_el_obs_HT_fake,"Closure_Fake_Electrons.pdf","fake","Electrons");
+  DrawAndSave(h_el_pred_HT_light, h_el_obs_HT_light,"Closure_Light_Electrons_Twiki.pdf","light","Electrons");
+  DrawAndSave(h_el_pred_HT_charm, h_el_obs_HT_charm,"Closure_Charm_Electrons_Twiki.pdf","charm","Electrons");
+  DrawAndSave(h_el_pred_HT_bottom, h_el_obs_HT_bottom,"Closure_Bottom_Electrons_Twiki.pdf","bottom","Electrons");
+  DrawAndSave(h_el_pred_HT_unmatched, h_el_obs_HT_unmatched,"Closure_UnMatched_Electrons_Twiki.pdf","unmatched","Electrons");
+  DrawAndSave(h_el_pred_HT_fake, h_el_obs_HT_fake,"Closure_Fake_Electrons_Twiki.pdf","fake","Electrons");
 
-  DrawAndSave(h_mu_pred_HT_light, h_mu_obs_HT_light,"Closure_Light_Muons.pdf","light","Muons");
-  DrawAndSave(h_mu_pred_HT_charm, h_mu_obs_HT_charm,"Closure_Charm_Muons.pdf","charm","Muons");
-  DrawAndSave(h_mu_pred_HT_bottom, h_mu_obs_HT_bottom,"Closure_Bottom_Muons.pdf","bottom","Muons");
-  DrawAndSave(h_mu_pred_HT_unmatched, h_mu_obs_HT_unmatched,"Closure_UnMatched_Muons.pdf","unmatched","Muons");
-  DrawAndSave(h_mu_pred_HT_fake, h_mu_obs_HT_fake,"Closure_Fake_Muons.pdf","fake","Muons");
+  DrawAndSave(h_mu_pred_HT_light, h_mu_obs_HT_light,"Closure_Light_Muons_Twiki.pdf","light","Muons");
+  DrawAndSave(h_mu_pred_HT_charm, h_mu_obs_HT_charm,"Closure_Charm_Muons_Twiki.pdf","charm","Muons");
+  DrawAndSave(h_mu_pred_HT_bottom, h_mu_obs_HT_bottom,"Closure_Bottom_Muons_Twiki.pdf","bottom","Muons");
+  DrawAndSave(h_mu_pred_HT_unmatched, h_mu_obs_HT_unmatched,"Closure_UnMatched_Muons_Twiki.pdf","unmatched","Muons");
+  DrawAndSave(h_mu_pred_HT_fake, h_mu_obs_HT_fake,"Closure_Fake_Muons_Twiki.pdf","fake","Muons");
+
+
+  DrawCumulative(h_el_pred_HT_light, h_el_obs_HT_light,"Closure_Light_Electrons_Cumulative_Twiki.pdf","light","Electrons");
+  DrawCumulative(h_el_pred_HT_charm, h_el_obs_HT_charm,"Closure_Charm_Electrons_Cumulative_Twiki.pdf","charm","Electrons");
+  DrawCumulative(h_el_pred_HT_bottom, h_el_obs_HT_bottom,"Closure_Bottom_Electrons_Cumulative_Twiki.pdf","bottom","Electrons");
+  DrawCumulative(h_el_pred_HT_unmatched, h_el_obs_HT_unmatched,"Closure_UnMatched_Electrons_Cumulative_Twiki.pdf","unmatched","Electrons");
+  DrawCumulative(h_el_pred_HT_fake, h_el_obs_HT_fake,"Closure_Fake_Electrons_Cumulative_Twiki.pdf","fake","Electrons");
+
+  DrawCumulative(h_mu_pred_HT_light, h_mu_obs_HT_light,"Closure_Light_Muons_Cumulative_Twiki.pdf","light","Muons");
+  DrawCumulative(h_mu_pred_HT_charm, h_mu_obs_HT_charm,"Closure_Charm_Muons_Cumulative_Twiki.pdf","charm","Muons");
+  DrawCumulative(h_mu_pred_HT_bottom, h_mu_obs_HT_bottom,"Closure_Bottom_Muons_Cumulative_Twiki.pdf","bottom","Muons");
+  DrawCumulative(h_mu_pred_HT_unmatched, h_mu_obs_HT_unmatched,"Closure_UnMatched_Muons_Cumulative_Twiki.pdf","unmatched","Muons");
+  DrawCumulative(h_mu_pred_HT_fake, h_mu_obs_HT_fake,"Closure_Fake_Muons_Cumulative_Twiki.pdf","fake","Muons");
 
 }
