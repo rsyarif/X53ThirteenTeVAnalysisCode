@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
   std::stringstream cutSStream;
-  cutSStream<<" ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
+  cutSStream<<" ( ( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2)))) && (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
 
   vCutString.push_back(cutSStream.str());
 
@@ -181,17 +181,17 @@ int main(int argc, char* argv[]){
   //All_sig->SetBinContent(1,all_sig); All_sig->SetBinError(1,errAll_sig);
 
   TH1F* elel__sig = new TH1F("elel"+erast+"__sig","",1,0,1);
-  float nSig_elel = cutSig_elel->nEvents.at(0) / cutSig_elel->xsec;
+  float nSig_elel = cutSig_elel->nEvents.at(0) / (cutSig_elel->xsec);
   float errElel_sig = cutSig_elel->vErr.at(0);
   elel__sig->SetBinContent(1,nSig_elel); elel__sig->SetBinError(1,errElel_sig);
 
   TH1F* elmu__sig = new TH1F("elmu"+erast+"__sig","",1,0,1);
-  float nSig_elmu = cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec;
+  float nSig_elmu = cutSig_elmu->nEvents.at(0) / (cutSig_elmu->xsec);
   float errElmu_sig = cutSig_elmu->vErr.at(0);
   elmu__sig->SetBinContent(1,nSig_elmu); elmu__sig->SetBinError(1,errElmu_sig);
 
   TH1F* mumu__sig = new TH1F("mumu"+erast+"__sig","",1,0,1);
-  float nSig_mumu = cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec;
+  float nSig_mumu = cutSig_mumu->nEvents.at(0) / (cutSig_mumu->xsec);
   float errMumu_sig = cutSig_mumu->vErr.at(0);
   mumu__sig->SetBinContent(1,nSig_mumu); mumu__sig->SetBinError(1,errMumu_sig);
 
