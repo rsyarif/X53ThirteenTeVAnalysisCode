@@ -39,6 +39,9 @@ void makePlots_forPAS(std::string elID, std::string muID){
   //set TDRStyle
   setTDRStyle();
   
+  //make folder to save plots - rizki
+  system("mkdir -v plots_forPAS");
+   
  
   //desired lumi:
   float lumi1 = 17.68; //fb^-1  
@@ -57,8 +60,13 @@ void makePlots_forPAS(std::string elID, std::string muID){
   std::vector<Sample*> vBkgSamplesBD = appendSampleVectors(vMCBkgSamples1,vDDBkgSamples1);
   std::vector<Sample*> vBkgSamplesEH = appendSampleVectors(vMCBkgSamples2,vDDBkgSamples2);
 
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
+//   std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
+//   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
+  
+  //TT SIGNAL - RIZKI
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
+
   std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
 
   Sample* dataSampleBD = getDataSample("sZVeto",elID,muID,"2016B-D");
@@ -73,15 +81,15 @@ void makePlots_forPAS(std::string elID, std::string muID){
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,1,j,weightstring);
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,2,j,weightstring);
 
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,-1,j,weightstring,"2016B-D");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,0,j,weightstring,"2016B-D");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,1,j,weightstring,"2016B-D");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,2,j,weightstring,"2016B-D");
-
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,-1,j,weightstring,"2016E-H");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,0,j,weightstring,"2016E-H");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,1,j,weightstring,"2016E-H");
-      DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,2,j,weightstring,"2016E-H");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,-1,j,weightstring,"2016B-D");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,0,j,weightstring,"2016B-D");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,1,j,weightstring,"2016B-D");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesBD,vSigSamples1,dataSampleBD, fout,elID,muID,2,j,weightstring,"2016B-D");
+// 
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,-1,j,weightstring,"2016E-H");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,0,j,weightstring,"2016E-H");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,1,j,weightstring,"2016E-H");
+//       DrawAndSaveSingleEra(vVariables.at(i),vBkgSamplesEH,vSigSamples2,dataSampleEH, fout,elID,muID,2,j,weightstring,"2016E-H");
       
       gROOT->Reset();
     }
@@ -92,7 +100,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
   }
 
   //get graph of chargemisID
-  DrawChargeMisIDGraph(fout,elID);
+//   DrawChargeMisIDGraph(fout,elID);
   fout->Write();
   fout->Close();
 
@@ -457,26 +465,26 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     h->SetLineStyle(s->linestyle);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
     h->GetYaxis()->SetTitle(var->Yaxis.c_str());
-    //add to signal histo
-    if(s->name.find("RH")==std::string::npos){
+    //add to signal histo - rizki edits: turn off RH, no chirality for TT signal
+//     if(s->name.find("RH")==std::string::npos){
       hSigLH->Add(h);
       hSigLH->SetLineStyle(s->linestyle);
-    }
-    else{
-      hSigRH->Add(h);
-      hSigRH->SetLineStyle(s->linestyle);
-    }
+//     }
+//     else{
+//       hSigRH->Add(h);
+//       hSigRH->SetLineStyle(s->linestyle);
+//     }
     
     //assert(h);
     //tStack->Add(h);
 
     //h->Draw("hist same");
   }
-  hSigRH->Draw("hist same");
+//   hSigRH->Draw("hist same");
   hSigLH->Draw("hist same");
   //add to legend
-  leg->AddEntry(hSigRH,"RH 1.0 TeV X_{5/3}","l");
-  leg->AddEntry(hSigLH,"LH 1.0 TeV X_{5/3}","l");
+//   leg->AddEntry(hSigRH,"RH 1.0 TeV X_{5/3}","l");
+  leg->AddEntry(hSigLH,"1.0 TeV TT","l");
 
 
   //Draw data- merge trees into chain

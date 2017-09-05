@@ -14,6 +14,7 @@
 
 std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string RizkiArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/";
 
 std::vector<Variable*> getVariableVec(){
 
@@ -1058,6 +1059,98 @@ std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lum
   return vSigSamples;
 
 }
+
+//added by rizki
+std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
+  //make names vector
+  std::vector<std::string> vSigNames;
+  std::vector<float> vXsec;
+  //RIZKI: EVENTUALLY NEED TO MODIFY BELO FOR TT BR
+  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
+  //float BRssdl= 2*( pow((.1063 + .1071 + .1138),2)); INCLUSIVE SO NO BRANCHING RATIO
+  std::vector<int> vNEvts;
+  vSigNames.push_back("TprimeTprime_M-800"); vXsec.push_back(0.196); vNEvts.push_back(795000.);
+  vSigNames.push_back("TprimeTprime_M-900"); vXsec.push_back(0.0903); vNEvts.push_back(831200.);
+  vSigNames.push_back("TprimeTprime_M-1000"); vXsec.push_back(0.0440); vNEvts.push_back(829600.);
+  vSigNames.push_back("TprimeTprime_M-1100"); vXsec.push_back(0.0224); vNEvts.push_back(832800.);
+  vSigNames.push_back("TprimeTprime_M-1200"); vXsec.push_back(0.0118); vNEvts.push_back(832600.);
+  vSigNames.push_back("TprimeTprime_M-1300"); vXsec.push_back(0.00639); vNEvts.push_back(831000.);
+  vSigNames.push_back("TprimeTprime_M-1400"); vXsec.push_back(0.00354); vNEvts.push_back(832600.);
+  vSigNames.push_back("TprimeTprime_M-1500"); vXsec.push_back(0.00200); vNEvts.push_back(832800.);
+  vSigNames.push_back("TprimeTprime_M-1600"); vXsec.push_back(0.001148); vNEvts.push_back(832600.);
+  vSigNames.push_back("TprimeTprime_M-1700"); vXsec.push_back(0.000666); vNEvts.push_back(797000.);
+  vSigNames.push_back("TprimeTprime_M-1800"); vXsec.push_back(0.000391); vNEvts.push_back(833000.);
+
+ 
+
+  //vector to hold weights
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
+    vWeights.push_back( lumi * 1000 * ( vXsec.at(i) / vNEvts.at(i) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+
+  std::vector<Sample*> vSigSamples;
+
+//   std::string lh700 = RizkiArea+"test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53700Lfile = new TFile(lh700.c_str());
+//   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
+//   vSigSamples.push_back(x53x53m700L);
+//   std::string rh700 = RizkiArea+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53700Rfile = new TFile(rh700.c_str());
+//   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
+//   vSigSamples.push_back(x53x53m700R);
+
+  std::string lh800 = RizkiArea+"test/TprimeTprime_M-800_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
+  vSigSamples.push_back(x53x53m800L);
+
+  std::string lh900 = RizkiArea+"test/TprimeTprime_M-900_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
+  vSigSamples.push_back(x53x53m900L);
+
+  std::string lh1000 = RizkiArea+"test/TprimeTprime_M-1000_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
+  vSigSamples.push_back(x53x53m1000L);
+
+  std::string lh1100 = RizkiArea+"test/TprimeTprime_M-1100_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  Sample* x53x53m1100L = new Sample(vSigNames.at(3),x53x531100Lfile,vWeights.at(3),vXsec.at(3),cut,kBlack,2);
+  vSigSamples.push_back(x53x53m1100L);
+
+  std::string lh1200 = RizkiArea+"test/TprimeTprime_M-1200_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  Sample* x53x53m1200L = new Sample(vSigNames.at(4),x53x531200Lfile,vWeights.at(4),vXsec.at(4),cut,kOrange,2);
+  vSigSamples.push_back(x53x53m1200L);
+
+  std::string lh1300 = RizkiArea+"test/TprimeTprime_M-1300_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  Sample* x53x53m1300L = new Sample(vSigNames.at(5),x53x531300Lfile,vWeights.at(5),vXsec.at(5),cut,kViolet,2);
+  vSigSamples.push_back(x53x53m1300L);
+
+  std::string lh1400 = RizkiArea+"test/TprimeTprime_M-1400_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  Sample* x53x53m1400L = new Sample(vSigNames.at(6),x53x531400Lfile,vWeights.at(6),vXsec.at(6),cut,kRed,2);
+  vSigSamples.push_back(x53x53m1400L);
+
+  std::string lh1500 = RizkiArea+"test/TprimeTprime_M-1500_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  Sample* x53x53m1500L = new Sample(vSigNames.at(7),x53x531500Lfile,vWeights.at(7),vXsec.at(7),cut,kBlue+2,2);
+  vSigSamples.push_back(x53x53m1500L);
+
+  std::string lh1600 = RizkiArea+"test/TprimeTprime_M-1600_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531600Lfile = new TFile(lh1600.c_str());
+  Sample* x53x53m1600L = new Sample(vSigNames.at(8),x53x531600Lfile,vWeights.at(8),vXsec.at(8),cut,kRed+2,2);
+  vSigSamples.push_back(x53x53m1600L);
+
+
+
+  return vSigSamples;
+
+}
+
 
 std::vector<Sample*> get76XValidationSampleVec(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
   //make names vector

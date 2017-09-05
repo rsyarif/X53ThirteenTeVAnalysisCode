@@ -558,7 +558,22 @@ void TreeReader::Init(TTree *treetemp)
   //hadronic triggers
   tree->SetBranchAddress("HLT_PFHT900_DileptonCalc",&HLT_PFHT900,&b_HLT_PFHT900_DileptonCalc);
   tree->SetBranchAddress("HLT_AK8PFJet360TrimMass30_DileptonCalc",&HLT_AK8PFJet360TrimMass30,&b_HLT_AK8PFJet360TrimMass30_DileptonCalc);
+  
+  //TT sig decay info
+  tree->SetBranchAddress("isTZTZ_TpTpCalc",&isTZTZ,&b_isTZTZ_TpTpCalc);
+  tree->SetBranchAddress("isTZTH_TpTpCalc",&isTZTH,&b_isTZTH_TpTpCalc);
+  tree->SetBranchAddress("isTZBW_TpTpCalc",&isTZBW,&b_isTZBW_TpTpCalc);
+  tree->SetBranchAddress("isTHTH_TpTpCalc",&isTHTH,&b_isTHTH_TpTpCalc);
+  tree->SetBranchAddress("isTHBW_TpTpCalc",&isTHBW,&b_isTHBW_TpTpCalc);
+  tree->SetBranchAddress("isBWBW_TpTpCalc",&isBWBW,&b_isBWBW_TpTpCalc);
 
+  //BB sig decay info
+  tree->SetBranchAddress("isBZBZ_TpTpCalc",&isBZBZ,&b_isBZBZ_TpTpCalc);
+  tree->SetBranchAddress("isBZBH_TpTpCalc",&isBZBH,&b_isBZBH_TpTpCalc);
+  tree->SetBranchAddress("isBZTW_TpTpCalc",&isBZTW,&b_isBZTW_TpTpCalc);
+  tree->SetBranchAddress("isBHBH_TpTpCalc",&isBHBH,&b_isBHBH_TpTpCalc);
+  tree->SetBranchAddress("isBHTW_TpTpCalc",&isBHTW,&b_isBHTW_TpTpCalc);
+  tree->SetBranchAddress("isTWTW_TpTpCalc",&isTWTW,&b_isTWTW_TpTpCalc);
 
 
 }

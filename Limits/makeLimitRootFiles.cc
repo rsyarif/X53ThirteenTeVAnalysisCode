@@ -69,7 +69,8 @@ int main(int argc, char* argv[]){
   std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   std::vector<Sample*> vDDBkg = getDDBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   std::vector<Sample*> vBkg = appendSampleVectors(vMCBkg,vDDBkg);
-  std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
+//   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
+  std::vector<Sample*> vSig = getInclusiveSigTTSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   Sample* dataSample = getDataSample("sZVeto","MVA2016TightRC","CBTightMiniIsoTight",era);
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;
@@ -77,7 +78,8 @@ int main(int argc, char* argv[]){
   std::stringstream mss; mss<<mass;
   std::string mstring = mss.str();
   for(std::vector<Sample*>::size_type i=0; i< vSig.size(); i++){
-    if( vSig.at(i)->name.find(mstring)!=std::string::npos && vSig.at(i)->name.find(chirality)!=std::string::npos){
+    //if( vSig.at(i)->name.find(mstring)!=std::string::npos && vSig.at(i)->name.find(chirality)!=std::string::npos){
+    if( vSig.at(i)->name.find(mstring)!=std::string::npos){
       sigSample = vSig.at(i);
       break;
     }
@@ -92,7 +94,8 @@ int main(int argc, char* argv[]){
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
   std::stringstream cutSStream;
-  cutSStream<<" ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
+//   cutSStream<<" ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<")";
+  cutSStream<<" ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1)) && (DilepMass>20) && (nConst>="<<nConst<<" ) && (Lep1Pt >"<<lep1cut<<") && (Lep2Pt > "<<lep2cut<<") && ( cleanAK4HT > "<<HTcut<<") && ( nNonSSLeps == 0)"; //added by rizki, add exactly 2 leptons (SS) only.
 
   vCutString.push_back(cutSStream.str());
 
@@ -100,19 +103,23 @@ int main(int argc, char* argv[]){
 
   //output root file
   std::stringstream rootfilename_all;
-  rootfilename_all<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+//   rootfilename_all<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_all<<"Limits_M"<<mass<<"_Ch_All_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
   rootfilename_all<<"_"<<era<<".root";
 
   std::stringstream rootfilename_elel;
-  rootfilename_elel<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+//   rootfilename_elel<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_elel<<"Limits_M"<<mass<<"_Ch_ee_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
   rootfilename_elel<<"_"<<era<<".root";
 
   std::stringstream rootfilename_elmu;
-  rootfilename_elmu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+//   rootfilename_elmu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_elmu<<"Limits_M"<<mass<<"_Ch_emu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
   rootfilename_elmu<<"_"<<era<<".root";
 
   std::stringstream rootfilename_mumu;
-  rootfilename_mumu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+//   rootfilename_mumu<<"Limits_M"<<mass<<"_"<<chirality<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
+  rootfilename_mumu<<"Limits_M"<<mass<<"_Ch_mumu_LL"<<lep1cut<<"_SL"<<lep2cut<<"_HT"<<HTcut<<"_nConst"<<nConst;
   rootfilename_mumu<<"_"<<era<<".root";
 
   TFile* fout = new TFile((rootfilename_all.str()).c_str(),"RECREATE");

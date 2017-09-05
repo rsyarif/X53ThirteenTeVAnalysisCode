@@ -41,15 +41,18 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
+//   std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/user/lpcljm/LJMet80x_TT_SSdilepton_2017_8_23_rizki/ljmet_trees/";
+  std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/user/lpcljm//LJMet80x_TT_SSdilepton_TpTpCalcOn_2017_9_1_rizki/ljmet_trees/";
   std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Moriond17/25ns/Feb01/ljmet_trees/";
   std::string eosareasingle="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/dzou/Spring16/25ns/Mar27/ljmet_trees"; //location of Moriond17 tree for single x53
   std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/";
 
-  if(argc!=5) return 0;
+  if(argc<5) return 0; // edited by rizki
   std::string argv1=argv[1];
   std::string elID = argv[2];
   std::string muID = argv[3];
   std::string era = argv[4];
+  std::string sigDecay = argv[5]; //added by rizki
 
   typedef std::map<std::string,std::string> StringMap;
   
@@ -83,6 +86,20 @@ int main(int argc, char* argv[]){
   bg_samples["NonPromptTTbar"]=eosarea+"ljmet_TTbar.root";
   bg_samples["NonPromptTTbar_ext1"]=eosarea+"ljmet_TTbar_ext1.root";
   bg_samples["NonPromptTTbar_ext2"]=eosarea+"ljmet_TTbar_ext2.root";
+  
+  
+  //TT signal - rizki	
+  sig_samples["TprimeTprime_M-800"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-800_hadd.root";
+  sig_samples["TprimeTprime_M-900"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-900_hadd.root";
+  sig_samples["TprimeTprime_M-1000"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1000_hadd.root";
+  sig_samples["TprimeTprime_M-1100"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1100_hadd.root";
+  sig_samples["TprimeTprime_M-1200"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1200_hadd.root";
+  sig_samples["TprimeTprime_M-1300"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1300_hadd.root";
+  sig_samples["TprimeTprime_M-1400"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1400_hadd.root";
+  sig_samples["TprimeTprime_M-1500"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1500_hadd.root";
+  sig_samples["TprimeTprime_M-1600"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1600_hadd.root";
+  sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1700_hadd.root";
+  sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1800_hadd.root";
 
   
   sig_samples["X53X53m700RH"]=eosarea+"ljmet_X53X53m700RH.root";
@@ -231,7 +248,7 @@ int main(int argc, char* argv[]){
 
   //check usage
   bool correctusage=true;
-  if(argc!=5 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false;
+  if(argc!=6 || ( bg_samples.find(argv[1])==bg_samples.end() && sig_samples.find(argv[1])==sig_samples.end() && data_samples.find(argv[1])==data_samples.end() && argv1!="NonPromptMC") ) correctusage=false; //edited by rizki
   if(!correctusage){
     std::cout<<"Need to specify electron and muon ID as well as supply argument for sample name of one of the following"<<std::endl;
     std::cout<<std::endl<<"********** Background *********"<<std::endl;
@@ -253,17 +270,35 @@ int main(int argc, char* argv[]){
   std::string sample = argv[1];
   if(sample.find("NonPrompt")!=std::string::npos) bg_np = true;
   
+  //check BR for signal - added by rizki
+  if(signal && (argc!=6 || 
+  				sigDecay=="" || 
+  				!(sigDecay=="BWBW" || sigDecay=="THBW" || sigDecay=="TZBW"|| sigDecay=="TZTZ"|| sigDecay=="TZTH"|| sigDecay=="THTH" ||  
+  				  sigDecay=="TWTW" || sigDecay=="BHTW" || sigDecay=="BZTW"|| sigDecay=="BZBZ"|| sigDecay=="BZBH"|| sigDecay=="BHBH") 
+  				  ) 
+  	){
+  		std::cout << "argc =  "<< argc << std::endl;
+  		std::cout << "Entered sigDecay: "<< sigDecay << std::endl;
+  		std::cout << "Need to enter TT/BB decay: BWBW, THBW, TZBW, TZTZ, TZTH, or THTH, etc. "<< std::endl;
+  		return 0;  
+  	}
+  
   //make TreeReader
   std::string filename;
   if(bg_mc) filename = bg_samples.find(argv[1])->second;
   if(signal) filename = sig_samples.find(argv[1])->second;
   if(data) filename = data_samples.find(argv[1])->second;
   if(bg_np)  std::cout<<"running NonPrompt on  file: "<<filename<<std::endl;
-  else  std::cout<<"running RegularMethod  on  file: "<<filename<<std::endl;
+  else{  //edited by rizki
+  	std::cout<<"running RegularMethod  on  file: "<<filename;
+  	if(signal) std::cout << " -- signal Decay : " << sigDecay << std::endl;
+  	std::cout << std::endl;
+  }
 
   //make output file
   std::stringstream outnamestream;
-  outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root";
+//   outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root";
+  outnamestream<<argv[1]<<"_"<<sigDecay<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root"; //edited by rizki
 
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
@@ -526,6 +561,31 @@ int main(int argc, char* argv[]){
     }
     //goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
 
+	//check TT/BB sig Decay - added by rizki
+	if(signal){
+		//std::cout << "Signal Decay Check -- chosen decay : " << sigDecay <<std::endl;
+		//std::cout << "	isTZTZ = " << tr->isTZTZ <<std::endl;
+		//std::cout << "	isTZTH = " << tr->isTZTH <<std::endl;
+		//std::cout << "	isTZBW = " << tr->isTZBW <<std::endl;
+		//std::cout << "	isTHTH = " << tr->isTHTH <<std::endl;
+		//std::cout << "	isTHBW = " << tr->isTHBW <<std::endl;
+		//std::cout << "	isBWBW = " << tr->isBWBW <<std::endl;
+		if(sigDecay=="TZTZ" && tr->isTZTZ==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="TZTH" && tr->isTZTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="TZBW" && tr->isTZBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="THTH" && tr->isTHTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="THBW" && tr->isTHBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="BWBW" && tr->isBWBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+
+		if(sigDecay=="TZTZ" && tr->isTZTZ==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="TZTH" && tr->isTZTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="TZBW" && tr->isTZBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="THTH" && tr->isTHTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="THBW" && tr->isTHBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="BWBW" && tr->isBWBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		//std::cout << "chosen decay and sigDecay info matches! " <<std::endl;
+	}
+
     //reorder the leptons by pt to remove flavor ordering
     std::sort(goodLeptons.begin(),goodLeptons.end(),sortByPt);
     bool samesign;
@@ -545,6 +605,9 @@ int main(int argc, char* argv[]){
 
 
     if(!samesign) continue;
+    
+    //added by rizki - require exactly 2 leptons 
+	if(goodLeptons.size()!=2) continue;
 
 
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass

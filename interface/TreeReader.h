@@ -405,7 +405,35 @@ class TreeReader{
   TBranch* b_HLT_PFHT900_DileptonCalc;
   bool HLT_AK8PFJet360TrimMass30;
   TBranch* b_HLT_AK8PFJet360TrimMass30_DileptonCalc;
-
+  
+  
+  //TT signal BR info - added by rizi
+  bool isTZTZ;
+  TBranch* b_isTZTZ_TpTpCalc;
+  bool isTZTH;
+  TBranch* b_isTZTH_TpTpCalc;
+  bool isTZBW;
+  TBranch* b_isTZBW_TpTpCalc;
+  bool isTHTH;
+  TBranch* b_isTHTH_TpTpCalc;
+  bool isTHBW;
+  TBranch* b_isTHBW_TpTpCalc;
+  bool isBWBW;
+  TBranch* b_isBWBW_TpTpCalc;
+  
+  //BB signal BR info - added by rizki
+  bool isBZBZ;
+  TBranch* b_isBZBZ_TpTpCalc;
+  bool isBZBH;
+  TBranch* b_isBZBH_TpTpCalc;
+  bool isBZTW;
+  TBranch* b_isBZTW_TpTpCalc;
+  bool isBHBH;
+  TBranch* b_isBHBH_TpTpCalc;
+  bool isBHTW;
+  TBranch* b_isBHTW_TpTpCalc;
+  bool isTWTW;
+  TBranch* b_isTWTW_TpTpCalc;
 
 };
 
