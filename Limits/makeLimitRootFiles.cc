@@ -51,7 +51,7 @@ int main(int argc, char* argv[]){
   float HTshift=0;
   if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg3>>HTshift;}
-  float HTcut   = 900.0+HTshift;
+  float HTcut   = 0.0+HTshift; //edited by rizki
 
   //get desired lumi
   float lumi = std::atof(argv[5]); // fb^{-1}
@@ -63,14 +63,24 @@ int main(int argc, char* argv[]){
   else{arg4>>nConstShift;}
 
   int nConst = 5+nConstShift;*/
-  int nConst = 5;
+  int nConst = 2; // edited by rizki
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   std::vector<Sample*> vDDBkg = getDDBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
   std::vector<Sample*> vBkg = appendSampleVectors(vMCBkg,vDDBkg);
 //   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
-  std::vector<Sample*> vSig = getInclusiveSigTTSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
+
+  //TT SIGNAL <decay> - RIZKI 
+  int whichBR = 0 ; //singlet
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BWBW",whichBR);
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THBW",whichBR);
+  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THTH",whichBR);
+  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZBW",whichBR);
+  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTH",whichBR);
+  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTZ",whichBR);
+  std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples3,vSigSamples5,vSigSamples6);
+
   Sample* dataSample = getDataSample("sZVeto","MVA2016TightRC","CBTightMiniIsoTight",era);
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
   Sample* sigSample=0;

@@ -19,7 +19,7 @@
 #include "../plugins/Macros.cc"
 #include "TGraphErrors.h"
 #include "TGraphAsymmErrors.h"
-
+#include "TString.h"
 //eaxample usage:
 //root -b -q -l 'makePlots_forPAS.cc("MVA2016TightRC","CBTightMiniIsoTight")' 
 
@@ -30,6 +30,9 @@ void DrawChargeMisIDGraph(TFile* outfile, std::string elID);
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
 
 
+//folder to save plots - rizki
+//std::string outDir = "plots_2017Sep6";
+
       
 void makePlots_forPAS(std::string elID, std::string muID){
 
@@ -37,11 +40,11 @@ void makePlots_forPAS(std::string elID, std::string muID){
   TFile* fout = new TFile("plots_forPAS.root","RECREATE");
 
   //set TDRStyle
-  setTDRStyle();
+  setTDRStyle();   
   
   //make folder to save plots - rizki
-  system("mkdir -v plots_forPAS");
-   
+  //TString outDir_ = outDir;
+  system("mkdir -v plots_2017Sep6");//"+outDir_);
  
   //desired lumi:
   float lumi1 = 17.68; //fb^-1  
@@ -64,16 +67,44 @@ void makePlots_forPAS(std::string elID, std::string muID){
 //   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
   
   //TT SIGNAL - RIZKI
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
+  //std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
+  //std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
+  //std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
 
-  std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
+  //TT SIGNAL <decay> - RIZKI 
+  std::vector<Sample*> vSigSamples1a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","BWBW",0);
+  std::vector<Sample*> vSigSamples1b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","BWBW",0);
+  std::vector<Sample*> vSigSamples1 = appendSampleVectors(vSigSamples1a,vSigSamples1b);
+
+  std::vector<Sample*> vSigSamples2a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","THBW",0);
+  std::vector<Sample*> vSigSamples2b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","THBW",0);
+  std::vector<Sample*> vSigSamples2 = appendSampleVectors(vSigSamples2a,vSigSamples2b);
+
+  std::vector<Sample*> vSigSamples3a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","THTH",0);
+  std::vector<Sample*> vSigSamples3b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","THTH",0);
+  std::vector<Sample*> vSigSamples3 = appendSampleVectors(vSigSamples3a,vSigSamples3b);
+
+  std::vector<Sample*> vSigSamples4a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZBW",0);
+  std::vector<Sample*> vSigSamples4b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZBW",0);
+  std::vector<Sample*> vSigSamples4 = appendSampleVectors(vSigSamples4a,vSigSamples4b);
+
+  std::vector<Sample*> vSigSamples5a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZTH",0);
+  std::vector<Sample*> vSigSamples5b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZTH",0);
+  std::vector<Sample*> vSigSamples5 = appendSampleVectors(vSigSamples5a,vSigSamples5b);
+
+  std::vector<Sample*> vSigSamples6a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZTZ",0);
+  std::vector<Sample*> vSigSamples6b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZTZ",0);
+  std::vector<Sample*> vSigSamples6 = appendSampleVectors(vSigSamples6a,vSigSamples6b);
+
+  std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples3,vSigSamples5,vSigSamples6);
+
 
   Sample* dataSampleBD = getDataSample("sZVeto",elID,muID,"2016B-D");
   Sample* dataSampleEH = getDataSample("sZVeto",elID,muID,"2016E-H");
  
 
-  for(int j=2; j <5; j++){
+//   for(int j=2; j <5; j++){
+  for(int j=2; j <3; j++){ // j is cutType
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,-1,j,weightstring);
@@ -130,24 +161,24 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   std::stringstream cutstring;
   if(nMu>=0){
     if(cutIndex==0){cutstring<<"("<<weightstring<<" (Channel=="<<nMu<<") )";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 &&  ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0 ) ))";}
     else if(cutIndex==2){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
-      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0 ) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1&& Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0 ) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0 ) ))";
     }
     else if(cutIndex==3){
-      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )&& nConst <=4 && nConst >=2) ))";
-      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";
-      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5) ))";}
+      if(var->name=="Lep1PtEl" || var->name=="cleanAK4HTEl") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==0 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0 && nConst <=4 && nConst >=2) ))";
+      else if(var->name=="Lep1PtMu" || var->name=="cleanAK4HTMu") cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && Lep1Flavor==1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0  && nConst <=4 && nConst >=2 ) ))";
+      else cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0  && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel=="<<nMu<<"  && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0  && nConst >=5) ))";}
   }
   else {
-    if(cutIndex==0){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) && (Channel>=0 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
-    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && ((Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
-    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 &&( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) )) ))";}
-    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst <=4 && nConst >=2 ) ))";}
-    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nConst >=5 ) ))";}
+    if(cutIndex==0){cutstring<<"( "<<	  weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 &&                                       ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0                              ) ))";}
+    else if(cutIndex==1){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 &&                      ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0                              ) ))";}
+    else if(cutIndex==2){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0                              ) ))";}
+    else if(cutIndex==3){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0  && nConst <=4 && nConst >=2 ) ))";}
+    else if(cutIndex==4){cutstring<<"( "<<weightstring<<"( !(Channel==2 && TMath::Abs(Lep1Phi - Lep2Phi) < 1.25 && ( (Lep1Eta>1.2 && Lep2Eta >1.2) || (Lep1Eta<-1.2 && Lep2Eta <-1.2))) &&(Channel>=0 && DilepMass >20 && nCleanAK4Jets > 1 && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) && nNonSSLeps==0  && nConst >=5               ) ))";}
   }
   std::cout<<"cutstring: "<<cutstring.str()<<std::endl;
   THStack* tStack = new THStack("tStack","");
@@ -181,7 +212,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
      h_npf = new TH1F("h_npf",(var->name).c_str(),nhtbins,htbins);
      h_cmid = new TH1F("h_cmid",(var->name).c_str(),nhtbins,htbins);
      h_ttz = new TH1F("h_ttz",(var->name).c_str(),nhtbins,htbins);
-     h_ttw = new TH1F("h_ttz",(var->name).c_str(),nhtbins,htbins);
+     h_ttw = new TH1F("h_ttw",(var->name).c_str(),nhtbins,htbins); //edited by rizki
      h_tth = new TH1F("h_tth",(var->name).c_str(),nhtbins,htbins);
      h_tttt = new TH1F("h_tttt",(var->name).c_str(),nhtbins,htbins);
      h_wz = new TH1F("h_wz",(var->name).c_str(),nhtbins,htbins);
@@ -190,8 +221,8 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
      h_wzz = new TH1F("h_wzz",(var->name).c_str(),nhtbins,htbins);
      h_zzz = new TH1F("h_zzz",(var->name).c_str(),nhtbins,htbins);
      h_wpwp = new TH1F("h_wpwp",(var->name).c_str(),nhtbins,htbins);
-     h_bos = new TH1F("h_wpwp",(var->name).c_str(),nhtbins,htbins);
-     h_ttX = new TH1F("h_bos",(var->name).c_str(),nhtbins,htbins);
+     h_bos = new TH1F("h_bos",(var->name).c_str(),nhtbins,htbins); //edited by rizki
+     h_ttX = new TH1F("h_ttX",(var->name).c_str(),nhtbins,htbins); //edited by rizki
   }
   else{
      h_err = new TH1F("h_err",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -199,7 +230,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
      h_npf = new TH1F("h_npf",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_cmid = new TH1F("h_cmid",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_ttz = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-     h_ttw = new TH1F("h_ttz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_ttw = new TH1F("h_ttw",(var->name).c_str(), var->nbins, var->xmin, var->xmax); //edited by rizki
      h_tth = new TH1F("h_tth",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_tttt = new TH1F("h_tttt",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_wz = new TH1F("h_wz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
@@ -208,8 +239,8 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
      h_wzz = new TH1F("h_wzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_zzz = new TH1F("h_zzz",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-     h_bos = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-     h_ttX = new TH1F("h_bos",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+     h_bos = new TH1F("h_bos",(var->name).c_str(), var->nbins, var->xmin, var->xmax); //edited by rizki
+     h_ttX = new TH1F("h_ttX",(var->name).c_str(), var->nbins, var->xmin, var->xmax); //edited by rizki
     
   }
 
@@ -220,6 +251,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //vBkg.at(uk)->setHist(var);
     Sample* s = vBkg.at(uk);
     s->setHist(var,(cutstring.str()).c_str());
+  	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
     TH1F* h;
     if(var->name=="dummycleanAK4HT"){
       h = new TH1F("h",(var->name).c_str(),nhtbins, htbins);
@@ -229,9 +261,9 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     }
     h->Sumw2();
     TTree* t = s->tree;
-    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
-    else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
-    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str()); std::cout<<"command:t->Project(h,"<<var->name<<","<<cutstring.str()<<std::endl;}
+    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());/*std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;*/} //edited by rizki
+    else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());/*std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;*/} //edited by rizki
+    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str()); /*std::cout<<"command:t->Project(h,"<<var->name<<","<<cutstring.str()<<std::endl;*/} //edited by rizki
     //set negative bins to zero - less than or equal to set overflow bin to zero
     for(int hbin=0; hbin <= h->GetNbinsX(); hbin++){
       if(h->GetBinContent(hbin+1)<0) h->SetBinContent(hbin+1,0);
@@ -285,7 +317,8 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //else std::cout<<"sample "<<s->name<<" not added!!!"<<std::endl;
     assert(h);
     //tStack->Add(h);
-    
+        
+    delete h; //added by rizki
 
   }
 
@@ -437,12 +470,13 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     }
   }
   //draw signal:
-  TH1F* hSigRH = new TH1F("hSigRH",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+  //TH1F* hSigRH = new TH1F("hSigRH",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* hSigLH = new TH1F("hSigLH",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
     
     Sample* s = vSig.at(i1);
     if(s->name.find("1000")==std::string::npos) continue;
+  	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
 
@@ -457,10 +491,10 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //aesthetics
     h->SetFillStyle(0);
     h->SetLineColor(s->color);
-    hSigRH->SetLineColor(s->color);//colors are the same for both chiralities so can do this here
+    //hSigRH->SetLineColor(s->color);//colors are the same for both chiralities so can do this here
     hSigLH->SetLineColor(s->color);    
     h->SetLineWidth(2);
-    hSigRH->SetLineWidth(2);
+    //hSigRH->SetLineWidth(2);
     hSigLH->SetLineWidth(2);
     h->SetLineStyle(s->linestyle);
     h->GetXaxis()->SetTitle(var->Xaxis.c_str());
@@ -479,12 +513,14 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //tStack->Add(h);
 
     //h->Draw("hist same");
+    
+    delete h; //added by rizki
   }
 //   hSigRH->Draw("hist same");
   hSigLH->Draw("hist same");
   //add to legend
 //   leg->AddEntry(hSigRH,"RH 1.0 TeV X_{5/3}","l");
-  leg->AddEntry(hSigLH,"1.0 TeV TT","l");
+  leg->AddEntry(hSigLH,"1.0 TeV TT (singlet)","l");
 
 
   //Draw data- merge trees into chain
@@ -523,6 +559,8 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   gData->Draw("pesame");
 
   leg->AddEntry(gData,"Data","p");
+
+  std::cout << "-------------------------------------->>> Done processing Data "<<endl; //added by rizki
 
   //latex
   TLatex* cmstex = new TLatex();
@@ -592,15 +630,53 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   if(cutIndex==2) cutname =  "TwoJets";
   if(cutIndex==3) cutname =  "nConst2to4";
   if(cutIndex==4) cutname =  "nConst5plus";
-  std::string pdfname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
-  std::string pngname = "./plots_forPAS/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
+  std::string pdfname = "./plots_2017Sep6/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
+  std::string pngname = "./plots_2017Sep6/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
 
   c1->Print(pdfname.c_str());
   c1->Print(pngname.c_str());
   outfile->WriteTObject(c1);
+
   delete c1;
+
+//   delete pad1; //added by rizki
+//   delete pad2; //added by rizki
+
+  delete tStack; //added by rizki
+  delete leg; //added by rizki
+
+  delete h_err; //added by rizki
+  delete h_np; //added by rizki
+  delete h_npf; //added by rizki
+  delete h_cmid; //added by rizki
+  delete h_ttz; //added by rizki
+  delete h_ttw; //added by rizki
+  delete h_tth ; //added by rizki
+  delete h_tttt ; //added by rizki
+  delete h_wz ; //added by rizki
+  delete h_zz; //added by rizki
+  delete h_wwz; //added by rizki
+  delete h_wzz ; //added by rizki
+  delete h_zzz ; //added by rizki
+  delete h_wpwp ; //added by rizki
+  delete h_bos ; //added by rizki
+  delete h_ttX ; //added by rizki
+
+  delete hSigLH; //added by rizki
+  delete hData; //added by rizki
+  delete tData; //added by rizki
+  delete gData; //added by rizki
+
   delete cmstex;
   delete lumitex;
+
+  delete chantex; //added by rizki
+  delete baseline; //added by rizki
+  delete plus2line; //added by rizki
+  delete minus2line; //added by rizki
+  delete plus1line; //added by rizki
+  delete minus1line; //added by rizki
+
 }
 
 void DrawAndSaveSingleEra(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring,std::string era){
