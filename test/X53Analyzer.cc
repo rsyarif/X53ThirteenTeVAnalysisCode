@@ -101,6 +101,19 @@ int main(int argc, char* argv[]){
   sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1700_hadd.root";
   sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1800_hadd.root";
 
+  //BB signal - rizki	
+  sig_samples["BprimeBprime_M-800"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-800_hadd.root";
+  sig_samples["BprimeBprime_M-900"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-900_hadd.root";
+  sig_samples["BprimeBprime_M-1000"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1000_hadd.root";
+  sig_samples["BprimeBprime_M-1100"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1100_hadd.root";
+  sig_samples["BprimeBprime_M-1200"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1200_hadd.root";
+  sig_samples["BprimeBprime_M-1300"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1300_hadd.root";
+  sig_samples["BprimeBprime_M-1400"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1400_hadd.root";
+  sig_samples["BprimeBprime_M-1500"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1500_hadd.root";
+  sig_samples["BprimeBprime_M-1600"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1600_hadd.root";
+  sig_samples["BprimeBprime_M-1700"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1700_hadd.root";
+  sig_samples["BprimeBprime_M-1800"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1800_hadd.root";
+
   
   sig_samples["X53X53m700RH"]=eosarea+"ljmet_X53X53m700RH.root";
   sig_samples["X53X53m800RH"]=eosarea+"ljmet_X53X53m800RH.root";
@@ -297,8 +310,8 @@ int main(int argc, char* argv[]){
 
   //make output file
   std::stringstream outnamestream;
-//   outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root";
-  outnamestream<<argv[1]<<"_"<<sigDecay<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root"; //edited by rizki
+  if(signal) outnamestream<<argv[1]<<"_"<<sigDecay<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root"; //edited by rizki
+  else outnamestream<<argv[1]<<"_Mu"<<muID<<"_El"<<elID<<"_"<<era<<".root";
 
   std::string outname = outnamestream.str();
   TFile* fsig = new TFile(outname.c_str(),"RECREATE");
@@ -368,7 +381,9 @@ int main(int argc, char* argv[]){
   TH1F* hist_scaleHT_ssdl_1005 = new TH1F("hist_scaleHT_ssdl_1005","MC Scale Uncertainties ID:1005",30,0,3000);//1005
   TH1F* hist_scaleHT_ssdl_1007 = new TH1F("hist_scaleHT_ssdl_1007","MC Scale Uncertainties ID:1007",30,0,3000);//1007
   TH1F* hist_scaleHT_ssdl_1009 = new TH1F("hist_scaleHT_ssdl_1009","MC Scale Uncertainties ID:1009",30,0,3000);//1009
-
+  
+  //added by rizki
+  TH2F* pdf_hist = new TH2F("pdf_hist","PDF Weights",100,0,100,30,0,3000);  // just need pdf vars with yields
 
 
   //load eta weights in:
@@ -577,12 +592,12 @@ int main(int argc, char* argv[]){
 		if(sigDecay=="THBW" && tr->isTHBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
 		if(sigDecay=="BWBW" && tr->isBWBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
 
-		if(sigDecay=="TZTZ" && tr->isTZTZ==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
-		if(sigDecay=="TZTH" && tr->isTZTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
-		if(sigDecay=="TZBW" && tr->isTZBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
-		if(sigDecay=="THTH" && tr->isTHTH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
-		if(sigDecay=="THBW" && tr->isTHBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
-		if(sigDecay=="BWBW" && tr->isBWBW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONT match. Skipping! " <<std::endl;}
+		if(sigDecay=="BZBZ" && tr->isBZBZ==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
+		if(sigDecay=="BZBH" && tr->isBZBH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
+		if(sigDecay=="BZTW" && tr->isBZTW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
+		if(sigDecay=="BHBH" && tr->isBHBH==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
+		if(sigDecay=="BHTW" && tr->isBHTW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
+		if(sigDecay=="TWTW" && tr->isTWTW==false){continue ;}//std::cout << "chosen decay and sigDecay info DONB match. Skipping! " <<std::endl;}
 		//std::cout << "chosen decay and sigDecay info matches! " <<std::endl;
 	}
 
@@ -606,10 +621,6 @@ int main(int argc, char* argv[]){
 
     if(!samesign) continue;
     
-    //added by rizki - require exactly 2 leptons 
-	if(goodLeptons.size()!=2) continue;
-
-
     //now make vector of same-sign leptons, for DY make vector containing opposite sign leptons closest to Z mass
     std::vector<TLepton*> vSSLep;
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos){      
@@ -626,6 +637,10 @@ int main(int argc, char* argv[]){
 
     //now prune the goodleptons of the ssleptons
     std::vector<TLepton*> vNonSSLep = pruneSSLep(goodLeptons,vSSLep);
+
+    //added by rizki - require exactly 2 leptons, only the SSdilep, means 0 extra leptons
+	if(vNonSSLep.size()!=0) continue;
+
     float ew1,ew2=0.0;
     //with vector now get weight for DY Events
     if(outname.find("DYJets")!=std::string::npos || outname.find("ChargeMisID")!=std::string::npos) {
@@ -1021,12 +1036,12 @@ int main(int argc, char* argv[]){
 	int ID = pdfweightIDs_ssdl.at(i);
 	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009 || ID==2 || ID==3 || ID==4 || ID==5 || ID==7 || ID==9){
 	  //now fill individual
-	  if(ID==1002 || (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1003 || (outname.find("X53")!=std::string::npos && ID==3) )hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1004 || (outname.find("X53")!=std::string::npos && ID==4) )hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1005 || (outname.find("X53")!=std::string::npos && ID==5) )hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1007|| (outname.find("X53")!=std::string::npos && ID==7) )hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i)*mcweight);
-	  if(ID==1009|| (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i)*mcweight);
+	  if(ID==1002 || (outname.find("prime")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1002->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
+	  if(ID==1003 || (outname.find("prime")!=std::string::npos && ID==3) )hist_scaleHT_ssdl_1003->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
+	  if(ID==1004 || (outname.find("prime")!=std::string::npos && ID==4) )hist_scaleHT_ssdl_1004->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
+	  if(ID==1005 || (outname.find("prime")!=std::string::npos && ID==5) )hist_scaleHT_ssdl_1005->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
+	  if(ID==1007|| (outname.find("prime")!=std::string::npos && ID==7) )hist_scaleHT_ssdl_1007->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
+	  if(ID==1009|| (outname.find("prime")!=std::string::npos && ID==2) )hist_scaleHT_ssdl_1009->Fill(st,pdfweight_ssdl.at(i)*mcweight); //edited by rizki
 	}
 	if(!(ID>2000 && i<2101)) continue;
 
@@ -1071,7 +1086,8 @@ int main(int argc, char* argv[]){
     if(vSSLep.at(0)->pt<40) continue; //skip events with leading lepton pt less than 40
     
     int nconst = tr->cleanedAK4Jets.size() + vNonSSLep.size();
-    if(nconst<5) continue; //nconst cutl
+//     if(nconst<5) continue; //nconst cuts
+    if(nconst<4) continue; //nconst cuts //edited by rizki
 
     //now fill corresponding histos
     fillHistos(hists_nConst_all, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
@@ -1091,19 +1107,29 @@ int main(int argc, char* argv[]){
       //now fill ppdf weight histogram
       hist_scaleHT_nom->Fill(st,mcweight);
       for(unsigned int i=0; i< pdfweightIDs.size(); i++){
-	int ID = pdfweightIDs.at(i);
-	if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009 || ID==2 || ID==3 || ID==4 || ID==5 || ID==7 || ID==9){
-	  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
-	  //now fill individual
-	  if(ID==1002 || (outname.find("X53")!=std::string::npos && ID==2) )hist_scaleHT_1002->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1003 || (outname.find("X53")!=std::string::npos && ID==3) )hist_scaleHT_1003->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1004 || (outname.find("X53")!=std::string::npos && ID==4) )hist_scaleHT_1004->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1005 || (outname.find("X53")!=std::string::npos && ID==5) )hist_scaleHT_1005->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1007 || (outname.find("X53")!=std::string::npos && ID==7) )hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight);
-	  if(ID==1009 || (outname.find("X53")!=std::string::npos && ID==9) )hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight);
-	}
-	if(!( (ID>2000 && i<2101 && outname.find("X53")==std::string::npos ) || (outname.find("X53")!=std::string::npos && ( ID> 111 && ID <212)) ) ) continue;
-	hist_pdfHT->Fill(pdfweights.at(i),st);
+		int ID = pdfweightIDs.at(i);
+		if(ID==1002 || ID==1003 || ID==1004 || ID==1005 || ID==1007 || ID==1009 || ID==2 || ID==3 || ID==4 || ID==5 || ID==7 || ID==9){
+		  hist_scaleHT->Fill(pdfweights.at(i),st);//fill combined
+		  //now fill individual
+		  if(ID==1002 || (outname.find("prime")!=std::string::npos && ID==2) )hist_scaleHT_1002->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		  if(ID==1003 || (outname.find("prime")!=std::string::npos && ID==3) )hist_scaleHT_1003->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		  if(ID==1004 || (outname.find("prime")!=std::string::npos && ID==4) )hist_scaleHT_1004->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		  if(ID==1005 || (outname.find("prime")!=std::string::npos && ID==5) )hist_scaleHT_1005->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		  if(ID==1007 || (outname.find("prime")!=std::string::npos && ID==7) )hist_scaleHT_1007->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		  if(ID==1009 || (outname.find("prime")!=std::string::npos && ID==9) )hist_scaleHT_1009->Fill(st,pdfweights.at(i)*mcweight); //edited by rizki
+		}
+		if(!( (ID>2000 && i<2101 && outname.find("prime")==std::string::npos ) || (outname.find("prime")!=std::string::npos && ( ID> 111 && ID <212)) ) ) continue; //edited by rizki
+		hist_pdfHT->Fill(pdfweights.at(i),st);
+
+		//added by rizki - start
+		if (ID > 111 && ID < 212){
+			pdf_hist->Fill(ID-111.5, st, totalweight*pdfweights.at(i));
+			// counting up weighted yields for each pdf variation
+		}
+		// If you need nominal in this hist, make it 101,0,101 and do:
+		// pdf_hist->Fill(100.5,totalweight);
+		//added by rizki - end
+
       }
     }
 

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+folder=root://cmseos.fnal.gov//store/user/lpcljm/SSDL_NonPromptWithTrilepFR_110517_rizki
+
+# hadd -f NonPromptData_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElEl2016B_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElEl2016C_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElEl2016D_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElMu2016B_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElMu2016C_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataElMu2016D_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataMuMu2016B_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataMuMu2016C_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root \
+# $folder/NonPromptDataMuMu2016D_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016B-D.root
+
+hadd -f NonPromptData_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElEl2016E_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElEl2016F_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElEl2016G_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElEl2016H2_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElEl2016H3_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElMu2016E_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElMu2016F_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElMu2016G_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElMu2016H2_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataElMu2016H3_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataMuMu2016E_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataMuMu2016F_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataMuMu2016G_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataMuMu2016H2_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root \
+$folder/NonPromptDataMuMu2016H3_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root
+
+# Missing:

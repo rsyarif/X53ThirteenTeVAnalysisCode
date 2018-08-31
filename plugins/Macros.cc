@@ -12,238 +12,245 @@
 #include "TMath.h"
 #include "Math/ProbFunc.h"
 
-std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-std::string RizkiArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/";
+// std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+// std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+
+std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+// std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+
+std::string RizkiArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/ProcessedByJulie_Oct18-2017/";
+std::string RizkiNPArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/NPwithTrileptonFR_Nov6-2017/";
+std::string MCarea = RizkiArea;
+std::string MCarea_Gamma = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/MCBkg_Gamma_Nov30-2017/";
 
 std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
-
-  //Variable* lep1ptEl = new Variable("Lep1PtEl",30,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
-  //vVar.push_back(lep1ptEl);
-  //Variable* lep1ptMu = new Variable("Lep1PtMu",30,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
-  //vVar.push_back(lep1ptMu);
-
+// 
+//   //Variable* lep1ptEl = new Variable("Lep1PtEl",30,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
+//   //vVar.push_back(lep1ptEl);
+//   //Variable* lep1ptMu = new Variable("Lep1PtMu",30,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
+//   //vVar.push_back(lep1ptMu);
+// 
   Variable* lep1pt = new Variable("Lep1Pt",30,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
-  Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
-  vVar.push_back(lep1phi);
-  //Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-  //vVar.push_back(lep1RelIso);
-  Variable* lep1MiniIso = new Variable("Lep1MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
-  vVar.push_back(lep1MiniIso);
-  //Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-  //vVar.push_back(lep1SusyIso);
-
+//   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
+//   vVar.push_back(lep1phi);
+//   //Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+//   //vVar.push_back(lep1RelIso);
+//   Variable* lep1MiniIso = new Variable("Lep1MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
+//   vVar.push_back(lep1MiniIso);
+//   //Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+//   //vVar.push_back(lep1SusyIso);
+// 
   Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
-  Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
-  vVar.push_back(lep2phi);
-  //Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-  //vVar.push_back(lep2RelIso);
-  Variable* lep2MiniIso = new Variable("Lep2MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
-  vVar.push_back(lep2MiniIso);
-  //Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-  //vVar.push_back(lep2SusyIso);
-
-
-  /*Variable* ak4jet1pt = new Variable("AK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
-  vVar.push_back(ak4jet1pt);
-  Variable* ak4jet1eta = new Variable("AK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-  vVar.push_back(ak4jet1eta);
-  Variable* ak4jet1phi = new Variable("AK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(ak4jet1phi);
-
-  Variable* ak4jet2pt = new Variable("AK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
-  vVar.push_back(ak4jet2pt);
-  Variable* ak4jet2eta = new Variable("AK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-  vVar.push_back(ak4jet2eta);
-  Variable* ak4jet2phi = new Variable("AK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(ak4jet2phi);
-
-
-  Variable* ak4ht = new Variable("AK4HT",20,0,3000,"AK4 H_{T} (GeV)","N_{Events}");
-  vVar.push_back(ak4ht);
-  Variable* nak4jets = new Variable("nAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-  vVar.push_back(nak4jets);*/
-
-  //cleaned jet variables
+//   Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
+//   vVar.push_back(lep2phi);
+//   //Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
+//   //vVar.push_back(lep2RelIso);
+//   Variable* lep2MiniIso = new Variable("Lep2MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
+//   vVar.push_back(lep2MiniIso);
+//   //Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
+//   //vVar.push_back(lep2SusyIso);
+// 
+// 
+//   /*Variable* ak4jet1pt = new Variable("AK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+//   vVar.push_back(ak4jet1pt);
+//   Variable* ak4jet1eta = new Variable("AK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+//   vVar.push_back(ak4jet1eta);
+//   Variable* ak4jet1phi = new Variable("AK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+//   vVar.push_back(ak4jet1phi);
+// 
+//   Variable* ak4jet2pt = new Variable("AK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+//   vVar.push_back(ak4jet2pt);
+//   Variable* ak4jet2eta = new Variable("AK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+//   vVar.push_back(ak4jet2eta);
+//   Variable* ak4jet2phi = new Variable("AK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+//   vVar.push_back(ak4jet2phi);
+// 
+// 
+//   Variable* ak4ht = new Variable("AK4HT",20,0,3000,"AK4 H_{T} (GeV)","N_{Events}");
+//   vVar.push_back(ak4ht);
+//   Variable* nak4jets = new Variable("nAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
+//   vVar.push_back(nak4jets);*/
+// 
+//   //cleaned jet variables
   Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
-  Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(cleanak4jet1phi);
-
+//   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+//   vVar.push_back(cleanak4jet1phi);
+// 
   Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
-  Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(cleanak4jet2phi);
-
+//   Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+//   vVar.push_back(cleanak4jet2phi);
+// 
 //   Variable* cleanak4htEl = new Variable("cleanAK4HTEl",25,0,3000,"H_{T}^{lep} (leading electron) (GeV)","N_{Events} / 120 GeV"); 
 //   vVar.push_back(cleanak4htEl);
 //   Variable* cleanak4htMu = new Variable("cleanAK4HTMu",25,0,3000,"H_{T}^{lep}(leading muon) (GeV)","N_{Events} / 120 GeV");
 //   vVar.push_back(cleanak4htMu);
-  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
+  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","Events / 120 GeV");
   vVar.push_back(cleanak4ht);
-  Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-  vVar.push_back(ncleanak4jets);
-
-  /*
-  //new ak4 jets
-  Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(newCleanak4jet1pt);
-  Variable* newCleanak4jet1eta = new Variable("newCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-  vVar.push_back(newCleanak4jet1eta);
-  Variable* newCleanak4jet1phi = new Variable("newCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(newCleanak4jet1phi);
-
-  Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(newCleanak4jet2pt);
-  Variable* newCleanak4jet2eta = new Variable("newCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-  vVar.push_back(newCleanak4jet2eta);
-  Variable* newCleanak4jet2phi = new Variable("newCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(newCleanak4jet2phi);
-
-  Variable* newCleanak4ht = new Variable("newCleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
-  vVar.push_back(newCleanak4ht);
-  Variable* nnewCleanak4jets = new Variable("nNewCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-  vVar.push_back(nnewCleanak4jets);
-
-
-  //ak8jets
-  Variable* ak8jet1pt = new Variable("AK8Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(ak8jet1pt);
-  Variable* ak8jet1eta = new Variable("AK8Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-  vVar.push_back(ak8jet1eta);
-  Variable* ak8jet1phi = new Variable("AK8Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(ak8jet1phi);
-
-  Variable* ak8jet1tau1 = new Variable("AK8Jet1Tau1",50,0,1,"#tau_{1}","N_{Events}");
-  vVar.push_back(ak8jet1tau1);
-  Variable* ak8jet1tau2 = new Variable("AK8Jet1Tau2",50,0,1,"#tau_{2}","N_{Events}");
-  vVar.push_back(ak8jet1tau2);
-  Variable* ak8jet1tau3 = new Variable("AK8Jet1Tau3",50,0,1,"#tau_{3}","N_{Events}");
-  vVar.push_back(ak8jet1tau3);
-  Variable* ak8jet1tau21 = new Variable("AK8Jet1Tau21",50,0,1,"#tau_{21}","N_{Events}");
-  vVar.push_back(ak8jet1tau21);
-  Variable* ak8jet1tau31 = new Variable("AK8Jet1Tau31",50,0,1,"#tau_{31}","N_{Events}");
-  vVar.push_back(ak8jet1tau31);
-  Variable* ak8jet1tau32 = new Variable("AK8Jet1Tau32",50,0,1,"#tau_{32}","N_{Events}");
-  vVar.push_back(ak8jet1tau32);
-
-
-  Variable* ak8jet1bdisc = new Variable("AK8Jet1SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
-  vVar.push_back(ak8jet1bdisc);
-
-  Variable* ak8jet1trimmass = new Variable("AK8Jet1TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
-  vVar.push_back(ak8jet1trimmass);
-  Variable* ak8jet1prunemass = new Variable("AK8Jet1PruneMass",100,0,250,"Pruned Mass","N_{Events}");
-  vVar.push_back(ak8jet1prunemass);
-  Variable* ak8jet1filtmass = new Variable("AK8Jet1FiltMass",100,0,250,"Filtered Mass","N_{Events}");
-  vVar.push_back(ak8jet1filtmass);
-  Variable* ak8jet1sdmass = new Variable("AK8Jet1SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
-  vVar.push_back(ak8jet1sdmass);
-
-
-  Variable* ak8jet2pt = new Variable("AK8Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(ak8jet2pt);
-  Variable* ak8jet2eta = new Variable("AK8Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-  vVar.push_back(ak8jet2eta);
-  Variable* ak8jet2phi = new Variable("AK8Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(ak8jet2phi);
-
-  Variable* ak8jet2tau1 = new Variable("AK8Jet2Tau1",50,0,1,"#tau_{1}","N_{Events}");
-  vVar.push_back(ak8jet2tau1);
-  Variable* ak8jet2tau2 = new Variable("AK8Jet2Tau2",50,0,1,"#tau_{2}","N_{Events}");
-  vVar.push_back(ak8jet2tau2);
-  Variable* ak8jet2tau3 = new Variable("AK8Jet2Tau3",50,0,1,"#tau_{3}","N_{Events}");
-  vVar.push_back(ak8jet2tau3);
-  Variable* ak8jet2tau21 = new Variable("AK8Jet2Tau21",50,0,1,"#tau_{21}","N_{Events}");
-  vVar.push_back(ak8jet2tau21);
-  Variable* ak8jet2tau31 = new Variable("AK8Jet2Tau31",50,0,1,"#tau_{31}","N_{Events}");
-  vVar.push_back(ak8jet2tau31);
-  Variable* ak8jet2tau32 = new Variable("AK8Jet2Tau32",50,0,1,"#tau_{32}","N_{Events}");
-  vVar.push_back(ak8jet2tau32);
-
-
-  Variable* ak8jet2bdisc = new Variable("AK8Jet2SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
-  vVar.push_back(ak8jet2bdisc);
-
-  Variable* ak8jet2trimmass = new Variable("AK8Jet2TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
-  vVar.push_back(ak8jet2trimmass);
-  Variable* ak8jet2prunemass = new Variable("AK8Jet2PruneMass",100,0,250,"Pruned Mass","N_{Events}");
-  vVar.push_back(ak8jet2prunemass);
-  Variable* ak8jet2filtmass = new Variable("AK8Jet2FiltMass",100,0,250,"Filtered Mass","N_{Events}");
-  vVar.push_back(ak8jet2filtmass);
-  Variable* ak8jet2sdmass = new Variable("AK8Jet2SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
-  vVar.push_back(ak8jet2sdmass);
-  */
-
-  Variable* nnonssleps = new Variable("nNonSSLeps",17,0,17,"N_{Non-SS Leps}","N_{Events}");
-  vVar.push_back(nnonssleps);
-
-  //simple cleaned jet variables
-  /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
-  vVar.push_back(simpleCleanak4jet1pt);
-  Variable* simpleCleanak4jet1eta = new Variable("simpleCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-  vVar.push_back(simpleCleanak4jet1eta);
-  Variable* simpleCleanak4jet1phi = new Variable("simpleCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(simpleCleanak4jet1phi);
-
-  Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
-  vVar.push_back(simpleCleanak4jet2pt);
-  Variable* simpleCleanak4jet2eta = new Variable("simpleCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-  vVar.push_back(simpleCleanak4jet2eta);
-  Variable* simpleCleanak4jet2phi = new Variable("simpleCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(simpleCleanak4jet2phi);
-
-
-  Variable* simpleCleanak4ht = new Variable("simpleCleanAK4HT",20,0,3000,"simpleCleanAK4 H_{T} (GeV)","N_{Events}");
-  vVar.push_back(simpleCleanak4ht);
-  Variable* nsimpleCleanak4jets = new Variable("nSimpleCleanAK4Jets",17,0,17,"N_{simpleCleanAK4 Jets}","N_{Events}");
-  vVar.push_back(nsimpleCleanak4jets);*/
-
+//   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
+//   vVar.push_back(ncleanak4jets);
+// 
+//   /*
+//   //new ak4 jets
+//   Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+//   vVar.push_back(newCleanak4jet1pt);
+//   Variable* newCleanak4jet1eta = new Variable("newCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+//   vVar.push_back(newCleanak4jet1eta);
+//   Variable* newCleanak4jet1phi = new Variable("newCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+//   vVar.push_back(newCleanak4jet1phi);
+// 
+//   Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+//   vVar.push_back(newCleanak4jet2pt);
+//   Variable* newCleanak4jet2eta = new Variable("newCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+//   vVar.push_back(newCleanak4jet2eta);
+//   Variable* newCleanak4jet2phi = new Variable("newCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+//   vVar.push_back(newCleanak4jet2phi);
+// 
+//   Variable* newCleanak4ht = new Variable("newCleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
+//   vVar.push_back(newCleanak4ht);
+//   Variable* nnewCleanak4jets = new Variable("nNewCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
+//   vVar.push_back(nnewCleanak4jets);
+// 
+// 
+//   //ak8jets
+//   Variable* ak8jet1pt = new Variable("AK8Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+//   vVar.push_back(ak8jet1pt);
+//   Variable* ak8jet1eta = new Variable("AK8Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+//   vVar.push_back(ak8jet1eta);
+//   Variable* ak8jet1phi = new Variable("AK8Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+//   vVar.push_back(ak8jet1phi);
+// 
+//   Variable* ak8jet1tau1 = new Variable("AK8Jet1Tau1",50,0,1,"#tau_{1}","N_{Events}");
+//   vVar.push_back(ak8jet1tau1);
+//   Variable* ak8jet1tau2 = new Variable("AK8Jet1Tau2",50,0,1,"#tau_{2}","N_{Events}");
+//   vVar.push_back(ak8jet1tau2);
+//   Variable* ak8jet1tau3 = new Variable("AK8Jet1Tau3",50,0,1,"#tau_{3}","N_{Events}");
+//   vVar.push_back(ak8jet1tau3);
+//   Variable* ak8jet1tau21 = new Variable("AK8Jet1Tau21",50,0,1,"#tau_{21}","N_{Events}");
+//   vVar.push_back(ak8jet1tau21);
+//   Variable* ak8jet1tau31 = new Variable("AK8Jet1Tau31",50,0,1,"#tau_{31}","N_{Events}");
+//   vVar.push_back(ak8jet1tau31);
+//   Variable* ak8jet1tau32 = new Variable("AK8Jet1Tau32",50,0,1,"#tau_{32}","N_{Events}");
+//   vVar.push_back(ak8jet1tau32);
+// 
+// 
+//   Variable* ak8jet1bdisc = new Variable("AK8Jet1SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
+//   vVar.push_back(ak8jet1bdisc);
+// 
+//   Variable* ak8jet1trimmass = new Variable("AK8Jet1TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
+//   vVar.push_back(ak8jet1trimmass);
+//   Variable* ak8jet1prunemass = new Variable("AK8Jet1PruneMass",100,0,250,"Pruned Mass","N_{Events}");
+//   vVar.push_back(ak8jet1prunemass);
+//   Variable* ak8jet1filtmass = new Variable("AK8Jet1FiltMass",100,0,250,"Filtered Mass","N_{Events}");
+//   vVar.push_back(ak8jet1filtmass);
+//   Variable* ak8jet1sdmass = new Variable("AK8Jet1SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
+//   vVar.push_back(ak8jet1sdmass);
+// 
+// 
+//   Variable* ak8jet2pt = new Variable("AK8Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
+//   vVar.push_back(ak8jet2pt);
+//   Variable* ak8jet2eta = new Variable("AK8Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+//   vVar.push_back(ak8jet2eta);
+//   Variable* ak8jet2phi = new Variable("AK8Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+//   vVar.push_back(ak8jet2phi);
+// 
+//   Variable* ak8jet2tau1 = new Variable("AK8Jet2Tau1",50,0,1,"#tau_{1}","N_{Events}");
+//   vVar.push_back(ak8jet2tau1);
+//   Variable* ak8jet2tau2 = new Variable("AK8Jet2Tau2",50,0,1,"#tau_{2}","N_{Events}");
+//   vVar.push_back(ak8jet2tau2);
+//   Variable* ak8jet2tau3 = new Variable("AK8Jet2Tau3",50,0,1,"#tau_{3}","N_{Events}");
+//   vVar.push_back(ak8jet2tau3);
+//   Variable* ak8jet2tau21 = new Variable("AK8Jet2Tau21",50,0,1,"#tau_{21}","N_{Events}");
+//   vVar.push_back(ak8jet2tau21);
+//   Variable* ak8jet2tau31 = new Variable("AK8Jet2Tau31",50,0,1,"#tau_{31}","N_{Events}");
+//   vVar.push_back(ak8jet2tau31);
+//   Variable* ak8jet2tau32 = new Variable("AK8Jet2Tau32",50,0,1,"#tau_{32}","N_{Events}");
+//   vVar.push_back(ak8jet2tau32);
+// 
+// 
+//   Variable* ak8jet2bdisc = new Variable("AK8Jet2SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
+//   vVar.push_back(ak8jet2bdisc);
+// 
+//   Variable* ak8jet2trimmass = new Variable("AK8Jet2TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
+//   vVar.push_back(ak8jet2trimmass);
+//   Variable* ak8jet2prunemass = new Variable("AK8Jet2PruneMass",100,0,250,"Pruned Mass","N_{Events}");
+//   vVar.push_back(ak8jet2prunemass);
+//   Variable* ak8jet2filtmass = new Variable("AK8Jet2FiltMass",100,0,250,"Filtered Mass","N_{Events}");
+//   vVar.push_back(ak8jet2filtmass);
+//   Variable* ak8jet2sdmass = new Variable("AK8Jet2SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
+//   vVar.push_back(ak8jet2sdmass);
+//   */
+// 
+//   Variable* nnonssleps = new Variable("nNonSSLeps",17,0,17,"N_{Non-SS Leps}","N_{Events}");
+//   vVar.push_back(nnonssleps);
+// 
+//   //simple cleaned jet variables
+//   /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet1pt);
+//   Variable* simpleCleanak4jet1eta = new Variable("simpleCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet1eta);
+//   Variable* simpleCleanak4jet1phi = new Variable("simpleCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet1phi);
+// 
+//   Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet2pt);
+//   Variable* simpleCleanak4jet2eta = new Variable("simpleCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet2eta);
+//   Variable* simpleCleanak4jet2phi = new Variable("simpleCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
+//   vVar.push_back(simpleCleanak4jet2phi);
+// 
+// 
+//   Variable* simpleCleanak4ht = new Variable("simpleCleanAK4HT",20,0,3000,"simpleCleanAK4 H_{T} (GeV)","N_{Events}");
+//   vVar.push_back(simpleCleanak4ht);
+//   Variable* nsimpleCleanak4jets = new Variable("nSimpleCleanAK4Jets",17,0,17,"N_{simpleCleanAK4 Jets}","N_{Events}");
+//   vVar.push_back(nsimpleCleanak4jets);*/
+// 
   Variable* nConst = new Variable("nConst",17,0,17,"N_{Const}","N_{Events}");
   vVar.push_back(nConst);
-
-  //Variable* nNewConst = new Variable("nNewConst",17,0,17,"N_{Boosted Const}","N_{Events}");
-  //vVar.push_back(nNewConst);
-
-  //Variable* nConstDiff = new Variable("nNewConst - nConst",10,-5,5,"N_{Boosted Const} - N_{Const}","N_{Events}");
-  //vVar.push_back(nConstDiff);
-
-  //Variable* NTopTags = new Variable("NTopTags",5,0,5,"N_{Top Tagged Jets}","N_{Events}");
-  //vVar.push_back(NTopTags);
-
-  //Variable* NWTags = new Variable("NWTags",5,0,5,"N_{W Tagged Jets}","N_{Events}");
-  //vVar.push_back(NWTags);
-
-  //Variable* X53Mass = new Variable("X53Mass",50,100,2000,"M_{X53}","N_{Events}");
-  //vVar.push_back(X53Mass);
-
-  Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
-  vVar.push_back(met);
-  Variable* dilepMass = new Variable("DilepMass",20,0,600,"Dilepton Mass (GeV)", "N_{Events} / 30 GeV");
-  vVar.push_back(dilepMass);
-  
-
-  Variable* nPV = new Variable("nPV",60,0,60,"N_{PV}","N_{Events}/bin");
-  vVar.push_back(nPV);
-
-  Variable* lep1MinDR = new Variable("Lep1MinDR",70,0,7,"Min(#Delta_{R} (Lep1,jet))","N_{Events} / bin");
-  vVar.push_back(lep1MinDR);
-
-  Variable* lep2MinDR = new Variable("Lep2MinDR",70,0,7,"Min(#Delta_{R} (Lep2,jet))","N_{Events} / bin");
-  vVar.push_back(lep2MinDR);
-
+// 
+//   //Variable* nNewConst = new Variable("nNewConst",17,0,17,"N_{Boosted Const}","N_{Events}");
+//   //vVar.push_back(nNewConst);
+// 
+//   //Variable* nConstDiff = new Variable("nNewConst - nConst",10,-5,5,"N_{Boosted Const} - N_{Const}","N_{Events}");
+//   //vVar.push_back(nConstDiff);
+// 
+//   //Variable* NTopTags = new Variable("NTopTags",5,0,5,"N_{Top Tagged Jets}","N_{Events}");
+//   //vVar.push_back(NTopTags);
+// 
+//   //Variable* NWTags = new Variable("NWTags",5,0,5,"N_{W Tagged Jets}","N_{Events}");
+//   //vVar.push_back(NWTags);
+// 
+//   //Variable* X53Mass = new Variable("X53Mass",50,100,2000,"M_{X53}","N_{Events}");
+//   //vVar.push_back(X53Mass);
+// 
+//   Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
+//   vVar.push_back(met);
+//   Variable* dilepMass = new Variable("DilepMass",20,0,600,"Dilepton Mass (GeV)", "N_{Events} / 30 GeV");
+//   vVar.push_back(dilepMass);
+//   
+// 
+//   Variable* nPV = new Variable("nPV",60,0,60,"N_{PV}","N_{Events}/bin");
+//   vVar.push_back(nPV);
+// 
+//   Variable* lep1MinDR = new Variable("Lep1MinDR",70,0,7,"Min(#Delta_{R} (Lep1,jet))","N_{Events} / bin");
+//   vVar.push_back(lep1MinDR);
+// 
+//   Variable* lep2MinDR = new Variable("Lep2MinDR",70,0,7,"Min(#Delta_{R} (Lep2,jet))","N_{Events} / bin");
+//   vVar.push_back(lep2MinDR);
+// 
   return vVar;
 }
 
@@ -1157,13 +1164,39 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   std::vector<std::string> vSigNames;
   std::vector<float> vXsec;
 
-  float BR;
-  
+  float BR=0.;
+    
   //Set TT
   float BR_bW=0.5;
   float BR_tZ=0.25;
   float BR_tH=0.25;
-  if(BRtype==0){BR_bW=0.5;BR_tZ=0.25;BR_tH=0.25;} //nominal 
+//   if(BRtype==0){BR_bW=0.5	;BR_tZ=0.25	;BR_tH=0.25	;} //nominal 
+//   if(BRtype==1){BR_bW=0.	;BR_tZ=0.5	;BR_tH=0.5	;} // 
+//   if(BRtype==2){BR_bW=0.	;BR_tZ=1.0	;BR_tH=0.	;} // 
+
+  if(BRtype==0){BR_bW=0.5	;BR_tZ=0.25	;BR_tH=0.25	;} //nominal 
+  if(BRtype==1){BR_bW=0.	;BR_tZ=1.0	;BR_tH=0.0	;} // 
+  if(BRtype==2){BR_bW=0.	;BR_tZ=0.8	;BR_tH=0.2	;} // 
+  if(BRtype==3){BR_bW=0.	;BR_tZ=0.6	;BR_tH=0.4	;} // 
+  if(BRtype==4){BR_bW=0.	;BR_tZ=0.4	;BR_tH=0.6	;} // 
+  if(BRtype==5){BR_bW=0.	;BR_tZ=0.2	;BR_tH=0.8	;} // 
+  if(BRtype==6){BR_bW=0.	;BR_tZ=0.0	;BR_tH=1.0	;} // 
+  if(BRtype==7){BR_bW=0.2	;BR_tZ=0.8	;BR_tH=0.0	;} // 
+  if(BRtype==8){BR_bW=0.2	;BR_tZ=0.6	;BR_tH=0.2	;} // 
+  if(BRtype==9){BR_bW=0.2	;BR_tZ=0.4	;BR_tH=0.4	;} // 
+  if(BRtype==10){BR_bW=0.2	;BR_tZ=0.2	;BR_tH=0.6	;} // 
+  if(BRtype==11){BR_bW=0.2	;BR_tZ=0.0	;BR_tH=0.8	;} // 
+  if(BRtype==12){BR_bW=0.4	;BR_tZ=0.6	;BR_tH=0.0	;} // 
+  if(BRtype==13){BR_bW=0.4	;BR_tZ=0.4	;BR_tH=0.2	;} // 
+  if(BRtype==14){BR_bW=0.4	;BR_tZ=0.2	;BR_tH=0.4	;} // 
+  if(BRtype==15){BR_bW=0.4	;BR_tZ=0.0	;BR_tH=0.6	;} // 
+  if(BRtype==16){BR_bW=0.6	;BR_tZ=0.4	;BR_tH=0.0	;} // 
+  if(BRtype==17){BR_bW=0.6	;BR_tZ=0.2	;BR_tH=0.2	;} // 
+  if(BRtype==18){BR_bW=0.6	;BR_tZ=0.0	;BR_tH=0.4	;} // 
+  if(BRtype==19){BR_bW=0.8	;BR_tZ=0.2	;BR_tH=0.0	;} // 
+  if(BRtype==20){BR_bW=0.8	;BR_tZ=0.0	;BR_tH=0.2	;} // 
+  if(BRtype==21){BR_bW=1.0	;BR_tZ=0.0	;BR_tH=0.0	;} // 
+  if(BRtype==22){BR_bW=0.0	;BR_tZ=0.5	;BR_tH=0.5	;} // 
   if(sigDecay=="BWBW") BR = BR_bW*BR_bW;
   if(sigDecay=="TZTZ") BR = BR_tZ*BR_tZ;
   if(sigDecay=="THTH") BR = BR_tH*BR_tH;
@@ -1171,26 +1204,13 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   if(sigDecay=="TZBW") BR = 2*BR_tZ*BR_bW;
   if(sigDecay=="TZTH") BR = 2*BR_tZ*BR_tH;
     
-  //again for BB
-  float BR_tW=0.5;
-  float BR_bZ=0.25;
-  float BR_bH=0.25; 
-  if(BRtype==0){BR_tW=0.5;BR_bZ=0.25;BR_bH=0.25;} //nominal 
-  if(sigDecay=="TWTW") BR = BR_tW*BR_tW;
-  if(sigDecay=="BZBZ") BR = BR_bZ*BR_bZ;
-  if(sigDecay=="BHBH") BR = BR_bH*BR_bH;
-  if(sigDecay=="BHTW") BR = 2*BR_bH*BR_tW;
-  if(sigDecay=="BZTW") BR = 2*BR_bZ*BR_tW;
-  if(sigDecay=="BZBH") BR = 2*BR_bZ*BR_bH;
+  std::cout << "Processing signal with BR : bW=" << BR_bW <<" tZ=" << BR_tZ <<" tH=" << BR_tH <<std::endl;
 
 
   float initBR; //MC sample initially has equal BR's for T -> bW, tZ,tH
   //TT
   if(sigDecay=="BWBW" || sigDecay=="TZTZ" || sigDecay=="THTH" ) initBR=0.333*0.333;
   if(sigDecay=="THBW" || sigDecay=="TZBW" || sigDecay=="TZTH" ) initBR=0.333*0.333*2;
-  //BB
-  if(sigDecay=="TWTW" || sigDecay=="BZBZ" || sigDecay=="BHBH" ) initBR=0.333*0.333;
-  if(sigDecay=="BHTW" || sigDecay=="BZTW" || sigDecay=="BZBH" ) initBR=0.333*0.333*2;
 
   std::vector<int> vNEvts;
   vSigNames.push_back("TprimeTprime_M-800_"+sigDecay); vXsec.push_back(0.196); vNEvts.push_back(795000.);
@@ -1215,59 +1235,225 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
 
   std::vector<Sample*> vSigSamples;
   
-  std::string lh800 = RizkiArea+"test/TprimeTprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string subfolder = "test";
+//   std::string subfolder = "test/Tprime_postLJMet_exactly2goodLeptons_beforeSep26-2017";
+  std::cout << "input signal subfolder:" << subfolder << std::endl;
+  //std::cout << "checking input TT signal files:";
+  //TString action = "ls "+RizkiArea+subfolder+"/Tprime*.root";
+  //system(action);
+
+  
+  std::string lh800 = RizkiArea+subfolder+"/TprimeTprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x53800Lfile = new TFile(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
   vSigSamples.push_back(x53x53m800L);
-
-  std::string lh900 = RizkiArea+"test/TprimeTprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  
+  std::string lh900 = RizkiArea+subfolder+"/TprimeTprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x53900Lfile = new TFile(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
   vSigSamples.push_back(x53x53m900L);
 
-  std::string lh1000 = RizkiArea+"test/TprimeTprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1000 = RizkiArea+subfolder+"/TprimeTprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531000Lfile = new TFile(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
 
-  std::string lh1100 = RizkiArea+"test/TprimeTprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1100 = RizkiArea+subfolder+"/TprimeTprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531100Lfile = new TFile(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(3),x53x531100Lfile,vWeights.at(3),vXsec.at(3),cut,kBlack,2);
   vSigSamples.push_back(x53x53m1100L);
 
-  std::string lh1200 = RizkiArea+"test/TprimeTprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1200 = RizkiArea+subfolder+"/TprimeTprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531200Lfile = new TFile(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(4),x53x531200Lfile,vWeights.at(4),vXsec.at(4),cut,kOrange,2);
   vSigSamples.push_back(x53x53m1200L);
 
-  std::string lh1300 = RizkiArea+"test/TprimeTprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1300 = RizkiArea+subfolder+"/TprimeTprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531300Lfile = new TFile(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(5),x53x531300Lfile,vWeights.at(5),vXsec.at(5),cut,kViolet,2);
   vSigSamples.push_back(x53x53m1300L);
 
-  std::string lh1400 = RizkiArea+"test/TprimeTprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1400 = RizkiArea+subfolder+"/TprimeTprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531400Lfile = new TFile(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(6),x53x531400Lfile,vWeights.at(6),vXsec.at(6),cut,kRed,2);
   vSigSamples.push_back(x53x53m1400L);
 
-  std::string lh1500 = RizkiArea+"test/TprimeTprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1500 = RizkiArea+subfolder+"/TprimeTprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531500Lfile = new TFile(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(7),x53x531500Lfile,vWeights.at(7),vXsec.at(7),cut,kBlue+2,2);
   vSigSamples.push_back(x53x53m1500L);
 
-  std::string lh1600 = RizkiArea+"test/TprimeTprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1600 = RizkiArea+subfolder+"/TprimeTprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531600Lfile = new TFile(lh1600.c_str());
   Sample* x53x53m1600L = new Sample(vSigNames.at(8),x53x531600Lfile,vWeights.at(8),vXsec.at(8),cut,kRed+2,2);
   vSigSamples.push_back(x53x53m1600L);
 
-  std::string lh1700 = RizkiArea+"test/TprimeTprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1700 = RizkiArea+subfolder+"/TprimeTprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531700Lfile = new TFile(lh1700.c_str());
   Sample* x53x53m1700L = new Sample(vSigNames.at(9),x53x531700Lfile,vWeights.at(9),vXsec.at(9),cut,kCyan+2,2);
   vSigSamples.push_back(x53x53m1700L);
 
-  std::string lh1800 = RizkiArea+"test/TprimeTprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string lh1800 = RizkiArea+subfolder+"/TprimeTprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531800Lfile = new TFile(lh1800.c_str());
   Sample* x53x53m1800L = new Sample(vSigNames.at(10),x53x531800Lfile,vWeights.at(10),vXsec.at(10),cut,kOrange+2,2);
+  vSigSamples.push_back(x53x53m1800L);
+
+
+
+  return vSigSamples;
+
+}
+
+//added by rizki
+std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID,std::string era,std::string sigDecay,int BRtype){
+  //make names vector
+  std::vector<std::string> vSigNames;
+  std::vector<float> vXsec;
+
+  float BR=0.;
+      
+  //again for BB
+  float BR_tW=0.5;
+  float BR_bZ=0.25;
+  float BR_bH=0.25; 
+//   if(BRtype==0){BR_tW=0.5;BR_bZ=0.25;BR_bH=0.25;} //nominal 
+//   if(BRtype==1){BR_tW=0.;BR_bZ=0.5;BR_bH=0.5;} //
+//   if(BRtype==2){BR_tW=1.0;BR_bZ=0.0;BR_bH=0.0;} //100% tW
+
+  if(BRtype==0){BR_tW=0.5	;BR_bZ=0.25	;BR_bH=0.25	;} //nominal 
+  if(BRtype==1){BR_tW=0.	;BR_bZ=1.0	;BR_bH=0.0	;} // 
+  if(BRtype==2){BR_tW=0.	;BR_bZ=0.8	;BR_bH=0.2	;} // 
+  if(BRtype==3){BR_tW=0.	;BR_bZ=0.6	;BR_bH=0.4	;} // 
+  if(BRtype==4){BR_tW=0.	;BR_bZ=0.4	;BR_bH=0.6	;} // 
+  if(BRtype==5){BR_tW=0.	;BR_bZ=0.2	;BR_bH=0.8	;} // 
+  if(BRtype==6){BR_tW=0.	;BR_bZ=0.0	;BR_bH=1.0	;} // 
+  if(BRtype==7){BR_tW=0.2	;BR_bZ=0.8	;BR_bH=0.0	;} // 
+  if(BRtype==8){BR_tW=0.2	;BR_bZ=0.6	;BR_bH=0.2	;} // 
+  if(BRtype==9){BR_tW=0.2	;BR_bZ=0.4	;BR_bH=0.4	;} // 
+  if(BRtype==10){BR_tW=0.2	;BR_bZ=0.2	;BR_bH=0.6	;} // 
+  if(BRtype==11){BR_tW=0.2	;BR_bZ=0.0	;BR_bH=0.8	;} // 
+  if(BRtype==12){BR_tW=0.4	;BR_bZ=0.6	;BR_bH=0.0	;} // 
+  if(BRtype==13){BR_tW=0.4	;BR_bZ=0.4	;BR_bH=0.2	;} // 
+  if(BRtype==14){BR_tW=0.4	;BR_bZ=0.2	;BR_bH=0.4	;} // 
+  if(BRtype==15){BR_tW=0.4	;BR_bZ=0.0	;BR_bH=0.6	;} // 
+  if(BRtype==16){BR_tW=0.6	;BR_bZ=0.4	;BR_bH=0.0	;} // 
+  if(BRtype==17){BR_tW=0.6	;BR_bZ=0.2	;BR_bH=0.2	;} // 
+  if(BRtype==18){BR_tW=0.6	;BR_bZ=0.0	;BR_bH=0.4	;} // 
+  if(BRtype==19){BR_tW=0.8	;BR_bZ=0.2	;BR_bH=0.0	;} // 
+  if(BRtype==20){BR_tW=0.8	;BR_bZ=0.0	;BR_bH=0.2	;} // 
+  if(BRtype==21){BR_tW=1.0	;BR_bZ=0.0	;BR_bH=0.0	;} // 
+  if(BRtype==22){BR_tW=0.0	;BR_bZ=0.5	;BR_bH=0.5	;} // 
+
+  if(sigDecay=="TWTW") BR = BR_tW*BR_tW;
+  if(sigDecay=="BZBZ") BR = BR_bZ*BR_bZ;
+  if(sigDecay=="BHBH") BR = BR_bH*BR_bH;
+  if(sigDecay=="BHTW") BR = 2*BR_bH*BR_tW;
+  if(sigDecay=="BZTW") BR = 2*BR_bZ*BR_tW;
+  if(sigDecay=="BZBH") BR = 2*BR_bZ*BR_bH;
+
+
+  
+  std::cout << "Processing signal with BR : tW=" << BR_tW <<" bZ=" << BR_bZ <<" bH=" << BR_bH <<std::endl;
+
+
+  float initBR; //MC sample initially has equal BR's for T -> bW, tZ,tH
+  //BB
+  if(sigDecay=="TWTW" || sigDecay=="BZBZ" || sigDecay=="BHBH" ) initBR=0.333*0.333;
+  if(sigDecay=="BHTW" || sigDecay=="BZTW" || sigDecay=="BZBH" ) initBR=0.333*0.333*2;
+
+  std::vector<int> vNEvts;
+  vSigNames.push_back("BprimeBprime_M-800_"+sigDecay); vXsec.push_back(0.196); vNEvts.push_back(826200.);
+  vSigNames.push_back("BprimeBprime_M-900_"+sigDecay); vXsec.push_back(0.0903); vNEvts.push_back(799800.);
+  vSigNames.push_back("BprimeBprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(825600.);
+  vSigNames.push_back("BprimeBprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(832000.);
+  vSigNames.push_back("BprimeBprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(832200.);
+  vSigNames.push_back("BprimeBprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(807200.);
+  vSigNames.push_back("BprimeBprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(816800.);
+  vSigNames.push_back("BprimeBprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(831000.);
+  vSigNames.push_back("BprimeBprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(696600.);
+  vSigNames.push_back("BprimeBprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(832600.);
+  vSigNames.push_back("BprimeBprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(795400.);
+
+ 
+
+  //vector to hold weights
+  std::vector<float> vWeights;
+  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
+    vWeights.push_back( lumi * 1000 * ( (vXsec.at(i)*BR) / (vNEvts.at(i) * initBR) ) ); //factor of 1000 to convert lumi to pb^-1
+  }
+  int i_weight = 0;
+
+  std::vector<Sample*> vSigSamples;
+  
+  std::string subfolder = "test";
+  //std::string subfolder = "test/Bprime_postLJMet_exactly2goodLeptons_beforeSep26-2017";
+  //std::cout << "checking input TT signal files:";
+  //TString action = "ls "+RizkiArea+subfolder+"/Bprime*.root";
+  //system(action);
+
+  std::string lh800 = RizkiArea+subfolder+"/BprimeBprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  Sample* x53x53m800L = new Sample(vSigNames.at(i_weight),x53x53800Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlue,2);
+  vSigSamples.push_back(x53x53m800L);  
+  i_weight=i_weight+1;
+
+  std::string lh900 = RizkiArea+subfolder+"/BprimeBprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  Sample* x53x53m900L = new Sample(vSigNames.at(i_weight),x53x53900Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed,2);
+  vSigSamples.push_back(x53x53m900L);
+  i_weight=i_weight+1;
+
+  std::string lh1000 = RizkiArea+subfolder+"/BprimeBprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  Sample* x53x53m1000L = new Sample(vSigNames.at(i_weight),x53x531000Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan,2);
+  vSigSamples.push_back(x53x53m1000L);
+  i_weight=i_weight+1;
+
+  std::string lh1100 = RizkiArea+subfolder+"/BprimeBprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  Sample* x53x53m1100L = new Sample(vSigNames.at(i_weight),x53x531100Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlack,2);
+  vSigSamples.push_back(x53x53m1100L);
+  i_weight=i_weight+1;
+
+  std::string lh1200 = RizkiArea+subfolder+"/BprimeBprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  Sample* x53x53m1200L = new Sample(vSigNames.at(i_weight),x53x531200Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange,2);
+  vSigSamples.push_back(x53x53m1200L);
+  i_weight=i_weight+1;
+
+  std::string lh1300 = RizkiArea+subfolder+"/BprimeBprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  Sample* x53x53m1300L = new Sample(vSigNames.at(i_weight),x53x531300Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kViolet,2);
+  vSigSamples.push_back(x53x53m1300L);
+  i_weight=i_weight+1;
+
+  std::string lh1400 = RizkiArea+subfolder+"/BprimeBprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  Sample* x53x53m1400L = new Sample(vSigNames.at(i_weight),x53x531400Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed,2);
+  vSigSamples.push_back(x53x53m1400L);
+  i_weight=i_weight+1;
+
+  std::string lh1500 = RizkiArea+subfolder+"/BprimeBprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  Sample* x53x53m1500L = new Sample(vSigNames.at(i_weight),x53x531500Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlue+2,2);
+  vSigSamples.push_back(x53x53m1500L);
+  i_weight=i_weight+1;
+
+  std::string lh1600 = RizkiArea+subfolder+"/BprimeBprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531600Lfile = new TFile(lh1600.c_str());
+  Sample* x53x53m1600L = new Sample(vSigNames.at(i_weight),x53x531600Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed+2,2);
+  vSigSamples.push_back(x53x53m1600L);
+  i_weight=i_weight+1;
+
+  std::string lh1700 = RizkiArea+subfolder+"/BprimeBprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531700Lfile = new TFile(lh1700.c_str());
+  Sample* x53x53m1700L = new Sample(vSigNames.at(i_weight),x53x531700Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan+2,2);
+  vSigSamples.push_back(x53x53m1700L);
+  i_weight=i_weight+1;
+
+  std::string lh1800 = RizkiArea+subfolder+"/BprimeBprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531800Lfile = new TFile(lh1800.c_str());
+  Sample* x53x53m1800L = new Sample(vSigNames.at(i_weight),x53x531800Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange+2,2);
   vSigSamples.push_back(x53x53m1800L);
 
 
@@ -1712,7 +1898,7 @@ std::vector<Sample*> get74XBkgSampleVec(std::string cut, float lumi, std::string
   //********ChargeMisID**********
   std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 
@@ -1852,7 +2038,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   //********ChargeMisID**********
   std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 
@@ -1883,6 +2069,13 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(249237* 0.855399);
   //vBkgNames.push_back("WWW");    vXsec.push_back(0.01398); vNEvts.push_back(240000* 0.8554);
   
+  //ARC review request: dataset with Gamma conversions // added by rizki
+  vBkgNames.push_back("TTGJets");    vXsec.push_back(3.697); vNEvts.push_back(4870911 * 0.325); //prelim estimate: ran 1204482 events, adjusted count 391002. Could assume adjusted = 0.325 * total, from Julie Nov29-2017
+  vBkgNames.push_back("ZGTo2LG");    vXsec.push_back(123.9); vNEvts.push_back(1579452); //ZG: int 2307158, adjusted count 1579452 , from Julie Nov29-2017
+  vBkgNames.push_back("TGJets");    vXsec.push_back(2.967); vNEvts.push_back(58120); //TGJets: integral 292508, adjusted count 58120 , from Julie Nov29-2017
+  vBkgNames.push_back("WGToLNuG");    vXsec.push_back(405.271); vNEvts.push_back( 6103817* 1);
+  vBkgNames.push_back("TTZToLLM1to10");    vXsec.push_back(0.0493); vNEvts.push_back(246792 * 1);
+  
   //now make vector to hold weights;
   std::vector<float> vWeights;
   for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
@@ -1898,27 +2091,32 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   std::string ttZfilename = MCarea+"test/TTZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* ttZfile = new TFile(ttZfilename.c_str());
   Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
+  std::cout<<"weight for TTZ is: "<<vWeights.at(0)<<std::endl;
   vSample.push_back(ttZSample);
 
   std::string ttWfilename = MCarea+"test/TTW_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* ttwfile = new TFile(ttWfilename.c_str());
   Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
+  std::cout<<"weight for TTW is: "<<vWeights.at(1)<<std::endl;
   vSample.push_back(ttwSample);
 
   std::string tthfilename = MCarea+"test/TTH_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* tthfile = new TFile(tthfilename.c_str());
   Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
+  std::cout<<"weight for TTH is: "<<vWeights.at(2)<<std::endl;
   vSample.push_back(tthSample);
 
   std::string ttttfilename = MCarea+"test/TTTT_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* ttttfile = new TFile(ttttfilename.c_str());
   Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
+  std::cout<<"weight for TTTT is: "<<vWeights.at(3)<<std::endl;
   vSample.push_back(ttttSample);
 
 
   std::string wzfilename=MCarea+"test/WZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* wzfile = new TFile(wzfilename.c_str());
   Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
+  std::cout<<"weight for WZ is: "<<vWeights.at(4)<<std::endl;
   vSample.push_back(wzSample);
 
   //TFile* wjfile = new TFile(MCarea+"test/WJets_Mu"+muID+"_El"+elID+"_"+era+".root");
@@ -1933,7 +2131,7 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   std::string zzfilename = MCarea+"test/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* zzjfile = new TFile(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
   //std::string vhfilename = MCarea+"test/VH_Mu"+muID+"_El"+elID+"_"+era+".root";
@@ -1945,7 +2143,7 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   std::string wpwpfilename = MCarea+"test/WpWp_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* wpwpfile = new TFile(wpwpfilename.c_str());
   Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  std::cout<<"weight for WpWp is: "<<vWeights.at(7)<<std::endl;
   vSample.push_back(wpwpSample);
 
   /*std::string wwmpifilename = MCarea+"test/WW-mpi_Mu"+muID+"_El"+elID+"_"+era+".root";
@@ -1958,21 +2156,51 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   std::string wwzfilename = MCarea+"test/WWZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* wwzfile = new TFile(wwzfilename.c_str());
   Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  std::cout<<"weight for WWZ is: "<<vWeights.at(9)<<std::endl;
   vSample.push_back(wwzSample);
 
   std::string wzzfilename = MCarea+"test/WZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* wzzfile = new TFile(wzzfilename.c_str());
   Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  std::cout<<"weight for WZZ is: "<<vWeights.at(10)<<std::endl;
   vSample.push_back(wzzSample);
 
   std::string zzzfilename = MCarea+"test/ZZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* zzzfile = new TFile(zzzfilename.c_str());
   Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
-  std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
+  std::cout<<"weight for ZZZ is: "<<vWeights.at(11)<<std::endl;
   vSample.push_back(zzzSample);
 
+  //ARC review request: dataset with Gamma conversions // added by rizki
+  std::string ttgjetsfilename = MCarea_Gamma+"/TTGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* ttgjetsfile = new TFile(ttgjetsfilename.c_str());
+  Sample* ttgjetsSample = new Sample(vBkgNames.at(12),ttgjetsfile, vWeights.at(12),vXsec.at(12),cut,kViolet-1);
+  std::cout<<"weight for TTGJets is: "<<vWeights.at(12)<<std::endl;
+  vSample.push_back(ttgjetsSample);
+
+  std::string zgto2lgfilename = MCarea_Gamma+"/ZGTo2LG_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* zgto2lgfile = new TFile(zgto2lgfilename.c_str());
+  Sample* zgto2lgSample = new Sample(vBkgNames.at(13),zgto2lgfile, vWeights.at(13),vXsec.at(13),cut,kViolet-2);
+  std::cout<<"weight for ZGTo2LG is: "<<vWeights.at(13)<<std::endl;
+  vSample.push_back(zgto2lgSample);
+
+  std::string tgjetsfilename = MCarea_Gamma+"/TGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* tgjetsfile = new TFile(tgjetsfilename.c_str());
+  Sample* tgjetsSample = new Sample(vBkgNames.at(14),tgjetsfile, vWeights.at(14),vXsec.at(14),cut,kViolet-3);
+  std::cout<<"weight for TGJets is: "<<vWeights.at(14)<<std::endl;
+  vSample.push_back(tgjetsSample);
+
+  std::string wgtolnugfilename = MCarea_Gamma+"/WGToLNuG_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wgtolnugfile = new TFile(wgtolnugfilename.c_str());
+  Sample* wgtolnugSample = new Sample(vBkgNames.at(15),wgtolnugfile, vWeights.at(15),vXsec.at(15),cut,kViolet-4);
+  std::cout<<"weight for WGToLNuG is: "<<vWeights.at(15)<<std::endl;
+  vSample.push_back(wgtolnugSample);
+
+  std::string ttztollm1to10filename = MCarea_Gamma+"/TTZToLLM1to10_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* ttztollm1to10file = new TFile(ttztollm1to10filename.c_str());
+  Sample* ttztollm1to10Sample = new Sample(vBkgNames.at(16),ttztollm1to10file, vWeights.at(16),vXsec.at(16),cut,kViolet-6);
+  std::cout<<"weight for TTZToLLM1to10 is: "<<vWeights.at(16)<<std::endl;
+  vSample.push_back(ttztollm1to10Sample);
 
   return vSample;
 
@@ -1997,6 +2225,7 @@ std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string 
 
   //********** Nonprompt ***************
   std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   std::string npfilename = RizkiNPArea+"NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* npfile = new TFile(npfilename.c_str());
   Sample* npSample = new Sample(vBkgNames.at(0),npfile,vWeights.at(0),vXsec.at(0),cut,kGray);
   vSample.push_back(npSample);
@@ -2004,7 +2233,7 @@ std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string 
   //********ChargeMisID**********
   std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(1),cmidfile,vWeights.at(1),vXsec.at(1),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  Sample* cmidSample = new Sample(vBkgNames.at(1),cmidfile,vWeights.at(1),vXsec.at(1),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 
@@ -2018,7 +2247,9 @@ std::vector<std::string> getCutString(){
   std::vector<std::string> vString;
 
   //quarkonia-veto
-  std::string null = "Lep1Pt>0";
+//   std::string null = "Lep1Pt>0";
+//   std::string null = "(Lep1Pt>0 && nNonSSLeps==0)"; //added by rizki for orthogonality with trilepton
+  std::string null = "nNonSSLeps==0"; //added by rizki for orthogonality with trilepton
   vString.push_back(null);
   std::string qv = "("+null+" && (DilepMass>20) )";
   vString.push_back(qv);
@@ -2032,13 +2263,17 @@ std::vector<std::string> getCutString(){
   //std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 30)" ;
   //vString.push_back(lep2pt);
   //Leading nJetscut
-  std::string nConstCut = "("+lep1pt+"&& nConst >= 5)";
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 5)"; //commented by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 2)"; //added by rizki
+  std::string nConstCut = "("+lep1pt+"&& nConst >= 4)"; //added by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 3)"; //added by rizki
   vString.push_back(nConstCut);
   //SubLeading Jet Pt
   //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
   //vString.push_back(jet2pt);
   //HT cut
-  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)";
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)"; //commented by rizki
+//   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1100)"; //added by rizki
   vString.push_back(htcut);
 
   //std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
@@ -2141,7 +2376,6 @@ std::string getPrettyCutString(std::string cut){
 
 CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts,int nMu)
 {
-
 
   std::vector<float> vEvts,vErr;
   std::vector<std::string> vCutsPretty;
@@ -3560,7 +3794,7 @@ std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string 
   //********ChargeMisID**********
   std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kAzure+6); //force charge misID to start here since only at this point do we filter events
+  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
 

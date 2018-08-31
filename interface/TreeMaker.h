@@ -74,6 +74,10 @@ class TreeMaker {
   float Lep2SusyIso_;
 
   int nConst_;
+  int nConstJESup_;
+  int nConstJESdn_;
+  int nConstJERup_;
+  int nConstJERdn_;
   int nAK4Jets_;
   int nNewConst_;
   int nNonSSLeps_;
@@ -104,6 +108,10 @@ class TreeMaker {
   float cleanAK4Jet2Energy_;
 
   int nCleanAK4Jets_;
+  int nCleanAK4JetsScaleUp_;
+  int nCleanAK4JetsScaleDown_;
+  int nCleanAK4JetsSmearUp_;
+  int nCleanAK4JetsSmearDown_;
   float cleanAK4HT_;
   float cleanAK4HTScaleUp_;
   float cleanAK4HTScaleDown_;

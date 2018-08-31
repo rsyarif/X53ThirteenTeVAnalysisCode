@@ -21,11 +21,13 @@ void getPDFUnc(TFile* f, std::string name){
 
 void pdfsys(){
 
-  TFile* fttz = new TFile("../../../test/TTZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* fttw = new TFile("../../../test/TTW_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* ftth = new TFile("../../../test/TTH_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* fwz = new TFile("../../../test/WZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* fzz = new TFile("../../../test/ZZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TString folder = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test";
+
+  TFile* fttz = new TFile(folder+"/TTZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* fttw = new TFile(folder+"/TTW_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* ftth = new TFile(folder+"/TTH_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* fwz = new TFile(folder+"/WZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* fzz = new TFile(folder+"/ZZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
 
   TH2F* httz = (TH2F*) fttz->Get("hist_pdfHT");
   TH2F* httw = (TH2F*) fttw->Get("hist_pdfHT");
@@ -127,6 +129,29 @@ void pdfsys(){
   hsystth->Draw();
 
   c.Print("pdfsys_tth.pdf");
+  
+  //added by rizki - start
+  std::ofstream outfile;
+  outfile.open("unc_pdf_MCBkg.py");
+  std::stringstream filecontent;
+  filecontent<<std::fixed<<std::setprecision(3);
+  filecontent<< "pdfUp = {} \n";
+  filecontent<< "pdfDn = {} \n";
+  filecontent<<"pdfUp['TTZ']="<<hsysttz->GetRMS()<< "\n";
+  filecontent<<"pdfDn['TTZ']="<<hsysttz->GetRMS()<< "\n";
+  filecontent<<"pdfUp['TTW']="<<hsysttw->GetRMS()<< "\n";
+  filecontent<<"pdfDn['TTW']="<<hsysttw->GetRMS()<< "\n";
+  filecontent<<"pdfUp['TTH']="<<hsystth->GetRMS()<< "\n";
+  filecontent<<"pdfDn['TTH']="<<hsystth->GetRMS()<< "\n";
+  filecontent<<"pdfUp['WZ']="<<hsyswz->GetRMS()<< "\n";
+  filecontent<<"pdfDn['WZ']="<<hsyswz->GetRMS()<< "\n";
+  filecontent<<"pdfUp['ZZ']="<<hsyszz->GetRMS()<< "\n";
+  filecontent<<"pdfDn['ZZ']="<<hsyszz->GetRMS()<< "\n";
+  outfile<<filecontent.str();
+  outfile.close();
+  //added by rizki - end
+
+
   /*
   TH2F* httz = (TH2F*) fttz->Get("hist_pdfHT");
   TH2F* httw = (TH2F*) fttw->Get("hist_pdfHT");

@@ -68,34 +68,37 @@ for(unsigned int j=0; j<h1->GetNbinsX();j++){
 
 void scale_sys(){
 
-  TFile* ttz = new TFile("../../../test/TTZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* ttw = new TFile("../../../test/TTW_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* tth = new TFile("../../../test/TTH_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  //TFile* ttb = new TFile("../../../test/TTbar_ext2_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* wz = new TFile("../../../test/WZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* zz = new TFile("../../../test/ZZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh700 = new TFile("../../../test/X53X53m700LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh800 = new TFile("../../../test/X53X53m800LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh900 = new TFile("../../../test/X53X53m900LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1000 = new TFile("../../../test/X53X53m1000LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1100 = new TFile("../../../test/X53X53m1100LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1200 = new TFile("../../../test/X53X53m1200LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1300 = new TFile("../../../test/X53X53m1300LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1400 = new TFile("../../../test/X53X53m1400LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* lh1500 = new TFile("../../../test/X53X53m1500LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  //TFile* lh1600 = new TFile("../../../test/X53X53m1600LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TString folder = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test";
 
-  TFile* rh700 = new TFile("../../../test/X53X53m700RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh800 = new TFile("../../../test/X53X53m800RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh900 = new TFile("../../../test/X53X53m900RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1000 = new TFile("../../../test/X53X53m1000RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1100 = new TFile("../../../test/X53X53m1100RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1200 = new TFile("../../../test/X53X53m1200RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1300 = new TFile("../../../test/X53X53m1300RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1400 = new TFile("../../../test/X53X53m1400RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  TFile* rh1500 = new TFile("../../../test/X53X53m1500RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
-  //TFile* rh1600 = new TFile("../../../test/X53X53m1600RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* ttz = new TFile(folder+"/TTZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* ttw = new TFile(folder+"/TTW_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* tth = new TFile(folder+"/TTH_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  //TFile* ttb = new TFile(folder+"/TTbar_ext2_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* wz = new TFile(folder+"/WZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+  TFile* zz = new TFile(folder+"/ZZ_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
 
+//   TFile* lh700 = new TFile(folder+"/X53X53m700LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh800 = new TFile(folder+"/X53X53m800LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh900 = new TFile(folder+"/X53X53m900LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1000 = new TFile(folder+"/X53X53m1000LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1100 = new TFile(folder+"/X53X53m1100LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1200 = new TFile(folder+"/X53X53m1200LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1300 = new TFile(folder+"/X53X53m1300LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1400 = new TFile(folder+"/X53X53m1400LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* lh1500 = new TFile(folder+"/X53X53m1500LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   //TFile* lh1600 = new TFile(folder+"/X53X53m1600LH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+// 
+//   TFile* rh700 = new TFile(folder+"/X53X53m700RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh800 = new TFile(folder+"/X53X53m800RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh900 = new TFile(folder+"/X53X53m900RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1000 = new TFile(folder+"/X53X53m1000RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1100 = new TFile(folder+"/X53X53m1100RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1200 = new TFile(folder+"/X53X53m1200RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1300 = new TFile(folder+"/X53X53m1300RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1400 = new TFile(folder+"/X53X53m1400RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   TFile* rh1500 = new TFile(folder+"/X53X53m1500RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+//   //TFile* rh1600 = new TFile(folder+"/X53X53m1600RH_Inc_MuCBTightMiniIsoTight_ElMVA2016TightRC_2016E-H.root");
+// 
 
   printSys(ttz,"TTZ");
   printSys(ttw,"TTW");

@@ -14,6 +14,7 @@
 #include <sstream> 
 #include <fstream>
 #include "../plugins/Macros.cc"
+#include <math.h>  //added by rizki
 
 /* the point of this script is to produce a card file suitable for use with higgs combine tool or theta 
    It needs to take in three arguments: leading lepton pT shift, subleading lepton pT shift, HT shift
@@ -51,7 +52,7 @@ int main(int argc, char* argv[]){
   float HTshift=0;
   if(!(arg3>>HTshift)){ std::cout<<"Invalid number for HT shift! Exiting..."<<std::endl; return 0;}
   else{arg3>>HTshift;}
-  float HTcut   = 0.0+HTshift; //edited by rizki
+  float HTcut   = 1000.0+HTshift; //edited by rizki
 
   //get desired lumi
   float lumi = std::atof(argv[5]); // fb^{-1}
@@ -62,8 +63,9 @@ int main(int argc, char* argv[]){
   if(!(arg4>>nConstShift)){ std::cout<<"Invalid number for nConst shift! Exiting..."<<std::endl; return 0;}
   else{arg4>>nConstShift;}
 
-  int nConst = 5+nConstShift;*/
-  int nConst = 2; // edited by rizki
+//   int nConst = 5+nConstShift;*/
+  int nConst = 4; // edited by rizki
+//   int nConst = 5; // edited by rizki
 
   //first get our favorite vectors of samples
   std::vector<Sample*> vMCBkg = getMCBkgSampleVec("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
@@ -71,35 +73,49 @@ int main(int argc, char* argv[]){
   std::vector<Sample*> vBkg = appendSampleVectors(vMCBkg,vDDBkg);
 //   std::vector<Sample*> vSig = getInclusiveSigSampleVecForTable("sZVeto",lumi,"MVA2016TightRC","CBTightMiniIsoTight",era);
 
+
+  //get BR for signal  
+  int whichBR = std::stoi(argv[7]);
+
   //TT SIGNAL <decay> - RIZKI 
-  int whichBR = 0 ; //singlet
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BWBW",whichBR);
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THBW",whichBR);
-  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THTH",whichBR);
-  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZBW",whichBR);
-  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTH",whichBR);
-  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTZ",whichBR);
-  std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples3,vSigSamples5,vSigSamples6);
+  //int whichBR = 1 ; //0 = singlet, 1 = doublet, 2 = tZ 100%
+//   std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BWBW",whichBR);
+//   std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THBW",whichBR);
+//   std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THTH",whichBR);
+//   std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZBW",whichBR);
+//   std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTH",whichBR);
+//   std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTZ",whichBR);
+//   std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
+
+  //BB SIGNAL <decay> - RIZKI 
+  //int whichBR = 0 ; //0 = singlet, 1 = doublet, 2 = tW 100%
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TWTW",whichBR);
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHTW",whichBR);
+  std::vector<Sample*> vSigSamples3 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHBH",whichBR);
+  std::vector<Sample*> vSigSamples4 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZTW",whichBR);
+  std::vector<Sample*> vSigSamples5 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBH",whichBR);
+  std::vector<Sample*> vSigSamples6 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBZ",whichBR);
+  std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
+
 
   Sample* dataSample = getDataSample("sZVeto","MVA2016TightRC","CBTightMiniIsoTight",era);
+
   //now get only the signal one we care about, should be enough to ensure that both mass and chirality are present in name;
-  Sample* sigSample=0;
+  std::vector<Sample*> sigSample; //edited by rizki and everything to do with this.
   //convert mass to string...probably a better way exists
   std::stringstream mss; mss<<mass;
   std::string mstring = mss.str();
   for(std::vector<Sample*>::size_type i=0; i< vSig.size(); i++){
     //if( vSig.at(i)->name.find(mstring)!=std::string::npos && vSig.at(i)->name.find(chirality)!=std::string::npos){
     if( vSig.at(i)->name.find(mstring)!=std::string::npos){
-      sigSample = vSig.at(i);
-      break;
+      sigSample.push_back(vSig.at(i));
+      //break;
     }
   }
 
   //make sure we got the sig sample correctly
-  if(!sigSample){std::cout<<"Couldn't find the signal sample to use! Exiting....."<<std::endl; return 0;}
+  //if(!sigSample){std::cout<<"Couldn't find the signal sample to use! Exiting....."<<std::endl; return 0;}
 
-  //check to make sure we got the right one
-  if(debug_) std::cout<<"Samples name is: "<<sigSample->name<<std::endl;
 
   //now make cut string according to cuts specified:
   std::vector<std::string> vCutString;
@@ -182,11 +198,6 @@ int main(int argc, char* argv[]){
   fout_mumu->WriteTObject(mumu__DATA);
 
 
-  //get cut class for signal
-  //CutClass* cutSig_all = makeCutClass(sigSample,vCutString,-1);
-  CutClass* cutSig_elel = makeCutClass(sigSample,vCutString,0);
-  CutClass* cutSig_elmu = makeCutClass(sigSample,vCutString,1);
-  CutClass* cutSig_mumu = makeCutClass(sigSample,vCutString,2);
 
   //histos for signal
   //TH1F* All_sig = new TH1F("All_sig","",3,0,3);
@@ -198,19 +209,50 @@ int main(int argc, char* argv[]){
   //All_sig->SetBinContent(1,all_sig); All_sig->SetBinError(1,errAll_sig);
 
   TH1F* elel__sig = new TH1F("elel"+erast+"__sig","",1,0,1);
-  float nSig_elel = cutSig_elel->nEvents.at(0) / cutSig_elel->xsec;
-  float errElel_sig = cutSig_elel->vErr.at(0);
-  elel__sig->SetBinContent(1,nSig_elel); elel__sig->SetBinError(1,errElel_sig);
-
   TH1F* elmu__sig = new TH1F("elmu"+erast+"__sig","",1,0,1);
-  float nSig_elmu = cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec;
-  float errElmu_sig = cutSig_elmu->vErr.at(0);
-  elmu__sig->SetBinContent(1,nSig_elmu); elmu__sig->SetBinError(1,errElmu_sig);
-
   TH1F* mumu__sig = new TH1F("mumu"+erast+"__sig","",1,0,1);
-  float nSig_mumu = cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec;
-  float errMumu_sig = cutSig_mumu->vErr.at(0);
-  mumu__sig->SetBinContent(1,nSig_mumu); mumu__sig->SetBinError(1,errMumu_sig);
+
+
+  float nSig_elel = 0;
+  float errElel_sig = 0;
+  float nSig_elmu = 0;
+  float errElmu_sig = 0;
+  float nSig_mumu = 0;
+  float errMumu_sig = 0;
+  
+  //need to loop for combining all TT decays -rizki
+  for(int i=0; i<sigSample.size();i++){
+
+	  //check to make sure we got the right one
+	  if(debug_) std::cout<<"Samples name is: "<<sigSample.at(i)->name<<std::endl;
+
+	  //get cut class for signal
+	  //CutClass* cutSig_all = makeCutClass(sigSample,vCutString,-1);
+	  CutClass* cutSig_elel = makeCutClass(sigSample.at(i),vCutString,0);
+	  CutClass* cutSig_elmu = makeCutClass(sigSample.at(i),vCutString,1);
+	  CutClass* cutSig_mumu = makeCutClass(sigSample.at(i),vCutString,2);
+
+
+	  nSig_elel = nSig_elel + ( cutSig_elel->nEvents.at(0) / cutSig_elel->xsec );
+	  errElel_sig = errElel_sig + ( cutSig_elel->vErr.at(0) * cutSig_elel->vErr.at(0) ); //add errors in quadrature
+	  if(debug_) std::cout<<"	events	:"<<( cutSig_elel->nEvents.at(0) / cutSig_elel->xsec )<< " +/- "<< cutSig_elel->vErr.at(0) <<std::endl;
+	  if(debug_) std::cout<<"						total	:"<< nSig_elel << " +/- "<< sqrt(errElel_sig) << std::endl;
+
+	  nSig_elmu = nSig_elmu + ( cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec );
+	  errElmu_sig = errElmu_sig + ( cutSig_elmu->vErr.at(0) * cutSig_elmu->vErr.at(0) ); //add errors in quadrature
+	  if(debug_) std::cout<<"	events	:"<<( cutSig_elmu->nEvents.at(0) / cutSig_elmu->xsec )<< " +/- "<< cutSig_elmu->vErr.at(0) <<std::endl;
+	  if(debug_) std::cout<<"						total	:"<< nSig_elmu << " +/- "<< sqrt(errElmu_sig) << std::endl;
+
+	  nSig_mumu = nSig_mumu + ( cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec );
+	  errMumu_sig = errMumu_sig + ( cutSig_mumu->vErr.at(0) * cutSig_mumu->vErr.at(0) ); //add errors in quadrature
+	  if(debug_) std::cout<<"	events	:"<<( cutSig_mumu->nEvents.at(0) / cutSig_mumu->xsec )<< " +/- "<< cutSig_mumu->vErr.at(0) <<std::endl;
+	  if(debug_) std::cout<<"						total	:"<< nSig_mumu << " +/- "<< sqrt(errMumu_sig) << std::endl;
+  }
+
+  elel__sig->SetBinContent(1,nSig_elel); elel__sig->SetBinError(1,sqrt(errElel_sig));
+  elmu__sig->SetBinContent(1,nSig_elmu); elmu__sig->SetBinError(1,sqrt(errElmu_sig));
+  mumu__sig->SetBinContent(1,nSig_mumu); mumu__sig->SetBinError(1,sqrt(errMumu_sig));
+
 
   //fout->WriteTObject(all_sig);
   fout->WriteTObject(elel__sig);

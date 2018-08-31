@@ -11,8 +11,10 @@
 #include "TMath.h"
 #include "Math/ProbFunc.h"
 
-std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+// std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+// std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/CMSSW_8_0_14/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
+std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 
 std::vector<Variable*> getVariableVec(){
 

@@ -64,6 +64,10 @@ void TreeMaker::InitTree(std::string treename){
 
   //number of constiuents, cleaned ak4 jets and non ssdl leptons
   tree->Branch("nConst",&nConst_);
+  tree->Branch("nConstJESup",&nConstJESup_);
+  tree->Branch("nConstJESdn",&nConstJESdn_);
+  tree->Branch("nConstJERup",&nConstJERup_);
+  tree->Branch("nConstJERdn",&nConstJERdn_);
   tree->Branch("nNewConst",&nNewConst_);
   tree->Branch("nNonSSLeps",&nNonSSLeps_);
 
@@ -86,6 +90,10 @@ void TreeMaker::InitTree(std::string treename){
 
   //cleaned jets
   tree->Branch("nCleanAK4Jets",&nCleanAK4Jets_);
+  tree->Branch("nCleanAK4JetsScaleUp",&nCleanAK4JetsScaleUp_);
+  tree->Branch("nCleanAK4JetsScaleDown",&nCleanAK4JetsScaleDown_);
+  tree->Branch("nCleanAK4JetsSmearUp",&nCleanAK4JetsSmearUp_);
+  tree->Branch("nCleanAK4JetsSmearDown",&nCleanAK4JetsSmearDown_);
   tree->Branch("cleanAK4HT",&cleanAK4HT_);
   tree->Branch("cleanAK4HTScaleUp",&cleanAK4HTScaleUp_);
   tree->Branch("cleanAK4HTScaleDown",&cleanAK4HTScaleDown_);
@@ -322,6 +330,10 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
 
   //cleaned jets
   nCleanAK4Jets_ = cleanAK4Jets.size();
+  nCleanAK4JetsScaleUp_ = 0;
+  nCleanAK4JetsScaleDown_ = 0;
+  nCleanAK4JetsSmearUp_ = 0;
+  nCleanAK4JetsSmearDown_ = 0;
   cleanAK4HT_=Lep1Pt_+Lep2Pt_;
   cleanAK4HTScaleUp_ = Lep1Pt_+Lep2Pt_;
   cleanAK4HTScaleDown_ = Lep1Pt_+Lep2Pt_;
@@ -333,6 +345,12 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
     cleanAK4HTScaleDown_ += cleanAK4Jets.at(i)->scaleDownPt;
     cleanAK4HTSmearUp_ += cleanAK4Jets.at(i)->smearUpPt;
     cleanAK4HTSmearDown_ += cleanAK4Jets.at(i)->smearDownPt;
+
+    if(cleanAK4Jets.at(i)->scaleUpPt > 30){ nCleanAK4JetsScaleUp_++; }
+    if(cleanAK4Jets.at(i)->scaleDownPt > 30){ nCleanAK4JetsScaleDown_++; }
+    if(cleanAK4Jets.at(i)->smearUpPt > 30){ nCleanAK4JetsSmearUp_++; }
+    if(cleanAK4Jets.at(i)->smearDownPt > 30){ nCleanAK4JetsSmearDown_++; }
+
   }
   for(unsigned int ilep=0; ilep < vNonSSLep.size(); ilep++){
     cleanAK4HT_+=vNonSSLep.at(ilep)->pt;
@@ -1039,6 +1057,10 @@ void TreeMaker::FillTree(std::vector<TLepton*> vSSLep, std::vector<TJet*> AK4Jet
   if(foundW && foundTop) X53mass_ = (wjet+topjet).M();
 
   nConst_=nCleanAK4Jets_+vNonSSLep.size();
+  nConstJESup_=nCleanAK4JetsScaleUp_+vNonSSLep.size();
+  nConstJESdn_=nCleanAK4JetsScaleDown_+vNonSSLep.size();
+  nConstJERup_=nCleanAK4JetsSmearUp_+vNonSSLep.size();
+  nConstJERdn_=nCleanAK4JetsSmearDown_+vNonSSLep.size();
   DilepMass_ = DilepMasstemp;
   AssocMass_ = amasst;
   nMu_= nMu;
