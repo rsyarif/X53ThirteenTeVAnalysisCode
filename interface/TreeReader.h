@@ -137,8 +137,8 @@ class TreeReader{
   //mva value
   std::vector<double> *elMVA;
   TBranch        *b_elMVA_DileptonCalc;
-  std::vector<double> *elMVA80X;
-  TBranch        *b_elMVA80X_DileptonCalc;
+  std::vector<double> *elMVAValue;
+  TBranch        *b_elMVAValue_DileptonCalc;
 
   //Muons 
   std::vector<int>     *muCharge;
@@ -354,52 +354,30 @@ class TreeReader{
 
   // Trigger Info
   //double electron
+  bool HLT_Ele27_Ele37;
+  TBranch* b_HLT_Ele27_Ele37_DileptonCalc;
+  bool HLT_DoubleEle25;
+  TBranch* b_HLT_DoubleEle25_DileptonCalc;
+  bool HLT_DoubleEle27;
+  TBranch* b_HLT_DoubleEle27_DileptonCalc;
   bool HLT_DoubleEle33;
   TBranch* b_HLT_DoubleEle33_DileptonCalc;
-  bool HLT_DoubleEle37_27;
-  TBranch* b_HLT_DoubleEle37_27_DileptonCalc;
-  bool HLT_DoubleEle33_MW;
-  TBranch* b_HLT_DoubleEle33_MW_DileptonCalc;
-  bool HLT_Ele17Ele12;
-  TBranch* b_HLT_Ele17Ele12_DileptonCalc;
-  bool HLT_DoubleEle8_HT300;
-  TBranch* b_HLT_DoubleEle8_HT300_DileptonCalc;
   //single electron
-  bool HLT_Ele17Iso;
-  TBranch* b_HLT_Ele17Iso_DileptonCalc;
-  bool HLT_Ele17;
-  TBranch* b_HLT_Ele17_DileptonCalc;
+  bool HLT_Ele23Iso;
+  TBranch* b_HLT_Ele23Iso_DileptonCalc;
+  bool HLT_Ele23;
+  TBranch* b_HLT_Ele23_DileptonCalc;
   //double muon
-  bool HLT_Mu27TkMu8;
-  TBranch* b_HLT_Mu27TkMu8_DileptonCalc;
-  bool HLT_Mu30TkMu11;
-  TBranch* b_HLT_Mu30TkMu11_DileptonCalc;
-  bool HLT_Mu40TkMu11;
-  TBranch* b_HLT_Mu40TkMu11_DileptonCalc;
-  bool HLT_DoubleMu33NoFiltersNoVtx;
-  TBranch* b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc;
+  bool HLT_Mu37_TkMu27;
+  TBranch* b_HLT_Mu37_TkMu27_DileptonCalc;
   //single muon
-  bool HLT_Mu40;
-  TBranch* b_HLT_Mu40_DileptonCalc;
   bool HLT_Mu17;
   TBranch* b_HLT_Mu17_DileptonCalc;
-  bool HLT_IsoTkMu24;
-  TBranch* b_HLT_IsoTkMu24_DileptonCalc;
   //cross triggers
-  bool HLT_Mu17Ele12;
-  TBranch* b_HLT_Mu17Ele12_DileptonCalc;
-  bool HLT_Mu8Ele17;
-  TBranch* b_HLT_Mu8Ele17_DileptonCalc;
-  bool HLT_Mu23Ele12;
-  TBranch* b_HLT_Mu23Ele12_DileptonCalc;
-  bool HLT_Mu8Ele23;
-  TBranch* b_HLT_Mu8Ele23_DileptonCalc;
-  bool HLT_Mu30Ele30;
-  TBranch* b_HLT_Mu30Ele30_DileptonCalc;
-  bool HLT_Mu27Ele37;
-  TBranch* b_HLT_Mu27Ele37_DileptonCalc;
   bool HLT_Mu37Ele27;
   TBranch* b_HLT_Mu37Ele27_DileptonCalc;
+  bool HLT_Mu27Ele37;
+  TBranch* b_HLT_Mu27Ele37_DileptonCalc;
   //hadronic triggers
   bool HLT_PFHT900;
   TBranch* b_HLT_PFHT900_DileptonCalc;

@@ -23,7 +23,7 @@
 #include "../plugins/EventFilterFromFile_DoubleMu.cc"
 #include "../plugins/EventFilterFromFile_DoubleEG.cc"
 //#include "../plugins/EventFilterFromFile_CSC.cc"
-#include "../plugins/EventFilterFromFile_ECALSC.cc"
+//#include "../plugins/EventFilterFromFile_ECALSC.cc"
 #include "../plugins/EventFilterFromVector.cc"
 #include "../plugins/ReadEventFilterFromFile.cc"
 
@@ -41,11 +41,11 @@ bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
 
 int main(int argc, char* argv[]){
 
-//   std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/user/lpcljm/LJMet80x_TT_SSdilepton_2017_8_23_rizki/ljmet_trees/";
-  std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/user/lpcljm//LJMet80x_TT_SSdilepton_TpTpCalcOn_2017_9_1_rizki/ljmet_trees/";
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Moriond17/25ns/Feb01/ljmet_trees/";
   std::string eosareasingle="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/dzou/Spring16/25ns/Mar27/ljmet_trees"; //location of Moriond17 tree for single x53
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/clint/Run2016/Feb16/ljmet_trees/";
+
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
+  std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
 
   if(argc<5) return 0; // edited by rizki
   std::string argv1=argv[1];
@@ -57,201 +57,176 @@ int main(int argc, char* argv[]){
   typedef std::map<std::string,std::string> StringMap;
   
   StringMap bg_samples, sig_samples,data_samples;
-  bg_samples["TTJets"]=eosarea+"ljmet_TTJets.root";
-  bg_samples["TTbar"]=eosarea+"ljmet_TTbar.root";
-  bg_samples["TTbar_ext1"]=eosarea+"ljmet_TTbar_ext1.root";
-  bg_samples["TTbar_ext2"]=eosarea+"ljmet_TTbar_ext2.root";
-  bg_samples["TTW"]=eosarea+"ljmet_TTW.root";
-  bg_samples["TTZ"]=eosarea+"ljmet_TTZ.root";
-  bg_samples["TTH"]=eosarea+"ljmet_TTH.root";
-  bg_samples["TTTT"]=eosarea+"ljmet_TTTT.root";
-  bg_samples["TTWW"]=eosarea+"ljmet_TTWW.root";
-  bg_samples["WW"]=eosarea+"ljmet_WW.root";
-  bg_samples["WWW"]=eosarea+"ljmet_WWW.root";
-  bg_samples["WWZ"]=eosarea+"ljmet_WWZ.root";
-  bg_samples["WZZ"]=eosarea+"ljmet_WZZ.root";
-  bg_samples["ZZZ"]=eosarea+"ljmet_ZZZ.root";
-  bg_samples["WZ"]=eosarea+"ljmet_WZ.root";
-  bg_samples["WZ_MiniAODv1"]=eosarea+"ljmet_WZ_MiniAODv1.root";
-  bg_samples["ZZ"]=eosarea+"ljmet_ZZ.root";
-  bg_samples["VH"]=eosarea+"ljmet_VH.root";
-  bg_samples["WJets"]=eosarea+"ljmet_WJets.root";
-  bg_samples["DYJets"]=eosarea+"ljmet_DYJets.root";
-  bg_samples["WpWp"]=eosarea+"ljmet_WpWp.root";
-  bg_samples["WW-mpi"]=eosarea+"ljmet_WW-mpi.root";
+//   bg_samples["TTJets"]=eosarea+"TTJets.root";
+//   bg_samples["TTbar"]=eosarea+"TTbar.root";
+//   bg_samples["TTbar_ext1"]=eosarea+"TTbar_ext1.root";
+//   bg_samples["TTbar_ext2"]=eosarea+"TTbar_ext2.root";
+  bg_samples["TTW"]=eosarea+"TTW.root";
+  bg_samples["TTZ"]=eosarea+"TTZ.root";
+  bg_samples["TTH"]=eosarea+"TTH.root";
+  bg_samples["TTTT"]=eosarea+"TTTT.root";
+//   bg_samples["TTWW"]=eosarea+"TTWW.root";
+//   bg_samples["WW"]=eosarea+"WW.root";
+  bg_samples["WWW"]=eosarea+"WWW.root";
+  bg_samples["WWZ"]=eosarea+"WWZ.root";
+  bg_samples["WZZ"]=eosarea+"WZZ.root";
+  bg_samples["ZZZ"]=eosarea+"ZZZ.root";
+  bg_samples["WZ"]=eosarea+"WZ.root";
+//   bg_samples["WZ_MiniAODv1"]=eosarea+"WZ_MiniAODv1.root";
+  bg_samples["ZZ"]=eosarea+"ZZ_part1.root";
+//   bg_samples["VH"]=eosarea+"VH.root";
+//   bg_samples["WJets"]=eosarea+"WJets.root";
+//   bg_samples["DYJets"]=eosarea+"DYJets.root";
+  bg_samples["WpWp"]=eosarea+"WpWp.root";
+//   bg_samples["WW-mpi"]=eosarea+"WW-mpi.root";
 
   //nonoPrompt versions
-  bg_samples["NonPromptTTJets"]=eosarea+"ljmet_TTJets.root";
-  bg_samples["NonPromptWJets"]=eosarea+"ljmet_WJets.root";
-  bg_samples["NonPromptTTbar"]=eosarea+"ljmet_TTbar.root";
-  bg_samples["NonPromptTTbar_ext1"]=eosarea+"ljmet_TTbar_ext1.root";
-  bg_samples["NonPromptTTbar_ext2"]=eosarea+"ljmet_TTbar_ext2.root";
+  bg_samples["NonPromptTTJets"]=eosarea+"TTJets.root";
+  bg_samples["NonPromptWJets"]=eosarea+"WJets.root";
+  bg_samples["NonPromptTTbar"]=eosarea+"TTbar.root";
+  bg_samples["NonPromptTTbar_ext1"]=eosarea+"TTbar_ext1.root";
+  bg_samples["NonPromptTTbar_ext2"]=eosarea+"TTbar_ext2.root";
   
   
   //TT signal - rizki	
-  sig_samples["TprimeTprime_M-800"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-800_hadd.root";
-  sig_samples["TprimeTprime_M-900"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-900_hadd.root";
-  sig_samples["TprimeTprime_M-1000"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1000_hadd.root";
-  sig_samples["TprimeTprime_M-1100"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1100_hadd.root";
-  sig_samples["TprimeTprime_M-1200"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1200_hadd.root";
-  sig_samples["TprimeTprime_M-1300"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1300_hadd.root";
-  sig_samples["TprimeTprime_M-1400"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1400_hadd.root";
-  sig_samples["TprimeTprime_M-1500"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1500_hadd.root";
-  sig_samples["TprimeTprime_M-1600"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1600_hadd.root";
-  sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1700_hadd.root";
-  sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"ljmet_TprimeTprime_M-1800_hadd.root";
+//   sig_samples["TprimeTprime_M-800"]=eosarea_TTsignal+"TprimeTprime_M-800.root";
+//   sig_samples["TprimeTprime_M-900"]=eosarea_TTsignal+"TprimeTprime_M-900.root";
+  sig_samples["TprimeTprime_M-1000"]=eosarea_TTsignal+"TprimeTprime_M-1000.root";
+  sig_samples["TprimeTprime_M-1100"]=eosarea_TTsignal+"TprimeTprime_M-1100.root";
+  sig_samples["TprimeTprime_M-1200"]=eosarea_TTsignal+"TprimeTprime_M-1200.root";
+  sig_samples["TprimeTprime_M-1300"]=eosarea_TTsignal+"TprimeTprime_M-1300.root";
+  sig_samples["TprimeTprime_M-1400"]=eosarea_TTsignal+"TprimeTprime_M-1400.root";
+  sig_samples["TprimeTprime_M-1500"]=eosarea_TTsignal+"TprimeTprime_M-1500.root";
+  sig_samples["TprimeTprime_M-1600"]=eosarea_TTsignal+"TprimeTprime_M-1600.root";
+  sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"TprimeTprime_M-1700.root";
+  sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"TprimeTprime_M-1800.root";
 
   //BB signal - rizki	
-  sig_samples["BprimeBprime_M-800"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-800_hadd.root";
-  sig_samples["BprimeBprime_M-900"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-900_hadd.root";
-  sig_samples["BprimeBprime_M-1000"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1000_hadd.root";
-  sig_samples["BprimeBprime_M-1100"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1100_hadd.root";
-  sig_samples["BprimeBprime_M-1200"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1200_hadd.root";
-  sig_samples["BprimeBprime_M-1300"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1300_hadd.root";
-  sig_samples["BprimeBprime_M-1400"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1400_hadd.root";
-  sig_samples["BprimeBprime_M-1500"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1500_hadd.root";
-  sig_samples["BprimeBprime_M-1600"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1600_hadd.root";
-  sig_samples["BprimeBprime_M-1700"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1700_hadd.root";
-  sig_samples["BprimeBprime_M-1800"]=eosarea_TTsignal+"ljmet_BprimeBprime_M-1800_hadd.root";
+//   sig_samples["BprimeBprime_M-800"]=eosarea_TTsignal+"BprimeBprime_M-800.root";
+//   sig_samples["BprimeBprime_M-900"]=eosarea_TTsignal+"BprimeBprime_M-900.root";
+//   sig_samples["BprimeBprime_M-1000"]=eosarea_TTsignal+"BprimeBprime_M-1000.root";
+//   sig_samples["BprimeBprime_M-1100"]=eosarea_TTsignal+"BprimeBprime_M-1100.root";
+//   sig_samples["BprimeBprime_M-1200"]=eosarea_TTsignal+"BprimeBprime_M-1200.root";
+//   sig_samples["BprimeBprime_M-1300"]=eosarea_TTsignal+"BprimeBprime_M-1300.root";
+//   sig_samples["BprimeBprime_M-1400"]=eosarea_TTsignal+"BprimeBprime_M-1400.root";
+//   sig_samples["BprimeBprime_M-1500"]=eosarea_TTsignal+"BprimeBprime_M-1500.root";
+//   sig_samples["BprimeBprime_M-1600"]=eosarea_TTsignal+"BprimeBprime_M-1600.root";
+//   sig_samples["BprimeBprime_M-1700"]=eosarea_TTsignal+"BprimeBprime_M-1700.root";
+//   sig_samples["BprimeBprime_M-1800"]=eosarea_TTsignal+"BprimeBprime_M-1800.root";
 
   
-  sig_samples["X53X53m700RH"]=eosarea+"ljmet_X53X53m700RH.root";
-  sig_samples["X53X53m800RH"]=eosarea+"ljmet_X53X53m800RH.root";
-  sig_samples["X53X53m900RH"]=eosarea+"ljmet_X53X53m900RH.root";
-  //sig_samples["X53X53m1000RH"]="ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1000RH"]=eosarea+"ljmet_X53X53m1000RH.root";
-  sig_samples["X53X53m1100RH"]=eosarea+"ljmet_X53X53m1100RH.root";
-  sig_samples["X53X53m1200RH"]=eosarea+"ljmet_X53X53m1200RH.root";
-  sig_samples["X53X53m1300RH"]=eosarea+"ljmet_X53X53m1300RH.root";
-  sig_samples["X53X53m1400RH"]=eosarea+"ljmet_X53X53m1400RH.root";
-  sig_samples["X53X53m1500RH"]=eosarea+"ljmet_X53X53m1500RH.root";
-  sig_samples["X53X53m1600RH"]=eosarea+"ljmet_X53X53m1600RH.root";
-  sig_samples["X53X53m700LH"]=eosarea+"ljmet_X53X53m700LH.root";
-  sig_samples["X53X53m800LH"]=eosarea+"ljmet_X53X53m800LH.root";
-  sig_samples["X53X53m900LH"]=eosarea+"ljmet_X53X53m900LH.root";
-  sig_samples["X53X53m1000LH"]=eosarea+"ljmet_X53X53m1000LH.root";
-  sig_samples["X53X53m1100LH"]=eosarea+"ljmet_X53X53m1100LH.root";
-  sig_samples["X53X53m1200LH"]=eosarea+"ljmet_X53X53m1200LH.root";
-  sig_samples["X53X53m1300LH"]=eosarea+"ljmet_X53X53m1300LH.root";
-  sig_samples["X53X53m1400LH"]=eosarea+"ljmet_X53X53m1400LH.root";
-  sig_samples["X53X53m1500LH"]=eosarea+"ljmet_X53X53m1500LH.root";
-  sig_samples["X53X53m1600LH"]=eosarea+"ljmet_X53X53m1600LH.root";
-
-  sig_samples["X53X53m700RH_Inc"]=eosarea+"ljmet_X53X53m700RH_Inc.root";
-  //sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Fall15/25ns/Feb20/ljmet_trees/ljmet_X53X53m700RH_Inc.root";
-  sig_samples["X53X53m800RH_Inc"]=eosarea+"ljmet_X53X53m800RH_Inc.root";
-  sig_samples["X53X53m900RH_Inc"]=eosarea+"ljmet_X53X53m900RH_Inc.root";
-  sig_samples["X53X53m1000RH_Inc"]=eosarea+"ljmet_X53X53m1000RH_Inc.root";
-  sig_samples["X53X53m1100RH_Inc"]=eosarea+"ljmet_X53X53m1100RH_Inc.root";
-  sig_samples["X53X53m1200RH_Inc"]=eosarea+"ljmet_X53X53m1200RH_Inc.root";
-  sig_samples["X53X53m1300RH_Inc"]=eosarea+"ljmet_X53X53m1300RH_Inc.root";
-  sig_samples["X53X53m1400RH_Inc"]=eosarea+"ljmet_X53X53m1400RH_Inc.root";
-  sig_samples["X53X53m1500RH_Inc"]=eosarea+"ljmet_X53X53m1500RH_Inc.root";
-  sig_samples["X53X53m1600RH_Inc"]=eosarea+"ljmet_X53X53m1600RH_Inc.root";
-  sig_samples["X53X53m700LH_Inc"]=eosarea+"ljmet_X53X53m700LH_Inc.root";
-  sig_samples["X53X53m800LH_Inc"]=eosarea+"ljmet_X53X53m800LH_Inc.root";
-  sig_samples["X53X53m900LH_Inc"]=eosarea+"ljmet_X53X53m900LH_Inc.root";
-  sig_samples["X53X53m1000LH_Inc"]=eosarea+"ljmet_X53X53m1000LH_Inc.root";
-  sig_samples["X53X53m1100LH_Inc"]=eosarea+"ljmet_X53X53m1100LH_Inc.root";
-  sig_samples["X53X53m1200LH_Inc"]=eosarea+"ljmet_X53X53m1200LH_Inc.root";
-  sig_samples["X53X53m1300LH_Inc"]=eosarea+"ljmet_X53X53m1300LH_Inc.root";
-  sig_samples["X53X53m1400LH_Inc"]=eosarea+"ljmet_X53X53m1400LH_Inc.root";
-  sig_samples["X53X53m1500LH_Inc"]=eosarea+"ljmet_X53X53m1500LH_Inc.root";
-  sig_samples["X53X53m1600LH_Inc"]=eosarea+"ljmet_X53X53m1600LH_Inc.root";
-
-
-  //dzou edit with single x53  
-  sig_samples["X53Tm700RH"]=eosareasingle+"ljmet_X53ToTW_RH_700_all.root";
-  sig_samples["X53Tm800RH"]=eosareasingle+"ljmet_X53ToTW_RH_800_all.root";
-  sig_samples["X53Tm900RH"]=eosareasingle+"ljmet_X53ToTW_RH_900_all.root";
-  sig_samples["X53Tm1000RH"]=eosareasingle+"ljmet_X53ToTW_RH_1000_all.root";
-  sig_samples["X53Tm1100RH"]=eosareasingle+"ljmet_X53ToTW_RH_1100_all.root";
-  sig_samples["X53Tm1200RH"]=eosareasingle+"ljmet_X53ToTW_RH_1200_all.root";
-  sig_samples["X53Tm1300RH"]=eosareasingle+"ljmet_X53ToTW_RH_1300_all.root";
-  sig_samples["X53Tm1400RH"]=eosareasingle+"ljmet_X53ToTW_RH_1400_all.root";
-  sig_samples["X53Tm1500RH"]=eosareasingle+"ljmet_X53ToTW_RH_1500_all.root";
-  sig_samples["X53Tm1600RH"]=eosareasingle+"ljmet_X53ToTW_RH_1600_all.root";
-  sig_samples["X53Tm700LH"]=eosareasingle+"ljmet_X53ToTW_LH_700_all.root";
-  sig_samples["X53Tm800LH"]=eosareasingle+"ljmet_X53ToTW_LH_800_all.root";
-  sig_samples["X53Tm900LH"]=eosareasingle+"ljmet_X53ToTW_LH_900_all.root";
-  sig_samples["X53Tm1000LH"]=eosareasingle+"ljmet_X53ToTW_LH_1000_all.root";
-  sig_samples["X53Tm1100LH"]=eosareasingle+"ljmet_X53ToTW_LH_1100_all.root";
-  sig_samples["X53Tm1200LH"]=eosareasingle+"ljmet_X53ToTW_LH_1200_all.root";
-  sig_samples["X53Tm1300LH"]=eosareasingle+"ljmet_X53ToTW_LH_1300_all.root";
-  sig_samples["X53Tm1400LH"]=eosareasingle+"ljmet_X53ToTW_LH_1400_all.root";
-  sig_samples["X53Tm1500LH"]=eosareasingle+"ljmet_X53ToTW_LH_1500_all.root";
-  sig_samples["X53Tm1600LH"]=eosareasingle+"ljmet_X53ToTW_LH_1600_all.root";
+//   sig_samples["X53X53m700RH"]=eosarea+"X53X53m700RH.root";
+//   sig_samples["X53X53m800RH"]=eosarea+"X53X53m800RH.root";
+//   sig_samples["X53X53m900RH"]=eosarea+"X53X53m900RH.root";
+//   //sig_samples["X53X53m1000RH"]="X53X53m1000RH.root";
+//   sig_samples["X53X53m1000RH"]=eosarea+"X53X53m1000RH.root";
+//   sig_samples["X53X53m1100RH"]=eosarea+"X53X53m1100RH.root";
+//   sig_samples["X53X53m1200RH"]=eosarea+"X53X53m1200RH.root";
+//   sig_samples["X53X53m1300RH"]=eosarea+"X53X53m1300RH.root";
+//   sig_samples["X53X53m1400RH"]=eosarea+"X53X53m1400RH.root";
+//   sig_samples["X53X53m1500RH"]=eosarea+"X53X53m1500RH.root";
+//   sig_samples["X53X53m1600RH"]=eosarea+"X53X53m1600RH.root";
+//   sig_samples["X53X53m700LH"]=eosarea+"X53X53m700LH.root";
+//   sig_samples["X53X53m800LH"]=eosarea+"X53X53m800LH.root";
+//   sig_samples["X53X53m900LH"]=eosarea+"X53X53m900LH.root";
+//   sig_samples["X53X53m1000LH"]=eosarea+"X53X53m1000LH.root";
+//   sig_samples["X53X53m1100LH"]=eosarea+"X53X53m1100LH.root";
+//   sig_samples["X53X53m1200LH"]=eosarea+"X53X53m1200LH.root";
+//   sig_samples["X53X53m1300LH"]=eosarea+"X53X53m1300LH.root";
+//   sig_samples["X53X53m1400LH"]=eosarea+"X53X53m1400LH.root";
+//   sig_samples["X53X53m1500LH"]=eosarea+"X53X53m1500LH.root";
+//   sig_samples["X53X53m1600LH"]=eosarea+"X53X53m1600LH.root";
+// 
+//   sig_samples["X53X53m700RH_Inc"]=eosarea+"X53X53m700RH_Inc.root";
+//   //sig_samples["X53X53m700RH_Inc"]="/eos/uscms/store/user/lpctlbsm/clint/Fall15/25ns/Feb20/trees/X53X53m700RH_Inc.root";
+//   sig_samples["X53X53m800RH_Inc"]=eosarea+"X53X53m800RH_Inc.root";
+//   sig_samples["X53X53m900RH_Inc"]=eosarea+"X53X53m900RH_Inc.root";
+//   sig_samples["X53X53m1000RH_Inc"]=eosarea+"X53X53m1000RH_Inc.root";
+//   sig_samples["X53X53m1100RH_Inc"]=eosarea+"X53X53m1100RH_Inc.root";
+//   sig_samples["X53X53m1200RH_Inc"]=eosarea+"X53X53m1200RH_Inc.root";
+//   sig_samples["X53X53m1300RH_Inc"]=eosarea+"X53X53m1300RH_Inc.root";
+//   sig_samples["X53X53m1400RH_Inc"]=eosarea+"X53X53m1400RH_Inc.root";
+//   sig_samples["X53X53m1500RH_Inc"]=eosarea+"X53X53m1500RH_Inc.root";
+//   sig_samples["X53X53m1600RH_Inc"]=eosarea+"X53X53m1600RH_Inc.root";
+//   sig_samples["X53X53m700LH_Inc"]=eosarea+"X53X53m700LH_Inc.root";
+//   sig_samples["X53X53m800LH_Inc"]=eosarea+"X53X53m800LH_Inc.root";
+//   sig_samples["X53X53m900LH_Inc"]=eosarea+"X53X53m900LH_Inc.root";
+//   sig_samples["X53X53m1000LH_Inc"]=eosarea+"X53X53m1000LH_Inc.root";
+//   sig_samples["X53X53m1100LH_Inc"]=eosarea+"X53X53m1100LH_Inc.root";
+//   sig_samples["X53X53m1200LH_Inc"]=eosarea+"X53X53m1200LH_Inc.root";
+//   sig_samples["X53X53m1300LH_Inc"]=eosarea+"X53X53m1300LH_Inc.root";
+//   sig_samples["X53X53m1400LH_Inc"]=eosarea+"X53X53m1400LH_Inc.root";
+//   sig_samples["X53X53m1500LH_Inc"]=eosarea+"X53X53m1500LH_Inc.root";
+//   sig_samples["X53X53m1600LH_Inc"]=eosarea+"X53X53m1600LH_Inc.root";
+// 
+// 
+//   //dzou edit with single x53  
+//   sig_samples["X53Tm700RH"]=eosareasingle+"X53ToTW_RH_700_all.root";
+//   sig_samples["X53Tm800RH"]=eosareasingle+"X53ToTW_RH_800_all.root";
+//   sig_samples["X53Tm900RH"]=eosareasingle+"X53ToTW_RH_900_all.root";
+//   sig_samples["X53Tm1000RH"]=eosareasingle+"X53ToTW_RH_1000_all.root";
+//   sig_samples["X53Tm1100RH"]=eosareasingle+"X53ToTW_RH_1100_all.root";
+//   sig_samples["X53Tm1200RH"]=eosareasingle+"X53ToTW_RH_1200_all.root";
+//   sig_samples["X53Tm1300RH"]=eosareasingle+"X53ToTW_RH_1300_all.root";
+//   sig_samples["X53Tm1400RH"]=eosareasingle+"X53ToTW_RH_1400_all.root";
+//   sig_samples["X53Tm1500RH"]=eosareasingle+"X53ToTW_RH_1500_all.root";
+//   sig_samples["X53Tm1600RH"]=eosareasingle+"X53ToTW_RH_1600_all.root";
+//   sig_samples["X53Tm700LH"]=eosareasingle+"X53ToTW_LH_700_all.root";
+//   sig_samples["X53Tm800LH"]=eosareasingle+"X53ToTW_LH_800_all.root";
+//   sig_samples["X53Tm900LH"]=eosareasingle+"X53ToTW_LH_900_all.root";
+//   sig_samples["X53Tm1000LH"]=eosareasingle+"X53ToTW_LH_1000_all.root";
+//   sig_samples["X53Tm1100LH"]=eosareasingle+"X53ToTW_LH_1100_all.root";
+//   sig_samples["X53Tm1200LH"]=eosareasingle+"X53ToTW_LH_1200_all.root";
+//   sig_samples["X53Tm1300LH"]=eosareasingle+"X53ToTW_LH_1300_all.root";
+//   sig_samples["X53Tm1400LH"]=eosareasingle+"X53ToTW_LH_1400_all.root";
+//   sig_samples["X53Tm1500LH"]=eosareasingle+"X53ToTW_LH_1500_all.root";
+//   sig_samples["X53Tm1600LH"]=eosareasingle+"X53ToTW_LH_1600_all.root";
 
   //data samples
-  data_samples["Data"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["DataElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-03Feb2017-v3.root";
-  data_samples["DataElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-03Feb2017-v3.root";
-  data_samples["DataMuMu2016B"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016B-03Feb2017-v3.root";
-  data_samples["DataElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-03Feb2017-v1.root";
-  data_samples["DataElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-03Feb2017-v1.root";
-  data_samples["DataMuMu2016C"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016C-03Feb2017-v1.root";
-  data_samples["DataElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-03Feb2017-v1.root";
-  data_samples["DataElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-03Feb2017-v1.root";
-  data_samples["DataMuMu2016D"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016D-03Feb2017-v1.root";
-  data_samples["DataElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-03Feb2017-v1.root";
-  data_samples["DataElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-03Feb2017-v1.root";
-  data_samples["DataMuMu2016E"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016E-03Feb2017-v1.root";
-  data_samples["DataElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-03Feb2017-v1.root";
-  data_samples["DataElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-03Feb2017-v1.root";
-  data_samples["DataMuMu2016F"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016F-03Feb2017-v1.root";
-  data_samples["DataElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-03Feb2017-v1.root";
-  data_samples["DataElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-03Feb2017-v1.root";
-  data_samples["DataMuMu2016G"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016G-03Feb2017-v1.root";
-  data_samples["DataElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v2.root";
-  data_samples["DataElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v2.root";
-  data_samples["DataMuMu2016H2"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-03Feb2017-v2.root";
-  data_samples["DataElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v3.root";
-  data_samples["DataElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v3.root";
-  data_samples["DataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-03Feb2017-v3.root";
+  data_samples["DataElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
+  data_samples["DataElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
+  data_samples["DataMuMu2017B"]=eosdataarea+"DoubleMuon_RRB.root";
+  data_samples["DataElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
+  data_samples["DataElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
+  data_samples["DataMuMu2017C"]=eosdataarea+"DoubleMuon_RRC.root";
+  data_samples["DataElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
+  data_samples["DataElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
+  data_samples["DataMuMu2017D"]=eosdataarea+"DoubleMuon_RRD.root";
+  data_samples["DataElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
+  data_samples["DataElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
+  data_samples["DataMuMu2017E"]=eosdataarea+"DoubleMuon_RRE.root";
+  data_samples["DataElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
+  data_samples["DataElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
+  data_samples["DataMuMu2017F"]=eosdataarea+"DoubleMuon_RRF_v2.root";
 
-  data_samples["NonPromptData"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["NonPromptDataElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-03Feb2017-v3.root";
-  data_samples["NonPromptDataElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-03Feb2017-v3.root";
-  data_samples["NonPromptDataMuMu2016B"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016B-03Feb2017-v3.root";
-  data_samples["NonPromptDataElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-03Feb2017-v1.root";
-  data_samples["NonPromptDataElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-03Feb2017-v1.root";
-  data_samples["NonPromptDataMuMu2016C"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016C-03Feb2017-v1.root";
-  data_samples["NonPromptDataElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-03Feb2017-v1.root";
-  data_samples["NonPromptDataElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-03Feb2017-v1.root";
-  data_samples["NonPromptDataMuMu2016D"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016D-03Feb2017-v1.root";
-  data_samples["NonPromptDataElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-03Feb2017-v1.root";
-  data_samples["NonPromptDataElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-03Feb2017-v1.root";
-  data_samples["NonPromptDataMuMu2016E"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016E-03Feb2017-v1.root";
-  data_samples["NonPromptDataElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-03Feb2017-v1.root";
-  data_samples["NonPromptDataElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-03Feb2017-v1.root";
-  data_samples["NonPromptDataMuMu2016F"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016F-03Feb2017-v1.root";
-  data_samples["NonPromptDataElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-03Feb2017-v1.root";
-  data_samples["NonPromptDataElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-03Feb2017-v1.root";
-  data_samples["NonPromptDataMuMu2016G"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016G-03Feb2017-v1.root";
-  data_samples["NonPromptDataElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v2.root";
-  data_samples["NonPromptDataElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v2.root";
-  data_samples["NonPromptDataMuMu2016H2"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-03Feb2017-v2.root";
-  data_samples["NonPromptDataElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v3.root";
-  data_samples["NonPromptDataElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v3.root";
-  data_samples["NonPromptDataMuMu2016H3"]=eosdataarea+"ljmet_Data_DoubleMuon-Run2016H-03Feb2017-v3.root";
+//   data_samples["NonPromptData"]=eosdataarea+"All_2017.root";
+  data_samples["NonPromptDataElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
+  data_samples["NonPromptDataElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
+  data_samples["NonPromptDataMuMu2017B"]=eosdataarea+"DoubleMuon_RRB.root";
+  data_samples["NonPromptDataElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
+  data_samples["NonPromptDataElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
+  data_samples["NonPromptDataMuMu2017C"]=eosdataarea+"DoubleMuon_RRC.root";
+  data_samples["NonPromptDataElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
+  data_samples["NonPromptDataElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
+  data_samples["NonPromptDataMuMu2017D"]=eosdataarea+"DoubleMuon_RRD.root";
+  data_samples["NonPromptDataElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
+  data_samples["NonPromptDataElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
+  data_samples["NonPromptDataMuMu2017E"]=eosdataarea+"DoubleMuon_RRE.root";
+  data_samples["NonPromptDataElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
+  data_samples["NonPromptDataElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
+  data_samples["NonPromptDataMuMu2017F"]=eosdataarea+"DoubleMuon_RRF_v2.root";
 
-  data_samples["ChargeMisID"]=eosdataarea+"ljmet_Data_All_2016E-G.root";
-  data_samples["ChargeMisIDElEl2016B"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016B-03Feb2017-v3.root";
-  data_samples["ChargeMisIDElMu2016B"]=eosdataarea+"ljmet_Data_MuonEG-Run2016B-03Feb2017-v3.root";
-  data_samples["ChargeMisIDElEl2016C"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016C-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElMu2016C"]=eosdataarea+"ljmet_Data_MuonEG-Run2016C-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElEl2016D"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016D-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElMu2016D"]=eosdataarea+"ljmet_Data_MuonEG-Run2016D-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElEl2016E"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016E-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElMu2016E"]=eosdataarea+"ljmet_Data_MuonEG-Run2016E-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElEl2016F"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016F-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElMu2016F"]=eosdataarea+"ljmet_Data_MuonEG-Run2016F-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElEl2016G"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016G-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElMu2016G"]=eosdataarea+"ljmet_Data_MuonEG-Run2016G-03Feb2017-v1.root";
-  data_samples["ChargeMisIDElEl2016H2"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v2.root";
-  data_samples["ChargeMisIDElMu2016H2"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v2.root";
-  data_samples["ChargeMisIDElEl2016H3"]=eosdataarea+"ljmet_Data_DoubleEG-Run2016H-03Feb2017-v3.root";
-  data_samples["ChargeMisIDElMu2016H3"]=eosdataarea+"ljmet_Data_MuonEG-Run2016H-03Feb2017-v3.root";
+//   data_samples["ChargeMisID"]=eosdataarea+"All_2017.root";
+  data_samples["ChargeMisIDElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
+  data_samples["ChargeMisIDElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
+  data_samples["ChargeMisIDElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
+  data_samples["ChargeMisIDElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
+  data_samples["ChargeMisIDElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
+  data_samples["ChargeMisIDElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
+  data_samples["ChargeMisIDElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
+  data_samples["ChargeMisIDElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
+  data_samples["ChargeMisIDElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
+  data_samples["ChargeMisIDElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
 
   bool signal=false;
   bool bg_mc=false;
@@ -331,7 +306,7 @@ int main(int argc, char* argv[]){
   //histogram for cutflow
   //TH1F* h_MuCutFlow = new TH1F("h_MuCutFlow","Cut Flow For Muons",13,0,13);
 
-  //histogram for trigger studies
+  //histogram for trigger studies -- NEEDS UPDATING
   TH1F* h_DoubleEle33Num = new TH1F("h_DoubleEle33Num","",60,0,600);
   TH1F* h_DoubleEle33_MWNum = new TH1F("h_DoubleEle33_MWNum","",60,0,600);
   TH1F* h_Ele27WP85Num = new TH1F("h_Ele27WP85Num","",60,0,600);
@@ -562,18 +537,18 @@ int main(int argc, char* argv[]){
     float NPAltWeight=0;
     float NPSUSYWeight=0;
     int TL;
-    //make vector of good Leptons change based on era
+    //make vector of good Leptons change based on era --> No need anymore --rizki
     std::vector<TLepton*> goodLeptons;
-    if(era=="2016B-D"){
+//     if(era=="2016B-D"){
       goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
-    }
-    else if(era=="2016E-H"){
-      goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,30.0,elID,muID,bg_np);//switch
-    }
-    else{//era not configured correctly
-      std::cout<<"Era not set correctly. You picked: "<<era<<", but it should be either 2016B-D or 2016E-H"<<std::endl;
-      return 0;
-    }
+//     }
+//     else if(era=="2016E-H"){
+//       goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);//switch
+//     }
+//     else{//era not configured correctly
+//       std::cout<<"Era not set correctly. You picked: "<<era<<", but it should be either 2016B-D or 2016E-H"<<std::endl;
+//       return 0;
+//     }
     //goodLeptons = makeLeptons(tr->allMuons, tr->allElectrons,35.0,elID,muID,bg_np);
 
 	//check TT/BB sig Decay - added by rizki
@@ -706,26 +681,27 @@ int main(int argc, char* argv[]){
     //require OR of triggers but make each channel consistent
     bool skip = true;
 
-    if(era=="2016B-D") {//preICHEP triggers
-      if(mumu && tr->HLT_Mu30TkMu11) skip =false;
-      if(elmu && tr->HLT_Mu30Ele30) skip = false; 
-      if(elel && tr->HLT_DoubleEle33) skip = false; 
-    }
-    else{ //postICHEP triggers - already checked era is either one of 2016B-D or 2016E-H so don't need second explicit check here
-      if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
-      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
-      if(elel && tr->HLT_DoubleEle37_27) skip = false;//new triggers for second half dataset
-    }   
+//     if(era=="2016B-D") {// triggers
+      if(mumu && tr->HLT_Mu37_TkMu27) skip =false;
+      if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; 
+      if(elel && tr->HLT_Ele27_Ele37) skip = false; 
+//     }
+//     else{ // triggers - already checked era is either one of 2016B-D or 2016E-H so don't need second explicit check here
+//       if(mumu && tr->HLT_Mu30TkMu11) skip =false;	
+//       if(elmu && (tr->HLT_Mu37Ele27 || tr->HLT_Mu27Ele37)) skip = false; //new triggers for second half of dataset
+//       if(elel && tr->HLT_Ele27_Ele37) skip = false;//new triggers for second half dataset
+//     }   
     
     if(skip) continue;
 
+	//Not needed anymore -- rizki
     //now make sure we are not double counting 2016F
     bool overlap2016F = false;
-    if(data){
-      if(era=="2016B-D" && tr->run >= 278273) overlap2016F = true;
-      else if(era=="2016E-H" && tr->run <278273) overlap2016F = true;
-    }
-    else{};
+//     if(data){ 
+//       if(era=="2016B-D" && tr->run >= 278273) overlap2016F = true;
+//       else if(era=="2016E-H" && tr->run <278273) overlap2016F = true;
+//     }
+//     else{};
     if(overlap2016F) continue;
     
 
@@ -762,58 +738,58 @@ int main(int argc, char* argv[]){
     if(badEvent) {std::cout<<"filtering bad event - run: "<<tr->run<<" lumi: "<<tr->lumi<<" event: "<<tr->event<<std::endl;continue;}
     
 
-
-    //fill muon trigger histograms
-    if(mumu){
-      //HLTMu40 - check efficiency of leading lepton
-      h_Mu40Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_Mu40){
-	h_Mu40Num->Fill(vSSLep.at(0)->pt);
-	nMu40+=1;
-      }
-      //HLT_IsoTkMu24 - also check for leading lepton
-      h_IsoTkMu24Den->Fill(vSSLep.at(0)->pt);
-      if(tr->HLT_IsoTkMu24){
-	h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
-	nIsoTkMu24+=1;
-      }
-      //HLT_Mu30TkMu11 - check for subleading lepton
-      h_Mu30TkMu11Den->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_Mu30TkMu11){
-	h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
-	nMu30TkMu11+=1;
-      }
-      if(tr->HLT_Mu27TkMu8) nMu27TkMu8+=1;
-      //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
-      h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
-    }
-    //now electron trigger
-    if(elel){
-      //HLT_DoubleEle33 - check vs subleading lepton
-      h_DoubleEle33Den->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_DoubleEle33){
-	h_DoubleEle33Num->Fill(vSSLep.at(1)->pt);
-	nDoubleEle33+=1;
-      }
-      //HLT_DoubleEle33_MW - check vs subleading lepton
-      h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
-      if(tr->HLT_Ele17Ele12) nEle17Ele12+=1;
-      if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300+=1;
-    }
-  
-    //if cross channel
-    if(elmu){
-      if(tr->HLT_Mu30Ele30) nMu30Ele30+=1;
-      if(tr->HLT_Mu17Ele12) nMu17Ele12+=1;
-      if(tr->HLT_Mu8Ele17) nMu8Ele17+=1;
-      if(tr->HLT_Mu23Ele12) nMu23Ele12+=1;
-      if(tr->HLT_Mu8Ele23) nMu8Ele23+=1;
-      //also get OR
-      if( (tr->HLT_Mu17Ele12) || (tr->HLT_Mu8Ele17) )nMu30Ele30ORMu17Ele12ORMu8Ele17+=1;
-      
-    }
+// Temporarily comment, all namings histos need to be updated. --rizki
+    //fill muon trigger histograms 
+//     if(mumu){
+//       //HLTMu40 - check efficiency of leading lepton
+//       h_Mu40Den->Fill(vSSLep.at(0)->pt);
+//       if(tr->HLT_Mu40){
+// 	h_Mu40Num->Fill(vSSLep.at(0)->pt);
+// 	nMu40+=1;
+//       }
+//       //HLT_IsoTkMu24 - also check for leading lepton
+//       h_IsoTkMu24Den->Fill(vSSLep.at(0)->pt);
+//       if(tr->HLT_IsoTkMu24){
+// 	h_IsoTkMu24Num->Fill(vSSLep.at(0)->pt);
+// 	nIsoTkMu24+=1;
+//       }
+//       //HLT_Mu30TkMu11 - check for subleading lepton
+//       h_Mu30TkMu11Den->Fill(vSSLep.at(1)->pt);
+//       if(tr->HLT_Mu30TkMu11){
+// 	h_Mu30TkMu11Num->Fill(vSSLep.at(1)->pt);
+// 	nMu30TkMu11+=1;
+//       }
+//       if(tr->HLT_Mu27TkMu8) nMu27TkMu8+=1;
+//       //HLT_DoubleMu33NoFiltersNoVtx - check fo subleading lepton
+//       h_DoubleMu33NoFiltersNoVtxDen->Fill(vSSLep.at(1)->pt);
+//       if(tr->HLT_DoubleMu33NoFiltersNoVtx) h_DoubleMu33NoFiltersNoVtxNum->Fill(vSSLep.at(1)->pt);
+//     }
+//     //now electron trigger
+//     if(elel){
+//       //HLT_DoubleEle33 - check vs subleading lepton
+//       h_DoubleEle33Den->Fill(vSSLep.at(1)->pt);
+//       if(tr->HLT_DoubleEle33){
+// 	h_DoubleEle33Num->Fill(vSSLep.at(1)->pt);
+// 	nDoubleEle33+=1;
+//       }
+//       //HLT_DoubleEle33_MW - check vs subleading lepton
+//       h_DoubleEle33_MWDen->Fill(vSSLep.at(1)->pt);
+//       if(tr->HLT_DoubleEle33_MW) h_DoubleEle33_MWNum->Fill(vSSLep.at(1)->pt);
+//       if(tr->HLT_Ele17Ele12) nEle17Ele12+=1;
+//       if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300+=1;
+//     }
+//   
+//     //if cross channel
+//     if(elmu){
+//       if(tr->HLT_Mu30Ele30) nMu30Ele30+=1;
+//       if(tr->HLT_Mu17Ele12) nMu17Ele12+=1;
+//       if(tr->HLT_Mu8Ele17) nMu8Ele17+=1;
+//       if(tr->HLT_Mu23Ele12) nMu23Ele12+=1;
+//       if(tr->HLT_Mu8Ele23) nMu8Ele23+=1;
+//       //also get OR
+//       if( (tr->HLT_Mu17Ele12) || (tr->HLT_Mu8Ele17) )nMu30Ele30ORMu17Ele12ORMu8Ele17+=1;
+//       
+//     }
 
 
     //get trigger scale factors
@@ -1095,10 +1071,11 @@ int main(int argc, char* argv[]){
     if(elmu) fillHistos(hists_nConst_elmu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
     if(mumu) fillHistos(hists_nConst_mumu, vSSLep, vNonSSLep, tr->cleanedAK4Jets, tr->MET, dilepMass, totalweight);
 
-    if(elel && st>1000){
-      if(tr->HLT_Ele17Ele12) nEle17Ele12_highHT+=1;
-      if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300_highHT+=1;
-    }
+// Temporarily comment, all namings histos need to be updated. --rizki
+//     if(elel && st>1000){ 
+//       if(tr->HLT_Ele17Ele12) nEle17Ele12_highHT+=1;
+//       if(tr->HLT_Ele17Ele12 || tr->HLT_DoubleEle8_HT300) nEle17Ele12ORDoubleEle8HT300_highHT+=1;
+//     }
 
     if(!data){
       //now fill ppdf weight histogram

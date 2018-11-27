@@ -23,7 +23,7 @@
 //eaxample usage:
 //root -b -q -l 'makePlots_forPAS.cc("MVA2016TightRC","CBTightMiniIsoTight")' 
 
-void DrawAndSaveCombined(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSampleBD,Sample* dataSampleEH, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
+void DrawAndSaveCombined(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
 double poissonErrors(TGraphAsymmErrors* tgae_err, TH1F* h, double sys_err, int ibin);
 //below sys were obtaind from Julie documented in B2G Oct31 presentation
@@ -95,88 +95,76 @@ float uncJER_WZZ=0.01;
 float uncJER_ZZZ=0;
 
 //folder to save plots - rizki
-//std::string outDir = "plots_2017Sep6";
+const std::string saveFolder = "plots_Nov26-2018_nConst4_HT1200_0NonSSLep";
 
       
 void makePlots_forPAS(std::string elID, std::string muID){
 
   //make output file
-  TFile* fout = new TFile("plots_forPAS.root","RECREATE");
+  TFile* fout = new TFile((saveFolder+".root").c_str(),"RECREATE");
+
 
   //set TDRStyle
   setTDRStyle();   
   
   //make folder to save plots - rizki
-  //TString outDir_ = outDir;
-  system("mkdir -v plots_July31-2018_nConst4_HT1200_0NonSSLep");//"+outDir_);
+  system(("mkdir -v "+saveFolder).c_str());
  
-  //desired lumi:
-  float lumi1 = 17.68; //fb^-1  
-  float lumi2 = 18.19; //fb^-1  
+  //desired lumi:	
+  //Json lumi with normtag: BCDEF - https://twiki.cern.ch/twiki/bin/view/CMS/PdmV2017Analysis - Nov 11, 2018.
+  float lumi = 41.56; //fb^-1  
+  float lumi2 = 0; //fb^-1  
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
 
-  std::vector<Sample*> vMCBkgSamples1 = getMCBkgSampleVec("sZVeto", lumi1, elID, muID,"2016B-D");
-  std::vector<Sample*> vMCBkgSamples2 = getMCBkgSampleVec("sZVeto", lumi2, elID, muID,"2016E-H");
-  std::vector<Sample*> vMCBkgSamples = appendSampleVectors(vMCBkgSamples1,vMCBkgSamples2);
-  std::vector<Sample*> vDDBkgSamples1 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016B-D");
-  std::vector<Sample*> vDDBkgSamples2 = getDDBkgSampleVec("sZVeto", lumi1, elID, muID,"2016E-H");  
-  std::vector<Sample*> vDDBkgSamples = appendSampleVectors(vDDBkgSamples1,vDDBkgSamples2);  
+  std::vector<Sample*> vMCBkgSamples = getMCBkgSampleVec("sZVeto", lumi, elID, muID,"2017B-F");
+  std::cout << "DONE Preparing MC bkg samples" << std::endl;
+  std::vector<Sample*> vDDBkgSamples = getDDBkgSampleVec("sZVeto", lumi, elID, muID,"2017B-F");
+  std::cout << "DONE Preparing DDBkg samples" << std::endl;
   std::vector<Sample*> vBkgSamples = appendSampleVectors(vMCBkgSamples, vDDBkgSamples);
-  std::vector<Sample*> vBkgSamplesBD = appendSampleVectors(vMCBkgSamples1,vDDBkgSamples1);
-  std::vector<Sample*> vBkgSamplesEH = appendSampleVectors(vMCBkgSamples2,vDDBkgSamples2);
+  std::cout << "DONE appending Bkg samples" << std::endl;
 
 //   std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
 //   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
   
-  //TT SIGNAL - RIZKI
-  //std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
-  //std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
-  //std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2);
-
   //TT SIGNAL <decay> - RIZKI 
-  std::vector<Sample*> vSigSamples1a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","BWBW",0);
-  std::vector<Sample*> vSigSamples1b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","BWBW",0);
-  std::vector<Sample*> vSigSamples1 = appendSampleVectors(vSigSamples1a,vSigSamples1b);
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","BWBW",0);
+  std::cout << "DONE Preparing signal BWBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples2a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","THBW",0);
-  std::vector<Sample*> vSigSamples2b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","THBW",0);
-  std::vector<Sample*> vSigSamples2 = appendSampleVectors(vSigSamples2a,vSigSamples2b);
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","THBW",0);
+  std::cout << "DONE Preparing signal THBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples3a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","THTH",0);
-  std::vector<Sample*> vSigSamples3b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","THTH",0);
-  std::vector<Sample*> vSigSamples3 = appendSampleVectors(vSigSamples3a,vSigSamples3b);
+  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","THTH",0);
+  std::cout << "DONE Preparing signal THTH samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples4a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZBW",0);
-  std::vector<Sample*> vSigSamples4b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZBW",0);
-  std::vector<Sample*> vSigSamples4 = appendSampleVectors(vSigSamples4a,vSigSamples4b);
+  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZBW",0);
+  std::cout << "DONE Preparing signal TZBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples5a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZTH",0);
-  std::vector<Sample*> vSigSamples5b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZTH",0);
-  std::vector<Sample*> vSigSamples5 = appendSampleVectors(vSigSamples5a,vSigSamples5b);
+  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZTH",0);
+  std::cout << "DONE Preparing signal TZTH samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples6a = getInclusiveSigTTSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D","TZTZ",0);
-  std::vector<Sample*> vSigSamples6b = getInclusiveSigTTSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H","TZTZ",0);
-  std::vector<Sample*> vSigSamples6 = appendSampleVectors(vSigSamples6a,vSigSamples6b);
+  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZTZ",0);
+  std::cout << "DONE Preparing signal TZTZ samples" << std::endl;
 
   std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
+  std::cout << "DONE appending signal samples" << std::endl;
 
+  Sample* dataSample = getDataSample("sZVeto",elID,muID,"2017B-F");
 
-  Sample* dataSampleBD = getDataSample("sZVeto",elID,muID,"2016B-D");
-  Sample* dataSampleEH = getDataSample("sZVeto",elID,muID,"2016E-H");
- 
+  std::cout << "DONE Preparing data samples" << std::endl;
 
 //   for(int j=2; j <5; j++){
   for(int j=2; j <3; j++){ // j is cutType //edited by rizki
     for(std::vector<Variable*>::size_type i=0; i<vVariables.size();i++){
       //    std::vector<TH1F*> vBkgHist = getHistVector(v);
-      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,-1,j,weightstring);
-      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,0,j,weightstring);
-      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,1,j,weightstring);
-      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSampleBD,dataSampleEH, fout,elID,muID,2,j,weightstring);
+      std::cout << "\nVARIABLE : "<< vVariables.at(i)->name <<"\n" << std::endl;
+      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,-1,j,weightstring);
+      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j,weightstring);
+      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j,weightstring);
+      DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j,weightstring);
       
-      gROOT->Reset();
+      //gROOT->Reset();
     }
   }
 
@@ -186,8 +174,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
 }
 
 
-
-void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSampleBD,Sample* dataSampleEH, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
+void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
 
   TCanvas* c1 = new TCanvas("c1","c1");
   
@@ -633,8 +620,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   //Draw data- merge trees into chain
   TH1F* hData = new TH1F("hData",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TChain* tData = new TChain("tEvts_sZVeto");
-  tData->AddFile(dataSampleBD->file->GetName());
-  tData->AddFile(dataSampleEH->file->GetName());
+  tData->AddFile(dataSample->file->GetName());
 
   if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){
     tData->Project("hData","Lep1Pt",(cutstring.str()).c_str());
@@ -682,7 +668,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"35.9 fb^{-1} (13 TeV)");
+  lumitex->DrawLatex(0.65,0.96,"41.56 fb^{-1} (13 TeV)"); 
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
@@ -737,13 +723,14 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   if(cutIndex==2) cutname =  "TwoJets";
   if(cutIndex==3) cutname =  "nConst2to3"; //"nConst2to4";
   if(cutIndex==4) cutname =  "nConst4plus";//"nConst5plus";
-  std::string pdfname = "./plots_July31-2018_nConst4_HT1200_0NonSSLep/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
-  std::string pngname = "./plots_July31-2018_nConst4_HT1200_0NonSSLep/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
-  std::string Cname = "./plots_July31-2018_nConst4_HT1200_0NonSSLep/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".C";
-
-  c1->Print(pdfname.c_str());
-  c1->Print(pngname.c_str());
-  c1->Print(Cname.c_str());
+  std::string pdfname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
+  std::string pngname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
+  std::string Cname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".C";
+  
+  std::cout << "WRITING : " << pdfname << std::endl;
+  c1->SaveAs(pdfname.c_str());
+  c1->SaveAs(pngname.c_str());
+  c1->SaveAs(Cname.c_str());
   outfile->WriteTObject(c1);
 
   delete c1;
@@ -787,7 +774,6 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   delete minus1line; //added by rizki
 
 }
-
 
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err){
 

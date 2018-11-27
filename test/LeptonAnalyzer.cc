@@ -69,12 +69,12 @@ int main(int argc, char* argv[]){
   TFile* fout = new TFile(outname.c_str(),"RECREATE");
   TTree* outTree_mu = new TTree("MuonVariables","MuonVariables");
   TTree* outTree_el = new TTree("ElectronVariables","ElectronVariables");
-  std::vector<float> elPt, elMVA, elMVA80X, elMiniIso,elEta,elPhi;
+  std::vector<float> elPt, elMVA, elMVAValue, elMiniIso,elEta,elPhi;
   outTree_el->Branch("pT",&elPt);
   outTree_el->Branch("eta",&elEta);
   outTree_el->Branch("phi",&elPhi);
   outTree_el->Branch("mva",&elMVA);
-  outTree_el->Branch("mva80X",&elMVA80X);
+  outTree_el->Branch("mva80X",&elMVAValue);
   outTree_el->Branch("miniIso",&elMiniIso);
   std::vector<float> muPt,muEta,muPhi,muIsLoose,muIsTight, muMiniIso;
   outTree_mu->Branch("pT",&muPt);
@@ -264,7 +264,7 @@ int main(int argc, char* argv[]){
 	elPhi.push_back(iel->phi);
 	elMiniIso.push_back(iel->miniIso);
 	elMVA.push_back(iel->mvaValue);
-	elMVA80X.push_back(iel->mvaValue80X);
+	elMVAValue.push_back(iel->mvaValue80X);
 	
       }
 
@@ -460,7 +460,7 @@ int main(int argc, char* argv[]){
     outTree_mu->Fill();
     outTree_el->Fill();
     //now clear vectors
-    elPt.clear();elEta.clear();elPhi.clear();elMVA.clear();elMVA80X.clear();elMiniIso.clear();
+    elPt.clear();elEta.clear();elPhi.clear();elMVA.clear();elMVAValue.clear();elMiniIso.clear();
     muPt.clear();muEta.clear();muPhi.clear();muIsLoose.clear();muIsTight.clear();muMiniIso.clear();
   }//end event loop
   

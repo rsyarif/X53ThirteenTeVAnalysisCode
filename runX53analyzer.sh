@@ -8,13 +8,16 @@ decay=${3}
 outputdir=${4}
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-scramv1 project CMSSW CMSSW_8_0_26_patch1
-cd CMSSW_8_0_26_patch1
+export SCRAM_ARCH=slc6_amd64_gcc630
+
+
+scramv1 project CMSSW CMSSW_9_4_11
+cd CMSSW_9_4_11
 eval `scramv1 runtime -sh`
 cd -
 
-tar -xf X53ThirteenTeVAnalysisCode.tar
-cd X53ThirteenTeVAnalysisCode/test/
+tar -xf Analyzer.tar
+cd Analyzer/test/
 
 #source setup.csh
 export LD_LIBRARY_PATH=../lib/:$LD_LIBRARY_PATH 

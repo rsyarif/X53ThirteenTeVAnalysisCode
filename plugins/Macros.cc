@@ -12,16 +12,9 @@
 #include "TMath.h"
 #include "Math/ProbFunc.h"
 
-// std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-// std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_22/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
 
-std::string area = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-// std::string MCarea = "/uscms_data/d3/clint/using_git/T53/ljmet/2016/EGamma80XID/CMSSW_8_0_26_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/";
-
-std::string RizkiArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/ProcessedByJulie_Oct18-2017/";
-std::string RizkiNPArea = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/NPwithTrileptonFR_Nov6-2017/";
-std::string MCarea = RizkiArea;
-std::string MCarea_Gamma = "/uscms_data/d3/rsyarif/CERN2017/produceLjmetNtuples_TTSSdilep/CMSSW_8_0_26_patch1/src/PostLJMet/X53ThirteenTeVAnalysisCode/test/MCBkg_Gamma_Nov30-2017/";
+std::string eosDirector = "root://cmseos.fnal.gov:/";
+std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer/";
 
 std::vector<Variable*> getVariableVec(){
 
@@ -624,8 +617,8 @@ std::vector<TH1F*> getNPHistos(int nMu){
 
 Sample* getDataSample(std::string cut,std::string elID, std::string muID,std::string era){
 
-  std::string filename = area+"test/Data_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* tfile = new TFile(filename.c_str());
+  std::string filename = eosDirector+samplesDir+"/Data_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* tfile = TFile::Open(filename.c_str());
   Sample* dataSample = new Sample("Data",tfile,1,1,cut,kBlack,1);
   return dataSample;
 }
@@ -659,29 +652,29 @@ std::vector<Sample*> getSigSampleVecForPlots(std::string cut, float lumi, std::s
 
   std::vector<Sample*> vSigSamples;
   
-  std::string lh700name =MCarea+"test/X53X53m700LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Lfile = new TFile(lh700name.c_str());
+  std::string lh700name =samplesDir+"test/X53X53m700LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Lfile = TFile::Open(lh700name.c_str());
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
 
-  std::string rh700name = MCarea+"test/X53X53m700RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Rfile = new TFile(rh700name.c_str());
+  std::string rh700name = samplesDir+"test/X53X53m700RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Rfile = TFile::Open(rh700name.c_str());
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
   
-  /* std::string lh1000name = MCarea+"test/X53X53m1000LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000name.c_str());
+  /* std::string lh1000name = samplesDir+"test/X53X53m1000LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000name.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
   
-  std::string rh1000name = MCarea+"test/X53X53m1000RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000name.c_str());
+  std::string rh1000name = samplesDir+"test/X53X53m1000RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Rfile = TFile::Open(rh1000name.c_str());
   Sample* x53x53m1000R = new Sample(vSigNames.at(3),x53x531000Rfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);*/
 
-  /*  TFile* x53x531300Lfile = new TFile(MCarea+"test/X53X53m1300LH_"+era+".root");
+  /*  TFile* x53x531300Lfile = TFile::Open(samplesDir+"test/X53X53m1300LH_"+era+".root");
   Sample* x53x53m1300L = new Sample(vSigNames.at(4),x53x531300Lfile,vWeights.at(4),vXsec.at(4),cut,kBlue,2);
-  TFile* x53x531300Rfile = new TFile(MCarea+"test/X53X53m1300RH_"+era+".root");
+  TFile* x53x531300Rfile = TFile::Open(samplesDir+"test/X53X53m1300RH_"+era+".root");
   Sample* x53x53m1300R = new Sample(vSigNames.at(5),x53x531300Rfile,vWeights.at(5),vXsec.at(5),cut,kBlue,1);
   */
   return vSigSamples;
@@ -724,82 +717,82 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi, std::s
   }
 
   std::vector<Sample*> vSigSamples;
-  std::string lh700 = MCarea+"test/X53X53m700LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
+  std::string lh700 = samplesDir+"test/X53X53m700LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Lfile = TFile::Open(lh700.c_str());
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
-  std::string rh700 = MCarea+"test/X53X53m700RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
+  std::string rh700 = samplesDir+"test/X53X53m700RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Rfile = TFile::Open(rh700.c_str());
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
 
-  std::string lh800 = MCarea+"test/X53X53m800LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  std::string lh800 = samplesDir+"test/X53X53m800LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
   vSigSamples.push_back(x53x53m800L);
-  std::string rh800 = MCarea+"test/X53X53m800RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
+  std::string rh800 = samplesDir+"test/X53X53m800RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Rfile = TFile::Open(rh800.c_str());
   Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
   vSigSamples.push_back(x53x53m800R);
 
-  std::string lh900 = MCarea+"test/X53X53m900LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  std::string lh900 = samplesDir+"test/X53X53m900LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
   //vSigSamples.push_back(x53x53m900L);
-  std::string rh900 = MCarea+"test/X53X53m900RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
+  std::string rh900 = samplesDir+"test/X53X53m900RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Rfile = TFile::Open(rh900.c_str());
   Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
   vSigSamples.push_back(x53x53m900R);
 
-  std::string lh1000 = MCarea+"test/X53X53m1000LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  std::string lh1000 = samplesDir+"test/X53X53m1000LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
   //vSigSamples.push_back(x53x53m1000L);
-  std::string rh1000 = MCarea+"test/X53X53m1000RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
+  std::string rh1000 = samplesDir+"test/X53X53m1000RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Rfile = TFile::Open(rh1000.c_str());
   Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);
 
-  std::string lh1100 = MCarea+"test/X53X53m1100LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  std::string lh1100 = samplesDir+"test/X53X53m1100LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1100L);
-  std::string rh1100 = MCarea+"test/X53X53m1100RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
+  std::string rh1100 = samplesDir+"test/X53X53m1100RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Rfile = TFile::Open(rh1100.c_str());
   Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1100R);
 
-  std::string lh1300 = MCarea+"test/X53X53m1300LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  std::string lh1300 = samplesDir+"test/X53X53m1300LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(10),x53x531300Lfile,vWeights.at(10),vXsec.at(10),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1300L);
-  std::string rh1300 = MCarea+"test/X53X53m1300RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
+  std::string rh1300 = samplesDir+"test/X53X53m1300RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Rfile = TFile::Open(rh1300.c_str());
   Sample* x53x53m1300R = new Sample(vSigNames.at(11),x53x531300Rfile,vWeights.at(11),vXsec.at(11),cut,kBlue,1);
   //vSigSamples.push_back(x53x53m1300R);
 
-  std::string lh1400 = MCarea+"test/X53X53m1400LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  std::string lh1400 = samplesDir+"test/X53X53m1400LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(12),x53x531400Lfile,vWeights.at(12),vXsec.at(12),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1400L);
-  std::string rh1400 = MCarea+"test/X53X53m1400RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
+  std::string rh1400 = samplesDir+"test/X53X53m1400RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Rfile = TFile::Open(rh1400.c_str());
   Sample* x53x53m1400R = new Sample(vSigNames.at(13),x53x531400Rfile,vWeights.at(13),vXsec.at(13),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1400R);
 
-  std::string lh1500 = MCarea+"test/X53X53m1500LH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  std::string lh1500 = samplesDir+"test/X53X53m1500LH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(14),x53x531500Lfile,vWeights.at(14),vXsec.at(14),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1500L);
-  std::string rh1500 = MCarea+"test/X53X53m1500RH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
+  std::string rh1500 = samplesDir+"test/X53X53m1500RH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Rfile = TFile::Open(rh1500.c_str());
   Sample* x53x53m1500R = new Sample(vSigNames.at(15),x53x531500Rfile,vWeights.at(15),vXsec.at(15),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1500R);
 
-  /*  TFile* x53x531600Lfile = new TFile(MCarea+"test/X53X53m1600LH_Mu"+muID+"_El"+elID+"_"+era+".root");
+  /*  TFile* x53x531600Lfile = TFile::Open(samplesDir+"test/X53X53m1600LH_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile(MCarea+"test/X53X53m1600RH_Mu"+muID+"_El"+elID+"_"+era+".root");
+  TFile* x53x531600Rfile = TFile::Open(samplesDir+"test/X53X53m1600RH_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1600R);*/
 
@@ -808,135 +801,6 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi, std::s
 
 }
 
-std::vector<Sample*> get74XInclusiveSigSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
-  //make names vector
-  std::vector<std::string> vSigNames;
-  std::vector<float> vXsec;
-  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
-  //float BRssdl= 2*( pow((.1063 + .1071 + .1138),2)); INCLUSIVE SO NO BRANCHING RATIO
-  std::vector<int> vNEvts;
-  vSigNames.push_back("LH_X53X53_M-700-74X"); vXsec.push_back(0.442); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-700-74X"); vXsec.push_back(0.442); vNEvts.push_back(297400.);
-  vSigNames.push_back("LH_X53X53_M-800-74X"); vXsec.push_back(.190); vNEvts.push_back(295600.);
-  vSigNames.push_back("RH_X53X53_M-800-74X"); vXsec.push_back(.190); vNEvts.push_back(299600.);
-  vSigNames.push_back("LH_X53X53_M-900-74X"); vXsec.push_back(.0877); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-900-74X"); vXsec.push_back(.0877); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1000-74X"); vXsec.push_back(0.0427); vNEvts.push_back(293600.);
-  vSigNames.push_back("RH_X53X53_M-1000-74X"); vXsec.push_back(0.0427); vNEvts.push_back(299000.);
-  vSigNames.push_back("LH_X53X53_M-1100-74X"); vXsec.push_back(0.0217); vNEvts.push_back(299600.);
-  vSigNames.push_back("RH_X53X53_M-1100-74X"); vXsec.push_back(0.0217); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1200-74X"); vXsec.push_back(0.0114); vNEvts.push_back(295400.);
-  vSigNames.push_back("RH_X53X53_M-1200-74X"); vXsec.push_back(0.0114); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1300-74X"); vXsec.push_back(0.00618); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1300-74X"); vXsec.push_back(0.00618); vNEvts.push_back(293600.);
-  vSigNames.push_back("LH_X53X53_M-1400-74X"); vXsec.push_back(0.00342); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1400-74X"); vXsec.push_back(0.00342); vNEvts.push_back(298400.);
-  vSigNames.push_back("LH_X53X53_M-1500-74X"); vXsec.push_back(0.00193); vNEvts.push_back(298400.);
-  vSigNames.push_back("RH_X53X53_M-1500-74X"); vXsec.push_back(0.00193); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1600-74X"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1600-74X"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-
- 
-
-  //vector to hold weights
-  std::vector<float> vWeights;
-  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
-    vWeights.push_back( lumi * 1000 * ( vXsec.at(i) / vNEvts.at(i) ) ); //factor of 1000 to convert lumi to pb^-1
-  }
-
-  std::vector<Sample*> vSigSamples;
-  std::string lh700 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
-  Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m700L);
-  std::string rh700 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
-  Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m700R);
-
-  std::string lh800 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
-  Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);
-  std::string rh800 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
-  Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m800R);
-
-  std::string lh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
-  Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m900L);
-  std::string rh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
-  Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m900R);
-
-  std::string lh1000 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
-  Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
-  vSigSamples.push_back(x53x53m1000L);
-  std::string rh1000 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
-  Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
-  vSigSamples.push_back(x53x53m1000R);
-
-  std::string lh1100 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
-  Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1100L);
-  std::string rh1100 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
-  Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1100R);
-
-  std::string lh1200 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
-  Sample* x53x53m1200L = new Sample(vSigNames.at(10),x53x531200Lfile,vWeights.at(10),vXsec.at(10),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1200L);
-  std::string rh1200 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Rfile = new TFile(rh1200.c_str());
-  Sample* x53x53m1200R = new Sample(vSigNames.at(11),x53x531200Rfile,vWeights.at(11),vXsec.at(11),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1200R);
-
-  std::string lh1300 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
-  Sample* x53x53m1300L = new Sample(vSigNames.at(12),x53x531300Lfile,vWeights.at(12),vXsec.at(12),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1300L);
-  std::string rh1300 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
-  Sample* x53x53m1300R = new Sample(vSigNames.at(13),x53x531300Rfile,vWeights.at(13),vXsec.at(13),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1300R);
-
-  std::string lh1400 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
-  Sample* x53x53m1400L = new Sample(vSigNames.at(14),x53x531400Lfile,vWeights.at(14),vXsec.at(14),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1400L);
-  std::string rh1400 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
-  Sample* x53x53m1400R = new Sample(vSigNames.at(15),x53x531400Rfile,vWeights.at(15),vXsec.at(15),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1400R);
-
-  std::string lh1500 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
-  Sample* x53x53m1500L = new Sample(vSigNames.at(16),x53x531500Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1500L);
-  std::string rh1500 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
-  Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1500R);
-
-  /*  TFile* x53x531600Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
-  Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
-  Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1600R);*/
-
-
-  return vSigSamples;
-
-}
 std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
   //make names vector
   std::vector<std::string> vSigNames;
@@ -974,91 +838,91 @@ std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lum
   }
 
   std::vector<Sample*> vSigSamples;
-  std::string lh700 = MCarea+"test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
+  std::string lh700 = samplesDir+"test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Lfile = TFile::Open(lh700.c_str());
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
-  std::string rh700 = MCarea+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
+  std::string rh700 = samplesDir+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53700Rfile = TFile::Open(rh700.c_str());
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
 
-  std::string lh800 = MCarea+"test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  std::string lh800 = samplesDir+"test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
   vSigSamples.push_back(x53x53m800L);
-  std::string rh800 = MCarea+"test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
+  std::string rh800 = samplesDir+"test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Rfile = TFile::Open(rh800.c_str());
   Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
   vSigSamples.push_back(x53x53m800R);
 
-  std::string lh900 = MCarea+"test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  std::string lh900 = samplesDir+"test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kRed,2);
   vSigSamples.push_back(x53x53m900L);
-  std::string rh900 = MCarea+"test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
+  std::string rh900 = samplesDir+"test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Rfile = TFile::Open(rh900.c_str());
   Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kRed,1);
   vSigSamples.push_back(x53x53m900R);
 
-  std::string lh1000 = MCarea+"test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  std::string lh1000 = samplesDir+"test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
-  std::string rh1000 = MCarea+"test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
+  std::string rh1000 = samplesDir+"test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Rfile = TFile::Open(rh1000.c_str());
   Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);
 
-  std::string lh1100 = MCarea+"test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  std::string lh1100 = samplesDir+"test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlack,2);
   vSigSamples.push_back(x53x53m1100L);
-  std::string rh1100 = MCarea+"test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
+  std::string rh1100 = samplesDir+"test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Rfile = TFile::Open(rh1100.c_str());
   Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlack,1);
   vSigSamples.push_back(x53x53m1100R);
 
-  std::string lh1200 = MCarea+"test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  std::string lh1200 = samplesDir+"test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(10),x53x531200Lfile,vWeights.at(10),vXsec.at(10),cut,kOrange,2);
   vSigSamples.push_back(x53x53m1200L);
-  std::string rh1200 = MCarea+"test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Rfile = new TFile(rh1200.c_str());
+  std::string rh1200 = samplesDir+"test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Rfile = TFile::Open(rh1200.c_str());
   Sample* x53x53m1200R = new Sample(vSigNames.at(11),x53x531200Rfile,vWeights.at(11),vXsec.at(11),cut,kOrange,1);
   vSigSamples.push_back(x53x53m1200R);
 
-  std::string lh1300 = MCarea+"test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  std::string lh1300 = samplesDir+"test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(12),x53x531300Lfile,vWeights.at(12),vXsec.at(12),cut,kViolet,2);
   vSigSamples.push_back(x53x53m1300L);
-  std::string rh1300 = MCarea+"test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
+  std::string rh1300 = samplesDir+"test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Rfile = TFile::Open(rh1300.c_str());
   Sample* x53x53m1300R = new Sample(vSigNames.at(13),x53x531300Rfile,vWeights.at(13),vXsec.at(13),cut,kViolet,1);
   vSigSamples.push_back(x53x53m1300R);
 
-  std::string lh1400 = MCarea+"test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  std::string lh1400 = samplesDir+"test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(14),x53x531400Lfile,vWeights.at(14),vXsec.at(14),cut,kRed,2);
   vSigSamples.push_back(x53x53m1400L);
-  std::string rh1400 = MCarea+"test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
+  std::string rh1400 = samplesDir+"test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Rfile = TFile::Open(rh1400.c_str());
   Sample* x53x53m1400R = new Sample(vSigNames.at(15),x53x531400Rfile,vWeights.at(15),vXsec.at(15),cut,kRed,1);
   vSigSamples.push_back(x53x53m1400R);
 
-  std::string lh1500 = MCarea+"test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  std::string lh1500 = samplesDir+"test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(16),x53x531500Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1500L);
-  std::string rh1500 = MCarea+"test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
+  std::string rh1500 = samplesDir+"test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Rfile = TFile::Open(rh1500.c_str());
   Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1500R);
 
-  /*  TFile* x53x531600Lfile = new TFile(MCarea+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
+  /*  TFile* x53x531600Lfile = TFile::Open(samplesDir+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile(MCarea+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
+  TFile* x53x531600Rfile = TFile::Open(samplesDir+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1600R);*/
 
@@ -1098,57 +962,48 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
 
   std::vector<Sample*> vSigSamples;
 
-//   std::string lh700 = RizkiArea+"test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-//   TFile* x53x53700Lfile = new TFile(lh700.c_str());
-//   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
-//   vSigSamples.push_back(x53x53m700L);
-//   std::string rh700 = RizkiArea+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-//   TFile* x53x53700Rfile = new TFile(rh700.c_str());
-//   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
-//   vSigSamples.push_back(x53x53m700R);
+//   std::string lh800 = samplesDir+"test/TprimeTprime_M-800_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
+//   Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
+//   vSigSamples.push_back(x53x53m800L);
+// 
+//   std::string lh900 = samplesDir+"test/TprimeTprime_M-900_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
+//   Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
+//   vSigSamples.push_back(x53x53m900L);
 
-  std::string lh800 = RizkiArea+"test/TprimeTprime_M-800_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
-  Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);
-
-  std::string lh900 = RizkiArea+"test/TprimeTprime_M-900_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
-  Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
-  vSigSamples.push_back(x53x53m900L);
-
-  std::string lh1000 = RizkiArea+"test/TprimeTprime_M-1000_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  std::string lh1000 = samplesDir+"test/TprimeTprime_M-1000_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
 
-  std::string lh1100 = RizkiArea+"test/TprimeTprime_M-1100_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  std::string lh1100 = samplesDir+"test/TprimeTprime_M-1100_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(3),x53x531100Lfile,vWeights.at(3),vXsec.at(3),cut,kBlack,2);
   vSigSamples.push_back(x53x53m1100L);
 
-  std::string lh1200 = RizkiArea+"test/TprimeTprime_M-1200_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  std::string lh1200 = samplesDir+"test/TprimeTprime_M-1200_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(4),x53x531200Lfile,vWeights.at(4),vXsec.at(4),cut,kOrange,2);
   vSigSamples.push_back(x53x53m1200L);
 
-  std::string lh1300 = RizkiArea+"test/TprimeTprime_M-1300_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  std::string lh1300 = samplesDir+"test/TprimeTprime_M-1300_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(5),x53x531300Lfile,vWeights.at(5),vXsec.at(5),cut,kViolet,2);
   vSigSamples.push_back(x53x53m1300L);
 
-  std::string lh1400 = RizkiArea+"test/TprimeTprime_M-1400_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  std::string lh1400 = samplesDir+"test/TprimeTprime_M-1400_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(6),x53x531400Lfile,vWeights.at(6),vXsec.at(6),cut,kRed,2);
   vSigSamples.push_back(x53x53m1400L);
 
-  std::string lh1500 = RizkiArea+"test/TprimeTprime_M-1500_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  std::string lh1500 = samplesDir+"test/TprimeTprime_M-1500_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(7),x53x531500Lfile,vWeights.at(7),vXsec.at(7),cut,kBlue+2,2);
   vSigSamples.push_back(x53x53m1500L);
 
-  std::string lh1600 = RizkiArea+"test/TprimeTprime_M-1600_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531600Lfile = new TFile(lh1600.c_str());
+  std::string lh1600 = samplesDir+"test/TprimeTprime_M-1600_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531600Lfile = TFile::Open(lh1600.c_str());
   Sample* x53x53m1600L = new Sample(vSigNames.at(8),x53x531600Lfile,vWeights.at(8),vXsec.at(8),cut,kRed+2,2);
   vSigSamples.push_back(x53x53m1600L);
 
@@ -1215,15 +1070,15 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   std::vector<int> vNEvts;
   vSigNames.push_back("TprimeTprime_M-800_"+sigDecay); vXsec.push_back(0.196); vNEvts.push_back(795000.);
   vSigNames.push_back("TprimeTprime_M-900_"+sigDecay); vXsec.push_back(0.0903); vNEvts.push_back(831200.);
-  vSigNames.push_back("TprimeTprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(829600.);
-  vSigNames.push_back("TprimeTprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(832800.);
-  vSigNames.push_back("TprimeTprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(832600.);
-  vSigNames.push_back("TprimeTprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(831000.);
-  vSigNames.push_back("TprimeTprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(832600.);
-  vSigNames.push_back("TprimeTprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(832800.);
-  vSigNames.push_back("TprimeTprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(832600.);
-  vSigNames.push_back("TprimeTprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(797000.);
-  vSigNames.push_back("TprimeTprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(833000.);
+  vSigNames.push_back("TprimeTprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(812636.);
+  vSigNames.push_back("TprimeTprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(706170.);
+  vSigNames.push_back("TprimeTprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(767798.);
+  vSigNames.push_back("TprimeTprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(757036.);
+  vSigNames.push_back("TprimeTprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(693456.);
+  vSigNames.push_back("TprimeTprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(661276.);
+  vSigNames.push_back("TprimeTprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(622818.);
+  vSigNames.push_back("TprimeTprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(542558.);
+  vSigNames.push_back("TprimeTprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(455156.);
 
  
 
@@ -1235,66 +1090,65 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
 
   std::vector<Sample*> vSigSamples;
   
-  std::string subfolder = "test";
-//   std::string subfolder = "test/Tprime_postLJMet_exactly2goodLeptons_beforeSep26-2017";
-  std::cout << "input signal subfolder:" << subfolder << std::endl;
-  //std::cout << "checking input TT signal files:";
-  //TString action = "ls "+RizkiArea+subfolder+"/Tprime*.root";
-  //system(action);
+  std::string subfolder = "";
+//   std::cout << "input signal subfolder:" << subfolder << std::endl;
+//   std::cout << "checking input TT signal files:";
+//   TString action = "eos "+eosDirector+" ls "+samplesDir+subfolder+"/Tprime*.root";
+//   system(action);
 
   
-  std::string lh800 = RizkiArea+subfolder+"/TprimeTprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
-  Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);
-  
-  std::string lh900 = RizkiArea+subfolder+"/TprimeTprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
-  Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
-  vSigSamples.push_back(x53x53m900L);
+//   std::string lh800 = samplesDir+subfolder+"/TprimeTprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
+//   Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
+//   vSigSamples.push_back(x53x53m800L);
+//   
+//   std::string lh900 = samplesDir+subfolder+"/TprimeTprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
+//   Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
+//   vSigSamples.push_back(x53x53m900L);
 
-  std::string lh1000 = RizkiArea+subfolder+"/TprimeTprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  std::string lh1000 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
 
-  std::string lh1100 = RizkiArea+subfolder+"/TprimeTprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  std::string lh1100 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(3),x53x531100Lfile,vWeights.at(3),vXsec.at(3),cut,kBlack,2);
   vSigSamples.push_back(x53x53m1100L);
 
-  std::string lh1200 = RizkiArea+subfolder+"/TprimeTprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  std::string lh1200 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(4),x53x531200Lfile,vWeights.at(4),vXsec.at(4),cut,kOrange,2);
   vSigSamples.push_back(x53x53m1200L);
 
-  std::string lh1300 = RizkiArea+subfolder+"/TprimeTprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  std::string lh1300 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(5),x53x531300Lfile,vWeights.at(5),vXsec.at(5),cut,kViolet,2);
   vSigSamples.push_back(x53x53m1300L);
 
-  std::string lh1400 = RizkiArea+subfolder+"/TprimeTprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  std::string lh1400 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(6),x53x531400Lfile,vWeights.at(6),vXsec.at(6),cut,kRed,2);
   vSigSamples.push_back(x53x53m1400L);
 
-  std::string lh1500 = RizkiArea+subfolder+"/TprimeTprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  std::string lh1500 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(7),x53x531500Lfile,vWeights.at(7),vXsec.at(7),cut,kBlue+2,2);
   vSigSamples.push_back(x53x53m1500L);
 
-  std::string lh1600 = RizkiArea+subfolder+"/TprimeTprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531600Lfile = new TFile(lh1600.c_str());
+  std::string lh1600 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531600Lfile = TFile::Open(lh1600.c_str());
   Sample* x53x53m1600L = new Sample(vSigNames.at(8),x53x531600Lfile,vWeights.at(8),vXsec.at(8),cut,kRed+2,2);
   vSigSamples.push_back(x53x53m1600L);
 
-  std::string lh1700 = RizkiArea+subfolder+"/TprimeTprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531700Lfile = new TFile(lh1700.c_str());
+  std::string lh1700 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531700Lfile = TFile::Open(lh1700.c_str());
   Sample* x53x53m1700L = new Sample(vSigNames.at(9),x53x531700Lfile,vWeights.at(9),vXsec.at(9),cut,kCyan+2,2);
   vSigSamples.push_back(x53x53m1700L);
 
-  std::string lh1800 = RizkiArea+subfolder+"/TprimeTprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531800Lfile = new TFile(lh1800.c_str());
+  std::string lh1800 = eosDirector+samplesDir+subfolder+"/TprimeTprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531800Lfile = TFile::Open(lh1800.c_str());
   Sample* x53x53m1800L = new Sample(vSigNames.at(10),x53x531800Lfile,vWeights.at(10),vXsec.at(10),cut,kOrange+2,2);
   vSigSamples.push_back(x53x53m1800L);
 
@@ -1385,74 +1239,74 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
 
   std::vector<Sample*> vSigSamples;
   
-  std::string subfolder = "test";
+  std::string subfolder = "";
   //std::string subfolder = "test/Bprime_postLJMet_exactly2goodLeptons_beforeSep26-2017";
   //std::cout << "checking input TT signal files:";
-  //TString action = "ls "+RizkiArea+subfolder+"/Bprime*.root";
+  //TString action = "ls "+eosDirector+samplesDir+subfolder+"/Bprime*.root";
   //system(action);
 
-  std::string lh800 = RizkiArea+subfolder+"/BprimeBprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  std::string lh800 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(i_weight),x53x53800Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlue,2);
   vSigSamples.push_back(x53x53m800L);  
   i_weight=i_weight+1;
 
-  std::string lh900 = RizkiArea+subfolder+"/BprimeBprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  std::string lh900 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(i_weight),x53x53900Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed,2);
   vSigSamples.push_back(x53x53m900L);
   i_weight=i_weight+1;
 
-  std::string lh1000 = RizkiArea+subfolder+"/BprimeBprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  std::string lh1000 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1000_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(i_weight),x53x531000Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
   i_weight=i_weight+1;
 
-  std::string lh1100 = RizkiArea+subfolder+"/BprimeBprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  std::string lh1100 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1100_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(i_weight),x53x531100Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlack,2);
   vSigSamples.push_back(x53x53m1100L);
   i_weight=i_weight+1;
 
-  std::string lh1200 = RizkiArea+subfolder+"/BprimeBprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  std::string lh1200 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(i_weight),x53x531200Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange,2);
   vSigSamples.push_back(x53x53m1200L);
   i_weight=i_weight+1;
 
-  std::string lh1300 = RizkiArea+subfolder+"/BprimeBprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  std::string lh1300 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(i_weight),x53x531300Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kViolet,2);
   vSigSamples.push_back(x53x53m1300L);
   i_weight=i_weight+1;
 
-  std::string lh1400 = RizkiArea+subfolder+"/BprimeBprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  std::string lh1400 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1400_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(i_weight),x53x531400Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed,2);
   vSigSamples.push_back(x53x53m1400L);
   i_weight=i_weight+1;
 
-  std::string lh1500 = RizkiArea+subfolder+"/BprimeBprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  std::string lh1500 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1500_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(i_weight),x53x531500Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlue+2,2);
   vSigSamples.push_back(x53x53m1500L);
   i_weight=i_weight+1;
 
-  std::string lh1600 = RizkiArea+subfolder+"/BprimeBprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531600Lfile = new TFile(lh1600.c_str());
+  std::string lh1600 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1600_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531600Lfile = TFile::Open(lh1600.c_str());
   Sample* x53x53m1600L = new Sample(vSigNames.at(i_weight),x53x531600Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kRed+2,2);
   vSigSamples.push_back(x53x53m1600L);
   i_weight=i_weight+1;
 
-  std::string lh1700 = RizkiArea+subfolder+"/BprimeBprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531700Lfile = new TFile(lh1700.c_str());
+  std::string lh1700 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531700Lfile = TFile::Open(lh1700.c_str());
   Sample* x53x53m1700L = new Sample(vSigNames.at(i_weight),x53x531700Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan+2,2);
   vSigSamples.push_back(x53x53m1700L);
   i_weight=i_weight+1;
 
-  std::string lh1800 = RizkiArea+subfolder+"/BprimeBprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531800Lfile = new TFile(lh1800.c_str());
+  std::string lh1800 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* x53x531800Lfile = TFile::Open(lh1800.c_str());
   Sample* x53x53m1800L = new Sample(vSigNames.at(i_weight),x53x531800Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange+2,2);
   vSigSamples.push_back(x53x53m1800L);
 
@@ -1461,271 +1315,6 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   return vSigSamples;
 
 }
-
-
-std::vector<Sample*> get76XValidationSampleVec(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
-  //make names vector
-  std::vector<std::string> vSigNames;
-  std::vector<float> vXsec;
-  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
-  //float BRssdl= 2*( pow((.1063 + .1071 + .1138),2)); INCLUSIVE SO NO BRANCHING RATIO
-  std::vector<int> vNEvts;
-  vSigNames.push_back("LH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(300000.);
-  /*  vSigNames.push_back("RH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(297400.);
-  vSigNames.push_back("LH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(295600.);
-  vSigNames.push_back("RH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(299600.);
-  vSigNames.push_back("LH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(293600.);
-  vSigNames.push_back("RH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(299000.);
-  vSigNames.push_back("LH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299600.);
-  vSigNames.push_back("RH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(295400.);
-  vSigNames.push_back("RH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(293600.);
-  vSigNames.push_back("LH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(298400.);
-  vSigNames.push_back("LH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(298400.);
-  vSigNames.push_back("RH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  */
- 
-
-  //vector to hold weights
-  std::vector<float> vWeights;
-  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
-    vWeights.push_back( lumi * 1000 * ( vXsec.at(i) / vNEvts.at(i) ) ); //factor of 1000 to convert lumi to pb^-1
-  }
-
-  std::vector<Sample*> vSigSamples;
-  std::string lh700 = MCarea+"test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
-  Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m700L);
-  /*  std::string rh700 = MCarea+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
-  Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m700R);
-
-  std::string lh800 = MCarea+"test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
-  Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);
-  std::string rh800 = MCarea+"test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
-  Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m800R);
-
-  std::string lh900 = MCarea+"test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
-  Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m900L);
-  std::string rh900 = MCarea+"test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
-  Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m900R);
-
-  std::string lh1000 = MCarea+"test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
-  Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
-  vSigSamples.push_back(x53x53m1000L);
-  std::string rh1000 = MCarea+"test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
-  Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
-  vSigSamples.push_back(x53x53m1000R);
-
-  std::string lh1100 = MCarea+"test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
-  Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1100L);
-  std::string rh1100 = MCarea+"test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
-  Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1100R);
-
-  std::string lh1200 = MCarea+"test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
-  Sample* x53x53m1200L = new Sample(vSigNames.at(10),x53x531200Lfile,vWeights.at(10),vXsec.at(10),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1200L);
-  std::string rh1200 = MCarea+"test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531200Rfile = new TFile(rh1200.c_str());
-  Sample* x53x53m1200R = new Sample(vSigNames.at(11),x53x531200Rfile,vWeights.at(11),vXsec.at(11),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1200R);
-
-  std::string lh1300 = MCarea+"test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
-  Sample* x53x53m1300L = new Sample(vSigNames.at(12),x53x531300Lfile,vWeights.at(12),vXsec.at(12),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1300L);
-  std::string rh1300 = MCarea+"test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
-  Sample* x53x53m1300R = new Sample(vSigNames.at(13),x53x531300Rfile,vWeights.at(13),vXsec.at(13),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1300R);
-
-  std::string lh1400 = MCarea+"test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
-  Sample* x53x53m1400L = new Sample(vSigNames.at(14),x53x531400Lfile,vWeights.at(14),vXsec.at(14),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1400L);
-  std::string rh1400 = MCarea+"test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
-  Sample* x53x53m1400R = new Sample(vSigNames.at(15),x53x531400Rfile,vWeights.at(15),vXsec.at(15),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1400R);
-
-  std::string lh1500 = MCarea+"test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
-  Sample* x53x53m1500L = new Sample(vSigNames.at(16),x53x531500Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1500L);
-  std::string rh1500 = MCarea+"test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
-  Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1500R);
-
-    TFile* x53x531600Lfile = new TFile(MCarea+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
-  Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile(MCarea+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+".root");
-  Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1600R);*/
-
-
-  return vSigSamples;
-
-}
-
-
-std::vector<Sample*> get74XValidationSampleVec(std::string cut, float lumi, std::string elID, std::string muID,std::string era){
-  //make names vector
-  std::vector<std::string> vSigNames;
-  std::vector<float> vXsec;
-  //br is OR of either side decaying to ssdl. BR(ssdl) for one side = BR(W->enu) OR BR(W->munu) **2 where the square comes from AND requiring both to decay leptonically
-  //float BRssdl= 2*( pow((.1063 + .1071 + .1138),2)); INCLUSIVE SO NO BRANCHING RATIO
-  std::vector<int> vNEvts;
-  vSigNames.push_back("LH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(300000.);
-  /*  vSigNames.push_back("RH_X53X53_M-700"); vXsec.push_back(0.442); vNEvts.push_back(297400.);
-  vSigNames.push_back("LH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(295600.);
-  vSigNames.push_back("RH_X53X53_M-800"); vXsec.push_back(.190); vNEvts.push_back(299600.);
-  vSigNames.push_back("LH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-900"); vXsec.push_back(.0877); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(293600.);
-  vSigNames.push_back("RH_X53X53_M-1000"); vXsec.push_back(0.0427); vNEvts.push_back(299000.);
-  vSigNames.push_back("LH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299600.);
-  vSigNames.push_back("RH_X53X53_M-1100"); vXsec.push_back(0.0217); vNEvts.push_back(299800.);
-  vSigNames.push_back("LH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(295400.);
-  vSigNames.push_back("RH_X53X53_M-1200"); vXsec.push_back(0.0114); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1300"); vXsec.push_back(0.00618); vNEvts.push_back(293600.);
-  vSigNames.push_back("LH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1400"); vXsec.push_back(0.00342); vNEvts.push_back(298400.);
-  vSigNames.push_back("LH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(298400.);
-  vSigNames.push_back("RH_X53X53_M-1500"); vXsec.push_back(0.00193); vNEvts.push_back(300000.);
-  vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
-  */
- 
-
-  //vector to hold weights
-  std::vector<float> vWeights;
-  for(std::vector<float>::size_type i=0; i<vXsec.size();i++){
-    vWeights.push_back( lumi * 1000 * ( vXsec.at(i) / vNEvts.at(i) ) ); //factor of 1000 to convert lumi to pb^-1
-  }
-
-  std::vector<Sample*> vSigSamples;
-  std::string lh700 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
-  Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m700L);
-  /*  std::string rh700 = MCarea+"test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
-  Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m700R);
-
-  std::string lh800 = MCarea+"test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
-  Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);
-  std::string rh800 = MCarea+"test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
-  Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m800R);
-
-  std::string lh900 = MCarea+"test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
-  Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
-  vSigSamples.push_back(x53x53m900L);
-  std::string rh900 = MCarea+"test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
-  Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
-  vSigSamples.push_back(x53x53m900R);
-
-  std::string lh1000 = MCarea+"test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
-  Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
-  vSigSamples.push_back(x53x53m1000L);
-  std::string rh1000 = MCarea+"test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
-  Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
-  vSigSamples.push_back(x53x53m1000R);
-
-  std::string lh1100 = MCarea+"test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
-  Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1100L);
-  std::string rh1100 = MCarea+"test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
-  Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1100R);
-
-  std::string lh1200 = MCarea+"test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
-  Sample* x53x53m1200L = new Sample(vSigNames.at(10),x53x531200Lfile,vWeights.at(10),vXsec.at(10),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1200L);
-  std::string rh1200 = MCarea+"test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531200Rfile = new TFile(rh1200.c_str());
-  Sample* x53x53m1200R = new Sample(vSigNames.at(11),x53x531200Rfile,vWeights.at(11),vXsec.at(11),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1200R);
-
-  std::string lh1300 = MCarea+"test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
-  Sample* x53x53m1300L = new Sample(vSigNames.at(12),x53x531300Lfile,vWeights.at(12),vXsec.at(12),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1300L);
-  std::string rh1300 = MCarea+"test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
-  Sample* x53x53m1300R = new Sample(vSigNames.at(13),x53x531300Rfile,vWeights.at(13),vXsec.at(13),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1300R);
-
-  std::string lh1400 = MCarea+"test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
-  Sample* x53x53m1400L = new Sample(vSigNames.at(14),x53x531400Lfile,vWeights.at(14),vXsec.at(14),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1400L);
-  std::string rh1400 = MCarea+"test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
-  Sample* x53x53m1400R = new Sample(vSigNames.at(15),x53x531400Rfile,vWeights.at(15),vXsec.at(15),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1400R);
-
-  std::string lh1500 = MCarea+"test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
-  Sample* x53x53m1500L = new Sample(vSigNames.at(16),x53x531500Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1500L);
-  std::string rh1500 = MCarea+"test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
-  Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1500R);
-
-    TFile* x53x531600Lfile = new TFile(MCarea+"test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+".root");
-  Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile(MCarea+"test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+".root");
-  Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
-  vSigSamples.push_back(x53x53m1600R);*/
-
-
-  return vSigSamples;
-
-}
-
-
-
 
 std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::string elID, std::string muID){  
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
@@ -1742,169 +1331,30 @@ std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::
 
 
   std::vector<Sample*> vSample;
-  std::string tt = MCarea+"test/TTJets_Mu"+muID+"_El"+elID+".root";
-  TFile* ttfile = new TFile(tt.c_str());
+  std::string tt = samplesDir+"test/TTJets_Mu"+muID+"_El"+elID+".root";
+  TFile* ttfile = TFile::Open(tt.c_str());
   Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   vSample.push_back(ttSample);
 
 
-  std::string nptt = MCarea+"test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
-  TFile* npttfile = new TFile(nptt.c_str());
+  std::string nptt = samplesDir+"test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
+  TFile* npttfile = TFile::Open(nptt.c_str());
   Sample* npttSample = new Sample(vBkgNames.at(1),npttfile, vWeights.at(1),vXsec.at(1),cut,kBlue+2);
   vSample.push_back(npttSample);
 
-  std::string ttb = MCarea+"test/TTbar-powheg_Mu"+muID+"_El"+elID+".root";
-  TFile* ttbfile = new TFile(ttb.c_str());
+  std::string ttb = samplesDir+"test/TTbar-powheg_Mu"+muID+"_El"+elID+".root";
+  TFile* ttbfile = TFile::Open(ttb.c_str());
   Sample* ttbSample = new Sample(vBkgNames.at(2),ttbfile, vWeights.at(2),vXsec.at(2),cut,kGreen+2);
   vSample.push_back(ttbSample);
 
-  std::string npttb = MCarea+"test/NonPromptTTbar-powheg_Mu"+muID+"_El"+elID+".root";
-  TFile* npttbfile = new TFile(npttb.c_str());
+  std::string npttb = samplesDir+"test/NonPromptTTbar-powheg_Mu"+muID+"_El"+elID+".root";
+  TFile* npttbfile = TFile::Open(npttb.c_str());
   Sample* npttbSample = new Sample(vBkgNames.at(3),npttbfile, vWeights.at(3),vXsec.at(3),cut,kBlack);
   vSample.push_back(npttbSample);
 
   return vSample;
 }
 
-std::vector<Sample*> get74XBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID){  
-
-   //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
-  std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
-
-  //************** MC *************
-
- //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
-  vBkgNames.push_back("74X-TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(398000 * 0.464779);
-  vBkgNames.push_back("74X-TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(252908 * 0.513428);
-  vBkgNames.push_back("74X-TTH");    vXsec.push_back(0.215);  vNEvts.push_back(17882125 *0.296995);
-  vBkgNames.push_back("74X-TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(1238145 *0.4177);
-  vBkgNames.push_back("74X-WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1925000 * 1);
-  //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
-  //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
-  vBkgNames.push_back("74X-ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6652512 * 0.689851);
-  vBkgNames.push_back("74X-VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 0.45775);
-  vBkgNames.push_back("74X-WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 140224* 1);
-  vBkgNames.push_back("74X-WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
-  vBkgNames.push_back("74X-WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
-  vBkgNames.push_back("74X-WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(250000*0.876672);
-  vBkgNames.push_back("74X-ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000*0.8554);
-
-  //******* Non Prompt**********
-  //vBkgNames.push_back("NonPromptMC");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
-  vBkgNames.push_back("74X-NonPrompt"); vXsec.push_back(1); vNEvts.push_back(1);
-  vBkgNames.push_back("74X-ChargeMisID"); vXsec.push_back(1); vNEvts.push_back(1);
-  //now make vector to hold weights;
-  std::vector<float> vWeights;
-  for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
-    vWeights.push_back( lumi * 1000 * ( vXsec.at(ui) / vNEvts.at(ui) ) ); //factor of 1000 to convert lumi to pb^-1
-  }
-
-  //now make samples and add to vector
-  std::vector<Sample*> vSample;
-  //TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar.root");
-  //Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
-  //vSample.push_back(ttSample);
-
-  std::string ttZfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTZ_Mu"+muID+"_El"+elID+".root";
-  TFile* ttZfile = new TFile(ttZfilename.c_str());
-  Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
-  vSample.push_back(ttZSample);
-
-  std::string ttWfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTW_Mu"+muID+"_El"+elID+".root";
-  TFile* ttwfile = new TFile(ttWfilename.c_str());
-  Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
-  vSample.push_back(ttwSample);
-
-  std::string tthfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTH_Mu"+muID+"_El"+elID+".root";
-  TFile* tthfile = new TFile(tthfilename.c_str());
-  Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
-  vSample.push_back(tthSample);
-
-  std::string ttttfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTTT_Mu"+muID+"_El"+elID+".root";
-  TFile* ttttfile = new TFile(ttttfilename.c_str());
-  Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
-  vSample.push_back(ttttSample);
-
-
-  std::string wzfilename="/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wzfile = new TFile(wzfilename.c_str());
-  Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
-  vSample.push_back(wzSample);
-
-  //TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets_Mu"+muID+"_El"+elID+".root");
-  //Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
-  //vSample.push_back(wjSample);
-
-  /*std::string dyfilename =  "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/DYJets_Mu"+muID+"_El"+elID+".root";
-  TFile* dyjfile = new TFile(dyfilename.c_str());
-  Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
-  vSample.push_back(dyjSample);*/
-  
-  std::string zzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* zzjfile = new TFile(zzfilename.c_str());
-  Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(zzjSample);
-
-  /*std::string vhfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/VH_Mu"+muID+"_El"+elID+".root";
-  TFile* vhjfile = new TFile(vhfilename.c_str());
-  Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
-  //std::cout<<"weight for VH is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(vhjSample);*/
-
-  std::string wpwpfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WpWp_Mu"+muID+"_El"+elID+".root";
-  TFile* wpwpfile = new TFile(wpwpfilename.c_str());
-  Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(wpwpSample);
-
-  /*std::string wwmpifilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WW-mpi_Mu"+muID+"_El"+elID+".root";
-  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
-  Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(wwmpiSample);*/
-
-
-  std::string wwzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WWZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wwzfile = new TFile(wwzfilename.c_str());
-  Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(wwzSample);
-
-  std::string wzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wzzfile = new TFile(wzzfilename.c_str());
-  Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(wzzSample);
-
-  std::string zzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* zzzfile = new TFile(zzzfilename.c_str());
-  Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
-  //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
-  vSample.push_back(zzzSample);
-
-
-  //********** Nonprompt ***************
-  /*std::string npTTfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
-  TFile* npttfile = new TFile(nptTfilename.c_str());
-  Sample* npttSample = new Sample(vBkgNames.at(-1),npttfile,vWeights.at(-1),vXsec.at(01),cut,kBlue);
-  vSample.push_back(npttSample)*/
-
-  std::string npfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptData_Mu"+muID+"_El"+elID+".root";
-  TFile* npfile = new TFile(npfilename.c_str());
-  Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
-  vSample.push_back(npSample);
-
-  //********ChargeMisID**********
-  std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
-  TFile* cmidfile = new TFile(cmidfilename.c_str());
-  Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
-  vSample.push_back(cmidSample);
-
-
-  return vSample;
-
-}
 
 
 std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
@@ -1941,103 +1391,103 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  //TFile* ttfile = new TFile(MCarea+"test/TTbar.root");
+  //TFile* ttfile = TFile::Open(samplesDir+"test/TTbar.root");
   //Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   //vSample.push_back(ttSample);
 
-  std::string ttZfilename = MCarea+"test/TTZ_Mu"+muID+"_El"+elID+".root";
-  TFile* ttZfile = new TFile(ttZfilename.c_str());
+  std::string ttZfilename = samplesDir+"test/TTZ_Mu"+muID+"_El"+elID+".root";
+  TFile* ttZfile = TFile::Open(ttZfilename.c_str());
   Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
   vSample.push_back(ttZSample);
 
-  std::string ttWfilename = MCarea+"test/TTW_Mu"+muID+"_El"+elID+".root";
-  TFile* ttwfile = new TFile(ttWfilename.c_str());
+  std::string ttWfilename = samplesDir+"test/TTW_Mu"+muID+"_El"+elID+".root";
+  TFile* ttwfile = TFile::Open(ttWfilename.c_str());
   Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
   vSample.push_back(ttwSample);
 
-  std::string tthfilename = MCarea+"test/TTH_Mu"+muID+"_El"+elID+".root";
-  TFile* tthfile = new TFile(tthfilename.c_str());
+  std::string tthfilename = samplesDir+"test/TTH_Mu"+muID+"_El"+elID+".root";
+  TFile* tthfile = TFile::Open(tthfilename.c_str());
   Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
   vSample.push_back(tthSample);
 
-  std::string ttttfilename = MCarea+"test/TTTT_Mu"+muID+"_El"+elID+".root";
-  TFile* ttttfile = new TFile(ttttfilename.c_str());
+  std::string ttttfilename = samplesDir+"test/TTTT_Mu"+muID+"_El"+elID+".root";
+  TFile* ttttfile = TFile::Open(ttttfilename.c_str());
   Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
   vSample.push_back(ttttSample);
 
 
-  std::string wzfilename=MCarea+"test/WZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wzfile = new TFile(wzfilename.c_str());
+  std::string wzfilename=samplesDir+"test/WZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wzfile = TFile::Open(wzfilename.c_str());
   Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
   vSample.push_back(wzSample);
 
-  //TFile* wjfile = new TFile(MCarea+"test/WJets_Mu"+muID+"_El"+elID+".root");
+  //TFile* wjfile = TFile::Open(samplesDir+"test/WJets_Mu"+muID+"_El"+elID+".root");
   //Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   //vSample.push_back(wjSample);
 
-  /*std::string dyfilename =  MCarea+"test/DYJets_Mu"+muID+"_El"+elID+".root";
-  TFile* dyjfile = new TFile(dyfilename.c_str());
+  /*std::string dyfilename =  samplesDir+"test/DYJets_Mu"+muID+"_El"+elID+".root";
+  TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
   
-  std::string zzfilename = MCarea+"test/ZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* zzjfile = new TFile(zzfilename.c_str());
+  std::string zzfilename = samplesDir+"test/ZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
-  //std::string vhfilename = MCarea+"test/VH_Mu"+muID+"_El"+elID+".root";
-  //TFile* vhjfile = new TFile(vhfilename.c_str());
+  //std::string vhfilename = samplesDir+"test/VH_Mu"+muID+"_El"+elID+".root";
+  //TFile* vhjfile = TFile::Open(vhfilename.c_str());
   //Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
   //std::cout<<"weight for VH is: "<<vWeights.at(6)<<std::endl;
   //vSample.push_back(vhjSample);
 
-  std::string wpwpfilename = MCarea+"test/WpWp_Mu"+muID+"_El"+elID+".root";
-  TFile* wpwpfile = new TFile(wpwpfilename.c_str());
+  std::string wpwpfilename = samplesDir+"test/WpWp_Mu"+muID+"_El"+elID+".root";
+  TFile* wpwpfile = TFile::Open(wpwpfilename.c_str());
   Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wpwpSample);
 
-  /*std::string wwmpifilename = MCarea+"test/WW-mpi_Mu"+muID+"_El"+elID+".root";
-  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
+  /*std::string wwmpifilename = samplesDir+"test/WW-mpi_Mu"+muID+"_El"+elID+".root";
+  TFile* wwmpifile = TFile::Open(wwmpifilename.c_str());
   Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwmpiSample);*/
 
 
-  std::string wwzfilename = MCarea+"test/WWZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wwzfile = new TFile(wwzfilename.c_str());
+  std::string wwzfilename = samplesDir+"test/WWZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wwzfile = TFile::Open(wwzfilename.c_str());
   Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwzSample);
 
-  std::string wzzfilename = MCarea+"test/WZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* wzzfile = new TFile(wzzfilename.c_str());
+  std::string wzzfilename = samplesDir+"test/WZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* wzzfile = TFile::Open(wzzfilename.c_str());
   Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wzzSample);
 
-  std::string zzzfilename = MCarea+"test/ZZZ_Mu"+muID+"_El"+elID+".root";
-  TFile* zzzfile = new TFile(zzzfilename.c_str());
+  std::string zzzfilename = samplesDir+"test/ZZZ_Mu"+muID+"_El"+elID+".root";
+  TFile* zzzfile = TFile::Open(zzzfilename.c_str());
   Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
   std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzzSample);
 
 
   //********** Nonprompt ***************
-  /*std::string npTTfilename = area+"test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
-  TFile* npttfile = new TFile(nptTfilename.c_str());
+  /*std::string npTTfilename = samplesDir+"test/NonPromptTTJets_Mu"+muID+"_El"+elID+".root";
+  TFile* npttfile = TFile::Open(nptTfilename.c_str());
   Sample* npttSample = new Sample(vBkgNames.at(-1),npttfile,vWeights.at(-1),vXsec.at(01),cut,kBlue);
   vSample.push_back(npttSample)*/
 
-  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+".root";
-  TFile* npfile = new TFile(npfilename.c_str());
+  std::string npfilename = samplesDir+"test/NonPromptData_Mu"+muID+"_El"+elID+".root";
+  TFile* npfile = TFile::Open(npfilename.c_str());
   Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
-  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
-  TFile* cmidfile = new TFile(cmidfilename.c_str());
+  std::string cmidfilename = samplesDir+"test/ChargeMisID_Mu"+muID+"_El"+elID+".root";
+  TFile* cmidfile = TFile::Open(cmidfilename.c_str());
   Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
@@ -2053,20 +1503,20 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 
   //************** MC *************
  //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
-  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(1992438 * 0.465749);
-  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(2160168*0.515109);
-  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back( 3981250*0.981088);
-  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(250000 *0.41856);
-  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1993200 * 1);
+  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(3570720);
+  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(2678775);
+  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back( 7522972);
+  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(373734);
+  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(965938);
   //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
   //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
-  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6669988* 1);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6897635);
   vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(6 * 1);
-  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(149681 * 1);
+  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(148394);
   vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
-  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
-  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(246800*0.876686);
-  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(249237* 0.855399);
+  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(219964);
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(219660);
+  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(214318);
   //vBkgNames.push_back("WWW");    vXsec.push_back(0.01398); vNEvts.push_back(240000* 0.8554);
   
   //ARC review request: dataset with Gamma conversions // added by rizki
@@ -2084,123 +1534,123 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  //TFile* ttfile = new TFile(MCarea+"test/TTbar"+era+".root");
+  //TFile* ttfile = TFile::Open(eosDirector+samplesDir+"/TTbar"+era+".root");
   //Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   //vSample.push_back(ttSample);
 
-  std::string ttZfilename = MCarea+"test/TTZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttZfile = new TFile(ttZfilename.c_str());
+  std::string ttZfilename = eosDirector+samplesDir+"/TTZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* ttZfile = TFile::Open(ttZfilename.c_str());
   Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
   std::cout<<"weight for TTZ is: "<<vWeights.at(0)<<std::endl;
   vSample.push_back(ttZSample);
 
-  std::string ttWfilename = MCarea+"test/TTW_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttwfile = new TFile(ttWfilename.c_str());
+  std::string ttWfilename = eosDirector+samplesDir+"/TTW_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* ttwfile = TFile::Open(ttWfilename.c_str());
   Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
   std::cout<<"weight for TTW is: "<<vWeights.at(1)<<std::endl;
   vSample.push_back(ttwSample);
 
-  std::string tthfilename = MCarea+"test/TTH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* tthfile = new TFile(tthfilename.c_str());
+  std::string tthfilename = eosDirector+samplesDir+"/TTH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* tthfile = TFile::Open(tthfilename.c_str());
   Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
   std::cout<<"weight for TTH is: "<<vWeights.at(2)<<std::endl;
   vSample.push_back(tthSample);
 
-  std::string ttttfilename = MCarea+"test/TTTT_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttttfile = new TFile(ttttfilename.c_str());
+  std::string ttttfilename = eosDirector+samplesDir+"/TTTT_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* ttttfile = TFile::Open(ttttfilename.c_str());
   Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
   std::cout<<"weight for TTTT is: "<<vWeights.at(3)<<std::endl;
   vSample.push_back(ttttSample);
 
 
-  std::string wzfilename=MCarea+"test/WZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wzfile = new TFile(wzfilename.c_str());
+  std::string wzfilename=eosDirector+samplesDir+"/WZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wzfile = TFile::Open(wzfilename.c_str());
   Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
   std::cout<<"weight for WZ is: "<<vWeights.at(4)<<std::endl;
   vSample.push_back(wzSample);
 
-  //TFile* wjfile = new TFile(MCarea+"test/WJets_Mu"+muID+"_El"+elID+"_"+era+".root");
+  //TFile* wjfile = TFile::Open(eosDirector+samplesDir+"/WJets_Mu"+muID+"_El"+elID+"_"+era+".root");
   //Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   //vSample.push_back(wjSample);
 
-  /*std::string dyfilename =  MCarea+"test/DYJets_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* dyjfile = new TFile(dyfilename.c_str());
+  /*std::string dyfilename =  eosDirector+samplesDir+"/DYJets_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
   
-  std::string zzfilename = MCarea+"test/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* zzjfile = new TFile(zzfilename.c_str());
+  std::string zzfilename = eosDirector+samplesDir+"/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
   std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
-  //std::string vhfilename = MCarea+"test/VH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  //TFile* vhjfile = new TFile(vhfilename.c_str());
+  //std::string vhfilename = eosDirector+samplesDir+"/VH_Mu"+muID+"_El"+elID+"_"+era+".root";
+  //TFile* vhjfile = TFile::Open(vhfilename.c_str());
   //Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
   //std::cout<<"weight for VH is: "<<vWeights.at(6)<<std::endl;
   //vSample.push_back(vhjSample);
 
-  std::string wpwpfilename = MCarea+"test/WpWp_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wpwpfile = new TFile(wpwpfilename.c_str());
+  std::string wpwpfilename = eosDirector+samplesDir+"/WpWp_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wpwpfile = TFile::Open(wpwpfilename.c_str());
   Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
   std::cout<<"weight for WpWp is: "<<vWeights.at(7)<<std::endl;
   vSample.push_back(wpwpSample);
 
-  /*std::string wwmpifilename = MCarea+"test/WW-mpi_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
+  /*std::string wwmpifilename = eosDirector+samplesDir+"/WW-mpi_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wwmpifile = TFile::Open(wwmpifilename.c_str());
   Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwmpiSample);*/
 
 
-  std::string wwzfilename = MCarea+"test/WWZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wwzfile = new TFile(wwzfilename.c_str());
+  std::string wwzfilename = eosDirector+samplesDir+"/WWZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wwzfile = TFile::Open(wwzfilename.c_str());
   Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
   std::cout<<"weight for WWZ is: "<<vWeights.at(9)<<std::endl;
   vSample.push_back(wwzSample);
 
-  std::string wzzfilename = MCarea+"test/WZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wzzfile = new TFile(wzzfilename.c_str());
+  std::string wzzfilename = eosDirector+samplesDir+"/WZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* wzzfile = TFile::Open(wzzfilename.c_str());
   Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
   std::cout<<"weight for WZZ is: "<<vWeights.at(10)<<std::endl;
   vSample.push_back(wzzSample);
 
-  std::string zzzfilename = MCarea+"test/ZZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* zzzfile = new TFile(zzzfilename.c_str());
+  std::string zzzfilename = eosDirector+samplesDir+"/ZZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* zzzfile = TFile::Open(zzzfilename.c_str());
   Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
   std::cout<<"weight for ZZZ is: "<<vWeights.at(11)<<std::endl;
   vSample.push_back(zzzSample);
 
   //ARC review request: dataset with Gamma conversions // added by rizki
-  std::string ttgjetsfilename = MCarea_Gamma+"/TTGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttgjetsfile = new TFile(ttgjetsfilename.c_str());
-  Sample* ttgjetsSample = new Sample(vBkgNames.at(12),ttgjetsfile, vWeights.at(12),vXsec.at(12),cut,kViolet-1);
-  std::cout<<"weight for TTGJets is: "<<vWeights.at(12)<<std::endl;
-  vSample.push_back(ttgjetsSample);
-
-  std::string zgto2lgfilename = MCarea_Gamma+"/ZGTo2LG_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* zgto2lgfile = new TFile(zgto2lgfilename.c_str());
-  Sample* zgto2lgSample = new Sample(vBkgNames.at(13),zgto2lgfile, vWeights.at(13),vXsec.at(13),cut,kViolet-2);
-  std::cout<<"weight for ZGTo2LG is: "<<vWeights.at(13)<<std::endl;
-  vSample.push_back(zgto2lgSample);
-
-  std::string tgjetsfilename = MCarea_Gamma+"/TGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* tgjetsfile = new TFile(tgjetsfilename.c_str());
-  Sample* tgjetsSample = new Sample(vBkgNames.at(14),tgjetsfile, vWeights.at(14),vXsec.at(14),cut,kViolet-3);
-  std::cout<<"weight for TGJets is: "<<vWeights.at(14)<<std::endl;
-  vSample.push_back(tgjetsSample);
-
-  std::string wgtolnugfilename = MCarea_Gamma+"/WGToLNuG_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wgtolnugfile = new TFile(wgtolnugfilename.c_str());
-  Sample* wgtolnugSample = new Sample(vBkgNames.at(15),wgtolnugfile, vWeights.at(15),vXsec.at(15),cut,kViolet-4);
-  std::cout<<"weight for WGToLNuG is: "<<vWeights.at(15)<<std::endl;
-  vSample.push_back(wgtolnugSample);
-
-  std::string ttztollm1to10filename = MCarea_Gamma+"/TTZToLLM1to10_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttztollm1to10file = new TFile(ttztollm1to10filename.c_str());
-  Sample* ttztollm1to10Sample = new Sample(vBkgNames.at(16),ttztollm1to10file, vWeights.at(16),vXsec.at(16),cut,kViolet-6);
-  std::cout<<"weight for TTZToLLM1to10 is: "<<vWeights.at(16)<<std::endl;
-  vSample.push_back(ttztollm1to10Sample);
+//   std::string ttgjetsfilename = eosDirector+samplesDir+"/TTGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* ttgjetsfile = TFile::Open(ttgjetsfilename.c_str());
+//   Sample* ttgjetsSample = new Sample(vBkgNames.at(12),ttgjetsfile, vWeights.at(12),vXsec.at(12),cut,kViolet-1);
+//   std::cout<<"weight for TTGJets is: "<<vWeights.at(12)<<std::endl;
+//   vSample.push_back(ttgjetsSample);
+// 
+//   std::string zgto2lgfilename = eosDirector+samplesDir+"/ZGTo2LG_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* zgto2lgfile = TFile::Open(zgto2lgfilename.c_str());
+//   Sample* zgto2lgSample = new Sample(vBkgNames.at(13),zgto2lgfile, vWeights.at(13),vXsec.at(13),cut,kViolet-2);
+//   std::cout<<"weight for ZGTo2LG is: "<<vWeights.at(13)<<std::endl;
+//   vSample.push_back(zgto2lgSample);
+// 
+//   std::string tgjetsfilename = eosDirector+samplesDir+"/TGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* tgjetsfile = TFile::Open(tgjetsfilename.c_str());
+//   Sample* tgjetsSample = new Sample(vBkgNames.at(14),tgjetsfile, vWeights.at(14),vXsec.at(14),cut,kViolet-3);
+//   std::cout<<"weight for TGJets is: "<<vWeights.at(14)<<std::endl;
+//   vSample.push_back(tgjetsSample);
+// 
+//   std::string wgtolnugfilename = eosDirector+samplesDir+"/WGToLNuG_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* wgtolnugfile = TFile::Open(wgtolnugfilename.c_str());
+//   Sample* wgtolnugSample = new Sample(vBkgNames.at(15),wgtolnugfile, vWeights.at(15),vXsec.at(15),cut,kViolet-4);
+//   std::cout<<"weight for WGToLNuG is: "<<vWeights.at(15)<<std::endl;
+//   vSample.push_back(wgtolnugSample);
+// 
+//   std::string ttztollm1to10filename = eosDirector+samplesDir+"/TTZToLLM1to10_Mu"+muID+"_El"+elID+"_"+era+".root";
+//   TFile* ttztollm1to10file = TFile::Open(ttztollm1to10filename.c_str());
+//   Sample* ttztollm1to10Sample = new Sample(vBkgNames.at(16),ttztollm1to10file, vWeights.at(16),vXsec.at(16),cut,kViolet-6);
+//   std::cout<<"weight for TTZToLLM1to10 is: "<<vWeights.at(16)<<std::endl;
+//   vSample.push_back(ttztollm1to10Sample);
 
   return vSample;
 
@@ -2224,15 +1674,15 @@ std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string 
   std::vector<Sample*> vSample;
 
   //********** Nonprompt ***************
-  std::string npfilename = area+"test/NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
+  std::string npfilename = eosDirector+samplesDir+"/NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   std::string npfilename = RizkiNPArea+"NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* npfile = new TFile(npfilename.c_str());
+  TFile* npfile = TFile::Open(npfilename.c_str());
   Sample* npSample = new Sample(vBkgNames.at(0),npfile,vWeights.at(0),vXsec.at(0),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
-  std::string cmidfilename = area+"test/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* cmidfile = new TFile(cmidfilename.c_str());
+  std::string cmidfilename = eosDirector+samplesDir+"/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
+  TFile* cmidfile = TFile::Open(cmidfilename.c_str());
   Sample* cmidSample = new Sample(vBkgNames.at(1),cmidfile,vWeights.at(1),vXsec.at(1),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
@@ -3697,84 +3147,84 @@ std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string 
 
   //now make samples and add to vector
   std::vector<Sample*> vSample;
-  //TFile* ttfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar.root");
+  //TFile* ttfile = TFile::Open("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTbar.root");
   //Sample* ttSample = new Sample(vBkgNames.at(0),ttfile, vWeights.at(0),vXsec.at(0),cut,kRed+2);
   //vSample.push_back(ttSample);
 
   std::string ttZfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttZfile = new TFile(ttZfilename.c_str());
+  TFile* ttZfile = TFile::Open(ttZfilename.c_str());
   Sample* ttZSample = new Sample(vBkgNames.at(0),ttZfile, vWeights.at(0),vXsec.at(0),cut,kRed);
   vSample.push_back(ttZSample);
 
   std::string ttWfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTW_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttwfile = new TFile(ttWfilename.c_str());
+  TFile* ttwfile = TFile::Open(ttWfilename.c_str());
   Sample* ttwSample = new Sample(vBkgNames.at(1),ttwfile, vWeights.at(1),vXsec.at(1),cut,kYellow-2);
   vSample.push_back(ttwSample);
 
   std::string tthfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* tthfile = new TFile(tthfilename.c_str());
+  TFile* tthfile = TFile::Open(tthfilename.c_str());
   Sample* tthSample = new Sample(vBkgNames.at(2),tthfile, vWeights.at(2),vXsec.at(2),cut,kYellow);
   vSample.push_back(tthSample);
 
   std::string ttttfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/TTTT_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* ttttfile = new TFile(ttttfilename.c_str());
+  TFile* ttttfile = TFile::Open(ttttfilename.c_str());
   Sample* ttttSample = new Sample(vBkgNames.at(3),ttttfile, vWeights.at(3),vXsec.at(3),cut,kRed+2);
   vSample.push_back(ttttSample);
 
 
   std::string wzfilename="/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wzfile = new TFile(wzfilename.c_str());
+  TFile* wzfile = TFile::Open(wzfilename.c_str());
   Sample* wzSample = new Sample(vBkgNames.at(4),wzfile, vWeights.at(4),vXsec.at(4),cut,kBlue-3);
   vSample.push_back(wzSample);
 
-  //TFile* wjfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets_Mu"+muID+"_El"+elID+"_"+era+".root");
+  //TFile* wjfile = TFile::Open("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WJets_Mu"+muID+"_El"+elID+"_"+era+".root");
   //Sample* wjSample = new Sample(vBkgNames.at(4),wjfile, vWeights.at(4),vXsec.at(4),cut,kGreen+2);
   //vSample.push_back(wjSample);
 
   /*std::string dyfilename =  "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/DYJets_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* dyjfile = new TFile(dyfilename.c_str());
+  TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
   
   std::string zzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* zzjfile = new TFile(zzfilename.c_str());
+  TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzjSample);
 
   /*std::string vhfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/VH_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* vhjfile = new TFile(vhfilename.c_str());
+  TFile* vhjfile = TFile::Open(vhfilename.c_str());
   Sample* vhjSample = new Sample(vBkgNames.at(6),vhjfile, vWeights.at(6),vXsec.at(6),cut,kBlue);
   //std::cout<<"weight for VH is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(vhjSample);*/
 
   std::string wpwpfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WpWp_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wpwpfile = new TFile(wpwpfilename.c_str());
+  TFile* wpwpfile = TFile::Open(wpwpfilename.c_str());
   Sample* wpwpSample = new Sample(vBkgNames.at(7),wpwpfile, vWeights.at(7),vXsec.at(7),cut,kGreen+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wpwpSample);
 
   /*std::string wwmpifilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WW-mpi_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wwmpifile = new TFile(wwmpifilename.c_str());
+  TFile* wwmpifile = TFile::Open(wwmpifilename.c_str());
   Sample* wwmpiSample = new Sample(vBkgNames.at(8),wwmpifile, vWeights.at(8),vXsec.at(8),cut,kGreen-1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwmpiSample);*/
 
 
   std::string wwzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WWZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wwzfile = new TFile(wwzfilename.c_str());
+  TFile* wwzfile = TFile::Open(wwzfilename.c_str());
   Sample* wwzSample = new Sample(vBkgNames.at(9),wwzfile, vWeights.at(9),vXsec.at(9),cut,kViolet+1);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wwzSample);
 
   std::string wzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/WZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* wzzfile = new TFile(wzzfilename.c_str());
+  TFile* wzzfile = TFile::Open(wzzfilename.c_str());
   Sample* wzzSample = new Sample(vBkgNames.at(10),wzzfile, vWeights.at(10),vXsec.at(10),cut,kViolet+3);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(wzzSample);
 
   std::string zzzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* zzzfile = new TFile(zzzfilename.c_str());
+  TFile* zzzfile = TFile::Open(zzzfilename.c_str());
   Sample* zzzSample = new Sample(vBkgNames.at(11),zzzfile, vWeights.at(11),vXsec.at(11),cut,kViolet);
   //std::cout<<"weight for ZZ is: "<<vWeights.at(5)<<std::endl;
   vSample.push_back(zzzSample);
@@ -3782,18 +3232,18 @@ std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string 
 
   //********** Nonprompt ***************
   /*std::string npTTfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptTTJets_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* npttfile = new TFile(nptTfilename.c_str());
+  TFile* npttfile = TFile::Open(nptTfilename.c_str());
   Sample* npttSample = new Sample(vBkgNames.at(-1),npttfile,vWeights.at(-1),vXsec.at(01),cut,kBlue);
   vSample.push_back(npttSample)*/
 
   std::string npfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/NonPromptData_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* npfile = new TFile(npfilename.c_str());
+  TFile* npfile = TFile::Open(npfilename.c_str());
   Sample* npSample = new Sample(vBkgNames.at(12),npfile,vWeights.at(13),vXsec.at(13),cut,kGray);
   vSample.push_back(npSample);
 
   //********ChargeMisID**********
   std::string cmidfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ChargeMisID_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* cmidfile = new TFile(cmidfilename.c_str());
+  TFile* cmidfile = TFile::Open(cmidfilename.c_str());
   Sample* cmidSample = new Sample(vBkgNames.at(13),cmidfile,vWeights.at(13),vXsec.at(13),cut,kGreen); //force charge misID to start here since only at this point do we filter events
   vSample.push_back(cmidSample);
 
@@ -3840,90 +3290,90 @@ std::vector<Sample*> get74InclusiveSigSampleVecForTable(std::string cut, float l
 
   std::vector<Sample*> vSigSamples;
   std::string lh700 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m700LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Lfile = new TFile(lh700.c_str());
+  TFile* x53x53700Lfile = TFile::Open(lh700.c_str());
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
   vSigSamples.push_back(x53x53m700L);
   std::string rh700 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m700RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53700Rfile = new TFile(rh700.c_str());
+  TFile* x53x53700Rfile = TFile::Open(rh700.c_str());
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
 
   std::string lh800 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m800LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Lfile = new TFile(lh800.c_str());
+  TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(2),x53x53800Lfile,vWeights.at(2),vXsec.at(2),cut,kBlue,2);
   vSigSamples.push_back(x53x53m800L);
   std::string rh800 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m800RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53800Rfile = new TFile(rh800.c_str());
+  TFile* x53x53800Rfile = TFile::Open(rh800.c_str());
   Sample* x53x53m800R = new Sample(vSigNames.at(3),x53x53800Rfile,vWeights.at(3),vXsec.at(3),cut,kBlue,1);
   vSigSamples.push_back(x53x53m800R);
 
   std::string lh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Lfile = new TFile(lh900.c_str());
+  TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
   Sample* x53x53m900L = new Sample(vSigNames.at(4),x53x53900Lfile,vWeights.at(4),vXsec.at(4),cut,kGreen,2);
   vSigSamples.push_back(x53x53m900L);
   std::string rh900 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m900RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x53900Rfile = new TFile(rh900.c_str());
+  TFile* x53x53900Rfile = TFile::Open(rh900.c_str());
   Sample* x53x53m900R = new Sample(vSigNames.at(5),x53x53900Rfile,vWeights.at(5),vXsec.at(5),cut,kGreen,1);
   vSigSamples.push_back(x53x53m900R);
 
   std::string lh1000 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1000LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Lfile = new TFile(lh1000.c_str());
+  TFile* x53x531000Lfile = TFile::Open(lh1000.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(6),x53x531000Lfile,vWeights.at(6),vXsec.at(6),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
   std::string rh1000 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1000RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531000Rfile = new TFile(rh1000.c_str());
+  TFile* x53x531000Rfile = TFile::Open(rh1000.c_str());
   Sample* x53x53m1000R = new Sample(vSigNames.at(7),x53x531000Rfile,vWeights.at(7),vXsec.at(7),cut,kCyan,1);
   vSigSamples.push_back(x53x53m1000R);
 
   std::string lh1100 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1100LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Lfile = new TFile(lh1100.c_str());
+  TFile* x53x531100Lfile = TFile::Open(lh1100.c_str());
   Sample* x53x53m1100L = new Sample(vSigNames.at(8),x53x531100Lfile,vWeights.at(8),vXsec.at(8),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1100L);
   std::string rh1100 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1100RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531100Rfile = new TFile(rh1100.c_str());
+  TFile* x53x531100Rfile = TFile::Open(rh1100.c_str());
   Sample* x53x53m1100R = new Sample(vSigNames.at(9),x53x531100Rfile,vWeights.at(9),vXsec.at(9),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1100R);
 
   std::string lh1200 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1200LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = new TFile(lh1200.c_str());
+  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
   Sample* x53x53m1200L = new Sample(vSigNames.at(10),x53x531200Lfile,vWeights.at(10),vXsec.at(10),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1200L);
   std::string rh1200 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1200RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Rfile = new TFile(rh1200.c_str());
+  TFile* x53x531200Rfile = TFile::Open(rh1200.c_str());
   Sample* x53x53m1200R = new Sample(vSigNames.at(11),x53x531200Rfile,vWeights.at(11),vXsec.at(11),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1200R);
 
   std::string lh1300 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1300LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Lfile = new TFile(lh1300.c_str());
+  TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
   Sample* x53x53m1300L = new Sample(vSigNames.at(12),x53x531300Lfile,vWeights.at(12),vXsec.at(12),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1300L);
   std::string rh1300 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1300RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531300Rfile = new TFile(rh1300.c_str());
+  TFile* x53x531300Rfile = TFile::Open(rh1300.c_str());
   Sample* x53x53m1300R = new Sample(vSigNames.at(13),x53x531300Rfile,vWeights.at(13),vXsec.at(13),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1300R);
 
   std::string lh1400 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1400LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Lfile = new TFile(lh1400.c_str());
+  TFile* x53x531400Lfile = TFile::Open(lh1400.c_str());
   Sample* x53x53m1400L = new Sample(vSigNames.at(14),x53x531400Lfile,vWeights.at(14),vXsec.at(14),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1400L);
   std::string rh1400 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1400RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531400Rfile = new TFile(rh1400.c_str());
+  TFile* x53x531400Rfile = TFile::Open(rh1400.c_str());
   Sample* x53x53m1400R = new Sample(vSigNames.at(15),x53x531400Rfile,vWeights.at(15),vXsec.at(15),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1400R);
 
   std::string lh1500 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1500LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Lfile = new TFile(lh1500.c_str());
+  TFile* x53x531500Lfile = TFile::Open(lh1500.c_str());
   Sample* x53x53m1500L = new Sample(vSigNames.at(16),x53x531500Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1500L);
   std::string rh1500 = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1500RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531500Rfile = new TFile(rh1500.c_str());
+  TFile* x53x531500Rfile = TFile::Open(rh1500.c_str());
   Sample* x53x53m1500R = new Sample(vSigNames.at(17),x53x531500Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1500R);
 
-  /*  TFile* x53x531600Lfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
+  /*  TFile* x53x531600Lfile = TFile::Open("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600LH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600L = new Sample(vSigNames.at(16),x53x531600Lfile,vWeights.at(16),vXsec.at(16),cut,kBlue,2);
   vSigSamples.push_back(x53x53m1600L);
-  TFile* x53x531600Rfile = new TFile("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
+  TFile* x53x531600Rfile = TFile::Open("/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/X53X53m1600RH_Inc_Mu"+muID+"_El"+elID+"_"+era+".root");
   Sample* x53x53m1600R = new Sample(vSigNames.at(17),x53x531600Rfile,vWeights.at(17),vXsec.at(17),cut,kBlue,1);
   vSigSamples.push_back(x53x53m1600R);*/
 

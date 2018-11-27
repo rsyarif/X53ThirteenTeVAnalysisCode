@@ -72,7 +72,8 @@ Int_t TreeReader::GetEntry(Long64_t entry){
   ////std::cout<<"making collections"<<std::endl;
   //make all electrons
   for(unsigned int i=0; i<nElectrons;i++){
-    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i],(*elMVA80X)[i], (*elMiniIso)[i], (*elSusyIso)[i]) );
+  	//NOTE: making elMVAValue <---- elMVA for the moment. -- rizki Nov 25,2018
+    allElectrons.push_back(new TElectron((*elPt)[i],(*elEta)[i],(*elPhi)[i],(*elEnergy)[i],(*elCharge)[i],(*elGsfCharge)[i],(*elCtfCharge)[i],(*elScPixCharge)[i],(*elDeta)[i],(*elDphi)[i],(*elDZ)[i],(*elSIP3d)[i],(*elD0)[i],(*elHoE)[i],(*elMHits)[i],(*elOoemoop)[i],(*elSihih)[i],(*elchIso)[i],(*elpuIso)[i],(*elneutIso)[i],(*elphotIso)[i],(*elrhoIso)[i],(*elAEff)[i],(*elPassConversionVeto)[i],(*elChargeConsistent)[i],(*elMVA)[i],(*elMVA)[i], (*elMiniIso)[i], (*elSusyIso)[i]) );
 
   }
 
@@ -266,7 +267,7 @@ void TreeReader::Init(TTree *treetemp)
   elQuality = 0;
   elVtxFitConv = 0;
   elMVA = 0;
-  elMVA80X = 0;
+  elMVAValue = 0;
 
   //gen particles
   genEnergy = 0;
@@ -403,7 +404,7 @@ void TreeReader::Init(TTree *treetemp)
   tree->SetBranchAddress("elAEff_DileptonCalc", &elAEff, &b_elAEff_DileptonCalc);
   tree->SetBranchAddress("elSihih_DileptonCalc", &elSihih, &b_elSihih_DileptonCalc);
   tree->SetBranchAddress("elMVA_DileptonCalc", &elMVA, &b_elMVA_DileptonCalc);
-  tree->SetBranchAddress("elMVA80X_DileptonCalc", &elMVA80X, &b_elMVA80X_DileptonCalc);
+  tree->SetBranchAddress("elMVAValue_DileptonCalc", &elMVAValue, &b_elMVAValue_DileptonCalc);
 
   //Muons                                                                                                                                                                                                         
   tree->SetBranchAddress("muCharge_DileptonCalc", &muCharge, &b_muCharge_DileptonCalc);
@@ -530,31 +531,20 @@ void TreeReader::Init(TTree *treetemp)
  
   //trigger info
   //double electron
-  tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc", &HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);
-  tree->SetBranchAddress("HLT_DoubleEle37_27_DileptonCalc", &HLT_DoubleEle37_27,&b_HLT_DoubleEle37_27_DileptonCalc);
-  tree->SetBranchAddress("HLT_DoubleEle33_MW_DileptonCalc",&HLT_DoubleEle33_MW,&b_HLT_DoubleEle33_MW_DileptonCalc);
-  tree->SetBranchAddress("HLT_Ele17_Ele12_DZ_DileptonCalc",&HLT_Ele17Ele12,&b_HLT_Ele17Ele12_DileptonCalc);
-  tree->SetBranchAddress("HLT_DoubleEle8_Mass8_HT300_DileptonCalc", &HLT_DoubleEle8_HT300,&b_HLT_DoubleEle8_HT300_DileptonCalc);
+  tree->SetBranchAddress("HLT_Ele27_Ele37_DileptonCalc", &HLT_Ele27_Ele37,&b_HLT_Ele27_Ele37_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle25_DileptonCalc",&HLT_DoubleEle25,&b_HLT_DoubleEle25_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle27_DileptonCalc",&HLT_DoubleEle27,&b_HLT_DoubleEle27_DileptonCalc);
+  tree->SetBranchAddress("HLT_DoubleEle33_DileptonCalc",&HLT_DoubleEle33,&b_HLT_DoubleEle33_DileptonCalc);
   //single electron
-  tree->SetBranchAddress("HLT_Ele17_DileptonCalc",&HLT_Ele17,&b_HLT_Ele17_DileptonCalc);
-  tree->SetBranchAddress("HLT_Ele17Iso_DileptonCalc",&HLT_Ele17Iso,&b_HLT_Ele17Iso_DileptonCalc);
+  tree->SetBranchAddress("HLT_Ele23Iso_DileptonCalc",&HLT_Ele23Iso,&b_HLT_Ele23Iso_DileptonCalc);
+  tree->SetBranchAddress("HLT_Ele23_DileptonCalc",&HLT_Ele23,&b_HLT_Ele23_DileptonCalc);
   //double muon
-  tree->SetBranchAddress("HLT_Mu27TkMu8_DileptonCalc",&HLT_Mu27TkMu8,&b_HLT_Mu27TkMu8_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu30TkMu11_DileptonCalc",&HLT_Mu30TkMu11,&b_HLT_Mu30TkMu11_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu40TkMu11_DileptonCalc",&HLT_Mu40TkMu11,&b_HLT_Mu40TkMu11_DileptonCalc);
-  tree->SetBranchAddress("HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc",&HLT_DoubleMu33NoFiltersNoVtx,&b_HLT_DoubleMu33NoFiltersNoVtx_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu37_TkMu27_DileptonCalc",&HLT_Mu37_TkMu27,&b_HLT_Mu37_TkMu27_DileptonCalc);
   //single muon
-  tree->SetBranchAddress("HLT_Mu40_DileptonCalc",&HLT_Mu40,&b_HLT_Mu40_DileptonCalc);
   tree->SetBranchAddress("HLT_Mu17_DileptonCalc",&HLT_Mu17,&b_HLT_Mu17_DileptonCalc);
-  tree->SetBranchAddress("HLT_IsoTkMu24_DileptonCalc",&HLT_IsoTkMu24,&b_HLT_IsoTkMu24_DileptonCalc);
   //cross triggers
-  tree->SetBranchAddress("HLT_Mu17Ele12_DileptonCalc",&HLT_Mu17Ele12,&b_HLT_Mu17Ele12_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu8Ele17_DileptonCalc",&HLT_Mu8Ele17,&b_HLT_Mu8Ele17_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu23Ele12_DileptonCalc",&HLT_Mu23Ele12,&b_HLT_Mu23Ele12_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu8Ele23_DileptonCalc",&HLT_Mu8Ele23,&b_HLT_Mu8Ele23_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu30Ele30_DileptonCalc",&HLT_Mu30Ele30,&b_HLT_Mu30Ele30_DileptonCalc);
-  tree->SetBranchAddress("HLT_Mu27Ele37_DileptonCalc",&HLT_Mu27Ele37,&b_HLT_Mu27Ele37_DileptonCalc);
   tree->SetBranchAddress("HLT_Mu37Ele27_DileptonCalc",&HLT_Mu37Ele27,&b_HLT_Mu37Ele27_DileptonCalc);
+  tree->SetBranchAddress("HLT_Mu27Ele37_DileptonCalc",&HLT_Mu27Ele37,&b_HLT_Mu27Ele37_DileptonCalc);
   //hadronic triggers
   tree->SetBranchAddress("HLT_PFHT900_DileptonCalc",&HLT_PFHT900,&b_HLT_PFHT900_DileptonCalc);
   tree->SetBranchAddress("HLT_AK8PFJet360TrimMass30_DileptonCalc",&HLT_AK8PFJet360TrimMass30,&b_HLT_AK8PFJet360TrimMass30_DileptonCalc);
