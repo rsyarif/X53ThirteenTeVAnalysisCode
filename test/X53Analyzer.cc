@@ -406,6 +406,22 @@ int main(int argc, char* argv[]){
     elPromptRates.push_back(0.902);
     elPromptRates.push_back(0.800);
   }
+  else if(elID=="MVA2017TightRC"){ // NOTE: this is a copy of PR from MVA2016TightRC !!! Need to update! Nov25,2018.
+    elPromptRates.push_back(0.904);
+    elPromptRates.push_back(0.928);
+    elPromptRates.push_back(0.934);
+    elPromptRates.push_back(0.942);
+    elPromptRates.push_back(0.947);
+    elPromptRates.push_back(0.953);
+    elPromptRates.push_back(0.955);
+    elPromptRates.push_back(0.948);
+    elPromptRates.push_back(0.951);
+    elPromptRates.push_back(0.946);
+    elPromptRates.push_back(0.935);
+    elPromptRates.push_back(0.920);
+    elPromptRates.push_back(0.902);
+    elPromptRates.push_back(0.800);
+  }
   else if(elID=="MVATightMedIsoRC") elPromptRates.push_back(0.859);
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRates.push_back(0.8618);
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRates.push_back(0.7956);
@@ -434,6 +450,18 @@ int main(int argc, char* argv[]){
   if(elID=="CBTight" || elID=="CBTightRC") elFakeRates.push_back(0.43);
   else if(elID=="MVATightCC" || elID=="MVATightRC") elFakeRates.push_back(0.204);
   else if(elID=="MVA2016TightCC" || elID=="MVA2016TightRC"){
+    elFakeRates.push_back(0.232);
+    elFakeRates.push_back(0.0);//ee-eb gap
+    elFakeRates.push_back(0.202);
+    elFakeRates.push_back(0.185);
+    elFakeRates.push_back(0.177);
+    elFakeRates.push_back(0.182);
+    elFakeRates.push_back(0.186);
+    elFakeRates.push_back(0.205);
+    elFakeRates.push_back(0.0);//ee-eb gap
+    elFakeRates.push_back(0.251);
+  }
+  else if(elID=="MVA2017TightRC"){ // NOTE: this is a copy of PR from MVA2016TightRC !!! Need to update! Nov25,2018.
     elFakeRates.push_back(0.232);
     elFakeRates.push_back(0.0);//ee-eb gap
     elFakeRates.push_back(0.202);
@@ -1431,6 +1459,10 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Tight=iel->susyTightRC();
       iLep->Loose=iel->susyLooseRC();
     }      
+    else if(elID=="MVA2017TightRC"){
+      iLep->Tight=iel->mva94XTightV1_Iso_RC();
+      iLep->Loose=iel->mva94XLooseV1_Iso_RC();
+    }
     if(iLep->pt<ptCut) continue;
     //now save based on elID requirments if 'normal' running then require tight, else save if loose
     if(!doFakes){

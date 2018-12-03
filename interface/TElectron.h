@@ -44,6 +44,14 @@ public:
   double mvaValue80X;
   double miniIso;
   double susyIso;
+  
+  //94X - https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#MVA_Recipe_V1_for_regular_users
+  bool mva94XTightV1();
+  bool mva94XTightV1_Iso();
+  bool mva94XTightV1_Iso_RC();
+  bool mva94XLooseV1();
+  bool mva94XLooseV1_Iso();
+  bool mva94XLooseV1_Iso_RC();
 
   bool mvaTight();
   bool mva2016Tight();

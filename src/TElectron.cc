@@ -45,6 +45,76 @@ TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energyt
 }
 
 
+/// *********************** MVA IDs 94X 2017data************************ - https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#MVA_Recipe_V1_for_regular_users
+
+bool TElectron::mva94XTightV1(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+
+  if(fabs(eta)<0.8){
+  	float C=0.96165
+  	float tau=8.75794
+  	float A=3.13902
+    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  }
+  else if(fabs(eta)<1.479){
+  	float C=0.93193
+  	float tau=8.84606
+  	float A=3.59851
+    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  }
+  else if(fabs(eta)<2.4){
+  	float C=0.88993
+  	float tau=10.12423
+  	float A=4.35279
+    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
+}
+bool TElectron::mva94XTightV1_Iso(){
+  bool pass = mva94XTightV1() && miniIso<0.1;
+  return pass;
+}
+bool TElectron::mva94XTightV1_Iso_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV1_Iso() && cc;
+  return pass;
+}
+
+
+bool TElectron::mva94XLooseV1(){
+
+  //first veto on gap
+  if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
+
+  if(fabs(eta)<0.8){
+    if(mvatemp>-0.86) return true;
+  }
+  else if(fabs(eta)<1.479){
+    if(mvatemp>-0.81) return true;
+  }
+  else if(fabs(eta)<2.4){
+    if(mvatemp>-0.72) return true;
+  }
+  //if none of the above conditions is met return false
+  return false;
+}
+bool TElectron::mva94XLooseV1_Iso(){
+  bool pass = mva94XLooseV1() && miniIso<0.4;
+  return pass;
+}
+bool TElectron::mva94XLooseV1_Iso_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XLooseV1_Iso() && cc;
+  return pass;
+}
+
 /// *********************** MVA IDs ************************
 bool TElectron::mvaLoose(){
 
