@@ -95,7 +95,7 @@ float uncJER_WZZ=0.01;
 float uncJER_ZZZ=0;
 
 //folder to save plots - rizki
-const std::string saveFolder = "plots_Nov26-2018_nConst4_HT1200_0NonSSLep";
+const std::string saveFolder = "plots_Nov30-2018_nConst4_HT1200_0NonSSLep_2018data";
 
       
 void makePlots_forPAS(std::string elID, std::string muID){
@@ -112,15 +112,15 @@ void makePlots_forPAS(std::string elID, std::string muID){
  
   //desired lumi:	
   //Json lumi with normtag: BCDEF - https://twiki.cern.ch/twiki/bin/view/CMS/PdmV2017Analysis - Nov 11, 2018.
-  float lumi = 41.56; //fb^-1  
+  float lumi = 58.83; //fb^-1  
   float lumi2 = 0; //fb^-1  
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
 
-  std::vector<Sample*> vMCBkgSamples = getMCBkgSampleVec("sZVeto", lumi, elID, muID,"2017B-F");
+  std::vector<Sample*> vMCBkgSamples = getMCBkgSampleVec("sZVeto", lumi, elID, muID,"2018A-D");
   std::cout << "DONE Preparing MC bkg samples" << std::endl;
-  std::vector<Sample*> vDDBkgSamples = getDDBkgSampleVec("sZVeto", lumi, elID, muID,"2017B-F");
+  std::vector<Sample*> vDDBkgSamples = getDDBkgSampleVec("sZVeto", lumi, elID, muID,"2018A-D");
   std::cout << "DONE Preparing DDBkg samples" << std::endl;
   std::vector<Sample*> vBkgSamples = appendSampleVectors(vMCBkgSamples, vDDBkgSamples);
   std::cout << "DONE appending Bkg samples" << std::endl;
@@ -129,28 +129,28 @@ void makePlots_forPAS(std::string elID, std::string muID){
 //   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
   
   //TT SIGNAL <decay> - RIZKI 
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","BWBW",0);
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","BWBW",0);
   std::cout << "DONE Preparing signal BWBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","THBW",0);
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","THBW",0);
   std::cout << "DONE Preparing signal THBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","THTH",0);
+  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","THTH",0);
   std::cout << "DONE Preparing signal THTH samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZBW",0);
+  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","TZBW",0);
   std::cout << "DONE Preparing signal TZBW samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZTH",0);
+  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","TZTH",0);
   std::cout << "DONE Preparing signal TZTH samples" << std::endl;
 
-  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","TZTZ",0);
+  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2018A-D","TZTZ",0);
   std::cout << "DONE Preparing signal TZTZ samples" << std::endl;
 
   std::vector<Sample*> vSigSamples = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
   std::cout << "DONE appending signal samples" << std::endl;
 
-  Sample* dataSample = getDataSample("sZVeto",elID,muID,"2017B-F");
+  Sample* dataSample = getDataSample("sZVeto",elID,muID,"2018A-D");
 
   std::cout << "DONE Preparing data samples" << std::endl;
 
@@ -554,7 +554,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
     
     Sample* s = vSig.at(i1);
-    if(s->name.find("1000")==std::string::npos) continue;
+    if(s->name.find("1200")==std::string::npos) continue;
   	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
@@ -582,11 +582,11 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     delete h; //added by rizki
   }
   hSig_1->Draw("hist same");
-  leg->AddEntry(hSig_1,"T#bar{T}(1.0 Tev)","l");
+  leg->AddEntry(hSig_1,"T#bar{T}(1.2 Tev)","l");
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
     
     Sample* s = vSig.at(i1);
-    if(s->name.find("1200")==std::string::npos) continue;
+    if(s->name.find("1500")==std::string::npos) continue;
   	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
     TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
     TTree* t = s->tree;
@@ -614,7 +614,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     delete h; //added by rizki
   }
   hSig_2->Draw("hist same");
-  leg->AddEntry(hSig_2,"T#bar{T}(2.0 Tev)","l");
+  leg->AddEntry(hSig_2,"T#bar{T}(1.5 Tev)","l");
 
 
   //Draw data- merge trees into chain
@@ -668,7 +668,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"41.56 fb^{-1} (13 TeV)"); 
+  lumitex->DrawLatex(0.65,0.96,"58.83 fb^{-1} (13 TeV)"); 
 
   //draw latex for channels
   TLatex* chantex = new TLatex();

@@ -39,15 +39,18 @@ bprimelist = [
 bprimedecays = ['TWTW','BZBZ','BHBH','BHTW','BZTW','BZBH']
 
 # eras = ['2016B-D','2016E-H']
-eras = ['2017B-F']
+eras = ['2018A-D']
 
 bkgdatalist = [
 #     'TTH',
 #     'TTW',
 #     'TTZ',
+#     'TTZ_part1',
+#     'TTZ_part2',
+#     'TTZ_part3',
 #     'TTTT',
 #     'WZ',
-    'ZZ',
+#     'ZZ',
 #     'WWW',
 #     'WWZ',
 #     'WZZ',
@@ -61,56 +64,48 @@ bkgdatalist = [
 # 	'TTZToLLM1to10',
 
 
-#     'DataElEl2017B',
-#     'DataElMu2017B',
-#     'DataMuMu2017B',
-#     'DataElEl2017C',
-#     'DataElMu2017C',
-#     'DataMuMu2017C',
-#     'DataElEl2017D',
-#     'DataElMu2017D',
-#     'DataMuMu2017D',
-#     'DataElEl2017E',
-#     'DataElMu2017E',
-#     'DataMuMu2017E',
-#     'DataElEl2017F',
-#     'DataElMu2017F',
-#     'DataMuMu2017F',
+#     'DataElEl2018A',
+#     'DataElMu2018A',
+#     'DataMuMu2018A',
+#     'DataElEl2018B',
+#     'DataElMu2018B',
+#     'DataMuMu2018B',
+#     'DataElEl2018C',
+#     'DataElMu2018C',
+#     'DataMuMu2018C',
+#     'DataElEl2018D',
+#     'DataElMu2018D',
+    'DataMuMu2018D',
 # 
-#     'ChargeMisIDElEl2017B',
-#     'ChargeMisIDElMu2017B',
-#     'ChargeMisIDElEl2017C',
-#     'ChargeMisIDElMu2017C',
-#     'ChargeMisIDElEl2017D',
-#     'ChargeMisIDElMu2017D',
-#     'ChargeMisIDElEl2017E',
-#     'ChargeMisIDElMu2017E',
-#     'ChargeMisIDElEl2017F',
-#     'ChargeMisIDElMu2017F',
+#     'ChargeMisIDElEl2018A',
+#     'ChargeMisIDElMu2018A',
+#     'ChargeMisIDElEl2018B',
+#     'ChargeMisIDElMu2018B',
+#     'ChargeMisIDElEl2018C',
+#     'ChargeMisIDElMu2018C',
+#     'ChargeMisIDElEl2018D',
+#     'ChargeMisIDElMu2018D',
 # 
-#     'NonPromptDataElEl2017B',
-#     'NonPromptDataElMu2017B',
-#     'NonPromptDataMuMu2017B',
-#     'NonPromptDataElEl2017C',
-#     'NonPromptDataElMu2017C',
-#     'NonPromptDataMuMu2017C',
-#     'NonPromptDataElEl2017D',
-#     'NonPromptDataElMu2017D',
-#     'NonPromptDataMuMu2017D',
-#     'NonPromptDataElEl2017E',
-#     'NonPromptDataElMu2017E',
-#     'NonPromptDataMuMu2017E',
-#     'NonPromptDataElEl2017F',
-#     'NonPromptDataElMu2017F',
-#     'NonPromptDataMuMu2017F',
+#     'NonPromptDataElEl2018A',
+#     'NonPromptDataElMu2018A',
+#     'NonPromptDataMuMu2018A',
+#     'NonPromptDataElEl2018B',
+#     'NonPromptDataElMu2018B',
+#     'NonPromptDataMuMu2018B',
+#     'NonPromptDataElEl2018C',
+#     'NonPromptDataElMu2018C',
+#     'NonPromptDataMuMu2018C',
+#     'NonPromptDataElEl2018D',
+#     'NonPromptDataElMu2018D',
+    'NonPromptDataMuMu2018D',
 ]
 
 relBase = os.environ['CMSSW_BASE']
 print 'Relbase:',relBase
 
-condorDir = '/uscms_data/d3/rsyarif/Brown2018/TT_BB_SSDL_Analyzer_2017data/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer_logs/'
+condorDir = '/uscms_data/d3/rsyarif/Brown2018/TT_BB_SSDL_Analyzer_2018data/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds_Analyzer_logs/'
 if not os.path.exists(condorDir): os.system('mkdir -p '+condorDir)
-outputDir = '/store/user/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer/'
+outputDir = '/store/user/lpcljm/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds_Analyzer/'
 if not EOSpathExists(outputDir): os.system('eos root://cmseos.fnal.gov/ mkdir -p '+outputDir)
 
 thisDir = relBase+'/src/Analyzer'
@@ -200,7 +195,7 @@ for sample in bkgdatalist:
 universe = vanilla
 Executable = %(RUNDIR)s/runX53analyzer.sh
 Should_Transfer_Files = YES
-request_memory = 6000
+request_memory = 8000
 WhenToTransferOutput = ON_EXIT
 Transfer_Input_Files = %(TARFILE)s
 Output = %(SAMPLE)s_%(ERA)s.out

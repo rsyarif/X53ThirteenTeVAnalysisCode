@@ -14,7 +14,7 @@
 
 
 std::string eosDirector = "root://cmseos.fnal.gov:/";
-std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer/";
+std::string samplesDir = "/store/group/lpcljm/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds_Analyzer/";
 
 std::vector<Variable*> getVariableVec(){
 
@@ -1068,17 +1068,17 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   if(sigDecay=="THBW" || sigDecay=="TZBW" || sigDecay=="TZTH" ) initBR=0.333*0.333*2;
 
   std::vector<int> vNEvts;
-  vSigNames.push_back("TprimeTprime_M-800_"+sigDecay); vXsec.push_back(0.196); vNEvts.push_back(795000.);
-  vSigNames.push_back("TprimeTprime_M-900_"+sigDecay); vXsec.push_back(0.0903); vNEvts.push_back(831200.);
-  vSigNames.push_back("TprimeTprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(812636.);
-  vSigNames.push_back("TprimeTprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(706170.);
-  vSigNames.push_back("TprimeTprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(767798.);
-  vSigNames.push_back("TprimeTprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(757036.);
-  vSigNames.push_back("TprimeTprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(693456.);
-  vSigNames.push_back("TprimeTprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(661276.);
-  vSigNames.push_back("TprimeTprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(622818.);
-  vSigNames.push_back("TprimeTprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(542558.);
-  vSigNames.push_back("TprimeTprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(455156.);
+  vSigNames.push_back("TprimeTprime_M-800_"+sigDecay); vXsec.push_back(0.196); vNEvts.push_back(795000.); //2017
+  vSigNames.push_back("TprimeTprime_M-900_"+sigDecay); vXsec.push_back(0.0903); vNEvts.push_back(831200.); //2017
+  vSigNames.push_back("TprimeTprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(812636.); //2017
+  vSigNames.push_back("TprimeTprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(706170.); //2017
+  vSigNames.push_back("TprimeTprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(767798.); //2017
+  vSigNames.push_back("TprimeTprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(757036.); //2017
+  vSigNames.push_back("TprimeTprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(693456.); //2017
+  vSigNames.push_back("TprimeTprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(661276.); //2017
+  vSigNames.push_back("TprimeTprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(622818.); //2017
+  vSigNames.push_back("TprimeTprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(542558.); //2017
+  vSigNames.push_back("TprimeTprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(455156.); //2017
 
  
 
@@ -1503,20 +1503,20 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 
   //************** MC *************
  //vBkgNames.push_back("TTbar");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
-  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(3570720);
-  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(2678775);
-  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back( 7522972);
-  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(373734);
-  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(965938);
+  vBkgNames.push_back("TTZ");    vXsec.push_back(0.2529);  vNEvts.push_back(10453148);
+  vBkgNames.push_back("TTW");    vXsec.push_back(0.2043);  vNEvts.push_back(4718602);
+  vBkgNames.push_back("TTH");    vXsec.push_back(0.215);  vNEvts.push_back( 7522972); //2017
+  vBkgNames.push_back("TTTT");    vXsec.push_back(0.009103);  vNEvts.push_back(1104584);
+  vBkgNames.push_back("WZ");     vXsec.push_back(4.42965); vNEvts.push_back(1262156);
   //vBkgNames.push_back("WJets");  vXsec.push_back(61526.7); vNEvts.push_back(24151270 * 0.683948);
   //vBkgNames.push_back("DYJets"); vXsec.push_back(6025.2);  vNEvts.push_back(28825132 * 0.6693);
-  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6897635);
+  vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(813812);
   vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(6 * 1);
-  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(148394);
-  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
-  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(219964);
-  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(219660);
-  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(214318);
+  vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(148394); //2017
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  // what is this?
+  vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(215228); 
+  vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(413104);
+  vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(407160);
   //vBkgNames.push_back("WWW");    vXsec.push_back(0.01398); vNEvts.push_back(240000* 0.8554);
   
   //ARC review request: dataset with Gamma conversions // added by rizki

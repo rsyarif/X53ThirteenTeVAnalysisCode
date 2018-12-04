@@ -43,9 +43,9 @@ int main(int argc, char* argv[]){
 
   std::string eosareasingle="root://cmsxrootd.fnal.gov//store/user/lpctlbsm/dzou/Spring16/25ns/Mar27/ljmet_trees"; //location of Moriond17 tree for single x53
 
-  std::string eosarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
-  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
-  std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds/";
+  std::string eosarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds/";
+  std::string eosdataarea="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds/";
+  std::string eosarea_TTsignal="root://cmsxrootd.fnal.gov//store/group/lpcljm/LJMet102x_2lepTT_2018datasets_2018_11_29_rizki_hadds/";
 
   if(argc<5) return 0; // edited by rizki
   std::string argv1=argv[1];
@@ -63,7 +63,10 @@ int main(int argc, char* argv[]){
 //   bg_samples["TTbar_ext2"]=eosarea+"TTbar_ext2.root";
   bg_samples["TTW"]=eosarea+"TTW.root";
   bg_samples["TTZ"]=eosarea+"TTZ.root";
-  bg_samples["TTH"]=eosarea+"TTH.root";
+  bg_samples["TTZ_part1"]=eosarea+"TTZ_part1.root";
+  bg_samples["TTZ_part2"]=eosarea+"TTZ_part2.root";
+  bg_samples["TTZ_part3"]=eosarea+"TTZ_part3.root";
+  bg_samples["TTH"]=eosarea+"TTH.root"; // this is using 2017 sample as of Dec 3, 2018.
   bg_samples["TTTT"]=eosarea+"TTTT.root";
 //   bg_samples["TTWW"]=eosarea+"TTWW.root";
 //   bg_samples["WW"]=eosarea+"WW.root";
@@ -73,11 +76,11 @@ int main(int argc, char* argv[]){
   bg_samples["ZZZ"]=eosarea+"ZZZ.root";
   bg_samples["WZ"]=eosarea+"WZ.root";
 //   bg_samples["WZ_MiniAODv1"]=eosarea+"WZ_MiniAODv1.root";
-  bg_samples["ZZ"]=eosarea+"ZZ_part1.root";
+  bg_samples["ZZ"]=eosarea+"ZZ.root";
 //   bg_samples["VH"]=eosarea+"VH.root";
 //   bg_samples["WJets"]=eosarea+"WJets.root";
 //   bg_samples["DYJets"]=eosarea+"DYJets.root";
-  bg_samples["WpWp"]=eosarea+"WpWp.root";
+  bg_samples["WpWp"]=eosarea+"WpWp.root"; // this is using 2017 sample as of Dec 3, 2018.
 //   bg_samples["WW-mpi"]=eosarea+"WW-mpi.root";
 
   //nonoPrompt versions
@@ -91,15 +94,15 @@ int main(int argc, char* argv[]){
   //TT signal - rizki	
 //   sig_samples["TprimeTprime_M-800"]=eosarea_TTsignal+"TprimeTprime_M-800.root";
 //   sig_samples["TprimeTprime_M-900"]=eosarea_TTsignal+"TprimeTprime_M-900.root";
-  sig_samples["TprimeTprime_M-1000"]=eosarea_TTsignal+"TprimeTprime_M-1000.root";
-  sig_samples["TprimeTprime_M-1100"]=eosarea_TTsignal+"TprimeTprime_M-1100.root";
-  sig_samples["TprimeTprime_M-1200"]=eosarea_TTsignal+"TprimeTprime_M-1200.root";
-  sig_samples["TprimeTprime_M-1300"]=eosarea_TTsignal+"TprimeTprime_M-1300.root";
-  sig_samples["TprimeTprime_M-1400"]=eosarea_TTsignal+"TprimeTprime_M-1400.root";
-  sig_samples["TprimeTprime_M-1500"]=eosarea_TTsignal+"TprimeTprime_M-1500.root";
-  sig_samples["TprimeTprime_M-1600"]=eosarea_TTsignal+"TprimeTprime_M-1600.root";
-  sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"TprimeTprime_M-1700.root";
-  sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"TprimeTprime_M-1800.root";
+  sig_samples["TprimeTprime_M-1000"]=eosarea_TTsignal+"TprimeTprime_M-1000.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1100"]=eosarea_TTsignal+"TprimeTprime_M-1100.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1200"]=eosarea_TTsignal+"TprimeTprime_M-1200.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1300"]=eosarea_TTsignal+"TprimeTprime_M-1300.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1400"]=eosarea_TTsignal+"TprimeTprime_M-1400.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1500"]=eosarea_TTsignal+"TprimeTprime_M-1500.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1600"]=eosarea_TTsignal+"TprimeTprime_M-1600.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1700"]=eosarea_TTsignal+"TprimeTprime_M-1700.root"; // this is using 2017 sample as of Dec 3, 2018.
+  sig_samples["TprimeTprime_M-1800"]=eosarea_TTsignal+"TprimeTprime_M-1800.root"; // this is using 2017 sample as of Dec 3, 2018.
 
   //BB signal - rizki	
 //   sig_samples["BprimeBprime_M-800"]=eosarea_TTsignal+"BprimeBprime_M-800.root";
@@ -183,50 +186,42 @@ int main(int argc, char* argv[]){
 //   sig_samples["X53Tm1600LH"]=eosareasingle+"X53ToTW_LH_1600_all.root";
 
   //data samples
-  data_samples["DataElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
-  data_samples["DataElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
-  data_samples["DataMuMu2017B"]=eosdataarea+"DoubleMuon_RRB.root";
-  data_samples["DataElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
-  data_samples["DataElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
-  data_samples["DataMuMu2017C"]=eosdataarea+"DoubleMuon_RRC.root";
-  data_samples["DataElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
-  data_samples["DataElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
-  data_samples["DataMuMu2017D"]=eosdataarea+"DoubleMuon_RRD.root";
-  data_samples["DataElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
-  data_samples["DataElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
-  data_samples["DataMuMu2017E"]=eosdataarea+"DoubleMuon_RRE.root";
-  data_samples["DataElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
-  data_samples["DataElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
-  data_samples["DataMuMu2017F"]=eosdataarea+"DoubleMuon_RRF_v2.root";
+  data_samples["DataElEl2018A"]=eosdataarea+"EGamma_RunA.root";
+  data_samples["DataElMu2018A"]=eosdataarea+"MuonEG_RunA.root";
+  data_samples["DataMuMu2018A"]=eosdataarea+"DoubleMuon_RunA.root";
+  data_samples["DataElEl2018B"]=eosdataarea+"EGamma_RunB.root";
+  data_samples["DataElMu2018B"]=eosdataarea+"MuonEG_RunB.root";
+  data_samples["DataMuMu2018B"]=eosdataarea+"DoubleMuon_RunB.root";
+  data_samples["DataElEl2018C"]=eosdataarea+"EGamma_RunC.root";
+  data_samples["DataElMu2018C"]=eosdataarea+"MuonEG_RunC.root";
+  data_samples["DataMuMu2018C"]=eosdataarea+"DoubleMuon_RunC.root";
+  data_samples["DataElEl2018D"]=eosdataarea+"EGamma_RunD.root";
+  data_samples["DataElMu2018D"]=eosdataarea+"MuonEG_RunD.root";
+  data_samples["DataMuMu2018D"]=eosdataarea+"DoubleMuon_RunD.root";
 
-//   data_samples["NonPromptData"]=eosdataarea+"All_2017.root";
-  data_samples["NonPromptDataElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
-  data_samples["NonPromptDataElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
-  data_samples["NonPromptDataMuMu2017B"]=eosdataarea+"DoubleMuon_RRB.root";
-  data_samples["NonPromptDataElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
-  data_samples["NonPromptDataElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
-  data_samples["NonPromptDataMuMu2017C"]=eosdataarea+"DoubleMuon_RRC.root";
-  data_samples["NonPromptDataElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
-  data_samples["NonPromptDataElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
-  data_samples["NonPromptDataMuMu2017D"]=eosdataarea+"DoubleMuon_RRD.root";
-  data_samples["NonPromptDataElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
-  data_samples["NonPromptDataElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
-  data_samples["NonPromptDataMuMu2017E"]=eosdataarea+"DoubleMuon_RRE.root";
-  data_samples["NonPromptDataElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
-  data_samples["NonPromptDataElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
-  data_samples["NonPromptDataMuMu2017F"]=eosdataarea+"DoubleMuon_RRF_v2.root";
+//   data_samples["NonPromptData"]=eosdataarea+"All_2018.root";
+  data_samples["NonPromptDataElEl2018A"]=eosdataarea+"EGamma_RunA.root";
+  data_samples["NonPromptDataElMu2018A"]=eosdataarea+"MuonEG_RunA.root";
+  data_samples["NonPromptDataMuMu2018A"]=eosdataarea+"DoubleMuon_RunA.root";
+  data_samples["NonPromptDataElEl2018B"]=eosdataarea+"EGamma_RunB.root";
+  data_samples["NonPromptDataElMu2018B"]=eosdataarea+"MuonEG_RunB.root";
+  data_samples["NonPromptDataMuMu2018B"]=eosdataarea+"DoubleMuon_RunB.root";
+  data_samples["NonPromptDataElEl2018C"]=eosdataarea+"EGamma_RunC.root";
+  data_samples["NonPromptDataElMu2018C"]=eosdataarea+"MuonEG_RunC.root";
+  data_samples["NonPromptDataMuMu2018C"]=eosdataarea+"DoubleMuon_RunC.root";
+  data_samples["NonPromptDataElEl2018D"]=eosdataarea+"EGamma_RunD.root";
+  data_samples["NonPromptDataElMu2018D"]=eosdataarea+"MuonEG_RunD.root";
+  data_samples["NonPromptDataMuMu2018D"]=eosdataarea+"DoubleMuon_RunD.root";
 
-//   data_samples["ChargeMisID"]=eosdataarea+"All_2017.root";
-  data_samples["ChargeMisIDElEl2017B"]=eosdataarea+"DoubleEG_RRB.root";
-  data_samples["ChargeMisIDElMu2017B"]=eosdataarea+"MuonEG_RRB.root";
-  data_samples["ChargeMisIDElEl2017C"]=eosdataarea+"DoubleEG_RRC.root";
-  data_samples["ChargeMisIDElMu2017C"]=eosdataarea+"MuonEG_RRC.root";
-  data_samples["ChargeMisIDElEl2017D"]=eosdataarea+"DoubleEG_RRD.root";
-  data_samples["ChargeMisIDElMu2017D"]=eosdataarea+"MuonEG_RRD.root";
-  data_samples["ChargeMisIDElEl2017E"]=eosdataarea+"DoubleEG_RRE.root";
-  data_samples["ChargeMisIDElMu2017E"]=eosdataarea+"MuonEG_RRE.root";
-  data_samples["ChargeMisIDElEl2017F"]=eosdataarea+"DoubleEG_RRF_v2.root";
-  data_samples["ChargeMisIDElMu2017F"]=eosdataarea+"MuonEG_RRF_v2.root";
+//   data_samples["ChargeMisID"]=eosdataarea+"All_2018.root";
+  data_samples["ChargeMisIDElEl2018A"]=eosdataarea+"EGamma_RunA.root";
+  data_samples["ChargeMisIDElMu2018A"]=eosdataarea+"MuonEG_RunA.root";
+  data_samples["ChargeMisIDElEl2018B"]=eosdataarea+"EGamma_RunB.root";
+  data_samples["ChargeMisIDElMu2018B"]=eosdataarea+"MuonEG_RunB.root";
+  data_samples["ChargeMisIDElEl2018C"]=eosdataarea+"EGamma_RunC.root";
+  data_samples["ChargeMisIDElMu2018C"]=eosdataarea+"MuonEG_RunC.root";
+  data_samples["ChargeMisIDElEl2018D"]=eosdataarea+"EGamma_RunD.root";
+  data_samples["ChargeMisIDElMu2018D"]=eosdataarea+"MuonEG_RunD.root";
 
   bool signal=false;
   bool bg_mc=false;

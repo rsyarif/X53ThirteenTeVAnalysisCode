@@ -8,11 +8,11 @@ decay=${3}
 outputdir=${4}
 
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-export SCRAM_ARCH=slc6_amd64_gcc630
+export SCRAM_ARCH=slc6_amd64_gcc700
 
 
-scramv1 project CMSSW CMSSW_9_4_11
-cd CMSSW_9_4_11
+scramv1 project CMSSW CMSSW_10_2_5
+cd CMSSW_10_2_5
 eval `scramv1 runtime -sh`
 cd -
 
