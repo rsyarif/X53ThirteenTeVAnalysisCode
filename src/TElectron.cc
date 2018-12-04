@@ -53,22 +53,22 @@ bool TElectron::mva94XTightV1(){
   if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
 
   if(fabs(eta)<0.8){
-  	float C=0.96165
-  	float tau=8.75794
-  	float A=3.13902
-    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  	float C=0.96165;
+  	float tau=8.75794;
+  	float A=3.13902;
+    if(mvaValue> ( C - exp( -pt / tau ) *A ) ) return true;
   }
   else if(fabs(eta)<1.479){
-  	float C=0.93193
-  	float tau=8.84606
-  	float A=3.59851
-    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  	float C=0.93193;
+  	float tau=8.84606;
+  	float A=3.59851;
+    if(mvaValue> ( C - exp( -pt / tau ) *A ) ) return true;
   }
   else if(fabs(eta)<2.4){
-  	float C=0.88993
-  	float tau=10.12423
-  	float A=4.35279
-    if(mvatemp> ( C - exp( -pt / tau ) *A ) return true;
+  	float C=0.88993;
+  	float tau=10.12423;
+  	float A=4.35279;
+    if(mvaValue> ( C - exp( -pt / tau ) *A ) ) return true;
   }
   //if none of the above conditions is met return false
   return false;
@@ -92,13 +92,13 @@ bool TElectron::mva94XLooseV1(){
   if(fabs(eta)>1.442 && fabs(eta)<1.556) return false;
 
   if(fabs(eta)<0.8){
-    if(mvatemp>-0.86) return true;
+    if(mvaValue>-0.86) return true;
   }
   else if(fabs(eta)<1.479){
-    if(mvatemp>-0.81) return true;
+    if(mvaValue>-0.81) return true;
   }
   else if(fabs(eta)<2.4){
-    if(mvatemp>-0.72) return true;
+    if(mvaValue>-0.72) return true;
   }
   //if none of the above conditions is met return false
   return false;
