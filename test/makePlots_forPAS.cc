@@ -21,7 +21,7 @@
 #include "TGraphAsymmErrors.h"
 #include "TString.h"
 //eaxample usage:
-//root -b -q -l 'makePlots_forPAS.cc("MVA2016TightRC","CBTightMiniIsoTight")' 
+//root -b -q -l 'makePlots_forPAS.cc("MVA2016TightRC","CBTightMiniIsoTight")'
 
 void DrawAndSaveCombined(Variable* Var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig, Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu=-1, int cutIndex=0,std::string weightstring="");
 TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err);
@@ -76,8 +76,8 @@ float uncJES_TTZ=0.04;
 float uncJES_TTW=0.03;
 float uncJES_TTH=0.04;
 float uncJES_TTTT=0.02;
-float uncJES_WZ=0.09; 
-float uncJES_ZZ=0.09; 
+float uncJES_WZ=0.09;
+float uncJES_ZZ=0.09;
 float uncJES_WpWp=0.09;
 float uncJES_WWZ=0.19;
 float uncJES_WZZ=0.09;
@@ -87,17 +87,17 @@ float uncJER_TTZ=0.01;
 float uncJER_TTW=0.01;
 float uncJER_TTH=0.01;
 float uncJER_TTTT=0.01;
-float uncJER_WZ=0.01; 
+float uncJER_WZ=0.01;
 float uncJER_ZZ=0.01;
 float uncJER_WpWp=0.01;
 float uncJER_WWZ=0.1;
-float uncJER_WZZ=0.01; 
+float uncJER_WZZ=0.01;
 float uncJER_ZZZ=0;
 
 //folder to save plots - rizki
 const std::string saveFolder = "plots_Nov26-2018_nConst4_HT1200_0NonSSLep";
 
-      
+
 void makePlots_forPAS(std::string elID, std::string muID){
 
   //make output file
@@ -105,15 +105,15 @@ void makePlots_forPAS(std::string elID, std::string muID){
 
 
   //set TDRStyle
-  setTDRStyle();   
-  
+  setTDRStyle();
+
   //make folder to save plots - rizki
   system(("mkdir -v "+saveFolder).c_str());
- 
-  //desired lumi:	
+
+  //desired lumi:
   //Json lumi with normtag: BCDEF - https://twiki.cern.ch/twiki/bin/view/CMS/PdmV2017Analysis - Nov 11, 2018.
-  float lumi = 41.56; //fb^-1  
-  float lumi2 = 0; //fb^-1  
+  float lumi = 41.56; //fb^-1
+  float lumi2 = 0; //fb^-1
   std::string weightstring = "PUWeight * ChargeMisIDWeight * NPWeight * IDSF * IsoSF * trigSF * GsfSF * MCWeight *";
 
   std::vector<Variable*> vVariables = getVariableVec();
@@ -127,8 +127,8 @@ void makePlots_forPAS(std::string elID, std::string muID){
 
 //   std::vector<Sample*> vSigSamples1 = getInclusiveSigSampleVecForTable("sZVeto", lumi1, elID, muID,"2016B-D");
 //   std::vector<Sample*> vSigSamples2 = getInclusiveSigSampleVecForTable("sZVeto", lumi2, elID, muID,"2016E-H");
-  
-  //TT SIGNAL <decay> - RIZKI 
+
+  //TT SIGNAL <decay> - RIZKI
   std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi, elID, muID,"2017B-F","BWBW",0);
   std::cout << "DONE Preparing signal BWBW samples" << std::endl;
 
@@ -163,7 +163,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,0,j,weightstring);
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,1,j,weightstring);
       DrawAndSaveCombined(vVariables.at(i),vBkgSamples,vSigSamples,dataSample, fout,elID,muID,2,j,weightstring);
-      
+
       //gROOT->Reset();
     }
   }
@@ -177,7 +177,7 @@ void makePlots_forPAS(std::string elID, std::string muID){
 void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<Sample*> vSig,Sample* dataSample, TFile* outfile, std::string elID, std::string muID, int nMu, int cutIndex,std::string weightstring){
 
   TCanvas* c1 = new TCanvas("c1","c1");
-  
+
   c1->SetLogy();
 
   //make tpads
@@ -276,7 +276,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
      h_wpwp = new TH1F("h_wpwp",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
      h_bos = new TH1F("h_bos",(var->name).c_str(), var->nbins, var->xmin, var->xmax); //edited by rizki
      h_ttX = new TH1F("h_ttX",(var->name).c_str(), var->nbins, var->xmin, var->xmax); //edited by rizki
-    
+
   }
 
   //*******Now fill in THStack
@@ -313,7 +313,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     else  {
       h->Scale(s->weight);
     }
-   
+
     //add overflow to last bin
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
@@ -354,7 +354,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //else std::cout<<"sample "<<s->name<<" not added!!!"<<std::endl;
     assert(h);
     //tStack->Add(h);
-        
+
     delete h; //added by rizki
 
   }
@@ -372,30 +372,30 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   h_npf->SetFillColor(kGray);
   tStack->Add(h_npf);
   leg->AddEntry(h_npf, "Non-prompt", "f");
-  
+
   //add to error hist
-  h_err->Add(h_bos); 
-  h_err->Add(h_ttX); 
-  h_err->Add(h_cmid); 
-  h_err->Add(h_npf); 
-  
+  h_err->Add(h_bos);
+  h_err->Add(h_ttX);
+  h_err->Add(h_cmid);
+  h_err->Add(h_npf);
+
 
   //make errors
   TGraphAsymmErrors *tgae_err = new TGraphAsymmErrors(); //for some reason this shifts the bins by 1.
   std::vector<float> errs;
   for(unsigned int ibin=1; ibin<= h_err->GetNbinsX(); ibin++){
-    
+
     tgae_err->SetPoint(ibin,h_err->GetBinCenter(ibin),h_err->GetBinContent(ibin)); //make sure h_err = tgae_err
-    
+
     //check bin contents vs error hist - just doing this here since looping over bins anyway
     std::cout<<"Bin: "<<ibin<<" ("<< h_err->GetBinLowEdge(ibin) <<")" << " err hist content: "<<h_err->GetBinContent(ibin)<<", summed bkg: "<<(h_ttX->GetBinContent(ibin)+h_bos->GetBinContent(ibin)+h_cmid->GetBinContent(ibin)+h_npf->GetBinContent(ibin))<<" NP bkg: "<<h_npf->GetBinContent(ibin)<<" CMID: "<<h_cmid->GetBinContent(ibin)<<" TTX: "<<h_ttX->GetBinContent(ibin)<<" BOSON: "<<h_bos->GetBinContent(ibin)<<std::endl;
-    
+
     //nonprompt
     float etemp = 0.0;
     float etemp_stat = 0.0;
     float etemp_sys = 0.0;
     //if(h_npf->GetBinContent(ibin)!=0) etemp_stat = etemp_stat + pow(h_npf->GetBinError(ibin),2); //stat
-    //else etemp_stat = etemp_stat + 1.8*1.8; //stat    
+    //else etemp_stat = etemp_stat + 1.8*1.8; //stat
     etemp_stat= etemp_stat + pow(h_npf->GetBinError(ibin),2); //stat
     etemp_sys = etemp_sys + pow( 0.5*h_npf->GetBinContent(ibin),2);//sys
     //chargemisID
@@ -492,7 +492,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     etemp_sys = etemp_sys + pow(0.025*h_zzz->GetBinContent(ibin),2); //lumi
     etemp_sys = etemp_sys + pow(uncPU_ZZZ*h_zzz->GetBinContent(ibin),2); //pileup
     etemp_sys = etemp_sys + pow(0.03*h_zzz->GetBinContent(ibin),2); //trigger
-    etemp_sys = etemp_sys + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso	
+    etemp_sys = etemp_sys + 2*pow(0.02*h_zzz->GetBinContent(ibin),2); //id plus iso
 
     //e_temp = etemp_stat + etemp_sys;
 
@@ -503,7 +503,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 	std::cout<<" +" << tgae_err->GetErrorYhigh(ibin);
 	std::cout<<" -" << tgae_err->GetErrorYlow(ibin);
 	std::cout << std::endl;
-	
+
 
 	//actually everything above are squared errors
     etemp = pow(etemp,0.5);
@@ -518,7 +518,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 
   //now set err bin to have overflow content
   //h_err->SetBinContent(h_err->GetNbinsX(),lastbin);
-  
+
   tStack->Draw("HIST");
   tStack->GetXaxis()->SetTitle(var->Xaxis.c_str());
   tStack->GetXaxis()->CenterTitle();
@@ -552,39 +552,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   TH1F* hSig_1 = new TH1F("hSig_1",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   TH1F* hSig_2 = new TH1F("hSig_2",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
   for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
-    
-    Sample* s = vSig.at(i1);
-    if(s->name.find("1000")==std::string::npos) continue;
-  	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
-    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
-    TTree* t = s->tree;
 
-    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());}
-    else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
-    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());}
-      
-    float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
-    (h)->SetBinContent( (h)->GetNbinsX(),ovf);
-    //scale by weight
-    h->Scale(s->weight);
-    //aesthetics
-    h->SetFillStyle(0);
-    h->SetLineColor(s->color);
-    hSig_1->SetLineColor(s->color);    
-    h->SetLineWidth(2);
-    hSig_1->SetLineWidth(2);
-    h->SetLineStyle(s->linestyle);
-    h->GetXaxis()->SetTitle(var->Xaxis.c_str());
-    h->GetYaxis()->SetTitle(var->Yaxis.c_str());
-    hSig_1->Add(h);
-    hSig_1->SetLineStyle(s->linestyle);
-    
-    delete h; //added by rizki
-  }
-  hSig_1->Draw("hist same");
-  leg->AddEntry(hSig_1,"T#bar{T}(1.0 Tev)","l");
-  for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
-    
     Sample* s = vSig.at(i1);
     if(s->name.find("1200")==std::string::npos) continue;
   	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
@@ -594,7 +562,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());}
     else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
     else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());}
-      
+
     float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
     (h)->SetBinContent( (h)->GetNbinsX(),ovf);
     //scale by weight
@@ -602,7 +570,39 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     //aesthetics
     h->SetFillStyle(0);
     h->SetLineColor(s->color);
-    hSig_2->SetLineColor(s->color);    
+    hSig_1->SetLineColor(s->color);
+    h->SetLineWidth(2);
+    hSig_1->SetLineWidth(2);
+    h->SetLineStyle(s->linestyle);
+    h->GetXaxis()->SetTitle(var->Xaxis.c_str());
+    h->GetYaxis()->SetTitle(var->Yaxis.c_str());
+    hSig_1->Add(h);
+    hSig_1->SetLineStyle(s->linestyle);
+
+    delete h; //added by rizki
+  }
+  hSig_1->Draw("hist same");
+  leg->AddEntry(hSig_1,"T#bar{T}(1.2 Tev)","l");
+  for(std::vector<Sample*>::size_type i1=0;i1<vSig.size();i1++){
+
+    Sample* s = vSig.at(i1);
+    if(s->name.find("1500")==std::string::npos) continue;
+  	std::cout << "-------------------------------------->>> Processing:" << s->name <<endl; //added by rizki
+    TH1F* h = new TH1F("h",(var->name).c_str(), var->nbins, var->xmin, var->xmax);
+    TTree* t = s->tree;
+
+    if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){ t->Project("h","Lep1Pt",(cutstring.str()).c_str());}
+    else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ t->Project("h","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;}
+    else{ t->Project("h",(var->name).c_str(),(cutstring.str()).c_str());}
+
+    float ovf =  (h)->GetBinContent( (h)->GetNbinsX()+1) + (h)->GetBinContent( (h)->GetNbinsX()) ;
+    (h)->SetBinContent( (h)->GetNbinsX(),ovf);
+    //scale by weight
+    h->Scale(s->weight);
+    //aesthetics
+    h->SetFillStyle(0);
+    h->SetLineColor(s->color);
+    hSig_2->SetLineColor(s->color);
     h->SetLineWidth(2);
     hSig_2->SetLineWidth(2);
     h->SetLineStyle(s->linestyle);
@@ -610,11 +610,11 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
     h->GetYaxis()->SetTitle(var->Yaxis.c_str());
     hSig_2->Add(h);
     hSig_2->SetLineStyle(s->linestyle);
-    
+
     delete h; //added by rizki
   }
   hSig_2->Draw("hist same");
-  leg->AddEntry(hSig_2,"T#bar{T}(2.0 Tev)","l");
+  leg->AddEntry(hSig_2,"T#bar{T}(1.5 Tev)","l");
 
 
   //Draw data- merge trees into chain
@@ -625,10 +625,10 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   if(var->name=="Lep1PtEl" || var->name=="Lep1PtMu"){
     tData->Project("hData","Lep1Pt",(cutstring.str()).c_str());
   }
-  else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){ 
+  else if(var->name=="cleanAK4HTEl" || var->name=="cleanAK4HTMu"){
     tData->Project("hData","cleanAK4HT",(cutstring.str()).c_str());std::cout<<"command: t->Project(h,Lep1Pt,"<<cutstring.str()<<std::endl;
   }
-  else{  
+  else{
     tData->Project("hData",(var->name).c_str(),(cutstring.str()).c_str());
   }
   float ovf_d =  (hData)->GetBinContent( (hData)->GetNbinsX()+1) + (hData)->GetBinContent( (hData)->GetNbinsX()) ;
@@ -668,7 +668,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
 
   //draw latex
   cmstex->DrawLatex(0.15,0.96,"CMS Preliminary");
-  lumitex->DrawLatex(0.65,0.96,"41.56 fb^{-1} (13 TeV)"); 
+  lumitex->DrawLatex(0.65,0.96,"41.56 fb^{-1} (13 TeV)");
 
   //draw latex for channels
   TLatex* chantex = new TLatex();
@@ -684,7 +684,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   pad2->cd();
   TH1F* hpull = getPullPlot(hData, tStack, var, h_err);
   hpull->Draw("HIST");
-  //This changes the range of the X axis                                                                                                                                                                     
+  //This changes the range of the X axis
   TAxis* axis = hpull->GetXaxis();
   //ChangeAxisRange(title[i], hpull->GetXaxis());
   hpull->GetXaxis()->SetLabelSize(0.15);
@@ -708,7 +708,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   minus1line->SetLineStyle(3);
   plus1line->Draw();
   minus1line->Draw();
-  //pad->RedrawAxis();                                                                                                                                                                                       
+  //pad->RedrawAxis();
   c1->Update();
 
   //rename plots by channel
@@ -726,7 +726,7 @@ void DrawAndSaveCombined(Variable* var, std::vector<Sample*> vBkg, std::vector<S
   std::string pdfname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".pdf";
   std::string pngname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".png";
   std::string Cname = "./"+saveFolder+"/"+(var->name)+"_"+(vBkg[0]->cutname)+"_"+channel+"_"+cutname+"_Mu"+muID+"_El"+elID+".C";
-  
+
   std::cout << "WRITING : " << pdfname << std::endl;
   c1->SaveAs(pdfname.c_str());
   c1->SaveAs(pngname.c_str());
@@ -780,7 +780,7 @@ TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err){
   string title = hData->GetTitle();
   title += " (Pull)";
   TH1F* hpull = (TH1F*)hData->Clone(title.c_str());
-  
+
   int size = hData->GetNbinsX();
   //hpull->SetTitle(";;Residual");//#sigma(Data-MC)");
   hpull->SetTitle(";;#frac{(obs-bkg)}{#sigma}");
@@ -839,8 +839,8 @@ TH1F* getPullPlot(TH1F* hData, THStack * h, Variable* var, TH1F* h_err){
 
 double poissonErrors(TGraphAsymmErrors *tgae_err, TH1F* h, double sys_SqErr, int ibin){
 	float alpha = 1. - 0.6827;
-    double N = h->GetBinContent(ibin); 
-    double N_g = tgae_err->GetY()[ibin]; 
+    double N = h->GetBinContent(ibin);
+    double N_g = tgae_err->GetY()[ibin];
     double L =  (N==0.) ? 0  : (ROOT::Math::gamma_quantile((alpha)/2,N,1.));
     double U =  (N==0.) ? 0  : ROOT::Math::gamma_quantile_c((alpha)/2.0,N+1,1);
     double totSqErr_down = pow(N-L,2)+ sys_SqErr;
@@ -858,7 +858,7 @@ double poissonErrors(TGraphAsymmErrors *tgae_err, TH1F* h, double sys_SqErr, int
 
     tgae_err->SetPointEXlow(ibin,h->GetBinWidth(ibin)/2);
     tgae_err->SetPointEXhigh(ibin,h->GetBinWidth(ibin)/2);
-    
+
     //return the largest sensible error
     double totSqErr =  0.0;
     if (N-totSqErr_up < 0) totSqErr=totSqErr_down;
