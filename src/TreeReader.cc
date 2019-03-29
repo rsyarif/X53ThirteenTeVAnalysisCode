@@ -227,12 +227,12 @@ Int_t TreeReader::GetEntry(Long64_t entry){
 
   //now from allElectrons make goodElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->mvaTightRCIso()) goodElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->mva94XTightV2_90_Iso_RC()) goodElectrons.push_back(allElectrons.at(iel));
   }
   //std::cout<<"making loose electrons"<<std::endl;
   //now from allElectrons make looseElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
-    if(allElectrons.at(iel)->mvaLooseRCIso()) looseElectrons.push_back(allElectrons.at(iel));
+    if(allElectrons.at(iel)->mva94XLooseV2_Iso_RC()) looseElectrons.push_back(allElectrons.at(iel));
   }
   //now from allElectrons make cmsdasElectrons
   for(unsigned int iel=0; iel< allElectrons.size(); iel++){
