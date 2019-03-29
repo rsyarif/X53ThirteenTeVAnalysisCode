@@ -79,23 +79,23 @@ int main(int argc, char* argv[]){
 
   //TT SIGNAL <decay> - RIZKI 
   //int whichBR = 1 ; //0 = singlet, 1 = doublet, 2 = tZ 100%
-//   std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BWBW",whichBR);
-//   std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THBW",whichBR);
-//   std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THTH",whichBR);
-//   std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZBW",whichBR);
-//   std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTH",whichBR);
-//   std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTZ",whichBR);
-//   std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
+  std::vector<Sample*> vSigSamples1 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BWBW",whichBR);
+  std::vector<Sample*> vSigSamples2 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THBW",whichBR);
+  std::vector<Sample*> vSigSamples3 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"THTH",whichBR);
+  std::vector<Sample*> vSigSamples4 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZBW",whichBR);
+  std::vector<Sample*> vSigSamples5 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTH",whichBR);
+  std::vector<Sample*> vSigSamples6 = getInclusiveSigTTSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TZTZ",whichBR);
+  std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
 
   //BB SIGNAL <decay> - RIZKI 
   //int whichBR = 0 ; //0 = singlet, 1 = doublet, 2 = tW 100%
-  std::vector<Sample*> vSigSamples1 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TWTW",whichBR);
-  std::vector<Sample*> vSigSamples2 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHTW",whichBR);
-  std::vector<Sample*> vSigSamples3 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHBH",whichBR);
-  std::vector<Sample*> vSigSamples4 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZTW",whichBR);
-  std::vector<Sample*> vSigSamples5 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBH",whichBR);
-  std::vector<Sample*> vSigSamples6 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBZ",whichBR);
-  std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
+//   std::vector<Sample*> vSigSamples1 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"TWTW",whichBR);
+//   std::vector<Sample*> vSigSamples2 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHTW",whichBR);
+//   std::vector<Sample*> vSigSamples3 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BHBH",whichBR);
+//   std::vector<Sample*> vSigSamples4 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZTW",whichBR);
+//   std::vector<Sample*> vSigSamples5 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBH",whichBR);
+//   std::vector<Sample*> vSigSamples6 = getInclusiveSigBBSampleVecForTable("sZVeto", lumi,"MVA2016TightRC","CBTightMiniIsoTight",era,"BZBZ",whichBR);
+//   std::vector<Sample*> vSig = appendSampleVectors(vSigSamples1,vSigSamples2,vSigSamples3,vSigSamples4,vSigSamples5,vSigSamples6);
 
 
   Sample* dataSample = getDataSample("sZVeto","MVA2016TightRC","CBTightMiniIsoTight",era);
@@ -155,8 +155,8 @@ int main(int argc, char* argv[]){
 
   //write observed
   TString erast="";
-  if(era=="2016B-D") erast="BD";
-  else erast="EH";
+  if(era=="2017B-F") erast="BF";
+  else erast="UnknownEra";
 		       
   //TH1F* All__DATA = new TH1F("All__DATA","",3,0,3);
   TH1F* elel__DATA = new TH1F("elel"+erast+"__DATA","",1,0,1);

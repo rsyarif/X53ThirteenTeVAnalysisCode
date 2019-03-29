@@ -14,236 +14,42 @@
 
 
 std::string eosDirector = "root://cmseos.fnal.gov:/";
-std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer/";
+// std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2018_11_18_rizki_hadds_Analyzer/";
+// std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_1_13_rizki_hadds_Analyzer_elID2017_IsoTrig/";
+// std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_1_13_rizki_hadds_Analyzer_elID2017_NonIsoTrig/";
+// std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_2_18_rizki_hadds_Analyzer_elID2017_nonIsoHTtrig/";
+std::string samplesDir = "/store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_3_15_rizki_hadds_Analyzer_elIDv2_nonIsoHTtrig/";
 
 std::vector<Variable*> getVariableVec(){
 
   std::vector<Variable*> vVar;
-// 
-//   //Variable* lep1ptEl = new Variable("Lep1PtEl",30,0,600,"Leading Lepton (electron) p_{T} (GeV)","N_{Events} / 20 GeV");
-//   //vVar.push_back(lep1ptEl);
-//   //Variable* lep1ptMu = new Variable("Lep1PtMu",30,0,600,"Leading Lepton (muon) p_{T} (GeV)","N_{Events} / 20 GeV");
-//   //vVar.push_back(lep1ptMu);
-// 
+
   Variable* lep1pt = new Variable("Lep1Pt",30,0,600,"Leading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep1pt);
   Variable* lep1eta = new Variable("Lep1Eta",25,-5,5,"Leading Lepton #eta","N_{Events}");
   vVar.push_back(lep1eta);
-//   Variable* lep1phi = new Variable("Lep1Phi",20,-3.5,3.5,"Leading Lepton #phi","N_{Events}");
-//   vVar.push_back(lep1phi);
-//   //Variable* lep1RelIso = new Variable("Lep1RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-//   //vVar.push_back(lep1RelIso);
-//   Variable* lep1MiniIso = new Variable("Lep1MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
-//   vVar.push_back(lep1MiniIso);
-//   //Variable* lep1SusyIso = new Variable("Lep1SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-//   //vVar.push_back(lep1SusyIso);
-// 
+
   Variable* lep2pt = new Variable("Lep2Pt",30,0,600,"subLeading Lepton p_{T} (GeV)","N_{Events} / 20 GeV");
   vVar.push_back(lep2pt);
   Variable* lep2eta = new Variable("Lep2Eta",25,-5,5,"subLeading Lepton #eta","N_{Events}");
   vVar.push_back(lep2eta);
-//   Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
-//   vVar.push_back(lep2phi);
-//   //Variable* lep2RelIso = new Variable("Lep2RelIso",40,0,1,"Leading Lepton Relative Isolation","N_{Events}");
-//   //vVar.push_back(lep2RelIso);
-//   Variable* lep2MiniIso = new Variable("Lep2MiniIso",40,0,1,"Leading Lepton MiniIsolation","N_{Events}");
-//   vVar.push_back(lep2MiniIso);
-//   //Variable* lep2SusyIso = new Variable("Lep2SusyIso",40,0,1,"Leading Lepton Susy Isolation","N_{Events}");
-//   //vVar.push_back(lep2SusyIso);
-// 
-// 
-//   /*Variable* ak4jet1pt = new Variable("AK4Jet1Pt",15,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
-//   vVar.push_back(ak4jet1pt);
-//   Variable* ak4jet1eta = new Variable("AK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-//   vVar.push_back(ak4jet1eta);
-//   Variable* ak4jet1phi = new Variable("AK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-//   vVar.push_back(ak4jet1phi);
-// 
-//   Variable* ak4jet2pt = new Variable("AK4Jet2Pt",15,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
-//   vVar.push_back(ak4jet2pt);
-//   Variable* ak4jet2eta = new Variable("AK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-//   vVar.push_back(ak4jet2eta);
-//   Variable* ak4jet2phi = new Variable("AK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-//   vVar.push_back(ak4jet2phi);
-// 
-// 
-//   Variable* ak4ht = new Variable("AK4HT",20,0,3000,"AK4 H_{T} (GeV)","N_{Events}");
-//   vVar.push_back(ak4ht);
-//   Variable* nak4jets = new Variable("nAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-//   vVar.push_back(nak4jets);*/
-// 
-//   //cleaned jet variables
+
+  //cleaned jet variables
   Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet1pt);
   Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet1eta);
-//   Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-//   vVar.push_back(cleanak4jet1phi);
-// 
+
   Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
   vVar.push_back(cleanak4jet2pt);
   Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
   vVar.push_back(cleanak4jet2eta);
-//   Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-//   vVar.push_back(cleanak4jet2phi);
-// 
-//   Variable* cleanak4htEl = new Variable("cleanAK4HTEl",25,0,3000,"H_{T}^{lep} (leading electron) (GeV)","N_{Events} / 120 GeV"); 
-//   vVar.push_back(cleanak4htEl);
-//   Variable* cleanak4htMu = new Variable("cleanAK4HTMu",25,0,3000,"H_{T}^{lep}(leading muon) (GeV)","N_{Events} / 120 GeV");
-//   vVar.push_back(cleanak4htMu);
+
   Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","Events / 120 GeV");
   vVar.push_back(cleanak4ht);
-//   Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-//   vVar.push_back(ncleanak4jets);
-// 
-//   /*
-//   //new ak4 jets
-//   Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-//   vVar.push_back(newCleanak4jet1pt);
-//   Variable* newCleanak4jet1eta = new Variable("newCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-//   vVar.push_back(newCleanak4jet1eta);
-//   Variable* newCleanak4jet1phi = new Variable("newCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-//   vVar.push_back(newCleanak4jet1phi);
-// 
-//   Variable* newCleanak4jet2pt = new Variable("newCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-//   vVar.push_back(newCleanak4jet2pt);
-//   Variable* newCleanak4jet2eta = new Variable("newCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-//   vVar.push_back(newCleanak4jet2eta);
-//   Variable* newCleanak4jet2phi = new Variable("newCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-//   vVar.push_back(newCleanak4jet2phi);
-// 
-//   Variable* newCleanak4ht = new Variable("newCleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
-//   vVar.push_back(newCleanak4ht);
-//   Variable* nnewCleanak4jets = new Variable("nNewCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-//   vVar.push_back(nnewCleanak4jets);
-// 
-// 
-//   //ak8jets
-//   Variable* ak8jet1pt = new Variable("AK8Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-//   vVar.push_back(ak8jet1pt);
-//   Variable* ak8jet1eta = new Variable("AK8Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-//   vVar.push_back(ak8jet1eta);
-//   Variable* ak8jet1phi = new Variable("AK8Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-//   vVar.push_back(ak8jet1phi);
-// 
-//   Variable* ak8jet1tau1 = new Variable("AK8Jet1Tau1",50,0,1,"#tau_{1}","N_{Events}");
-//   vVar.push_back(ak8jet1tau1);
-//   Variable* ak8jet1tau2 = new Variable("AK8Jet1Tau2",50,0,1,"#tau_{2}","N_{Events}");
-//   vVar.push_back(ak8jet1tau2);
-//   Variable* ak8jet1tau3 = new Variable("AK8Jet1Tau3",50,0,1,"#tau_{3}","N_{Events}");
-//   vVar.push_back(ak8jet1tau3);
-//   Variable* ak8jet1tau21 = new Variable("AK8Jet1Tau21",50,0,1,"#tau_{21}","N_{Events}");
-//   vVar.push_back(ak8jet1tau21);
-//   Variable* ak8jet1tau31 = new Variable("AK8Jet1Tau31",50,0,1,"#tau_{31}","N_{Events}");
-//   vVar.push_back(ak8jet1tau31);
-//   Variable* ak8jet1tau32 = new Variable("AK8Jet1Tau32",50,0,1,"#tau_{32}","N_{Events}");
-//   vVar.push_back(ak8jet1tau32);
-// 
-// 
-//   Variable* ak8jet1bdisc = new Variable("AK8Jet1SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
-//   vVar.push_back(ak8jet1bdisc);
-// 
-//   Variable* ak8jet1trimmass = new Variable("AK8Jet1TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
-//   vVar.push_back(ak8jet1trimmass);
-//   Variable* ak8jet1prunemass = new Variable("AK8Jet1PruneMass",100,0,250,"Pruned Mass","N_{Events}");
-//   vVar.push_back(ak8jet1prunemass);
-//   Variable* ak8jet1filtmass = new Variable("AK8Jet1FiltMass",100,0,250,"Filtered Mass","N_{Events}");
-//   vVar.push_back(ak8jet1filtmass);
-//   Variable* ak8jet1sdmass = new Variable("AK8Jet1SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
-//   vVar.push_back(ak8jet1sdmass);
-// 
-// 
-//   Variable* ak8jet2pt = new Variable("AK8Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-//   vVar.push_back(ak8jet2pt);
-//   Variable* ak8jet2eta = new Variable("AK8Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-//   vVar.push_back(ak8jet2eta);
-//   Variable* ak8jet2phi = new Variable("AK8Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-//   vVar.push_back(ak8jet2phi);
-// 
-//   Variable* ak8jet2tau1 = new Variable("AK8Jet2Tau1",50,0,1,"#tau_{1}","N_{Events}");
-//   vVar.push_back(ak8jet2tau1);
-//   Variable* ak8jet2tau2 = new Variable("AK8Jet2Tau2",50,0,1,"#tau_{2}","N_{Events}");
-//   vVar.push_back(ak8jet2tau2);
-//   Variable* ak8jet2tau3 = new Variable("AK8Jet2Tau3",50,0,1,"#tau_{3}","N_{Events}");
-//   vVar.push_back(ak8jet2tau3);
-//   Variable* ak8jet2tau21 = new Variable("AK8Jet2Tau21",50,0,1,"#tau_{21}","N_{Events}");
-//   vVar.push_back(ak8jet2tau21);
-//   Variable* ak8jet2tau31 = new Variable("AK8Jet2Tau31",50,0,1,"#tau_{31}","N_{Events}");
-//   vVar.push_back(ak8jet2tau31);
-//   Variable* ak8jet2tau32 = new Variable("AK8Jet2Tau32",50,0,1,"#tau_{32}","N_{Events}");
-//   vVar.push_back(ak8jet2tau32);
-// 
-// 
-//   Variable* ak8jet2bdisc = new Variable("AK8Jet2SubjetMaxBDisc",50,0,1,"Max Subjet CSV Score","N_{Events}");
-//   vVar.push_back(ak8jet2bdisc);
-// 
-//   Variable* ak8jet2trimmass = new Variable("AK8Jet2TrimMass",100,0,250,"Trimmed Mass","N_{Events}");
-//   vVar.push_back(ak8jet2trimmass);
-//   Variable* ak8jet2prunemass = new Variable("AK8Jet2PruneMass",100,0,250,"Pruned Mass","N_{Events}");
-//   vVar.push_back(ak8jet2prunemass);
-//   Variable* ak8jet2filtmass = new Variable("AK8Jet2FiltMass",100,0,250,"Filtered Mass","N_{Events}");
-//   vVar.push_back(ak8jet2filtmass);
-//   Variable* ak8jet2sdmass = new Variable("AK8Jet2SDMass",100,0,250,"SoftDrop Mass","N_{Events}");
-//   vVar.push_back(ak8jet2sdmass);
-//   */
-// 
-//   Variable* nnonssleps = new Variable("nNonSSLeps",17,0,17,"N_{Non-SS Leps}","N_{Events}");
-//   vVar.push_back(nnonssleps);
-// 
-//   //simple cleaned jet variables
-//   /*Variable* simpleCleanak4jet1pt = new Variable("simpleCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet1pt);
-//   Variable* simpleCleanak4jet1eta = new Variable("simpleCleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet1eta);
-//   Variable* simpleCleanak4jet1phi = new Variable("simpleCleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet1phi);
-// 
-//   Variable* simpleCleanak4jet2pt = new Variable("simpleCleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet2pt);
-//   Variable* simpleCleanak4jet2eta = new Variable("simpleCleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet2eta);
-//   Variable* simpleCleanak4jet2phi = new Variable("simpleCleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-//   vVar.push_back(simpleCleanak4jet2phi);
-// 
-// 
-//   Variable* simpleCleanak4ht = new Variable("simpleCleanAK4HT",20,0,3000,"simpleCleanAK4 H_{T} (GeV)","N_{Events}");
-//   vVar.push_back(simpleCleanak4ht);
-//   Variable* nsimpleCleanak4jets = new Variable("nSimpleCleanAK4Jets",17,0,17,"N_{simpleCleanAK4 Jets}","N_{Events}");
-//   vVar.push_back(nsimpleCleanak4jets);*/
-// 
   Variable* nConst = new Variable("nConst",17,0,17,"N_{Const}","N_{Events}");
   vVar.push_back(nConst);
-// 
-//   //Variable* nNewConst = new Variable("nNewConst",17,0,17,"N_{Boosted Const}","N_{Events}");
-//   //vVar.push_back(nNewConst);
-// 
-//   //Variable* nConstDiff = new Variable("nNewConst - nConst",10,-5,5,"N_{Boosted Const} - N_{Const}","N_{Events}");
-//   //vVar.push_back(nConstDiff);
-// 
-//   //Variable* NTopTags = new Variable("NTopTags",5,0,5,"N_{Top Tagged Jets}","N_{Events}");
-//   //vVar.push_back(NTopTags);
-// 
-//   //Variable* NWTags = new Variable("NWTags",5,0,5,"N_{W Tagged Jets}","N_{Events}");
-//   //vVar.push_back(NWTags);
-// 
-//   //Variable* X53Mass = new Variable("X53Mass",50,100,2000,"M_{X53}","N_{Events}");
-//   //vVar.push_back(X53Mass);
-// 
-//   Variable* met = new Variable("MET",60,0,600,"MET (GeV)", "N_{Events}");
-//   vVar.push_back(met);
-//   Variable* dilepMass = new Variable("DilepMass",20,0,600,"Dilepton Mass (GeV)", "N_{Events} / 30 GeV");
-//   vVar.push_back(dilepMass);
-//   
-// 
-//   Variable* nPV = new Variable("nPV",60,0,60,"N_{PV}","N_{Events}/bin");
-//   vVar.push_back(nPV);
-// 
-//   Variable* lep1MinDR = new Variable("Lep1MinDR",70,0,7,"Min(#Delta_{R} (Lep1,jet))","N_{Events} / bin");
-//   vVar.push_back(lep1MinDR);
-// 
-//   Variable* lep2MinDR = new Variable("Lep2MinDR",70,0,7,"Min(#Delta_{R} (Lep2,jet))","N_{Events} / bin");
-//   vVar.push_back(lep2MinDR);
-// 
+
   return vVar;
 }
 
@@ -264,27 +70,6 @@ std::vector<Variable*> getVariableVecForBoosted(){
   vVar.push_back(lep2eta);
   Variable* lep2phi = new Variable("Lep2Phi",20,-3.5,3.5,"subLeading Lepton #phi","N_{Events}");
   vVar.push_back(lep2phi);
-  /*
-  //cleaned jet variables
-  Variable* cleanak4jet1pt = new Variable("cleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(cleanak4jet1pt);
-  Variable* cleanak4jet1eta = new Variable("cleanAK4Jet1Eta",25,-5,5,"Leading Jet #eta","N_{Events}");
-  vVar.push_back(cleanak4jet1eta);
-  Variable* cleanak4jet1phi = new Variable("cleanAK4Jet1Phi",20,-3.5,3.5,"Leading Jet #phi","N_{Events}");
-  vVar.push_back(cleanak4jet1phi);
-
-  Variable* cleanak4jet2pt = new Variable("cleanAK4Jet2Pt",30,0,600,"subLeading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
-  vVar.push_back(cleanak4jet2pt);
-  Variable* cleanak4jet2eta = new Variable("cleanAK4Jet2Eta",25,-5,5,"subLeading Jet #eta","N_{Events}");
-  vVar.push_back(cleanak4jet2eta);
-  Variable* cleanak4jet2phi = new Variable("cleanAK4Jet2Phi",20,-3.5,3.5,"subLeading Jet #phi","N_{Events}");
-  vVar.push_back(cleanak4jet2phi);
-
-  Variable* cleanak4ht = new Variable("cleanAK4HT",25,0,3000,"H_{T}^{lep} (GeV)","N_{Events} / 120 GeV");
-  vVar.push_back(cleanak4ht);
-  Variable* ncleanak4jets = new Variable("nCleanAK4Jets",17,0,17,"N_{AK4 Jets}","N_{Events}");
-  vVar.push_back(ncleanak4jets);
-*/
 
   //new ak4 jets
   Variable* newCleanak4jet1pt = new Variable("newCleanAK4Jet1Pt",30,0,600,"Leading Jet p_{T} (GeV)","N_{Events} / 100 GeV");
@@ -617,6 +402,8 @@ std::vector<TH1F*> getNPHistos(int nMu){
 
 Sample* getDataSample(std::string cut,std::string elID, std::string muID,std::string era){
 
+  std::cout << "Retrieving data from :" << samplesDir << std::endl;
+
   std::string filename = eosDirector+samplesDir+"/Data_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* tfile = TFile::Open(filename.c_str());
   Sample* dataSample = new Sample("Data",tfile,1,1,cut,kBlack,1);
@@ -642,7 +429,7 @@ std::vector<Sample*> getSigSampleVecForPlots(std::string cut, float lumi, std::s
   //vXsec.push_back(0.442);vXsec.push_back(0.442);vXsec.push_back(0.0427);vXsec.push_back(0.0427);vXsec.push_back(0.00618);vXsec.push_back(0.00618);
 
 
-  
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -651,7 +438,7 @@ std::vector<Sample*> getSigSampleVecForPlots(std::string cut, float lumi, std::s
   }
 
   std::vector<Sample*> vSigSamples;
-  
+
   std::string lh700name =samplesDir+"test/X53X53m700LH_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x53700Lfile = TFile::Open(lh700name.c_str());
   Sample* x53x53m700L = new Sample(vSigNames.at(0),x53x53700Lfile,vWeights.at(0),vXsec.at(0),cut,kGreen,2);
@@ -661,12 +448,12 @@ std::vector<Sample*> getSigSampleVecForPlots(std::string cut, float lumi, std::s
   TFile* x53x53700Rfile = TFile::Open(rh700name.c_str());
   Sample* x53x53m700R = new Sample(vSigNames.at(1),x53x53700Rfile,vWeights.at(1),vXsec.at(1),cut,kGreen,1);
   vSigSamples.push_back(x53x53m700R);
-  
+
   /* std::string lh1000name = samplesDir+"test/X53X53m1000LH_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531000Lfile = TFile::Open(lh1000name.c_str());
   Sample* x53x53m1000L = new Sample(vSigNames.at(2),x53x531000Lfile,vWeights.at(2),vXsec.at(2),cut,kCyan,2);
   vSigSamples.push_back(x53x53m1000L);
-  
+
   std::string rh1000name = samplesDir+"test/X53X53m1000RH_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531000Rfile = TFile::Open(rh1000name.c_str());
   Sample* x53x53m1000R = new Sample(vSigNames.at(3),x53x531000Rfile,vWeights.at(3),vXsec.at(3),cut,kCyan,1);
@@ -708,7 +495,7 @@ std::vector<Sample*> getSigSampleVecForTable(std::string cut, float lumi, std::s
   vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111*BRssdl); vNEvts.push_back(20000.);
   vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111*BRssdl); vNEvts.push_back(20000.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -829,7 +616,7 @@ std::vector<Sample*> getInclusiveSigSampleVecForTable(std::string cut, float lum
   vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
   vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -952,7 +739,7 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   vSigNames.push_back("TprimeTprime_M-1700"); vXsec.push_back(0.000666); vNEvts.push_back(797000.);
   vSigNames.push_back("TprimeTprime_M-1800"); vXsec.push_back(0.000391); vNEvts.push_back(833000.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -966,7 +753,7 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
 //   TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
 //   Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
 //   vSigSamples.push_back(x53x53m800L);
-// 
+//
 //   std::string lh900 = samplesDir+"test/TprimeTprime_M-900_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
 //   Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
@@ -1020,45 +807,45 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   std::vector<float> vXsec;
 
   float BR=0.;
-    
+
   //Set TT
   float BR_bW=0.5;
   float BR_tZ=0.25;
   float BR_tH=0.25;
-//   if(BRtype==0){BR_bW=0.5	;BR_tZ=0.25	;BR_tH=0.25	;} //nominal 
-//   if(BRtype==1){BR_bW=0.	;BR_tZ=0.5	;BR_tH=0.5	;} // 
-//   if(BRtype==2){BR_bW=0.	;BR_tZ=1.0	;BR_tH=0.	;} // 
+//   if(BRtype==0){BR_bW=0.5    ;BR_tZ=0.25     ;BR_tH=0.25     ;} //nominal
+//   if(BRtype==1){BR_bW=0.     ;BR_tZ=0.5      ;BR_tH=0.5      ;} //
+//   if(BRtype==2){BR_bW=0.     ;BR_tZ=1.0      ;BR_tH=0.       ;} //
 
-  if(BRtype==0){BR_bW=0.5	;BR_tZ=0.25	;BR_tH=0.25	;} //nominal 
-  if(BRtype==1){BR_bW=0.	;BR_tZ=1.0	;BR_tH=0.0	;} // 
-  if(BRtype==2){BR_bW=0.	;BR_tZ=0.8	;BR_tH=0.2	;} // 
-  if(BRtype==3){BR_bW=0.	;BR_tZ=0.6	;BR_tH=0.4	;} // 
-  if(BRtype==4){BR_bW=0.	;BR_tZ=0.4	;BR_tH=0.6	;} // 
-  if(BRtype==5){BR_bW=0.	;BR_tZ=0.2	;BR_tH=0.8	;} // 
-  if(BRtype==6){BR_bW=0.	;BR_tZ=0.0	;BR_tH=1.0	;} // 
-  if(BRtype==7){BR_bW=0.2	;BR_tZ=0.8	;BR_tH=0.0	;} // 
-  if(BRtype==8){BR_bW=0.2	;BR_tZ=0.6	;BR_tH=0.2	;} // 
-  if(BRtype==9){BR_bW=0.2	;BR_tZ=0.4	;BR_tH=0.4	;} // 
-  if(BRtype==10){BR_bW=0.2	;BR_tZ=0.2	;BR_tH=0.6	;} // 
-  if(BRtype==11){BR_bW=0.2	;BR_tZ=0.0	;BR_tH=0.8	;} // 
-  if(BRtype==12){BR_bW=0.4	;BR_tZ=0.6	;BR_tH=0.0	;} // 
-  if(BRtype==13){BR_bW=0.4	;BR_tZ=0.4	;BR_tH=0.2	;} // 
-  if(BRtype==14){BR_bW=0.4	;BR_tZ=0.2	;BR_tH=0.4	;} // 
-  if(BRtype==15){BR_bW=0.4	;BR_tZ=0.0	;BR_tH=0.6	;} // 
-  if(BRtype==16){BR_bW=0.6	;BR_tZ=0.4	;BR_tH=0.0	;} // 
-  if(BRtype==17){BR_bW=0.6	;BR_tZ=0.2	;BR_tH=0.2	;} // 
-  if(BRtype==18){BR_bW=0.6	;BR_tZ=0.0	;BR_tH=0.4	;} // 
-  if(BRtype==19){BR_bW=0.8	;BR_tZ=0.2	;BR_tH=0.0	;} // 
-  if(BRtype==20){BR_bW=0.8	;BR_tZ=0.0	;BR_tH=0.2	;} // 
-  if(BRtype==21){BR_bW=1.0	;BR_tZ=0.0	;BR_tH=0.0	;} // 
-  if(BRtype==22){BR_bW=0.0	;BR_tZ=0.5	;BR_tH=0.5	;} // 
+  if(BRtype==0){BR_bW=0.5       ;BR_tZ=0.25     ;BR_tH=0.25     ;} //nominal
+  if(BRtype==1){BR_bW=0.        ;BR_tZ=1.0      ;BR_tH=0.0      ;} //
+  if(BRtype==2){BR_bW=0.        ;BR_tZ=0.8      ;BR_tH=0.2      ;} //
+  if(BRtype==3){BR_bW=0.        ;BR_tZ=0.6      ;BR_tH=0.4      ;} //
+  if(BRtype==4){BR_bW=0.        ;BR_tZ=0.4      ;BR_tH=0.6      ;} //
+  if(BRtype==5){BR_bW=0.        ;BR_tZ=0.2      ;BR_tH=0.8      ;} //
+  if(BRtype==6){BR_bW=0.        ;BR_tZ=0.0      ;BR_tH=1.0      ;} //
+  if(BRtype==7){BR_bW=0.2       ;BR_tZ=0.8      ;BR_tH=0.0      ;} //
+  if(BRtype==8){BR_bW=0.2       ;BR_tZ=0.6      ;BR_tH=0.2      ;} //
+  if(BRtype==9){BR_bW=0.2       ;BR_tZ=0.4      ;BR_tH=0.4      ;} //
+  if(BRtype==10){BR_bW=0.2      ;BR_tZ=0.2      ;BR_tH=0.6      ;} //
+  if(BRtype==11){BR_bW=0.2      ;BR_tZ=0.0      ;BR_tH=0.8      ;} //
+  if(BRtype==12){BR_bW=0.4      ;BR_tZ=0.6      ;BR_tH=0.0      ;} //
+  if(BRtype==13){BR_bW=0.4      ;BR_tZ=0.4      ;BR_tH=0.2      ;} //
+  if(BRtype==14){BR_bW=0.4      ;BR_tZ=0.2      ;BR_tH=0.4      ;} //
+  if(BRtype==15){BR_bW=0.4      ;BR_tZ=0.0      ;BR_tH=0.6      ;} //
+  if(BRtype==16){BR_bW=0.6      ;BR_tZ=0.4      ;BR_tH=0.0      ;} //
+  if(BRtype==17){BR_bW=0.6      ;BR_tZ=0.2      ;BR_tH=0.2      ;} //
+  if(BRtype==18){BR_bW=0.6      ;BR_tZ=0.0      ;BR_tH=0.4      ;} //
+  if(BRtype==19){BR_bW=0.8      ;BR_tZ=0.2      ;BR_tH=0.0      ;} //
+  if(BRtype==20){BR_bW=0.8      ;BR_tZ=0.0      ;BR_tH=0.2      ;} //
+  if(BRtype==21){BR_bW=1.0      ;BR_tZ=0.0      ;BR_tH=0.0      ;} //
+  if(BRtype==22){BR_bW=0.0      ;BR_tZ=0.5      ;BR_tH=0.5      ;} //
   if(sigDecay=="BWBW") BR = BR_bW*BR_bW;
   if(sigDecay=="TZTZ") BR = BR_tZ*BR_tZ;
   if(sigDecay=="THTH") BR = BR_tH*BR_tH;
   if(sigDecay=="THBW") BR = 2*BR_tH*BR_bW;
   if(sigDecay=="TZBW") BR = 2*BR_tZ*BR_bW;
   if(sigDecay=="TZTH") BR = 2*BR_tZ*BR_tH;
-    
+
   std::cout << "Processing signal with BR : bW=" << BR_bW <<" tZ=" << BR_tZ <<" tH=" << BR_tH <<std::endl;
 
 
@@ -1080,7 +867,7 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   vSigNames.push_back("TprimeTprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(542558.);
   vSigNames.push_back("TprimeTprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(455156.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -1089,19 +876,19 @@ std::vector<Sample*> getInclusiveSigTTSampleVecForTable(std::string cut, float l
   }
 
   std::vector<Sample*> vSigSamples;
-  
+
   std::string subfolder = "";
 //   std::cout << "input signal subfolder:" << subfolder << std::endl;
 //   std::cout << "checking input TT signal files:";
 //   TString action = "eos "+eosDirector+" ls "+samplesDir+subfolder+"/Tprime*.root";
 //   system(action);
 
-  
+
 //   std::string lh800 = samplesDir+subfolder+"/TprimeTprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
 //   Sample* x53x53m800L = new Sample(vSigNames.at(0),x53x53800Lfile,vWeights.at(0),vXsec.at(0),cut,kBlue,2);
 //   vSigSamples.push_back(x53x53m800L);
-//   
+//
 //   std::string lh900 = samplesDir+subfolder+"/TprimeTprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* x53x53900Lfile = TFile::Open(lh900.c_str());
 //   Sample* x53x53m900L = new Sample(vSigNames.at(1),x53x53900Lfile,vWeights.at(1),vXsec.at(1),cut,kRed,2);
@@ -1165,38 +952,38 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   std::vector<float> vXsec;
 
   float BR=0.;
-      
+
   //again for BB
   float BR_tW=0.5;
   float BR_bZ=0.25;
-  float BR_bH=0.25; 
-//   if(BRtype==0){BR_tW=0.5;BR_bZ=0.25;BR_bH=0.25;} //nominal 
+  float BR_bH=0.25;
+//   if(BRtype==0){BR_tW=0.5;BR_bZ=0.25;BR_bH=0.25;} //nominal
 //   if(BRtype==1){BR_tW=0.;BR_bZ=0.5;BR_bH=0.5;} //
 //   if(BRtype==2){BR_tW=1.0;BR_bZ=0.0;BR_bH=0.0;} //100% tW
 
-  if(BRtype==0){BR_tW=0.5	;BR_bZ=0.25	;BR_bH=0.25	;} //nominal 
-  if(BRtype==1){BR_tW=0.	;BR_bZ=1.0	;BR_bH=0.0	;} // 
-  if(BRtype==2){BR_tW=0.	;BR_bZ=0.8	;BR_bH=0.2	;} // 
-  if(BRtype==3){BR_tW=0.	;BR_bZ=0.6	;BR_bH=0.4	;} // 
-  if(BRtype==4){BR_tW=0.	;BR_bZ=0.4	;BR_bH=0.6	;} // 
-  if(BRtype==5){BR_tW=0.	;BR_bZ=0.2	;BR_bH=0.8	;} // 
-  if(BRtype==6){BR_tW=0.	;BR_bZ=0.0	;BR_bH=1.0	;} // 
-  if(BRtype==7){BR_tW=0.2	;BR_bZ=0.8	;BR_bH=0.0	;} // 
-  if(BRtype==8){BR_tW=0.2	;BR_bZ=0.6	;BR_bH=0.2	;} // 
-  if(BRtype==9){BR_tW=0.2	;BR_bZ=0.4	;BR_bH=0.4	;} // 
-  if(BRtype==10){BR_tW=0.2	;BR_bZ=0.2	;BR_bH=0.6	;} // 
-  if(BRtype==11){BR_tW=0.2	;BR_bZ=0.0	;BR_bH=0.8	;} // 
-  if(BRtype==12){BR_tW=0.4	;BR_bZ=0.6	;BR_bH=0.0	;} // 
-  if(BRtype==13){BR_tW=0.4	;BR_bZ=0.4	;BR_bH=0.2	;} // 
-  if(BRtype==14){BR_tW=0.4	;BR_bZ=0.2	;BR_bH=0.4	;} // 
-  if(BRtype==15){BR_tW=0.4	;BR_bZ=0.0	;BR_bH=0.6	;} // 
-  if(BRtype==16){BR_tW=0.6	;BR_bZ=0.4	;BR_bH=0.0	;} // 
-  if(BRtype==17){BR_tW=0.6	;BR_bZ=0.2	;BR_bH=0.2	;} // 
-  if(BRtype==18){BR_tW=0.6	;BR_bZ=0.0	;BR_bH=0.4	;} // 
-  if(BRtype==19){BR_tW=0.8	;BR_bZ=0.2	;BR_bH=0.0	;} // 
-  if(BRtype==20){BR_tW=0.8	;BR_bZ=0.0	;BR_bH=0.2	;} // 
-  if(BRtype==21){BR_tW=1.0	;BR_bZ=0.0	;BR_bH=0.0	;} // 
-  if(BRtype==22){BR_tW=0.0	;BR_bZ=0.5	;BR_bH=0.5	;} // 
+  if(BRtype==0){BR_tW=0.5       ;BR_bZ=0.25     ;BR_bH=0.25     ;} //nominal
+  if(BRtype==1){BR_tW=0.        ;BR_bZ=1.0      ;BR_bH=0.0      ;} //
+  if(BRtype==2){BR_tW=0.        ;BR_bZ=0.8      ;BR_bH=0.2      ;} //
+  if(BRtype==3){BR_tW=0.        ;BR_bZ=0.6      ;BR_bH=0.4      ;} //
+  if(BRtype==4){BR_tW=0.        ;BR_bZ=0.4      ;BR_bH=0.6      ;} //
+  if(BRtype==5){BR_tW=0.        ;BR_bZ=0.2      ;BR_bH=0.8      ;} //
+  if(BRtype==6){BR_tW=0.        ;BR_bZ=0.0      ;BR_bH=1.0      ;} //
+  if(BRtype==7){BR_tW=0.2       ;BR_bZ=0.8      ;BR_bH=0.0      ;} //
+  if(BRtype==8){BR_tW=0.2       ;BR_bZ=0.6      ;BR_bH=0.2      ;} //
+  if(BRtype==9){BR_tW=0.2       ;BR_bZ=0.4      ;BR_bH=0.4      ;} //
+  if(BRtype==10){BR_tW=0.2      ;BR_bZ=0.2      ;BR_bH=0.6      ;} //
+  if(BRtype==11){BR_tW=0.2      ;BR_bZ=0.0      ;BR_bH=0.8      ;} //
+  if(BRtype==12){BR_tW=0.4      ;BR_bZ=0.6      ;BR_bH=0.0      ;} //
+  if(BRtype==13){BR_tW=0.4      ;BR_bZ=0.4      ;BR_bH=0.2      ;} //
+  if(BRtype==14){BR_tW=0.4      ;BR_bZ=0.2      ;BR_bH=0.4      ;} //
+  if(BRtype==15){BR_tW=0.4      ;BR_bZ=0.0      ;BR_bH=0.6      ;} //
+  if(BRtype==16){BR_tW=0.6      ;BR_bZ=0.4      ;BR_bH=0.0      ;} //
+  if(BRtype==17){BR_tW=0.6      ;BR_bZ=0.2      ;BR_bH=0.2      ;} //
+  if(BRtype==18){BR_tW=0.6      ;BR_bZ=0.0      ;BR_bH=0.4      ;} //
+  if(BRtype==19){BR_tW=0.8      ;BR_bZ=0.2      ;BR_bH=0.0      ;} //
+  if(BRtype==20){BR_tW=0.8      ;BR_bZ=0.0      ;BR_bH=0.2      ;} //
+  if(BRtype==21){BR_tW=1.0      ;BR_bZ=0.0      ;BR_bH=0.0      ;} //
+  if(BRtype==22){BR_tW=0.0      ;BR_bZ=0.5      ;BR_bH=0.5      ;} //
 
   if(sigDecay=="TWTW") BR = BR_tW*BR_tW;
   if(sigDecay=="BZBZ") BR = BR_bZ*BR_bZ;
@@ -1206,7 +993,7 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   if(sigDecay=="BZBH") BR = 2*BR_bZ*BR_bH;
 
 
-  
+
   std::cout << "Processing signal with BR : tW=" << BR_tW <<" bZ=" << BR_bZ <<" bH=" << BR_bH <<std::endl;
 
 
@@ -1220,15 +1007,15 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   vSigNames.push_back("BprimeBprime_M-900_"+sigDecay); vXsec.push_back(0.0903); vNEvts.push_back(799800.);
   vSigNames.push_back("BprimeBprime_M-1000_"+sigDecay); vXsec.push_back(0.0440); vNEvts.push_back(825600.);
   vSigNames.push_back("BprimeBprime_M-1100_"+sigDecay); vXsec.push_back(0.0224); vNEvts.push_back(832000.);
-  vSigNames.push_back("BprimeBprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(832200.);
+  // vSigNames.push_back("BprimeBprime_M-1200_"+sigDecay); vXsec.push_back(0.0118); vNEvts.push_back(832200.);
   vSigNames.push_back("BprimeBprime_M-1300_"+sigDecay); vXsec.push_back(0.00639); vNEvts.push_back(807200.);
   vSigNames.push_back("BprimeBprime_M-1400_"+sigDecay); vXsec.push_back(0.00354); vNEvts.push_back(816800.);
   vSigNames.push_back("BprimeBprime_M-1500_"+sigDecay); vXsec.push_back(0.00200); vNEvts.push_back(831000.);
   vSigNames.push_back("BprimeBprime_M-1600_"+sigDecay); vXsec.push_back(0.001148); vNEvts.push_back(696600.);
-  vSigNames.push_back("BprimeBprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(832600.);
+  // vSigNames.push_back("BprimeBprime_M-1700_"+sigDecay); vXsec.push_back(0.000666); vNEvts.push_back(832600.);
   vSigNames.push_back("BprimeBprime_M-1800_"+sigDecay); vXsec.push_back(0.000391); vNEvts.push_back(795400.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;
@@ -1238,7 +1025,7 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   int i_weight = 0;
 
   std::vector<Sample*> vSigSamples;
-  
+
   std::string subfolder = "";
   //std::string subfolder = "test/Bprime_postLJMet_exactly2goodLeptons_beforeSep26-2017";
   //std::cout << "checking input TT signal files:";
@@ -1248,7 +1035,7 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   std::string lh800 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x53800Lfile = TFile::Open(lh800.c_str());
   Sample* x53x53m800L = new Sample(vSigNames.at(i_weight),x53x53800Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kBlue,2);
-  vSigSamples.push_back(x53x53m800L);  
+  vSigSamples.push_back(x53x53m800L);
   i_weight=i_weight+1;
 
   std::string lh900 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-900_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
@@ -1269,11 +1056,11 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   vSigSamples.push_back(x53x53m1100L);
   i_weight=i_weight+1;
 
-  std::string lh1200 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
-  Sample* x53x53m1200L = new Sample(vSigNames.at(i_weight),x53x531200Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange,2);
-  vSigSamples.push_back(x53x53m1200L);
-  i_weight=i_weight+1;
+  // std::string lh1200 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1200_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  // TFile* x53x531200Lfile = TFile::Open(lh1200.c_str());
+  // Sample* x53x53m1200L = new Sample(vSigNames.at(i_weight),x53x531200Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kOrange,2);
+  // vSigSamples.push_back(x53x53m1200L);
+  // i_weight=i_weight+1;
 
   std::string lh1300 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1300_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531300Lfile = TFile::Open(lh1300.c_str());
@@ -1299,11 +1086,11 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
   vSigSamples.push_back(x53x53m1600L);
   i_weight=i_weight+1;
 
-  std::string lh1700 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
-  TFile* x53x531700Lfile = TFile::Open(lh1700.c_str());
-  Sample* x53x53m1700L = new Sample(vSigNames.at(i_weight),x53x531700Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan+2,2);
-  vSigSamples.push_back(x53x53m1700L);
-  i_weight=i_weight+1;
+  // std::string lh1700 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1700_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
+  // TFile* x53x531700Lfile = TFile::Open(lh1700.c_str());
+  // Sample* x53x53m1700L = new Sample(vSigNames.at(i_weight),x53x531700Lfile,vWeights.at(i_weight),vXsec.at(i_weight),cut,kCyan+2,2);
+  // vSigSamples.push_back(x53x53m1700L);
+  // i_weight=i_weight+1;
 
   std::string lh1800 = eosDirector+samplesDir+subfolder+"/BprimeBprime_M-1800_"+sigDecay+"_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* x53x531800Lfile = TFile::Open(lh1800.c_str());
@@ -1316,7 +1103,7 @@ std::vector<Sample*> getInclusiveSigBBSampleVecForTable(std::string cut, float l
 
 }
 
-std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::string elID, std::string muID){  
+std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::string elID, std::string muID){
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
   vBkgNames.push_back("TTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("NonPromptTTJets");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
@@ -1357,7 +1144,7 @@ std::vector<Sample*> getSamplesForClosureTest(std::string cut, float lumi, std::
 
 
 
-std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){
 
    //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
@@ -1374,11 +1161,11 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6638328 * 1);
   vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 1);
   vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 118350* 1);
-  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(249200*0.885963);
   vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(249800*0.876645);
   vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000* 0.8554);
-  
+
   //******* Non Prompt**********
   //vBkgNames.push_back("NonPromptMC");  vXsec.push_back(831.76);  vNEvts.push_back(42730273 * 0.331582);
   vBkgNames.push_back("NonPrompt"); vXsec.push_back(1); vNEvts.push_back(1);
@@ -1429,7 +1216,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
   TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
-  
+
   std::string zzfilename = samplesDir+"test/ZZ_Mu"+muID+"_El"+elID+".root";
   TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
@@ -1496,7 +1283,7 @@ std::vector<Sample*> getBkgSampleVec(std::string cut, float lumi, std::string el
 
 }
 
-std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){
 
    //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
@@ -1513,19 +1300,19 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6897635);
   vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(6 * 1);
   vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back(148394);
-  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(219964);
   vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(219660);
   vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(214318);
   //vBkgNames.push_back("WWW");    vXsec.push_back(0.01398); vNEvts.push_back(240000* 0.8554);
-  
+
   //ARC review request: dataset with Gamma conversions // added by rizki
   vBkgNames.push_back("TTGJets");    vXsec.push_back(3.697); vNEvts.push_back(4870911 * 0.325); //prelim estimate: ran 1204482 events, adjusted count 391002. Could assume adjusted = 0.325 * total, from Julie Nov29-2017
   vBkgNames.push_back("ZGTo2LG");    vXsec.push_back(123.9); vNEvts.push_back(1579452); //ZG: int 2307158, adjusted count 1579452 , from Julie Nov29-2017
   vBkgNames.push_back("TGJets");    vXsec.push_back(2.967); vNEvts.push_back(58120); //TGJets: integral 292508, adjusted count 58120 , from Julie Nov29-2017
   vBkgNames.push_back("WGToLNuG");    vXsec.push_back(405.271); vNEvts.push_back( 6103817* 1);
   vBkgNames.push_back("TTZToLLM1to10");    vXsec.push_back(0.0493); vNEvts.push_back(246792 * 1);
-  
+
   //now make vector to hold weights;
   std::vector<float> vWeights;
   for(std::vector<float>::size_type ui=0; ui<vXsec.size(); ui++){
@@ -1577,7 +1364,7 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
   TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
-  
+
   std::string zzfilename = eosDirector+samplesDir+"/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
@@ -1627,25 +1414,25 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 //   Sample* ttgjetsSample = new Sample(vBkgNames.at(12),ttgjetsfile, vWeights.at(12),vXsec.at(12),cut,kViolet-1);
 //   std::cout<<"weight for TTGJets is: "<<vWeights.at(12)<<std::endl;
 //   vSample.push_back(ttgjetsSample);
-// 
+//
 //   std::string zgto2lgfilename = eosDirector+samplesDir+"/ZGTo2LG_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* zgto2lgfile = TFile::Open(zgto2lgfilename.c_str());
 //   Sample* zgto2lgSample = new Sample(vBkgNames.at(13),zgto2lgfile, vWeights.at(13),vXsec.at(13),cut,kViolet-2);
 //   std::cout<<"weight for ZGTo2LG is: "<<vWeights.at(13)<<std::endl;
 //   vSample.push_back(zgto2lgSample);
-// 
+//
 //   std::string tgjetsfilename = eosDirector+samplesDir+"/TGJets_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* tgjetsfile = TFile::Open(tgjetsfilename.c_str());
 //   Sample* tgjetsSample = new Sample(vBkgNames.at(14),tgjetsfile, vWeights.at(14),vXsec.at(14),cut,kViolet-3);
 //   std::cout<<"weight for TGJets is: "<<vWeights.at(14)<<std::endl;
 //   vSample.push_back(tgjetsSample);
-// 
+//
 //   std::string wgtolnugfilename = eosDirector+samplesDir+"/WGToLNuG_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* wgtolnugfile = TFile::Open(wgtolnugfilename.c_str());
 //   Sample* wgtolnugSample = new Sample(vBkgNames.at(15),wgtolnugfile, vWeights.at(15),vXsec.at(15),cut,kViolet-4);
 //   std::cout<<"weight for WGToLNuG is: "<<vWeights.at(15)<<std::endl;
 //   vSample.push_back(wgtolnugSample);
-// 
+//
 //   std::string ttztollm1to10filename = eosDirector+samplesDir+"/TTZToLLM1to10_Mu"+muID+"_El"+elID+"_"+era+".root";
 //   TFile* ttztollm1to10file = TFile::Open(ttztollm1to10filename.c_str());
 //   Sample* ttztollm1to10Sample = new Sample(vBkgNames.at(16),ttztollm1to10file, vWeights.at(16),vXsec.at(16),cut,kViolet-6);
@@ -1656,7 +1443,7 @@ std::vector<Sample*> getMCBkgSampleVec(std::string cut, float lumi, std::string 
 
 }
 
-std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+std::vector<Sample*> getDDBkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){
 
    //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
@@ -1731,6 +1518,130 @@ std::vector<std::string> getCutString(){
   return vString;
 }
 
+std::vector<std::string> getCutString_isoTrig(){
+
+  std::cout << "calling getCutString_isoTrig()" << std::endl;
+
+  std::vector<std::string> vString;
+
+  //quarkonia-veto
+//   std::string null = "Lep1Pt>0";
+//   std::string null = "(Lep1Pt>0 && nNonSSLeps==0)"; //added by rizki for orthogonality with trilepton
+  std::string null = "nNonSSLeps==0"; //added by rizki for orthogonality with trilepton
+  vString.push_back(null);
+  std::string qv = "("+null+" && (DilepMass>20) )";
+  vString.push_back(qv);
+  //z mass veto for ee channel only
+  std::string zv = "("+qv+" && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) )";
+  vString.push_back(zv);
+  //Leading Lep pT
+  std::string lep1pt = "("+zv+"&& Lep1Pt > 25)" ; //added by rizki. lowering pt cut if using iso trig.
+  vString.push_back(lep1pt);
+  //SubLeadingLep pT
+  //std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 30)" ;
+  //vString.push_back(lep2pt);
+  //Leading nJetscut
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 5)"; //commented by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 2)"; //added by rizki
+  std::string nConstCut = "("+lep1pt+"&& nConst >= 4)"; //added by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 3)"; //added by rizki
+  vString.push_back(nConstCut);
+  //SubLeading Jet Pt
+  //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
+  //vString.push_back(jet2pt);
+  //HT cut
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)"; //commented by rizki
+//   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1100)"; //added by rizki
+  vString.push_back(htcut);
+
+  //std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
+  //vString.push_back(centrallepcut);
+  return vString;
+}
+
+std::vector<std::string> getCutString_Lep4035(){
+
+  std::cout << "calling getCutString_Lep4035()" << std::endl;
+
+  std::vector<std::string> vString;
+
+  //quarkonia-veto
+//   std::string null = "Lep1Pt>0";
+//   std::string null = "(Lep1Pt>0 && nNonSSLeps==0)"; //added by rizki for orthogonality with trilepton
+  std::string null = "nNonSSLeps==0"; //added by rizki for orthogonality with trilepton
+  vString.push_back(null);
+  std::string qv = "("+null+" && (DilepMass>20) )";
+  vString.push_back(qv);
+  //z mass veto for ee channel only
+  std::string zv = "("+qv+" && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) )";
+  vString.push_back(zv);
+  //Leading Lep pT
+  std::string lep1pt = "("+zv+"&& Lep1Pt > 40)" ; //added by rizki. lowering pt cut if using iso trig.
+  vString.push_back(lep1pt);
+  //SubLeadingLep pT
+  std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 35)" ; //because if iso was selected analyzer cuts at 20 GeV
+  vString.push_back(lep2pt);
+  //Leading nJetscut
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 5)"; //commented by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 2)"; //added by rizki
+  std::string nConstCut = "("+lep1pt+"&& nConst >= 4)"; //added by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 3)"; //added by rizki
+  vString.push_back(nConstCut);
+  //SubLeading Jet Pt
+  //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
+  //vString.push_back(jet2pt);
+  //HT cut
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)"; //commented by rizki
+//   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1100)"; //added by rizki
+  vString.push_back(htcut);
+
+  //std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
+  //vString.push_back(centrallepcut);
+  return vString;
+}
+
+std::vector<std::string> getCutString_nonIsoHTtrig(){
+
+  std::cout << "calling getCutString_nonIsoHTtrig()" << std::endl;
+
+  std::vector<std::string> vString;
+
+  //quarkonia-veto
+//   std::string null = "Lep1Pt>0";
+//   std::string null = "(Lep1Pt>0 && nNonSSLeps==0)"; //added by rizki for orthogonality with trilepton
+  std::string null = "nNonSSLeps==0"; //added by rizki for orthogonality with trilepton
+  vString.push_back(null);
+  std::string qv = "("+null+" && (DilepMass>20) )";
+  vString.push_back(qv);
+  //z mass veto for ee channel only
+  std::string zv = "("+qv+" && ( (Channel!=0) ||(DilepMass<76.1 || DilepMass >106.1) ) )";
+  vString.push_back(zv);
+  //Leading Lep pT
+  std::string lep1pt = "("+zv+"&& Lep1Pt > 25)" ; //added by rizki. lowering pt cut if using nonIsoHTtrig.
+  vString.push_back(lep1pt);
+  //SubLeadingLep pT
+  //std::string lep2pt = "("+lep1pt+"&& Lep2Pt > 20)" ;
+  //vString.push_back(lep2pt);
+  //Leading nJetscut
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 5)"; //commented by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 2)"; //added by rizki
+  std::string nConstCut = "("+lep1pt+"&& nConst >= 4)"; //added by rizki
+//   std::string nConstCut = "("+lep1pt+"&& nConst >= 3)"; //added by rizki
+  vString.push_back(nConstCut);
+  //SubLeading Jet Pt
+  //std::string jet2pt = "("+jet1pt+"&& cleanAK4Jet2Pt > 150)";
+  //vString.push_back(jet2pt);
+  //HT cut
+  std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1200)"; //commented by rizki
+//   std::string htcut = "("+nConstCut+"&& cleanAK4HT > 1100)"; //added by rizki
+  vString.push_back(htcut);
+
+  //std::string centrallepcut =  "("+htcut+"&& TMath::Abs(Lep1Eta) < 0.9)";
+  //vString.push_back(centrallepcut);
+  return vString;
+}
+
+
 std::vector<std::string> getBoostedCutString(){
 
   std::vector<std::string> vString;
@@ -1778,7 +1689,7 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
 
   //draw the last variable to cut on just to be safe though it shouldn't matter
   t->Project("hdummy","AK4HT",cutstring.c_str());
-  
+
   //std::cout<<"Sample: "<<s->name<<" and cut: "<<cutstring<<" unweighted events: "<<nEvts<<" weight: "<<s->weight<<std::endl;
   //now weight properly - for Data don't apply
   if( ( (s->name).find("NonPrompt")!=std::string::npos) && ((s->name).find("TTJets")==std::string::npos) ) { scale=false; }
@@ -1787,7 +1698,7 @@ std::pair<float,float> getNEvtsAndError(Sample* s, std::string cut, int nMu, boo
     hdummy->Scale(s->weight);
     //std::cout<<"Weight for sample: "<<s->name<<" is: "<<s->weight<<std::endl;
   }
-  
+
   float nEvts = hdummy->Integral(1,hdummy->GetNbinsX()+1);
   double_t err;
   hdummy->IntegralAndError(1,hdummy->GetNbinsX()+1,err);
@@ -1816,9 +1727,9 @@ std::string getPrettyCutString(std::string cut){
   size_t last = positions.at(positions.size()-1);
   size_t length = cut.size() - last; //should give number of characters remaining in string
   length = length -3; //decrement by one to ignor final ')'
-  
+
   std::string prettyString(cut, last+2, length);
-  
+
   return prettyString;
 
 };
@@ -1831,14 +1742,14 @@ CutClass* makeCutClass(Sample* s, std::vector<std::string> vCuts,int nMu)
   std::vector<std::string> vCutsPretty;
 
   for(size_t j=0; j < vCuts.size(); j++){
-    
+
     //get number of events and save to vector - IMPORTANT TO DO THIS WITH THE FULL CUT STRING AND NOT A PRETTY VERSION
     bool scale = true; //helper function will set to false if need be
     std::pair<float,float> evtsAndErr = getNEvtsAndError(s, vCuts.at(j), nMu, scale);
     vEvts.push_back(evtsAndErr.first);
     vErr.push_back(evtsAndErr.second);
     //now trim the cuts string to write prettily
-    
+
     std::string cutPretty = getPrettyCutString(vCuts.at(j));
     vCutsPretty.push_back(cutPretty);
   }
@@ -1879,10 +1790,10 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
   //NB: This is only good for MC!
   std::vector<CutClass*> vCC;
   //first check that the sizes match
-  if(vCC1.size() != vCC2.size()){    
+  if(vCC1.size() != vCC2.size()){
     throw std::invalid_argument( "Error! Trying to add CutClass vectors of different size!");
   }
-  
+
   for(unsigned int i=0; i< vCC1.size() ; i++){
     //check sample names are the same
     if(vCC1.at(i)->samplename!=vCC2.at(i)->samplename){
@@ -1897,7 +1808,7 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
     }
     CutClass* c = new CutClass(vCC1.at(i)->samplename,vCC1.at(i)->cutname,vEvtsNew,vErrNew,vCC1.at(i)->xsec);
     vCC.push_back(c);
-  }    
+  }
   return vCC;
 }
 
@@ -1926,24 +1837,24 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
     for(size_t i=0; i< tr->goodElectrons.size(); i++){
       TElectron* el1 = tr->goodElectrons.at(i);
       for(size_t j=i+1; j<tr->goodElectrons.size(); j++){
-	TElectron* el2 = tr->goodElectrons.at(j);
-	float mass = (el1->lv + el2->lv).M();
-	
-	if( fabs( 91.1 - mass) < mindiff){
-	  mindiff=fabs(91.1 - mass);
-	  El1=el1;
-	  El2=el2;
-	  pairmass=mass;	  
-	}
+        TElectron* el2 = tr->goodElectrons.at(j);
+        float mass = (el1->lv + el2->lv).M();
+
+        if( fabs( 91.1 - mass) < mindiff){
+          mindiff=fabs(91.1 - mass);
+          El1=el1;
+          El2=el2;
+          pairmass=mass;
+        }
 
       }
-      
+
     }
 
     bool inPeak=false;
     if(mindiff<20) inPeak=true; //also implies that a pair was found since requires min diff to be reset;
     //std::cout<<"size of goodEls: "<<tr->goodElectrons.size()<<"El 1 eta: "<<El1->eta<<" El2 eta: "<<El2->eta<<" mass: "<<pairmass<<" mindiff: "<<mindiff<<std::endl;
-    
+
     h_PairMass->Fill(pairmass);
     if(!inPeak) continue;
 
@@ -1983,7 +1894,7 @@ std::vector<CutClass*> addCutClassVectors(std::vector<CutClass*> vCC1, std::vect
   }*/
 
 std::vector<float> getEtaWeights_lpt(TFile* weightfile){
-  
+
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
   TH1F* h = (TH1F*) weightfile->Get("h_num_lpt");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
@@ -1994,13 +1905,13 @@ std::vector<float> getEtaWeights_lpt(TFile* weightfile){
     etaWeights.push_back(h->GetBinContent(i));
     std::cout<<"lpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
-  
+
   return etaWeights;
-  
+
 };
 
 std::vector<float> getEtaWeights_hpt(TFile* weightfile){
-  
+
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
   TH1F* h = (TH1F*) weightfile->Get("hpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
@@ -2011,13 +1922,13 @@ std::vector<float> getEtaWeights_hpt(TFile* weightfile){
     etaWeights.push_back(h->GetBinContent(i));
     std::cout<<"hpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
-  
+
   return etaWeights;
-  
+
 };
 
 std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
-  
+
   //TGraphAsymmErrors* g = (TGraphAsymmErrors*) weightfile->Get("divide_etaNumHist_by_etaDenHist");
   TH1F* h = (TH1F*) weightfile->Get("hhpt_final");
   //TH1F* den = (TH1F*) weightfile->Get("etaDenHist");
@@ -2028,9 +1939,9 @@ std::vector<float> getEtaWeights_hhpt(TFile* weightfile){
     etaWeights.push_back(h->GetBinContent(i));
     std::cout<<"hhpt etaweight for bin: "<<i<<" is: "<<h->GetBinContent(i)<<std::endl;
   }
-  
+
   return etaWeights;
-  
+
 };
 
 
@@ -2161,7 +2072,7 @@ float getPrate(TFile* f){
 
   TH1F* h1 = (TH1F*) f->Get("ptNumHist");
   TH1F* h2 = (TH1F*) f->Get("ptDenHist");
-  
+
   float rate = (float) h1->GetEntries();
   rate = rate / h2->GetEntries();
   return rate;
@@ -2180,7 +2091,7 @@ float getMuPromptRate(std::string ID){
 
   if(ID=="CBTight") return 0.94;
   else return 0.94;
-		      
+
 }
 
 float getElFakeRate(std::string ID){
@@ -2201,7 +2112,7 @@ float getElPromptRate(std::string ID){
   else if(ID=="CBTightRC") return 0.7259;
   else return 0.873;
 
-}  
+}
 
 //method weights
 //same flavor
@@ -2467,7 +2378,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
   float eta1 = fabs(vLep.at(0)->eta);
   float eta2 = fabs(vLep.at(1)->eta);
 
-  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel    
+  if(vLep.at(0)->isMu && vLep.at(1)->isMu){ //dimuon channel
 
     //get conditional efficiency
     float cond_eff = 0.0;
@@ -2477,7 +2388,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
       mu17_lep1 = getMu17Eff(vLep.at(0));
       mu17_lep2 = getMu17Eff(vLep.at(1));
       cond_eff = 1.0 - (1.0 - getMu17Eff(vLep.at(0)))*(1.0 - getMu17Eff(vLep.at(1)));
-    } 
+    }
     else {
       mu17_lep2 = getMu17Eff(vLep.at(1));
       mu17_lep1 = getMu17Eff(vLep.at(1))*getMu17EffNearbyPhi(vLep.at(0)) +  (1.0 - getMu17Eff(vLep.at(1))) * (getMu17Eff(vLep.at(0)));
@@ -2486,7 +2397,7 @@ float getTrigSF(std::vector<TLepton*> vLep){
     //std::cout<<"eff1: "<<getMu17Eff(vLep.at(0))<<" eff2: "<<getMu17Eff(vLep.at(1))<<" eff3: "<<getMu17EffNearbyPhi(vLep.at(0))<<std::endl;
     //std::cout<<"cond_Eff: "<<cond_eff<<" and new condeff: "<< (1.0 - (1.0-mu17_lep1)*(1.0-mu17_lep2))<<std::endl;
     float soup_eff = 0.0;
-    
+
     if(eta1 > 2.1){
       if(eta2>2.1) soup_eff=0.8745;
       else if(eta2>1.2) soup_eff=0.8961;
@@ -2556,64 +2467,64 @@ float getTrigSF(std::vector<TLepton*> vLep){
       if(eta1<0.8) elEff = 0.980;
       else if(eta1<1.5) elEff  = 0.986;
       else{
-	if(vLep.at(0)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
-	else elEff = 0.996;
+        if(vLep.at(0)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(0)->pt-34.157,1.62)); //take from fitted function
+        else elEff = 0.996;
       }
       //now muon efficiency
       if(eta2>2.1){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.7778;
-	else if(vLep.at(1)->pt>200) muEff = 0.7964;
-	else if(vLep.at(1)->pt>150) muEff = 0.8071;
-	else if(vLep.at(1)->pt>100) muEff = 0.7895;
-	else if(vLep.at(1)->pt>60) muEff = 0.8113;
-	else if(vLep.at(1)->pt>50) muEff = 0.7684;
-	else if(vLep.at(1)->pt>40) muEff = 0.7692;
-	else if(vLep.at(1)->pt>35) muEff = 0.7607;      
+        if(vLep.at(1)->pt>500) muEff = 0.0;
+        else if(vLep.at(1)->pt>300) muEff = 0.7778;
+        else if(vLep.at(1)->pt>200) muEff = 0.7964;
+        else if(vLep.at(1)->pt>150) muEff = 0.8071;
+        else if(vLep.at(1)->pt>100) muEff = 0.7895;
+        else if(vLep.at(1)->pt>60) muEff = 0.8113;
+        else if(vLep.at(1)->pt>50) muEff = 0.7684;
+        else if(vLep.at(1)->pt>40) muEff = 0.7692;
+        else if(vLep.at(1)->pt>35) muEff = 0.7607;
       }
       else if(eta2>1.2){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8848;
-	else if(vLep.at(1)->pt>200) muEff = 0.8279;
-	else if(vLep.at(1)->pt>150) muEff = 0.8300;
-	else if(vLep.at(1)->pt>100) muEff = 0.8356;
-	else if(vLep.at(1)->pt>60) muEff = 0.8573;
-	else if(vLep.at(1)->pt>50) muEff = 0.8674;
-	else if(vLep.at(1)->pt>40) muEff = 0.8735;
-	else if(vLep.at(1)->pt>35) muEff = 0.8638;      
+        if(vLep.at(1)->pt>500) muEff = 0.0;
+        else if(vLep.at(1)->pt>300) muEff = 0.8848;
+        else if(vLep.at(1)->pt>200) muEff = 0.8279;
+        else if(vLep.at(1)->pt>150) muEff = 0.8300;
+        else if(vLep.at(1)->pt>100) muEff = 0.8356;
+        else if(vLep.at(1)->pt>60) muEff = 0.8573;
+        else if(vLep.at(1)->pt>50) muEff = 0.8674;
+        else if(vLep.at(1)->pt>40) muEff = 0.8735;
+        else if(vLep.at(1)->pt>35) muEff = 0.8638;
       }
       else if(eta2>0.9){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.8627;
-	else if(vLep.at(1)->pt>200) muEff = 0.8776;
-	else if(vLep.at(1)->pt>150) muEff = 0.8986;
-	else if(vLep.at(1)->pt>100) muEff = 0.8949;
-	else if(vLep.at(1)->pt>60) muEff = 0.9025;
-	else if(vLep.at(1)->pt>50) muEff = 0.9165;
-	else if(vLep.at(1)->pt>40) muEff = 0.9097;
-	else if(vLep.at(1)->pt>35) muEff = 0.9080;      
+        if(vLep.at(1)->pt>500) muEff = 0.0;
+        else if(vLep.at(1)->pt>300) muEff = 0.8627;
+        else if(vLep.at(1)->pt>200) muEff = 0.8776;
+        else if(vLep.at(1)->pt>150) muEff = 0.8986;
+        else if(vLep.at(1)->pt>100) muEff = 0.8949;
+        else if(vLep.at(1)->pt>60) muEff = 0.9025;
+        else if(vLep.at(1)->pt>50) muEff = 0.9165;
+        else if(vLep.at(1)->pt>40) muEff = 0.9097;
+        else if(vLep.at(1)->pt>35) muEff = 0.9080;
       }
       else if(eta2>0.4){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.9341;
-	else if(vLep.at(1)->pt>200) muEff = 0.9494;
-	else if(vLep.at(1)->pt>150) muEff = 0.9376;
-	else if(vLep.at(1)->pt>100) muEff = 0.9385;
-	else if(vLep.at(1)->pt>60) muEff = 0.9431;
-	else if(vLep.at(1)->pt>50) muEff = 0.9502;
-	else if(vLep.at(1)->pt>40) muEff = 0.9465;
-	else if(vLep.at(1)->pt>35) muEff = 0.9433;      
+        if(vLep.at(1)->pt>500) muEff = 0.0;
+        else if(vLep.at(1)->pt>300) muEff = 0.9341;
+        else if(vLep.at(1)->pt>200) muEff = 0.9494;
+        else if(vLep.at(1)->pt>150) muEff = 0.9376;
+        else if(vLep.at(1)->pt>100) muEff = 0.9385;
+        else if(vLep.at(1)->pt>60) muEff = 0.9431;
+        else if(vLep.at(1)->pt>50) muEff = 0.9502;
+        else if(vLep.at(1)->pt>40) muEff = 0.9465;
+        else if(vLep.at(1)->pt>35) muEff = 0.9433;
       }
       else if(eta2>=0.0){
-	if(vLep.at(1)->pt>500) muEff = 0.0;
-	else if(vLep.at(1)->pt>300) muEff = 0.9433;
-	else if(vLep.at(1)->pt>200) muEff = 0.9076;
-	else if(vLep.at(1)->pt>150) muEff = 0.9175;
-	else if(vLep.at(1)->pt>100) muEff = 0.9106;
-	else if(vLep.at(1)->pt>60) muEff = 0.9141;
-	else if(vLep.at(1)->pt>50) muEff = 0.9156;
-	else if(vLep.at(1)->pt>40) muEff = 0.9081;
-	else if(vLep.at(1)->pt>35) muEff = 0.9111;      
+        if(vLep.at(1)->pt>500) muEff = 0.0;
+        else if(vLep.at(1)->pt>300) muEff = 0.9433;
+        else if(vLep.at(1)->pt>200) muEff = 0.9076;
+        else if(vLep.at(1)->pt>150) muEff = 0.9175;
+        else if(vLep.at(1)->pt>100) muEff = 0.9106;
+        else if(vLep.at(1)->pt>60) muEff = 0.9141;
+        else if(vLep.at(1)->pt>50) muEff = 0.9156;
+        else if(vLep.at(1)->pt>40) muEff = 0.9081;
+        else if(vLep.at(1)->pt>35) muEff = 0.9111;
       }
       //std::cout<<"weight for leading electron with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<elEff<<" weight for subleading muon with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<muEff<<" total sf = "<<sf<<std::endl;
     }
@@ -2621,68 +2532,68 @@ float getTrigSF(std::vector<TLepton*> vLep){
       if(eta2<0.8) elEff = 0.980;
       else if(eta2<1.5) elEff  = 0.986;
       else{
-	if(vLep.at(1)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
-	else elEff = 0.996;
+        if(vLep.at(1)->pt<40) elEff= 0.9955*( ROOT::Math::normal_cdf(vLep.at(1)->pt-34.157,1.62)); //take from fitted function
+        else elEff = 0.996;
       }
       //now muon efficiency
       if(eta1>2.1){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.7778;
-	else if(vLep.at(0)->pt>200) muEff = 0.7964;
-	else if(vLep.at(0)->pt>150) muEff = 0.8071;
-	else if(vLep.at(0)->pt>100) muEff = 0.7895;
-	else if(vLep.at(0)->pt>60) muEff = 0.8113;
-	else if(vLep.at(0)->pt>50) muEff = 0.7684;
-	else if(vLep.at(0)->pt>40) muEff = 0.7692;
-	else if(vLep.at(0)->pt>35) muEff = 0.7607;      
+        if(vLep.at(0)->pt>500) muEff = 0.0;
+        else if(vLep.at(0)->pt>300) muEff = 0.7778;
+        else if(vLep.at(0)->pt>200) muEff = 0.7964;
+        else if(vLep.at(0)->pt>150) muEff = 0.8071;
+        else if(vLep.at(0)->pt>100) muEff = 0.7895;
+        else if(vLep.at(0)->pt>60) muEff = 0.8113;
+        else if(vLep.at(0)->pt>50) muEff = 0.7684;
+        else if(vLep.at(0)->pt>40) muEff = 0.7692;
+        else if(vLep.at(0)->pt>35) muEff = 0.7607;
       }
       else if(eta1>1.2){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8848;
-	else if(vLep.at(0)->pt>200) muEff = 0.8279;
-	else if(vLep.at(0)->pt>150) muEff = 0.8300;
-	else if(vLep.at(0)->pt>100) muEff = 0.8356;
-	else if(vLep.at(0)->pt>60) muEff = 0.8573;
-	else if(vLep.at(0)->pt>50) muEff = 0.8674;
-	else if(vLep.at(0)->pt>40) muEff = 0.8735;
-	else if(vLep.at(0)->pt>35) muEff = 0.8638;      
+        if(vLep.at(0)->pt>500) muEff = 0.0;
+        else if(vLep.at(0)->pt>300) muEff = 0.8848;
+        else if(vLep.at(0)->pt>200) muEff = 0.8279;
+        else if(vLep.at(0)->pt>150) muEff = 0.8300;
+        else if(vLep.at(0)->pt>100) muEff = 0.8356;
+        else if(vLep.at(0)->pt>60) muEff = 0.8573;
+        else if(vLep.at(0)->pt>50) muEff = 0.8674;
+        else if(vLep.at(0)->pt>40) muEff = 0.8735;
+        else if(vLep.at(0)->pt>35) muEff = 0.8638;
       }
       else if(eta1>0.9){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.8627;
-	else if(vLep.at(0)->pt>200) muEff = 0.8776;
-	else if(vLep.at(0)->pt>150) muEff = 0.8986;
-	else if(vLep.at(0)->pt>100) muEff = 0.8949;
-	else if(vLep.at(0)->pt>60) muEff = 0.9025;
-	else if(vLep.at(0)->pt>50) muEff = 0.9165;
-	else if(vLep.at(0)->pt>40) muEff = 0.9097;
-	else if(vLep.at(0)->pt>35) muEff = 0.9080;      
+        if(vLep.at(0)->pt>500) muEff = 0.0;
+        else if(vLep.at(0)->pt>300) muEff = 0.8627;
+        else if(vLep.at(0)->pt>200) muEff = 0.8776;
+        else if(vLep.at(0)->pt>150) muEff = 0.8986;
+        else if(vLep.at(0)->pt>100) muEff = 0.8949;
+        else if(vLep.at(0)->pt>60) muEff = 0.9025;
+        else if(vLep.at(0)->pt>50) muEff = 0.9165;
+        else if(vLep.at(0)->pt>40) muEff = 0.9097;
+        else if(vLep.at(0)->pt>35) muEff = 0.9080;
       }
       else if(eta1>0.4){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.9341;
-	else if(vLep.at(0)->pt>200) muEff = 0.9494;
-	else if(vLep.at(0)->pt>150) muEff = 0.9376;
-	else if(vLep.at(0)->pt>100) muEff = 0.9385;
-	else if(vLep.at(0)->pt>60) muEff = 0.9431;
-	else if(vLep.at(0)->pt>50) muEff = 0.9502;
-	else if(vLep.at(0)->pt>40) muEff = 0.9465;
-	else if(vLep.at(0)->pt>35) muEff = 0.9433;      
+        if(vLep.at(0)->pt>500) muEff = 0.0;
+        else if(vLep.at(0)->pt>300) muEff = 0.9341;
+        else if(vLep.at(0)->pt>200) muEff = 0.9494;
+        else if(vLep.at(0)->pt>150) muEff = 0.9376;
+        else if(vLep.at(0)->pt>100) muEff = 0.9385;
+        else if(vLep.at(0)->pt>60) muEff = 0.9431;
+        else if(vLep.at(0)->pt>50) muEff = 0.9502;
+        else if(vLep.at(0)->pt>40) muEff = 0.9465;
+        else if(vLep.at(0)->pt>35) muEff = 0.9433;
       }
       else if(eta1>=0.0){
-	if(vLep.at(0)->pt>500) muEff = 0.0;
-	else if(vLep.at(0)->pt>300) muEff = 0.9433;
-	else if(vLep.at(0)->pt>200) muEff = 0.9076;
-	else if(vLep.at(0)->pt>150) muEff = 0.9175;
-	else if(vLep.at(0)->pt>100) muEff = 0.9106;
-	else if(vLep.at(0)->pt>60) muEff = 0.9141;
-	else if(vLep.at(0)->pt>50) muEff = 0.9156;
-	else if(vLep.at(0)->pt>40) muEff = 0.9081;
-	else if(vLep.at(0)->pt>35) muEff = 0.9111;      
+        if(vLep.at(0)->pt>500) muEff = 0.0;
+        else if(vLep.at(0)->pt>300) muEff = 0.9433;
+        else if(vLep.at(0)->pt>200) muEff = 0.9076;
+        else if(vLep.at(0)->pt>150) muEff = 0.9175;
+        else if(vLep.at(0)->pt>100) muEff = 0.9106;
+        else if(vLep.at(0)->pt>60) muEff = 0.9141;
+        else if(vLep.at(0)->pt>50) muEff = 0.9156;
+        else if(vLep.at(0)->pt>40) muEff = 0.9081;
+        else if(vLep.at(0)->pt>35) muEff = 0.9111;
       }
       //std::cout<<"weight for leading muon with eta: "<<eta1<<" and pt: "<<vLep.at(0)->pt<<" is: "<<muEff<<" weight for subleading electron with eta: "<<eta2<<" and pt: "<<vLep.at(1)->pt<<" is: "<<elEff<<" total sf = "<<sf<<std::endl;
 
-    }//end check on electron being subleading or leading    
+    }//end check on electron being subleading or leading
 
     //scale factor is combined efficiency (AND of reco'ing both el and mu)
     sf = muEff*elEff;
@@ -2722,7 +2633,7 @@ float getLepIDSF(TLepton* lep){
       else if(fabs(lep->eta)>1.2) sf = 0.9868;
       else if(fabs(lep->eta)>0.9) sf = 0.9718;
       else sf =0.9744;
-    }    
+    }
 
   }
   else{//electron
@@ -2985,8 +2896,8 @@ std::vector<TH1F*> initHistos(std::vector<Variable*> vVar, int nMu, std::string 
   if(nMu==-1) chan ="All";
   if(nMu==0) chan ="ElEl";
   if(nMu==1) chan ="ElMu";
-  if(nMu==2) chan ="MuMu";  
-  
+  if(nMu==2) chan ="MuMu";
+
   for(unsigned int i=0; i< vVar.size(); i++){
     Variable* var = vVar.at(i);
     std::string histname = chan+"_"+cutname+"_"+var->name;
@@ -3002,8 +2913,8 @@ std::vector<TH1F*> initHistos(std::vector<Variable*> vVar, int nMu, std::string 
 
 
 void fillHistos(std::vector<TH1F*> hists,std::vector<TLepton*> vSSLep, std::vector<TLepton*> vNonSSLep, std::vector<TJet*> jets, float MET, float DilepMass, float weight){
-  
-  
+
+
   //make nConst and HT
   int nConst = vNonSSLep.size() + jets.size();
   float HT = vSSLep.at(0)->pt + vSSLep.at(1)->pt;
@@ -3013,19 +2924,19 @@ void fillHistos(std::vector<TH1F*> hists,std::vector<TLepton*> vSSLep, std::vect
   for(unsigned int i=0; i< jets.size(); i++){
     HT = HT + jets.at(i)->pt;
   }
-  
+
   //fill histograms
   for(unsigned int i=0; i<hists.size(); i++){
-   
+
     std::string title = hists.at(i)->GetTitle();
     if(title=="Lep1Pt") hists.at(i)->Fill(vSSLep.at(0)->pt,weight);
     if(title=="Lep1Eta") hists.at(i)->Fill(vSSLep.at(0)->eta,weight);
     if(title=="Lep1Phi") hists.at(i)->Fill(vSSLep.at(0)->phi,weight);
-    
+
     if(title=="Lep2Pt") hists.at(i)->Fill(vSSLep.at(1)->pt,weight);
     if(title=="Lep2Eta") hists.at(i)->Fill(vSSLep.at(1)->eta,weight);
     if(title=="Lep2Phi") hists.at(i)->Fill(vSSLep.at(1)->phi,weight);
-    
+
     if(title=="cleanAK4Jet1Pt") {
       if(jets.size() >0) hists.at(i)->Fill(jets.at(0)->pt,weight);
       else hists.at(i)->Fill(-999,weight);
@@ -3038,7 +2949,7 @@ void fillHistos(std::vector<TH1F*> hists,std::vector<TLepton*> vSSLep, std::vect
       if(jets.size() >0) hists.at(i)->Fill(jets.at(0)->phi,weight);
       else hists.at(i)->Fill(-999,weight);
     }
-    
+
     if(title=="cleanAK4Jet2Pt"){
       if(jets.size()>1) hists.at(i)->Fill(jets.at(1)->pt,weight);
       else hists.at(i)->Fill(-999,weight);
@@ -3051,20 +2962,20 @@ void fillHistos(std::vector<TH1F*> hists,std::vector<TLepton*> vSSLep, std::vect
       if(jets.size()>1) hists.at(i)->Fill(jets.at(1)->phi,weight);
       else hists.at(i)->Fill(-999,weight);
     }
-    
+
     if(title=="cleanAK4HT") hists.at(i)->Fill(HT,weight);
     if(title=="nCleanAK4Jets") hists.at(i)->Fill(jets.size(),weight);
     if(title=="nNonSSLeps") hists.at(i)->Fill(vNonSSLep.size(),weight);
     if(title=="MET") hists.at(i)->Fill(MET,weight);
     if(title=="DilepMass") hists.at(i)->Fill(DilepMass,weight);
     if(title=="nConst") hists.at(i)->Fill(nConst,weight);
-    
-    
+
+
   }
-  
-  
+
+
 };
-		      
+
 void writeHistos(TFile* f, std::vector<TH1F*> hists){
 
   for(unsigned int i=0; i< hists.size();i++){
@@ -3085,10 +2996,10 @@ std::vector<Sample*> appendSampleVectors(std::vector<Sample*> vS1,std::vector<Sa
 
 //added by rizki
 std::vector<Sample*> appendSampleVectors(std::vector<Sample*> vS1,std::vector<Sample*> vS2,
-										 std::vector<Sample*> vS3,std::vector<Sample*> vS4,
-										 std::vector<Sample*> vS5,std::vector<Sample*> vS6
-										)
-										{
+                                                                                 std::vector<Sample*> vS3,std::vector<Sample*> vS4,
+                                                                                 std::vector<Sample*> vS5,std::vector<Sample*> vS6
+                                                                                )
+                                                                                {
   std::vector<Sample*> vS;
   for(unsigned int i=0; i<vS1.size();i++){
     vS.push_back(vS1.at(i));
@@ -3112,7 +3023,7 @@ std::vector<Sample*> appendSampleVectors(std::vector<Sample*> vS1,std::vector<Sa
 }
 
 
-std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){  
+std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string elID, std::string muID, std::string era){
 
    //setup info for list of samples, xsec and events run  //make vector of actual number of events run MULTIPLIED BY AMCATNLO WEIGHT
   std::vector<std::string> vBkgNames;  std::vector<float> vXsec;  std::vector<float> vNEvts;
@@ -3130,7 +3041,7 @@ std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string 
   vBkgNames.push_back("ZZ");     vXsec.push_back(1.212);  vNEvts.push_back(6652512 * 0.689851);
   vBkgNames.push_back("VH");     vXsec.push_back(0.952);  vNEvts.push_back(993464 * 0.45775);
   vBkgNames.push_back("WpWp");   vXsec.push_back(0.03711); vNEvts.push_back( 140224* 1);
-  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);  
+  vBkgNames.push_back("WW-mpi"); vXsec.push_back(1.64);   vNEvts.push_back( 843514* 1);
   vBkgNames.push_back("WWZ");    vXsec.push_back(0.1651); vNEvts.push_back(250000*0.885872);
   vBkgNames.push_back("WZZ");    vXsec.push_back(0.05565); vNEvts.push_back(250000*0.876672);
   vBkgNames.push_back("ZZZ");    vXsec.push_back(0.01398); vNEvts.push_back(250000*0.8554);
@@ -3185,7 +3096,7 @@ std::vector<Sample*> get74BkgSampleVec(std::string cut, float lumi, std::string 
   TFile* dyjfile = TFile::Open(dyfilename.c_str());
   Sample* dyjSample = new Sample(vBkgNames.at(3),dyjfile, vWeights.at(3),vXsec.at(3),cut,kMagenta+2);
   vSample.push_back(dyjSample);*/
-  
+
   std::string zzfilename = "/uscms_data/d3/clint/using_git/T53/ljmet/CMSSW_7_4_15_patch1/src/AnalysisCode/X53ThirteenTeVAnalysisCode/test/ZZ_Mu"+muID+"_El"+elID+"_"+era+".root";
   TFile* zzjfile = TFile::Open(zzfilename.c_str());
   Sample* zzjSample = new Sample(vBkgNames.at(5),zzjfile, vWeights.at(5),vXsec.at(5),cut,kOrange+1);
@@ -3280,7 +3191,7 @@ std::vector<Sample*> get74InclusiveSigSampleVecForTable(std::string cut, float l
   vSigNames.push_back("LH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
   vSigNames.push_back("RH_X53X53_M-1600"); vXsec.push_back(0.00111); vNEvts.push_back(300000.);
 
- 
+
 
   //vector to hold weights
   std::vector<float> vWeights;

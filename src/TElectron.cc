@@ -1,7 +1,37 @@
 #include "../interface/TElectron.h"
 
 
-TElectron::TElectron(double pttemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp,double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp,double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv, int chargeconsistencytemp, double mvatemp, double mva80Xtemp, double miniIsotemp, double susyisotemp):
+TElectron::TElectron(
+                     double pttemp,
+                     double etatemp,
+                     double phitemp, 
+                     double energytemp, 
+                     int chargetemp, 
+                     int gsfCharget, 
+                     int ctfCharget, 
+                     int scpixCharget, 
+                     double dEtatemp, 
+                     double dPhitemp, 
+                     double dZtemp, 
+                     double siptemp,
+                     double d0temp,
+                     double hOverEtemp, 
+                     double mHitstemp, 
+                     double ooEmooPtemp, 
+                     double sigmaIetaIetatemp,
+                     double chIsotemp,
+                     double puIsotemp, 
+                     double neuIsotemp, 
+                     double photIsotemp,
+                     double rhoIsotemp,
+                     double AEfftemp, 
+                     int passConv, 
+                     int chargeconsistencytemp, 
+                     double mvatemp, 
+                     double mva80Xtemp, 
+                     double miniIsotemp, 
+                     double susyisotemp
+                     ):
   TLepton(pttemp,etatemp,phitemp,energytemp,chargetemp,miniIsotemp,miniIsotemp,susyisotemp),
   gsfCharge(gsfCharget),
   ctfCharge(ctfCharget),
@@ -84,6 +114,13 @@ bool TElectron::mva94XTightV1_Iso_RC(){
   bool pass = mva94XTightV1_Iso() && cc;
   return pass;
 }
+bool TElectron::mva94XTightV1_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV1() && cc;
+  return pass;
+}
 
 
 bool TElectron::mva94XLooseV1(){
@@ -112,6 +149,13 @@ bool TElectron::mva94XLooseV1_Iso_RC(){
   if(pt<100) cc = chargeConsistency< 1 ? false : true;
   else cc = gsfCharge==ctfCharge ? true : false;
   bool pass = mva94XLooseV1_Iso() && cc;
+  return pass;
+}
+bool TElectron::mva94XLooseV1_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XLooseV1() && cc;
   return pass;
 }
 

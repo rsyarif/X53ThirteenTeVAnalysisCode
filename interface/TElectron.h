@@ -6,7 +6,37 @@
 class TElectron : public TLepton{
 public:
   //constructor
-  TElectron(double ptTemp,double etatemp,double phitemp, double energytemp, int chargetemp, int gsfCharget, int ctfCharget, int scpixCharget, double dEtatemp, double dPhitemp, double dZtemp, double siptemp, double d0temp,double hOverEtemp, double mHitstemp, double ooEmooPtemp, double sigmaIetaIetatemp, double chIsotemp,double puIsotemp, double neuIsotemp, double photIsotemp,double rhoIsotemp,double AEfftemp, int passConv,int chargeconsitencytemp, double mvatemp, double mva80xtemp, double miniIsotemp, double susyisotemp);
+  TElectron(double ptTemp,
+            double etatemp,
+            double phitemp, 
+            double energytemp, 
+            int chargetemp, 
+            int gsfCharget, 
+            int ctfCharget, 
+            int scpixCharget, 
+            double dEtatemp, 
+            double dPhitemp, 
+            double dZtemp, 
+            double siptemp, 
+            double d0temp,
+            double hOverEtemp, 
+            double mHitstemp, 
+            double ooEmooPtemp, 
+            double sigmaIetaIetatemp, 
+            double chIsotemp,
+            double puIsotemp, 
+            double neuIsotemp, 
+            double photIsotemp,
+            double rhoIsotemp,
+            double AEfftemp, 
+            int passConv,
+            int chargeconsitencytemp, 
+            double mvatemp, 
+            double mva80xtemp, 
+            double miniIsotemp, 
+            double susyisotemp
+            );
+
   //varibles for charge
   int gsfCharge;
   int ctfCharge;
@@ -49,9 +79,11 @@ public:
   bool mva94XTightV1();
   bool mva94XTightV1_Iso();
   bool mva94XTightV1_Iso_RC();
+  bool mva94XTightV1_RC();
   bool mva94XLooseV1();
   bool mva94XLooseV1_Iso();
   bool mva94XLooseV1_Iso_RC();
+  bool mva94XLooseV1_RC();
 
   bool mvaTight();
   bool mva2016Tight();

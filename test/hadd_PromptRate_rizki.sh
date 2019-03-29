@@ -1,0 +1,8 @@
+#!/bin/bash
+
+hadd PromptRate_Data_All_Electrons_MVA2017TightRC_SortByPhi.root \
+PromptRate_Data_2017B_Electrons_MVA2017TightRC_SortByPhi.root \
+PromptRate_Data_2017C_Electrons_MVA2017TightRC_SortByPhi.root \
+PromptRate_Data_2017D_Electrons_MVA2017TightRC_SortByPhi.root \
+PromptRate_Data_2017E_Electrons_MVA2017TightRC_SortByPhi.root \
+PromptRate_Data_2017F_Electrons_MVA2017TightRC_SortByPhi.root

@@ -112,7 +112,7 @@ class TreeReader{
   std::vector<double>  *elHoE;
   TBranch        *b_elHoE_DileptonCalc;
   std::vector<double>  *elOoemoop;
-  TBranch        *b_elOoemoop_DileptonCalc; 
+  TBranch        *b_elOoemoop_DileptonCalc;
   std::vector<double>  *elSihih;
   TBranch        *b_elSihih_DileptonCalc;
   //Isolation Variables
@@ -134,13 +134,36 @@ class TreeReader{
   TBranch        *b_elAEff_DileptonCalc;
   std::vector<double>  *elSusyIso;
   TBranch        *b_elSusyIso_DileptonCalc;
-  //mva value
-  std::vector<double> *elMVA;
-  TBranch        *b_elMVA_DileptonCalc;
+  //el mva value
   std::vector<double> *elMVAValue;
   TBranch        *b_elMVAValue_DileptonCalc;
 
-  //Muons 
+  //el mva ID bools
+  std::vector<double> *elIsMVATight80;
+  TBranch        *b_elIsMVATight80_DileptonCalc;
+  std::vector<double> *elIsMVATight90;
+  TBranch        *b_elIsMVATight90_DileptonCalc;
+  std::vector<double> *elIsMVALoose;
+  TBranch        *b_elIsMVALoose_DileptonCalc;
+  std::vector<double> *elIsMVATightIso80;
+  TBranch        *b_elIsMVATightIso80_DileptonCalc;
+  std::vector<double> *elIsMVATightIso90;
+  TBranch        *b_elIsMVATightIso90_DileptonCalc;
+  std::vector<double> *elIsMVALooseIso;
+  TBranch        *b_elIsMVALooseIso_DileptonCalc;
+
+  //el cut ID bools
+  std::vector<double> *elIsTight;
+  TBranch        *b_elIsTight_DileptonCalc;
+  std::vector<double> *elIsMedium;
+  TBranch        *b_elIsMedium_DileptonCalc;
+  std::vector<double> *elIsLoose;
+  TBranch        *b_elIsLoose_DileptonCalc;
+  std::vector<double> *elIsVeto;
+  TBranch        *b_elIsVeto_DileptonCalc;
+
+
+  //Muons
   std::vector<int>     *muCharge;
   TBranch        *b_muCharge_DileptonCalc;
   std::vector<bool>     *muGlobal;
@@ -154,7 +177,7 @@ class TreeReader{
   std::vector<int>     *muNTrackerLayers;
   TBranch        *b_muNTrackerLayers_DileptonCalc;
   std::vector<int>     *muNValMuHits;
-  TBranch        *b_muNValMuHits_DileptonCalc; 
+  TBranch        *b_muNValMuHits_DileptonCalc;
   std::vector<int>     *muNValPixelHits;
   TBranch        *b_muNValPixelHits_DileptonCalc;
   std::vector<double>  *muChi2;
@@ -172,7 +195,7 @@ class TreeReader{
   std::vector<double>  *muPhi;
   TBranch        *b_muPhi_DileptonCalc;
   std::vector<double>  *muPt;
-  TBranch        *b_muPt_DileptonCalc; 
+  TBranch        *b_muPt_DileptonCalc;
   std::vector<double>  *muRelIso;
   TBranch        *b_muRelIso_DileptonCalc;
   std::vector<double>  *muMiniIso;
@@ -196,7 +219,7 @@ class TreeReader{
   std::vector<int>     *genMotherIndex;
   TBranch        *b_genMotherIndex_DileptonCalc;
   std::vector<int>     *genStatus;
-  TBranch        *b_genStatus_DileptonCalc; 
+  TBranch        *b_genStatus_DileptonCalc;
   std::vector<double>  *genEnergy;
   TBranch        *b_genEnergy_DileptonCalc;
   std::vector<double>  *genEta;
@@ -204,7 +227,7 @@ class TreeReader{
   std::vector<double>  *genPhi;
   TBranch        *b_genPhi_DileptonCalc;
   std::vector<double>  *genPt;
-  TBranch        *b_genPt_DileptonCalc; 
+  TBranch        *b_genPt_DileptonCalc;
   std::vector<bool> *genIsFromPromptTau;
   TBranch        *b_genIsFromPromptTau_DileptonCalc;
   std::vector<bool> *genIsPrompt;
@@ -353,38 +376,139 @@ class TreeReader{
 
 
   // Trigger Info
+
   //double electron
   bool HLT_Ele27_Ele37;
-  TBranch* b_HLT_Ele27_Ele37_DileptonCalc;
   bool HLT_DoubleEle25;
-  TBranch* b_HLT_DoubleEle25_DileptonCalc;
   bool HLT_DoubleEle27;
-  TBranch* b_HLT_DoubleEle27_DileptonCalc;
   bool HLT_DoubleEle33;
+
+  bool HLT_DoubleEle24_eta2p1_WPTight_Gsf_v;
+  bool HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350_v;
+  bool HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v;
+  bool HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v;
+  bool HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v;
+
+  TBranch* b_HLT_Ele27_Ele37_DileptonCalc;
+  TBranch* b_HLT_DoubleEle25_DileptonCalc;
+  TBranch* b_HLT_DoubleEle27_DileptonCalc;
   TBranch* b_HLT_DoubleEle33_DileptonCalc;
+
+  TBranch* b_HLT_DoubleEle24_eta2p1_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_DZ_PFHT350_v_DileptonCalc;
+  TBranch* b_HLT_DoubleEle8_CaloIdM_TrackIdM_Mass8_PFHT350_v_DileptonCalc;
+  TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v_DileptonCalc;
+  TBranch* b_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v_DileptonCalc;
+
   //single electron
-  bool HLT_Ele23Iso;
-  TBranch* b_HLT_Ele23Iso_DileptonCalc;
-  bool HLT_Ele23;
-  TBranch* b_HLT_Ele23_DileptonCalc;
+  bool HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
+  bool HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
+  bool HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
+
+  bool HLT_Ele20_WPLoose_Gsf_v;
+  bool HLT_Ele20_eta2p1_WPLoose_Gsf_v;
+  bool HLT_Ele27_WPTight_Gsf_v;
+  bool HLT_Ele32_WPTight_Gsf_v;
+  bool HLT_Ele35_WPTight_Gsf_v;
+  bool HLT_Ele35_WPTight_Gsf_L1EGMT_v;
+  bool HLT_Ele38_WPTight_Gsf_v;
+  bool HLT_Ele40_WPTight_Gsf_v;
+  bool HLT_Ele32_WPTight_Gsf_L1DoubleEG_v;
+  bool HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v;
+  bool HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v;
+  bool HLT_Ele28_HighEta_SC20_Mass55_v;
+
+  bool HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v;
+  bool HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v;
+  bool HLT_Ele23_CaloIdM_TrackIdM_PFJet30_v;
+
+  TBranch* b_HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_v_DileptonCalc;
+  TBranch* b_HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v_DileptonCalc;
+  TBranch* b_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v_DileptonCalc;
+
+  TBranch* b_HLT_Ele20_WPLoose_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele20_eta2p1_WPLoose_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele27_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele32_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele35_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele35_WPTight_Gsf_L1EGMT_v_DileptonCalc;
+  TBranch* b_HLT_Ele38_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele40_WPTight_Gsf_v_DileptonCalc;
+  TBranch* b_HLT_Ele32_WPTight_Gsf_L1DoubleEG_v_DileptonCalc;
+  TBranch* b_HLT_Ele30_eta2p1_WPTight_Gsf_CentralPFJet35_EleCleaned_v_DileptonCalc;
+  TBranch* b_HLT_Ele28_eta2p1_WPTight_Gsf_HT150_v_DileptonCalc;
+  TBranch* b_HLT_Ele28_HighEta_SC20_Mass55_v_DileptonCalc;
+
+  TBranch* b_HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v_DileptonCalc;
+  TBranch* b_HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v_DileptonCalc;
+  TBranch* b_HLT_Ele23_CaloIdM_TrackIdM_PFJet30_v_DileptonCalc;
+
   //double muon
   bool HLT_Mu37_TkMu27;
+  bool HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8;
+  bool HLT_DoubleMu8_Mass8_PFHT350;
+  bool HLT_DoubleMu4_Mass8_DZ_PFHT350;
+
   TBranch* b_HLT_Mu37_TkMu27_DileptonCalc;
+  TBranch* b_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_DileptonCalc;
+  TBranch* b_HLT_DoubleMu8_Mass8_PFHT350_DileptonCalc;
+  TBranch* b_HLT_DoubleMu4_Mass8_DZ_PFHT350_DileptonCalc;
+
+
   //single muon
+  bool HLT_Mu8;
   bool HLT_Mu17;
+  bool HLT_Mu19;
+  bool HLT_Mu20;
+  bool HLT_Mu27;
+  bool HLT_Mu8_TrkIsoVVL;
+  bool HLT_Mu17_TrkIsoVVL;
+  bool HLT_Mu19_TrkIsoVVL;
+  bool HLT_Mu3_PFJet40;
+
+  TBranch* b_HLT_Mu8_DileptonCalc;
   TBranch* b_HLT_Mu17_DileptonCalc;
+  TBranch* b_HLT_Mu19_DileptonCalc;
+  TBranch* b_HLT_Mu20_DileptonCalc;
+  TBranch* b_HLT_Mu27_DileptonCalc;
+  TBranch* b_HLT_Mu8_TrkIsoVVL_DileptonCalc;
+  TBranch* b_HLT_Mu17_TrkIsoVVL_DileptonCalc;
+  TBranch* b_HLT_Mu19_TrkIsoVVL_DileptonCalc;
+  TBranch* b_HLT_Mu3_PFJet40_DileptonCalc;
+
   //cross triggers
   bool HLT_Mu37Ele27;
-  TBranch* b_HLT_Mu37Ele27_DileptonCalc;
   bool HLT_Mu27Ele37;
+
+  bool HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_v;
+  bool HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v;
+  bool HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_v;
+  bool HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v;
+  bool HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v;
+  bool HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v;
+  bool HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v;
+  bool HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v;
+
+  TBranch* b_HLT_Mu37Ele27_DileptonCalc;
   TBranch* b_HLT_Mu27Ele37_DileptonCalc;
+
+  TBranch* b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_DZ_v_DileptonCalc;
+  TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v_DileptonCalc;
+  TBranch* b_HLT_Mu8_Ele8_CaloIdM_TrackIdM_Mass8_PFHT350_v_DileptonCalc;
+  TBranch* b_HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v_DileptonCalc;
+  TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v_DileptonCalc;
+  TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v_DileptonCalc;
+  TBranch* b_HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v_DileptonCalc;
+  TBranch* b_HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v_DileptonCalc;
+
+
   //hadronic triggers
   bool HLT_PFHT900;
   TBranch* b_HLT_PFHT900_DileptonCalc;
   bool HLT_AK8PFJet360TrimMass30;
   TBranch* b_HLT_AK8PFJet360TrimMass30_DileptonCalc;
-  
-  
+
+
   //TT signal BR info - added by rizi
   bool isTZTZ;
   TBranch* b_isTZTZ_TpTpCalc;
@@ -398,7 +522,7 @@ class TreeReader{
   TBranch* b_isTHBW_TpTpCalc;
   bool isBWBW;
   TBranch* b_isBWBW_TpTpCalc;
-  
+
   //BB signal BR info - added by rizki
   bool isBZBZ;
   TBranch* b_isBZBZ_TpTpCalc;

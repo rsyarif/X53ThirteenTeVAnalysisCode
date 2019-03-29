@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#eosdir=root://cmseos.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_2_18_rizki_hadds_Analyzer_elID2017_nonIsoHTtrig/
+eosdir=root://cmseos.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_3_15_rizki_hadds_Analyzer_elIDv2_nonIsoHTtrig/
+
+hadd -f $eosdir/DataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_2_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_2_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_2_3_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_2_4_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/DataMuMu2017F_2_5_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+
+hadd -f $eosdir/NonPromptDataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_2_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_2_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_2_3_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_2_4_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/NonPromptDataMuMu2017F_2_5_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+
+hadd -f $eosdir/ZZ_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_3_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_4_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_5_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_6_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_7_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_8_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_9_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_10_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_11_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_12_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_13_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_14_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+$eosdir/ZZ_part2_15_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+
+# eosdir=root://cmseos.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_1_13_rizki_hadds_Analyzer_elID2017_IsoTrig/
+#
+# hadd $eosdir/DataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/DataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/DataMuMu2017F_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+#
+# hadd $eosdir/NonPromptDataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/NonPromptDataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/NonPromptDataMuMu2017F_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+
+# eosdir=root://cmseos.fnal.gov//store/group/lpcljm/LJMet94x_2lepTT_2017datasets_2019_1_13_rizki_hadds_Analyzer_elID2017_NonIsoTrig/
+
+# hadd $eosdir/DataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/DataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/DataMuMu2017F_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root
+
+# hadd $eosdir/NonPromptDataMuMu2017F_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/NonPromptDataMuMu2017F_1_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root \
+# $eosdir/NonPromptDataMuMu2017F_2_MuCBTightMiniIsoTight_ElMVA2017TightRC_2017C-F.root

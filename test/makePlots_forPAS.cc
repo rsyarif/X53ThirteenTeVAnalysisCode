@@ -95,7 +95,8 @@ float uncJER_WZZ=0.01;
 float uncJER_ZZZ=0;
 
 //folder to save plots - rizki
-const std::string saveFolder = "plots_Nov26-2018_nConst4_HT1200_0NonSSLep";
+// const std::string saveFolder = "plots_nConst4_HT1200_0NonSSLep_NonIsoTrig_Jan30-2019"; //CHECK Macros.cc for input folder!!
+const std::string saveFolder = "plots_nConst4_HT1200_0NonSSLep_IsoTrig_Jan30-2019"; //CHECK Macros.cc for input folder!!
 
 
 void makePlots_forPAS(std::string elID, std::string muID){

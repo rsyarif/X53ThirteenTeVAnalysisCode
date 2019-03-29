@@ -22,9 +22,10 @@ cd Analyzer/test/
 #source setup.csh
 export LD_LIBRARY_PATH=../lib/:$LD_LIBRARY_PATH 
 
-echo "Executing: ./X53Analyzer.o ${sample} MVA2016TightRC CBTightMiniIsoTight ${era} ${decay}"
+# echo "Executing: ./X53Analyzer.o ${sample} MVA2016TightRC CBTightMiniIsoTight ${era} ${decay}"
+echo "Executing: ./X53Analyzer.o ${sample} MVA2017TightRC CBTightMiniIsoTight ${era} ${decay}"
 
-./X53Analyzer.o $sample MVA2016TightRC CBTightMiniIsoTight $era $decay
+./X53Analyzer.o $sample MVA2017TightRC CBTightMiniIsoTight $era $decay
 
 rm Pileup*.root
 
