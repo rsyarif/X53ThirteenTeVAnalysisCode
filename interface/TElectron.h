@@ -74,6 +74,48 @@ public:
   double mvaValue80X;
   double miniIso;
   double susyIso;
+
+
+  //94X - el MVA v2 - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_Recipe_V2_for_re
+  bool ISmva94XTightV2_80;
+  bool ISmva94XTightV2_90;
+  bool ISmva94XLooseV2;
+
+  void set_mva94XTightV2_80(bool value);
+  void set_mva94XTightV2_90(bool value);
+  void set_mva94XLooseV2(bool value);
+
+  bool ISmva94XTightIsoV2_80;
+  bool ISmva94XTightIsoV2_90;
+  bool ISmva94XLooseIsoV2;
+
+  void set_mva94XTightIsoV2_80(bool value);
+  void set_mva94XTightIsoV2_90(bool value);
+  void set_mva94XLooseIsoV2(bool value);
+
+
+  bool mva94XTightV2_80();
+  bool mva94XTightV2_80_Iso();
+  bool mva94XTightV2_80_Iso_RC();
+  bool mva94XTightV2_80_RC();
+  bool mva94XTightV2_90();
+  bool mva94XTightV2_90_Iso();
+  bool mva94XTightV2_90_Iso_RC();
+  bool mva94XTightV2_90_RC();
+  bool mva94XLooseV2();
+  bool mva94XLooseV2_Iso();
+  bool mva94XLooseV2_Iso_RC();
+  bool mva94XLooseV2_RC();
+
+
+  bool mva94XTightIsoV2_80();
+  bool mva94XTightIsoV2_80_RC();
+  bool mva94XTightIsoV2_90();
+  bool mva94XTightIsoV2_90_RC();
+  bool mva94XLooseIsoV2();
+  bool mva94XLooseIsoV2_RC();
+
+
   
   //94X - https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#MVA_Recipe_V1_for_regular_users
   bool mva94XTightV1();

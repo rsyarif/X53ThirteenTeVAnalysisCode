@@ -103,8 +103,15 @@ Int_t TreeReader::GetEntry(Long64_t entry){
                                          (*elMVAValue)[i],
                                          (*elMVAValue)[i], 
                                          (*elMiniIso)[i], 
-                                         (*elSusyIso)[i]) 
-                                         );
+                                         (*elSusyIso)[i]
+                                         ) 
+                            );
+    allElectrons.at(i)->set_mva94XTightV2_80((*elIsMVATight80)[i]);
+    allElectrons.at(i)->set_mva94XTightV2_90((*elIsMVATight90)[i]);
+    allElectrons.at(i)->set_mva94XLooseV2((*elIsMVALoose)[i]);
+    allElectrons.at(i)->set_mva94XTightIsoV2_80((*elIsMVATightIso80)[i]); 
+    allElectrons.at(i)->set_mva94XTightIsoV2_90((*elIsMVATightIso90)[i]);
+    allElectrons.at(i)->set_mva94XLooseIsoV2((*elIsMVALooseIso)[i]);
 
   }
   //std::cout<<"making muon collections"<<std::endl;

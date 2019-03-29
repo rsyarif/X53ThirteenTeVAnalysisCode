@@ -75,6 +75,120 @@ TElectron::TElectron(
 }
 
 
+
+
+/// *********************** MVA IDs 94X 2017data************************ - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_Recipe_V2_for_re
+// Avoiding adding more arguments in the constructer.
+void TElectron::set_mva94XTightV2_80(bool value){
+   ISmva94XTightV2_80 = value;
+}
+void TElectron::set_mva94XTightV2_90(bool value){
+   ISmva94XTightV2_90 = value;
+}
+void TElectron::set_mva94XLooseV2(bool value){
+   ISmva94XLooseV2 = value;
+}
+
+bool TElectron::mva94XTightV2_80(){return ISmva94XTightV2_80;}
+bool TElectron::mva94XTightV2_80_Iso(){
+  bool pass = mva94XTightV2_80() && miniIso<0.1;
+  return pass;
+}
+bool TElectron::mva94XTightV2_80_Iso_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV2_80_Iso() && cc;
+  return pass;
+}
+bool TElectron::mva94XTightV2_80_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV2_80() && cc;
+  return pass;
+}
+
+bool TElectron::mva94XTightV2_90(){return ISmva94XTightV2_90;}
+bool TElectron::mva94XTightV2_90_Iso(){
+  bool pass = mva94XTightV2_90() && miniIso<0.1;
+  return pass;
+}
+bool TElectron::mva94XTightV2_90_Iso_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV2_90_Iso() && cc;
+  return pass;
+}
+bool TElectron::mva94XTightV2_90_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightV2_90() && cc;
+  return pass;
+}
+
+bool TElectron::mva94XLooseV2(){return ISmva94XLooseV2;}
+bool TElectron::mva94XLooseV2_Iso(){
+  bool pass = mva94XLooseV2() && miniIso<0.4;
+  return pass;
+}
+bool TElectron::mva94XLooseV2_Iso_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XLooseV2_Iso() && cc;
+  return pass;
+}
+bool TElectron::mva94XLooseV2_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XLooseV2() && cc;
+  return pass;
+}
+
+/// *********************** MVA IDs 94X 2017data (with Iso from POG)************************ - https://twiki.cern.ch/twiki/bin/viewauth/CMS/MultivariateElectronIdentificationRun2#Recommended_MVA_Recipe_V2_for_re
+
+void TElectron::set_mva94XTightIsoV2_80(bool value){
+   ISmva94XTightIsoV2_80 = value;
+}
+void TElectron::set_mva94XTightIsoV2_90(bool value){
+   ISmva94XTightIsoV2_90 = value;
+}
+void TElectron::set_mva94XLooseIsoV2(bool value){
+   ISmva94XLooseIsoV2 = value;
+}
+
+bool TElectron::mva94XTightIsoV2_80(){return ISmva94XTightIsoV2_80;}
+bool TElectron::mva94XTightIsoV2_80_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightIsoV2_80() && cc;
+  return pass;
+}
+
+bool TElectron::mva94XTightIsoV2_90(){return ISmva94XTightIsoV2_90;}
+bool TElectron::mva94XTightIsoV2_90_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XTightIsoV2_90() && cc;
+  return pass;
+}
+
+bool TElectron::mva94XLooseIsoV2(){return ISmva94XLooseIsoV2;}
+bool TElectron::mva94XLooseIsoV2_RC(){
+  bool cc;
+  if(pt<100) cc = chargeConsistency< 1 ? false : true;
+  else cc = gsfCharge==ctfCharge ? true : false;
+  bool pass = mva94XLooseIsoV2() && cc;
+  return pass;
+}
+
+
 /// *********************** MVA IDs 94X 2017data************************ - https://twiki.cern.ch/twiki/bin/view/CMS/MultivariateElectronIdentificationRun2#MVA_Recipe_V1_for_regular_users
 
 bool TElectron::mva94XTightV1(){
