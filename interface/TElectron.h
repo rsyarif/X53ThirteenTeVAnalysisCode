@@ -85,15 +85,6 @@ public:
   void set_mva94XTightV2_90(bool value);
   void set_mva94XLooseV2(bool value);
 
-  bool ISmva94XTightIsoV2_80;
-  bool ISmva94XTightIsoV2_90;
-  bool ISmva94XLooseIsoV2;
-
-  void set_mva94XTightIsoV2_80(bool value);
-  void set_mva94XTightIsoV2_90(bool value);
-  void set_mva94XLooseIsoV2(bool value);
-
-
   bool mva94XTightV2_80();
   bool mva94XTightV2_80_Iso();
   bool mva94XTightV2_80_Iso_RC();
@@ -107,6 +98,14 @@ public:
   bool mva94XLooseV2_Iso_RC();
   bool mva94XLooseV2_RC();
 
+
+  bool ISmva94XTightIsoV2_80;
+  bool ISmva94XTightIsoV2_90;
+  bool ISmva94XLooseIsoV2;
+
+  void set_mva94XTightIsoV2_80(bool value);
+  void set_mva94XTightIsoV2_90(bool value);
+  void set_mva94XLooseIsoV2(bool value);
 
   bool mva94XTightIsoV2_80();
   bool mva94XTightIsoV2_80_RC();
