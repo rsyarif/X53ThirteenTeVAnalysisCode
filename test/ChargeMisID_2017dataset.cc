@@ -13,6 +13,7 @@
 #include <string>
 #include <sstream> 
 #include "../plugins/Macros.cc"
+#include <memory>
 
 //helper functions
 std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs, std::string ID);
@@ -79,7 +80,7 @@ int main(int argc, char* argv[]){
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  TreeReader* tr= new TreeReader(filename.c_str(),false,false);
+  std::unique_ptr<TreeReader> tr = std::make_unique<TreeReader>(filename.c_str(),false,false);
   TTree* t=tr->tree;
 
   //now change back to output file
@@ -129,7 +130,6 @@ int main(int argc, char* argv[]){
   outTree->Branch("Lep2Phi",&Lep2Phi_);
   outTree->Branch("Lep2E",&Lep2E_);
   outTree->Branch("Lep2Charge",&Lep2Charge_);
-
 
   //get number of entries and start event loop
   int nEntries = t->GetEntries();
@@ -461,20 +461,28 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
       iLep->Tight=iel->susyTightRC();
       iLep->Loose=iel->susyLooseRC();
     }      
-      else if(ID=="MVA2017TightIsoRC"){
-		  iLep->Tight=iel->mva94XTightV1_Iso_RC();
-		  iLep->Loose=iel->mva94XLooseV1_Iso_RC();
-      }
-      else if(ID=="MVA2017TightRC"){
-		  iLep->Tight=iel->mva94XTightV1_RC();
-		  iLep->Loose=iel->mva94XLooseV1_RC();
-      }
+    else if(ID=="MVA2017TightIsoRC"){
+		iLep->Tight=iel->mva94XTightV1_Iso_RC();
+		iLep->Loose=iel->mva94XLooseV1_Iso_RC();
+    }
+    else if(ID=="MVA2017TightRC"){
+		iLep->Tight=iel->mva94XTightV1_RC();
+		iLep->Loose=iel->mva94XLooseV1_RC();
+    }
+    else if(ID=="MVA2017TightV2IsoRC"){
+		iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
+		iLep->Loose=iel->mva94XLooseV2_Iso_RC();
+    }
+    else if(ID=="MVA2017TightV2RC"){
+		iLep->Tight=iel->mva94XTightV2_90_RC();
+		iLep->Loose=iel->mva94XLooseV2_RC();
+    }
     iLep->isMu = false;
     iLep->isEl = true;
     //only save if tight
     if(iLep->Tight){
       //apply pt cut
-      if(iLep->pt>30) Leptons.push_back(iLep);
+      if(iLep->pt>20) Leptons.push_back(iLep);
     }
   }
 

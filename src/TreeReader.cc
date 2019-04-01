@@ -325,6 +325,17 @@ void TreeReader::Init(TTree *treetemp)
   elQuality = 0;
   elVtxFitConv = 0;
   elMVAValue = 0;
+  elIsMVATight80 = 0;
+  elIsMVATight90 = 0;
+  elIsMVALoose = 0;
+  elIsMVATightIso80 = 0;
+  elIsMVATightIso90 = 0;
+  elIsMVALooseIso = 0;
+  elIsTight = 0;
+  elIsMedium = 0;
+  elIsLoose = 0;
+  elIsVeto = 0;
+  
 
   //gen particles
   genEnergy = 0;
