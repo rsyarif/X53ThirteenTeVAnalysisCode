@@ -21,12 +21,13 @@ std::vector<TLepton*> findBestPair(TLepton* tag, std::vector<TLepton*> probes);
 std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TElectron*> electrons,bool MuonChannel,bool mc,bool FiftyNs,std::string ID);
 bool sortByPhi(TLepton* lep1, TLepton* lep2){return lep1->phi > lep2->phi;};
 bool sortByPt(TLepton* lep1, TLepton* lep2){return lep1->pt > lep2->pt;};
+bool isoTrig;
 
 //A script to get the prompt rate for electrons and muons. Usage is ./PromptRate.o <Data,MC> <El,Mu> 
 
 int main(int argc, char* argv[]){
 
-  bool isoTrig = false;
+  isoTrig = true;
   std::cout << "isoTrig ="<< isoTrig << std::endl;
 
   if(argc<4){
@@ -94,12 +95,24 @@ int main(int argc, char* argv[]){
   //make filename for output root file
   std::string outname;
   if(MuonChannel){
-    if(data)outname="PromptRate_Data_"+argv4+"_Muons_"+ID+"_SortByPhi.root"; 
-    else outname="PromptRate_MC_Muons_"+ID+"_SortByPhi.root"; 
+  	if(isoTrig){
+		if(data)outname="PromptRate_Data_"+argv4+"_Muons_"+ID+"_SortByPhi_IsoTrig.root"; 
+		else outname="PromptRate_MC_Muons_"+ID+"_SortByPhi_IsoTrig.root"; 
+  	}
+  	else{
+		if(data)outname="PromptRate_Data_"+argv4+"_Muons_"+ID+"_SortByPhi.root"; 
+		else outname="PromptRate_MC_Muons_"+ID+"_SortByPhi.root"; 
+	}
   }
   else{
-    if(data)outname="PromptRate_Data_"+argv4+"_Electrons_"+ID+"_SortByPhi.root"; 
-    else outname="PromptRate_MC_Electrons_"+ID+"_SortByPhi.root"; 
+  	if(isoTrig){
+		if(data)outname="PromptRate_Data_"+argv4+"_Electrons_"+ID+"_SortByPhi_IsoTrig.root"; 
+		else outname="PromptRate_MC_Electrons_"+ID+"_SortByPhi_IsoTrig.root"; 
+  	}
+  	else{
+		if(data)outname="PromptRate_Data_"+argv4+"_Electrons_"+ID+"_SortByPhi.root"; 
+		else outname="PromptRate_MC_Electrons_"+ID+"_SortByPhi.root"; 
+    }
   }
 
   //open output file
@@ -132,7 +145,7 @@ int main(int argc, char* argv[]){
   TH1F* etaDenHist_Aram = new TH1F("etaDenHist_Aram","#eta of Loose Leptons",12,-5,5);
 
   //pt bins
-  float ptbins[11] = {40,50,70,100,130,160,200,250,300,400,600};
+  float ptbins[13] = {20,30,40,50,70,100,130,160,200,250,300,400,600};
 
 
   //initialize needed histograms
@@ -197,14 +210,14 @@ int main(int argc, char* argv[]){
     if(AramLeptons.size()>=2){
       //make sure at least one is tight
       if(AramLeptons.at(0)->Tight || AramLeptons.at(1)->Tight){
-	//make sure mass is with Z mass window
-	float AramPairMass = (AramLeptons.at(0)->lv + AramLeptons.at(1)->lv).M();
-	if(AramPairMass > 81 && AramPairMass<101){
-	  ptDenHist_Aram->Fill(0.,tr->MCWeight);
-	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) ptNumHist_Aram->Fill(0.,tr->MCWeight);
-	  etaDenHist_Aram->Fill(0.,tr->MCWeight);
-	  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) etaNumHist_Aram->Fill(0.,tr->MCWeight);
-	}//end check on mass
+		//make sure mass is with Z mass window
+		float AramPairMass = (AramLeptons.at(0)->lv + AramLeptons.at(1)->lv).M();
+		if(AramPairMass > 81 && AramPairMass<101){
+		  ptDenHist_Aram->Fill(0.,tr->MCWeight);
+		  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) ptNumHist_Aram->Fill(0.,tr->MCWeight);
+		  etaDenHist_Aram->Fill(0.,tr->MCWeight);
+		  if(AramLeptons.at(0)->Tight && AramLeptons.at(1)->Tight) etaNumHist_Aram->Fill(0.,tr->MCWeight);
+		}//end check on mass
       }//end check on at least one tight
     }//end checl on number of Aram Leptons
 
@@ -303,8 +316,12 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
       iLep->isEl = false;
       //only save if at least loose
       if(iLep->Loose){
-	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
       }
     }
   }
@@ -400,13 +417,25 @@ std::vector<TLepton*> makeProbeLeptons(TLepton* tag, std::vector<TMuon*> muons, 
 		  iLep->Tight=iel->mva94XTightV1_RC();
 		  iLep->Loose=iel->mva94XLooseV1_RC();
       }
+    else if(ID=="MVA2017TightV2IsoRC"){
+                iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
+                iLep->Loose=iel->mva94XLooseV2_Iso_RC();
+    }
+    else if(ID=="MVA2017TightV2RC"){
+                iLep->Tight=iel->mva94XTightV2_90_RC();
+                iLep->Loose=iel->mva94XLooseV2_RC();
+    }
       
       iLep->isMu = false;
       iLep->isEl = true;
       //save if loose
       if(iLep->Loose){
-	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
       }
     }
   }
@@ -483,7 +512,12 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
       //only save if tight
       if(iLep->Tight){
 	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
       }
     }
   }
@@ -566,13 +600,26 @@ TLepton* makeTagLepton(std::vector<TMuon*> muons,std::vector<TElectron*> electro
 		  iLep->Tight=iel->mva94XTightV1_Iso_RC();
 		  iLep->Loose=iel->mva94XLooseV1_Iso_RC();
       }
+    else if(ID=="MVA2017TightV2IsoRC"){
+                iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
+                iLep->Loose=iel->mva94XLooseV2_Iso_RC();
+    }
+    else if(ID=="MVA2017TightV2RC"){
+                iLep->Tight=iel->mva94XTightV2_90_RC();
+                iLep->Loose=iel->mva94XLooseV2_RC();
+    }
 
       iLep->isMu = false;
       iLep->isEl = true;
       //only save if tight
       if(iLep->Tight){
-	//apply pt cut
-	if(iLep->pt>30) Leptons.push_back(iLep);
+		//apply pt cut
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
       }
     }
   }
@@ -623,7 +670,12 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
       //only save if at least loose
       if(iLep->Loose){
 	//apply pt cut
-	if(iLep->pt>40) Leptons.push_back(iLep);
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
       }
     }
   }
@@ -697,13 +749,27 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
       iLep->Tight=iel->mva94XTightV1_Iso_RC();
       iLep->Loose=iel->mva94XLooseV1_Iso_RC();
     }
+    else if(ID=="MVA2017TightV2IsoRC"){
+                iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
+                iLep->Loose=iel->mva94XLooseV2_Iso_RC();
+    }
+    else if(ID=="MVA2017TightV2RC"){
+                iLep->Tight=iel->mva94XTightV2_90_RC();
+                iLep->Loose=iel->mva94XLooseV2_RC();
+    }
       
       iLep->isMu = false;
       iLep->isEl = true;
       //save if loose
       if(iLep->Loose){
 	//apply pt cut
-	if(iLep->pt>40) Leptons.push_back(iLep);
+		if(isoTrig){
+			if(iLep->pt>30) Leptons.push_back(iLep);
+		}
+		else{	
+			if(iLep->pt>20) Leptons.push_back(iLep); //lower pt for non Iso HT trig - Apr 2, 2019
+		}
+
       }
     }
   }
@@ -717,9 +783,9 @@ std::vector<TLepton*> makeAramLeptons(std::vector<TMuon*> muons,std::vector<TEle
   for(std::vector<TLepton*>::size_type ilep=0; ilep<Leptons.size(); ilep++){
     for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<Leptons.size(); jlep++){
       if(Leptons.at(ilep)->charge != Leptons.at(jlep)->charge){
-	AramLeptons.push_back(Leptons.at(ilep));AramLeptons.push_back(Leptons.at(jlep));
-	found=true;
-	break;
+          AramLeptons.push_back(Leptons.at(ilep));AramLeptons.push_back(Leptons.at(jlep));
+          found=true;
+          break;
       }
     }//end inner lepton loop
     if(found) break;

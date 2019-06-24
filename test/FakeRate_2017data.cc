@@ -18,6 +18,8 @@
 std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectron*> electrons, bool Muons, std::string ID);
 bool ZVetoCheck(TLepton* lepton, std::vector<TJet*> jets);
 bool AwayJetCheck(TLepton* lepton, std::vector<TJet*> jets);
+bool allPt=false;
+bool isoTrig=false;
 
 int main(int argc, char* argv[]){
 
@@ -37,6 +39,29 @@ int main(int argc, char* argv[]){
     return 0;
   }
 
+
+  std::string isoTrig_str = argv[5];
+  if(isoTrig_str=="0") isoTrig = false;
+  else if(isoTrig_str=="1") isoTrig = true;
+  std::cout << "isoTrig ="<< isoTrig << std::endl;
+  std::string isoTrigStr;
+  if(isoTrig){
+      isoTrigStr = "_isoTrig_forTrilep";
+  }
+  else{
+      isoTrigStr = "_nonIsoHTTrig";  
+  }
+
+  std::string allPt_str = argv[6];
+  if(allPt_str=="0") allPt = false;
+  else if(allPt_str=="1") allPt = true;
+  std::cout << "allPt ="<< allPt << std::endl;
+  std::string allPtStr;
+  if(allPt){
+      isoTrigStr = isoTrigStr+"_AllPt";
+  }
+
+
   std::cout<<"arg 1: "<<argv1<<" arg2: "<<argv2<<" arg3: "<<ID<<" arg4: "<<argv4<<std::endl;
     //now get boolean for data or mc
   bool data=false;
@@ -50,8 +75,8 @@ int main(int argc, char* argv[]){
   //make output file
   std::vector<std::string> outname;
   if(data){
-    if(MuonChannel) outname.push_back("FakeRate_Data_"+argv4+"Muons_"+ID+"_2017dataset.root");
-    else outname.push_back("FakeRate_Data_"+argv4+"Electrons_"+ID+"_2017dataset.root");
+    if(MuonChannel) outname.push_back("FakeRate_Data_"+argv4+"Muons_"+ID+"_2017dataset"+isoTrigStr+".root");
+    else outname.push_back("FakeRate_Data_"+argv4+"Electrons_"+ID+"_2017dataset"+isoTrigStr+".root");
   }
 
   else{
@@ -105,7 +130,12 @@ int main(int argc, char* argv[]){
       else if(argv4=="2017C") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRC.root");
       else if(argv4=="2017D") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRD.root");
       else if(argv4=="2017E") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRE.root");
-      else if(argv4=="2017F") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF.root");
+      else if(argv4=="2017F_1") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_1.root");
+      else if(argv4=="2017F_2_1") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_2_1.root");
+      else if(argv4=="2017F_2_2") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_2_2.root");
+      else if(argv4=="2017F_2_3") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_2_3.root");
+      else if(argv4=="2017F_2_4") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_2_4.root");
+      else if(argv4=="2017F_2_5") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleMuon_RRF_2_5.root");
     }
     else if(!MuonChannel){
       if(argv4=="2017B") filenames.push_back("root://cmseos.fnal.gov//store/group/lpcljm/"+filedir+"/DoubleEG_RRB.root");
@@ -193,14 +223,25 @@ int main(int argc, char* argv[]){
       //bool elTrig = tr->HLT_Ele17Iso;
       bool elTrig_nonIso = tr->HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v;
       bool elTrig_nonIso_2 = tr->HLT_Ele17_CaloIdM_TrackIdM_PFJet30_v;
-      bool elTrig_Iso = tr->HLT_Ele8_CaloIdM_TrackIdM_PFJet30_v;
-      bool elTrig_Iso_2 = tr->HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
+      bool elTrig_Iso = tr->HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
+      bool elTrig_Iso_2 = tr->HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v;
       bool analyze = false;
-      if(data){ //do nonIso first for now. Mar 26, 2019.
-        if(
-          ( MuonChannel && (muTrig_nonIso || muTrig_nonIso_2) ) || 
-          (!MuonChannel && (elTrig_nonIso || elTrig_nonIso_2) )  
-          ) analyze = true;
+      if(data){ 
+        if(!isoTrig){
+        
+            if(
+               ( MuonChannel && (muTrig_nonIso || muTrig_nonIso_2) ) || 
+               (!MuonChannel && (elTrig_nonIso || elTrig_nonIso_2) )  
+            ) analyze = true;
+        }
+        else{
+        
+            if(
+               ( MuonChannel && (muTrig_Iso || muTrig_Iso_2) ) || 
+               (!MuonChannel && (elTrig_Iso || elTrig_Iso_2) )  
+            ) analyze = true;
+        
+        }
       }
       else analyze=true;
       
@@ -219,7 +260,9 @@ int main(int argc, char* argv[]){
       if(MuonChannel && !(leptons.at(0)->isMu)) continue;
       if(!MuonChannel && !(leptons.at(0)->isEl)) continue;
       //skip if it has pt not between 25 and 35 - REMOVE THIS TO STUDY FAKE RATE VS PT
-      if( !(lep->pt < 35 && lep->pt>25)) continue;
+      if(allPt){
+          if( !(lep->pt < 35 && lep->pt>25)) continue;
+      }
       etaHist_all->Fill(lep->eta);
 
       //make sure not much met in event to veto on leptons from Ws -relaxed for now to do more in depth studies
@@ -276,7 +319,7 @@ int main(int argc, char* argv[]){
       float minDR=999;
       for(unsigned int i=0; i< tr->cleanedAK4Jets.size();i++){
         float drtemp = pow( pow(lep->eta - tr->cleanedAK4Jets.at(i)->eta, 2) + pow( lep->phi - tr->cleanedAK4Jets.at(0)->phi, 2) , 0.5);
-        f(drtemp<minDR) minDR = drtemp;
+        if(drtemp<minDR) minDR = drtemp;
       }
       LepMinDR_ = minDR;
       outTree->Fill();
@@ -335,8 +378,14 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
     //only save if at least loose
     if(iLep->Tight || iLep->Loose){
       //apply pt cut
-      if(iLep->pt>20){ Leptons.push_back(iLep);}
-      //if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
+//       if(iLep->pt>20){ Leptons.push_back(iLep);}
+//       if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
+      if(allPt){
+          if(iLep->pt>20) Leptons.push_back(iLep);
+      }
+      else{
+      	if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
+      }
     }
   }
 
@@ -438,14 +487,24 @@ std::vector<TLepton*> makeLeptons(std::vector<TMuon*> muons, std::vector<TElectr
       iLep->Tight=iel->mva94XTightV1_RC(); // following clints def, so that can be processed directly by his scripts
       iLep->Loose=iel->mva94XLooseV1_Iso_RC();
     }
+    else if(ID=="MVA2017TightV2RC"){
+                iLep->Tight=iel->mva94XTightV2_90_RC();
+                iLep->Loose=iel->mva94XLooseV2_Iso_RC(); // following clints def, so that can be processed directly by his scripts consistently, Apr 3, 2019
+    }
     
     iLep->isMu = false;
     iLep->isEl = true;
     //only save if at least loose
     if(iLep->Tight || iLep->Loose){
       //apply pt cut
-      //if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
-      if(iLep->pt>20){ Leptons.push_back(iLep);}
+//       if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep); 
+//       if(iLep->pt>20){ Leptons.push_back(iLep);}
+      if(allPt){
+          if(iLep->pt>20) Leptons.push_back(iLep);
+      }
+      else{
+      	if(iLep->pt>25 && iLep->pt<35) Leptons.push_back(iLep);
+      }
     }
   }
 

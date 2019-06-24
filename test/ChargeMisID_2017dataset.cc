@@ -11,23 +11,23 @@
 #include <assert.h>
 #include <map>
 #include <string>
-#include <sstream> 
+#include <sstream>
 #include "../plugins/Macros.cc"
 #include <memory>
 
 //helper functions
 std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bool FiftyNs, std::string ID);
 
-//A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu> 
+//A script to get the prompt rate for electrons and muons. Usage is ./ChargeMisID.o <Data,MC> <El,Mu>
 
 int main(int argc, char* argv[]){
 
   if(argc!=4){
     std::cout<<"Need to specify whether running on Data or MC and whether 25 or 50ns as well as the ID. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data 50ns ID \n"
-	     <<"./ChargeMisID.o Data 25ns ID \n"
-	     <<"./ChargeMisID.o MC 50ns ID \n"
-	     <<"./ChargeMisID.o MC 25ns ID \n";
+             <<"./ChargeMisID.o Data 50ns ID \n"
+             <<"./ChargeMisID.o Data 25ns ID \n"
+             <<"./ChargeMisID.o MC 50ns ID \n"
+             <<"./ChargeMisID.o MC 25ns ID \n";
     return 0;
   }
 
@@ -39,10 +39,10 @@ int main(int argc, char* argv[]){
   if(argc==4 && (argv1.find("Data")!=std::string::npos || argv1.find("MC")!=std::string::npos ) && (argv2.find("25ns")!=std::string::npos || argv2.find("2017")!=std::string::npos) ) correctusage=true;
   if(!correctusage){
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data 50ns ID \n"
-	     <<"./ChargeMisID.o Data 25ns ID \n"
-	     <<"./ChargeMisID.o MC 50ns ID \n"
-	     <<"./ChargeMisID.o MC 25ns ID \n";
+             <<"./ChargeMisID.o Data 50ns ID \n"
+             <<"./ChargeMisID.o Data 25ns ID \n"
+             <<"./ChargeMisID.o MC 50ns ID \n"
+             <<"./ChargeMisID.o MC 25ns ID \n";
     return 0;
   }
 
@@ -66,21 +66,21 @@ int main(int argc, char* argv[]){
   else if(argv1=="MC" && argv2=="25ns") {filename="root://cmseos.fnal.gov//store/user/lpctlbsm/clint/Spring16/25ns/Feb16/ljmet_trees/ljmet_DYJets.root"; data=false; FiftyNS=false;}
   else{
     std::cout<<"Need to specify whether running on Data or MC and 25 or 50ns. The four possible ways of running are\n"
-	     <<"./ChargeMisID.o Data 50ns \n"
-	     <<"./ChargeMisID.o Data 25ns \n"
-	     <<"./ChargeMisID.o MC 50ns \n"
-	     <<"./ChargeMisID.o MC 25ns \n";
+             <<"./ChargeMisID.o Data 50ns \n"
+             <<"./ChargeMisID.o Data 25ns \n"
+             <<"./ChargeMisID.o MC 50ns \n"
+             <<"./ChargeMisID.o MC 25ns \n";
   }
 
   //make filename for output root file
   std::string outname;
-  if(data)outname="ChargeMisID_Data_"+argv2+"_Electrons_"+ID+".root"; 
-  else outname="ChargeMisID_MC_Electrons_"+ID+".root"; 
+  if(data)outname="ChargeMisID_Data_"+argv2+"_Electrons_"+ID+".root";
+  else outname="ChargeMisID_MC_Electrons_"+ID+".root";
   //open output file
   TFile* fout= new TFile(outname.c_str(),"RECREATE");
 
   //get tree reader to read in data
-  std::unique_ptr<TreeReader> tr = std::make_unique<TreeReader>(filename.c_str(),false,false);
+  TreeReader* tr =  new TreeReader(filename.c_str(),false,false);
   TTree* t=tr->tree;
 
   //now change back to output file
@@ -135,6 +135,8 @@ int main(int argc, char* argv[]){
   int nEntries = t->GetEntries();
   for(int ient=0; ient<nEntries; ient++){
 
+    //if (ient==1000) break;
+
     tr->GetEntry(ient);
     float weight;
     if(data) weight =1.0;
@@ -160,12 +162,12 @@ int main(int argc, char* argv[]){
     for(std::vector<TLepton*>::size_type ilep=0; ilep<leptons.size(); ilep++){
       //loop over remaining leptons
       for(std::vector<TLepton*>::size_type jlep=ilep+1; jlep<leptons.size(); jlep++){
-	pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
-	if(fabs(zmass-pairmass)<massDiff){
-	  massDiff = zmass-pairmass;
-	  lep1=leptons.at(ilep);
-	  lep2=leptons.at(jlep);
-	}
+          pairmass = (leptons.at(ilep)->lv + leptons.at(jlep)->lv).M();
+          if(fabs(zmass-pairmass)<massDiff){
+             massDiff = zmass-pairmass;
+             lep1=leptons.at(ilep);
+             lep2=leptons.at(jlep);
+          }
       }//end second loop over leptons
     }//end loop over leptons
 
@@ -199,33 +201,33 @@ int main(int argc, char* argv[]){
       ptNumHist_all->Fill(lep2->pt,weight);
       //low pt
       if(lep1->pt < 100 && lep2->pt <100){
-	ptNumHist_lpt->Fill(lep1->pt,weight);
-	ptNumHist_lpt->Fill(lep2->pt,weight);      
+        ptNumHist_lpt->Fill(lep1->pt,weight);
+        ptNumHist_lpt->Fill(lep2->pt,weight);
       }
       //high high pt
       else if(lep1->pt > 100 && lep2->pt >100){
-	ptNumHist_hhpt->Fill(lep1->pt,weight);
-	ptNumHist_hhpt->Fill(lep2->pt,weight);      
+        ptNumHist_hhpt->Fill(lep1->pt,weight);
+        ptNumHist_hhpt->Fill(lep2->pt,weight);
       }
       //one high one low
       else {
-	ptNumHist_hpt->Fill(lep1->pt,weight);
-	ptNumHist_hpt->Fill(lep2->pt,weight);      
+        ptNumHist_hpt->Fill(lep1->pt,weight);
+        ptNumHist_hpt->Fill(lep2->pt,weight);
       }
       //all eta
       etaNumHist->Fill(lep1->eta,weight);
       etaNumHist->Fill(lep2->eta,weight);
       if(lep1->pt>100 && lep2->pt>100){
-	etaNumHist_hhpt->Fill(lep1->eta,weight);
-	etaNumHist_hhpt->Fill(lep2->eta,weight);
-      }	     
+        etaNumHist_hhpt->Fill(lep1->eta,weight);
+        etaNumHist_hhpt->Fill(lep2->eta,weight);
+      }
       else if(lep1->pt>100 || lep2->pt>100){
-	etaNumHist_hpt->Fill(lep1->eta,weight);
-	etaNumHist_hpt->Fill(lep2->eta,weight);
+        etaNumHist_hpt->Fill(lep1->eta,weight);
+        etaNumHist_hpt->Fill(lep2->eta,weight);
       }
       else{
-	etaNumHist_lpt->Fill(lep1->eta,weight);
-	etaNumHist_lpt->Fill(lep2->eta,weight);
+        etaNumHist_lpt->Fill(lep1->eta,weight);
+        etaNumHist_lpt->Fill(lep2->eta,weight);
       }
     }
 
@@ -236,17 +238,17 @@ int main(int argc, char* argv[]){
     //low pt
     if(lep1->pt < 100 && lep2->pt <100){
       ptDenHist_lpt->Fill(lep1->pt,weight);
-      ptDenHist_lpt->Fill(lep2->pt,weight);      
+      ptDenHist_lpt->Fill(lep2->pt,weight);
     }
     //high high pt
     else if(lep1->pt > 100 && lep2->pt >100){
       ptDenHist_hhpt->Fill(lep1->pt,weight);
-      ptDenHist_hhpt->Fill(lep2->pt,weight);      
+      ptDenHist_hhpt->Fill(lep2->pt,weight);
     }
     //one high one low
     else {
       ptDenHist_hpt->Fill(lep1->pt,weight);
-      ptDenHist_hpt->Fill(lep2->pt,weight);      
+      ptDenHist_hpt->Fill(lep2->pt,weight);
     }
 
     //all eta
@@ -266,7 +268,7 @@ int main(int argc, char* argv[]){
     }
   }//end event loop
 
-  //save weights 
+  //save weights
   etaNumHist->Sumw2();
   etaDenHist->Sumw2();
   etaNumHist_hpt->Sumw2();
@@ -295,31 +297,33 @@ int main(int argc, char* argv[]){
   ptNumHist_hhpt->Scale(0.5);
 
   //write file now that histograms have been filled
-  fout->Append(ptNumHist_all);
-  fout->Append(ptDenHist_all);
-  fout->Append(ptNumHist_lpt);
-  fout->Append(ptDenHist_lpt);
-  fout->Append(ptNumHist_hpt);
-  fout->Append(ptDenHist_hpt);
-  fout->Append(ptNumHist_hhpt);
-  fout->Append(ptDenHist_hhpt);
-  fout->Append(etaAllHist);
-  fout->Append(etaNumHist);
-  fout->Append(etaDenHist);
-  fout->Append(etaNumHist_hpt);
-  fout->Append(etaDenHist_hpt);
-  fout->Append(etaNumHist_hhpt);
-  fout->Append(etaDenHist_hhpt);
-  fout->Append(etaNumHist_lpt);
-  fout->Append(etaDenHist_lpt);
-  fout->Append(massNumHist);
-  fout->Append(massDenHist);
+//   fout->Append(ptNumHist_all);
+//   fout->Append(ptDenHist_all);
+//   fout->Append(ptNumHist_lpt);
+//   fout->Append(ptDenHist_lpt);
+//   fout->Append(ptNumHist_hpt);
+//   fout->Append(ptDenHist_hpt);
+//   fout->Append(ptNumHist_hhpt);
+//   fout->Append(ptDenHist_hhpt);
+//   fout->Append(etaAllHist);
+//   fout->Append(etaNumHist);
+//   fout->Append(etaDenHist);
+//   fout->Append(etaNumHist_hpt);
+//   fout->Append(etaDenHist_hpt);
+//   fout->Append(etaNumHist_hhpt);
+//   fout->Append(etaDenHist_hhpt);
+//   fout->Append(etaNumHist_lpt);
+//   fout->Append(etaDenHist_lpt);
+//   fout->Append(massNumHist);
+//   fout->Append(massDenHist);
   //make tgraphs for promptrate
   TGraphAsymmErrors* ptGraph = new TGraphAsymmErrors(ptNumHist_all,ptDenHist_all);
   TGraphAsymmErrors* etaGraph = new TGraphAsymmErrors(etaNumHist,etaDenHist);
   //write the tgraphs
-  fout->Append(ptGraph);
-  fout->Append(etaGraph);
+  ptGraph->Write("ptGraph");
+  etaGraph->Write("etaGraph");
+//   fout->Append(ptGraph);
+//   fout->Append(etaGraph);
 
   //make hists of rate
   TH1F* rateEta = (TH1F*) etaNumHist->Clone();
@@ -338,16 +342,17 @@ int main(int argc, char* argv[]){
   rateEta_hpt->Divide(etaDenHist_hpt);
   TH1F* rateEta_hhpt = (TH1F*)etaNumHist_hhpt->Clone();
   rateEta_hhpt->Divide(etaDenHist_hhpt);
-  fout->Append(rateEta);
-  fout->Append(rateEta_lpt);
-  fout->Append(rateEta_hpt);
-  fout->Append(rateEta_hhpt);
-  fout->Append(ratePt_all);
-  fout->Append(ratePt_lpt);
-  fout->Append(ratePt_hpt);
-  fout->Append(ratePt_hhpt);
-  fout->WriteTObject(outTree);
+//   fout->Append(rateEta);
+//   fout->Append(rateEta_lpt);
+//   fout->Append(rateEta_hpt);
+//   fout->Append(rateEta_hhpt);
+//   fout->Append(ratePt_all);
+//   fout->Append(ratePt_lpt);
+//   fout->Append(ratePt_hpt);
+//   fout->Append(ratePt_hhpt);
+//   fout->WriteTObject(outTree);
   fout->Write();
+  fout->Close();
 
 
 
@@ -420,7 +425,7 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
     else if(ID=="MVALooseNoIso"){
       iLep->Tight=iel->mvaLoose();
       iLep->Loose=true;
-    }  
+    }
     else if(ID=="MVATightRC"){
       iLep->Tight=iel->mvaTightRCIso();
       iLep->Loose=iel->mvaLooseRCIso();
@@ -454,28 +459,28 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
       iLep->Loose=iel->susyLoose();
     }
     else if(ID=="SUSYLoose"){
-	iLep->Tight=iel->susyLoose();
-	iLep->Loose=true;
+      iLep->Tight=iel->susyLoose();
+      iLep->Loose=true;
     }
     else if(ID=="SUSYTightRC"){
       iLep->Tight=iel->susyTightRC();
       iLep->Loose=iel->susyLooseRC();
-    }      
+    }
     else if(ID=="MVA2017TightIsoRC"){
-		iLep->Tight=iel->mva94XTightV1_Iso_RC();
-		iLep->Loose=iel->mva94XLooseV1_Iso_RC();
+                iLep->Tight=iel->mva94XTightV1_Iso_RC();
+                iLep->Loose=iel->mva94XLooseV1_Iso_RC();
     }
     else if(ID=="MVA2017TightRC"){
-		iLep->Tight=iel->mva94XTightV1_RC();
-		iLep->Loose=iel->mva94XLooseV1_RC();
+                iLep->Tight=iel->mva94XTightV1_RC();
+                iLep->Loose=iel->mva94XLooseV1_RC();
     }
     else if(ID=="MVA2017TightV2IsoRC"){
-		iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
-		iLep->Loose=iel->mva94XLooseV2_Iso_RC();
+                iLep->Tight=iel->mva94XTightV2_90_Iso_RC();
+                iLep->Loose=iel->mva94XLooseV2_Iso_RC();
     }
     else if(ID=="MVA2017TightV2RC"){
-		iLep->Tight=iel->mva94XTightV2_90_RC();
-		iLep->Loose=iel->mva94XLooseV2_RC();
+                iLep->Tight=iel->mva94XTightV2_90_RC();
+                iLep->Loose=iel->mva94XLooseV2_RC();
     }
     iLep->isMu = false;
     iLep->isEl = true;
@@ -488,5 +493,5 @@ std::vector<TLepton*> makeLeptons(std::vector<TElectron*> electrons, bool mc, bo
 
 
   return Leptons;
- 
+
 }

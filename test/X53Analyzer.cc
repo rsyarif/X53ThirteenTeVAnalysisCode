@@ -408,7 +408,8 @@ int main(int argc, char* argv[]){
   std::string cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_"+elID+"_corrected.root";
   //for the moment there is no new measurement for MVA2017 so use 2016.
 //   if(elID=="MVA2017TightRC")cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVA2016TightRC_corrected.root";
-  if(elID=="MVA2017TightRC")cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVA2017TightIsoRC_corrected.root";
+//   if(elID=="MVA2017TightRC")cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVA2017TightIsoRC_corrected.root";
+  if(elID=="MVA2017TightV2RC")cmidFilename = "../scripts/ChargeMisID/ChargeMisID_Data_All_Electrons_MVA2017TightV2IsoRC_corrected.root";
   TFile* eWfile = new TFile(cmidFilename.c_str());
   std::vector<float> etaWeights_lpt = getEtaWeights_lpt(eWfile);
   std::vector<float> etaWeights_hpt = getEtaWeights_hpt(eWfile);
@@ -426,9 +427,62 @@ int main(int argc, char* argv[]){
 
   //get prompt rate according to ID * constant for muons ****
   float muPromptRate;
+  std::vector<float> muPromptRates;
   if(muID=="CBTight") muPromptRate=0.940;
   else if(muID=="CBTightMiniIso") muPromptRate=0.956;
-  else if(muID=="CBTightMiniIsoTight") muPromptRate=0.943;
+//   else if(muID=="CBTightMiniIsoTight") muPromptRate=0.943;
+  else if(muID=="CBTightMiniIsoTight"){
+  //Rizki's measurement for 2017 data: (April 30, 2019)  
+	// MUON
+	// 
+	// Trigger: nonIsoHTTrigs
+	// working on era: All
+	// 
+	// Opening file:/PromptRate_Data_All_Muons_CBTightMiniIso_SortByPhi.root
+	// eta bin: -2.4 to -1.566, PR: 0.946022+/-0.000261778
+	// eta bin: -1.566 to -1.4442, PR: 0.952213+/-0.000121532
+	// eta bin: -1.4442 to -0.8, PR: 0.925424+/-0.00023006
+	// eta bin: -0.8 to -0.4, PR: 0.935103+/-0.000159053
+	// eta bin: -0.4 to 0.4, PR: 0.931663+/-0.000125854
+	// eta bin: 0.4 to 0.8, PR: 0.934086+/-0.000160126
+	// eta bin: 0.8 to 1.4442, PR: 0.921252+/-0.000235986
+	// eta bin: 1.4442 to 1.566, PR: 0.952797+/-0.000120283
+	// eta bin: 1.566 to 2.4, PR: 0.952706+/-0.00024421
+	// 
+	// pt bin: 20-30, PR: 0.894022+/-0.000183225
+	// pt bin: 30-40, PR: 0.930789+/-0.000102873
+	// pt bin: 40-50, PR: 0.954045+/-7.76882e-05
+	// pt bin: 50-60, PR: 0.962158+/-0.000143523
+	// pt bin: 60-70, PR: 0.967671+/-0.000233195
+	// pt bin: 70-80, PR: 0.96884+/-0.00033994
+	// pt bin: 80-90, PR: 0.969207+/-0.000469262
+	// pt bin: 90-100, PR: 0.969129+/-0.000632858
+	// pt bin: 100-125, PR: 0.967569+/-0.000638519
+	// pt bin: 125-150, PR: 0.964728+/-0.00112312
+	// pt bin: 150-200, PR: 0.957498+/-0.00147216
+	// pt bin: 200-300, PR: 0.958634+/-0.00228617
+	// pt bin: 300-400, PR: 0.951185+/-0.00605169
+	// pt bin: 400-500, PR: 0.932773+/-0.0147285
+	// pt bin: 500-1000, PR: 0.929078+/-0.025443
+	
+	muPromptRates.push_back(0.894);
+    muPromptRates.push_back(0.930);
+    muPromptRates.push_back(0.954);
+    muPromptRates.push_back(0.962);
+    muPromptRates.push_back(0.968);
+    muPromptRates.push_back(0.969);
+    muPromptRates.push_back(0.969);
+    muPromptRates.push_back(0.969);
+    muPromptRates.push_back(0.968);
+    muPromptRates.push_back(0.965);
+    muPromptRates.push_back(0.957);
+    muPromptRates.push_back(0.959);
+    muPromptRates.push_back(0.951);
+    muPromptRates.push_back(0.932);
+    muPromptRates.push_back(0.929);
+
+  
+  }
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
   //get electron prompt rate
@@ -467,6 +521,41 @@ int main(int argc, char* argv[]){
     elPromptRates.push_back(0.902);
     elPromptRates.push_back(0.800);
   }
+  else if(elID=="MVA2017TightV2RC"){
+  //Rizki's measurement for 2017 data: (April 30, 2019)
+	// pt bin: 20-30, PR: 0.807545+/-0.000186806
+	// pt bin: 30-40, PR: 0.851842+/-0.000150336
+	// pt bin: 40-50, PR: 0.872654+/-0.000292136
+	// pt bin: 50-60, PR: 0.879749+/-0.000558864
+	// pt bin: 60-70, PR: 0.882003+/-0.000963929
+	// pt bin: 70-80, PR: 0.882304+/-0.00141193
+	// pt bin: 80-90, PR: 0.883859+/-0.00183804
+	// pt bin: 90-100, PR: 0.868217+/-0.00169931
+	// pt bin: 100-125, PR: 0.85802+/-0.00267284
+	// pt bin: 125-150, PR: 0.854862+/-0.00310203
+	// pt bin: 150-200, PR: 0.860461+/-0.00445062
+	// pt bin: 200-300, PR: 0.831768+/-0.0113596
+	// pt bin: 300-400, PR: 0.850153+/-0.0212822
+	// pt bin: 400-500, PR: 0.791139+/-0.0354723
+	// pt bin: 500-1000, PR: 1.18034e-316+/--1
+
+    elPromptRates.push_back(0.808);
+    elPromptRates.push_back(0.852);
+    elPromptRates.push_back(0.873);
+    elPromptRates.push_back(0.880);
+    elPromptRates.push_back(0.882);
+    elPromptRates.push_back(0.882);
+    elPromptRates.push_back(0.884);
+    elPromptRates.push_back(0.868);
+    elPromptRates.push_back(0.858);
+    elPromptRates.push_back(0.855);
+    elPromptRates.push_back(0.860);
+    elPromptRates.push_back(0.832);
+    elPromptRates.push_back(0.850);
+    elPromptRates.push_back(0.80);
+    elPromptRates.push_back(0.80);
+
+  }
   else if(elID=="MVATightMedIsoRC") elPromptRates.push_back(0.859);
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elPromptRates.push_back(0.8618);
   else if(elID=="SUSYTight" || elID=="SUSYTightRC") elPromptRates.push_back(0.7956);
@@ -477,16 +566,37 @@ int main(int argc, char* argv[]){
   if(muID=="CBTight") muFakeRates.push_back(0.346);
   else if(muID=="CBTightMiniIso") muFakeRates.push_back(0.429);
   else if(muID=="CBTightMiniIsoTight"){
-    muFakeRates.push_back(0.312);
-    muFakeRates.push_back(0.257);
-    muFakeRates.push_back(0.214);
-    muFakeRates.push_back(0.190);
-    muFakeRates.push_back(0.187);
-    muFakeRates.push_back(0.177);
-    muFakeRates.push_back(0.185);
-    muFakeRates.push_back(0.199);
-    muFakeRates.push_back(0.256);
-    muFakeRates.push_back(0.319);
+//     muFakeRates.push_back(0.312);
+//     muFakeRates.push_back(0.257);
+//     muFakeRates.push_back(0.214);
+//     muFakeRates.push_back(0.190);
+//     muFakeRates.push_back(0.187);
+//     muFakeRates.push_back(0.177);
+//     muFakeRates.push_back(0.185);
+//     muFakeRates.push_back(0.199);
+//     muFakeRates.push_back(0.256);
+//     muFakeRates.push_back(0.319);
+    //Rizki's measurement for 2017 data: (April 30, 2019) from plots_April17-2019_isoTrig_forTrilep
+	// Mu:
+	// eta bin: -2.4 to -2.1, FR: 0.641026 +/- 0.0884624
+	// eta bin: -2.1 to -1.2, FR: 0.518519 +/- 0.042203
+	// eta bin: -1.2 to -0.9, FR: 0.603448 +/- 0.0721912
+	// eta bin: -0.9 to -0.4, FR: 0.552632 +/- 0.0507157
+	// eta bin: -0.4 to 0.4, FR: 0.519231 +/- 0.0430588
+	// eta bin: 0.4 to 0.9, FR: 0.544554 +/- 0.0542126
+	// eta bin: 0.9 to 1.2, FR: 0.508772 +/- 0.0742506
+	// eta bin: 1.2 to 2.1, FR: 0.522581 +/- 0.0431957
+	// eta bin: 2.1 to 2.4, FR: 0.527778 +/- 0.0955496    
+    muFakeRates.push_back(0.641);
+    muFakeRates.push_back(0.519);
+    muFakeRates.push_back(0.603);
+    muFakeRates.push_back(0.552);
+    muFakeRates.push_back(0.519);
+    muFakeRates.push_back(0.545);
+    muFakeRates.push_back(0.508);
+    muFakeRates.push_back(0.523);
+    muFakeRates.push_back(0.528);
+
   }
   else{ std::cout<<"Didn't pick a valid muon ID. Exiting..."<<std::endl; return 0;}
 
@@ -517,6 +627,29 @@ int main(int argc, char* argv[]){
     elFakeRates.push_back(0.205);
     elFakeRates.push_back(0.0);//ee-eb gap
     elFakeRates.push_back(0.251);
+  }
+  else if(elID=="MVA2017TightV2RC"){ 
+// Rizki's measurement for 2017 data: (April 30, 2019) from plots_April17-2019_isoTrig_forTrilep
+	// El:
+	// eta bin: -2.4 to -1.57, FR: 0.487805 +/- 0.0890036
+	// eta bin: -1.57 to -0.8, FR: 0.604167 +/- 0.0801033
+	// eta bin: -0.8 to -0.4, FR: 0.540541 +/- 0.0939745
+	// eta bin: -0.4 to 0.4, FR: 0.661017 +/- 0.0695383
+	// eta bin: 0.4 to 0.8, FR: 0.35 +/- 0.128173
+	// eta bin: 0.8 to 1.57, FR: 0.55814 +/- 0.086224
+	// eta bin: 1.57 to 2.4, FR: 0.512821 +/- 0.0914971
+	// eta bin: 2.4 to -2.4, FR: 4.79244e-322 +/- -1
+	// eta bin: -2.4 to -2.1, FR: 4.05461e-316 +/- -1
+
+	// Electron Fake Rate for miniIso cut < 0.01 is: 0.250871 +/- 0.0273064
+	// Electron Fake Rate for miniIso cut < 0.1 is: 0.554007 +/- 0.0310273
+    elFakeRates.push_back(0.488);
+    elFakeRates.push_back(0.604);
+    elFakeRates.push_back(0.541);
+    elFakeRates.push_back(0.661);
+    elFakeRates.push_back(0.35);
+    elFakeRates.push_back(0.558);
+    elFakeRates.push_back(0.513);
   }
   else if(elID=="MVATightMedIsoRC") elFakeRates.push_back(0.354);
   else if(elID=="MVATightNew" || elID=="MVATightNewRC") elFakeRates.push_back(0.28);
@@ -906,40 +1039,76 @@ int main(int argc, char* argv[]){
     //now need to calculate nonPromptWeight - first get prompt rate for each lepton
     float lep1PromptRate=0.0;
     float lep2PromptRate=0.0;
-    if(vSSLep.at(0)->isMu) lep1PromptRate=muPromptRate;
+//     if(vSSLep.at(0)->isMu) lep1PromptRate=muPromptRate;
+    if(vSSLep.at(0)->isMu){
+      if(vSSLep.at(0)->pt<30) lep1PromptRate=muPromptRates.at(0);
+      else if(vSSLep.at(0)->pt<40) lep1PromptRate=muPromptRates.at(1);
+      else if(vSSLep.at(0)->pt<50) lep1PromptRate=muPromptRates.at(2);
+      else if(vSSLep.at(0)->pt<60) lep1PromptRate=muPromptRates.at(3);
+      else if(vSSLep.at(0)->pt<70) lep1PromptRate=muPromptRates.at(4);
+      else if(vSSLep.at(0)->pt<80) lep1PromptRate=muPromptRates.at(5);
+      else if(vSSLep.at(0)->pt<90) lep1PromptRate=muPromptRates.at(6);
+      else if(vSSLep.at(0)->pt<100) lep1PromptRate=muPromptRates.at(7);
+      else if(vSSLep.at(0)->pt<125) lep1PromptRate=muPromptRates.at(8);
+      else if(vSSLep.at(0)->pt<150) lep1PromptRate=muPromptRates.at(9);
+      else if(vSSLep.at(0)->pt<200) lep1PromptRate=muPromptRates.at(10);
+      else if(vSSLep.at(0)->pt<300) lep1PromptRate=muPromptRates.at(11);
+      else if(vSSLep.at(0)->pt<400) lep1PromptRate=muPromptRates.at(12);
+      else if(vSSLep.at(0)->pt<500) lep1PromptRate=muPromptRates.at(13);
+      else lep1PromptRate = muPromptRates.at(14);    
+    }
     else{
-      if(vSSLep.at(0)->pt<40) lep1PromptRate=elPromptRates.at(0);
-      else if(vSSLep.at(0)->pt<50) lep1PromptRate=elPromptRates.at(1);
-      else if(vSSLep.at(0)->pt<60) lep1PromptRate=elPromptRates.at(2);
-      else if(vSSLep.at(0)->pt<70) lep1PromptRate=elPromptRates.at(3);
-      else if(vSSLep.at(0)->pt<80) lep1PromptRate=elPromptRates.at(4);
-      else if(vSSLep.at(0)->pt<90) lep1PromptRate=elPromptRates.at(5);
-      else if(vSSLep.at(0)->pt<100) lep1PromptRate=elPromptRates.at(6);
-      else if(vSSLep.at(0)->pt<125) lep1PromptRate=elPromptRates.at(7);
-      else if(vSSLep.at(0)->pt<150) lep1PromptRate=elPromptRates.at(8);
-      else if(vSSLep.at(0)->pt<200) lep1PromptRate=elPromptRates.at(9);
-      else if(vSSLep.at(0)->pt<300) lep1PromptRate=elPromptRates.at(10);
-      else if(vSSLep.at(0)->pt<400) lep1PromptRate=elPromptRates.at(11);
-      else if(vSSLep.at(0)->pt<500) lep1PromptRate=elPromptRates.at(12);
-      else lep1PromptRate = elPromptRates.at(13);
+      if(vSSLep.at(0)->pt<30) lep1PromptRate=elPromptRates.at(0);
+      else if(vSSLep.at(0)->pt<40) lep1PromptRate=elPromptRates.at(1);
+      else if(vSSLep.at(0)->pt<50) lep1PromptRate=elPromptRates.at(2);
+      else if(vSSLep.at(0)->pt<60) lep1PromptRate=elPromptRates.at(3);
+      else if(vSSLep.at(0)->pt<70) lep1PromptRate=elPromptRates.at(4);
+      else if(vSSLep.at(0)->pt<80) lep1PromptRate=elPromptRates.at(5);
+      else if(vSSLep.at(0)->pt<90) lep1PromptRate=elPromptRates.at(6);
+      else if(vSSLep.at(0)->pt<100) lep1PromptRate=elPromptRates.at(7);
+      else if(vSSLep.at(0)->pt<125) lep1PromptRate=elPromptRates.at(8);
+      else if(vSSLep.at(0)->pt<150) lep1PromptRate=elPromptRates.at(9);
+      else if(vSSLep.at(0)->pt<200) lep1PromptRate=elPromptRates.at(10);
+      else if(vSSLep.at(0)->pt<300) lep1PromptRate=elPromptRates.at(11);
+      else if(vSSLep.at(0)->pt<400) lep1PromptRate=elPromptRates.at(12);
+      else if(vSSLep.at(0)->pt<500) lep1PromptRate=elPromptRates.at(13);
+      else lep1PromptRate = elPromptRates.at(14);
     }
 
     if(vSSLep.at(1)->isMu) lep2PromptRate=muPromptRate;
+    if(vSSLep.at(1)->isMu){
+      if(vSSLep.at(1)->pt<30) lep2PromptRate=muPromptRates.at(0);
+      else if(vSSLep.at(1)->pt<40) lep2PromptRate=muPromptRates.at(1);
+      else if(vSSLep.at(1)->pt<50) lep2PromptRate=muPromptRates.at(2);
+      else if(vSSLep.at(1)->pt<60) lep2PromptRate=muPromptRates.at(3);
+      else if(vSSLep.at(1)->pt<70) lep2PromptRate=muPromptRates.at(4);
+      else if(vSSLep.at(1)->pt<80) lep2PromptRate=muPromptRates.at(5);
+      else if(vSSLep.at(1)->pt<90) lep2PromptRate=muPromptRates.at(6);
+      else if(vSSLep.at(1)->pt<100) lep2PromptRate=muPromptRates.at(7);
+      else if(vSSLep.at(1)->pt<125) lep2PromptRate=muPromptRates.at(8);
+      else if(vSSLep.at(1)->pt<150) lep2PromptRate=muPromptRates.at(9);
+      else if(vSSLep.at(1)->pt<200) lep2PromptRate=muPromptRates.at(10);
+      else if(vSSLep.at(1)->pt<300) lep2PromptRate=muPromptRates.at(11);
+      else if(vSSLep.at(1)->pt<400) lep2PromptRate=muPromptRates.at(12);
+      else if(vSSLep.at(1)->pt<500) lep2PromptRate=muPromptRates.at(13);
+      else lep2PromptRate = muPromptRates.at(14);    
+    }
     else {
-      if(vSSLep.at(1)->pt<40) lep2PromptRate=elPromptRates.at(0);
-      else if(vSSLep.at(1)->pt<50) lep2PromptRate=elPromptRates.at(1);
-      else if(vSSLep.at(1)->pt<60) lep2PromptRate=elPromptRates.at(2);
-      else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(3);
-      else if(vSSLep.at(1)->pt<80) lep2PromptRate=elPromptRates.at(4);
-      else if(vSSLep.at(1)->pt<90) lep2PromptRate=elPromptRates.at(5);
-      else if(vSSLep.at(1)->pt<100) lep2PromptRate=elPromptRates.at(6);
-      else if(vSSLep.at(1)->pt<125) lep2PromptRate=elPromptRates.at(7);
-      else if(vSSLep.at(1)->pt<150) lep2PromptRate=elPromptRates.at(8);
-      else if(vSSLep.at(1)->pt<200) lep2PromptRate=elPromptRates.at(9);
-      else if(vSSLep.at(1)->pt<300) lep2PromptRate=elPromptRates.at(10);
-      else if(vSSLep.at(1)->pt<400) lep2PromptRate=elPromptRates.at(11);
-      else if(vSSLep.at(1)->pt<500) lep2PromptRate=elPromptRates.at(12);
-      else lep2PromptRate = elPromptRates.at(13);
+      if(vSSLep.at(1)->pt<30) lep2PromptRate=elPromptRates.at(0);
+      else if(vSSLep.at(1)->pt<40) lep2PromptRate=elPromptRates.at(1);
+      else if(vSSLep.at(1)->pt<50) lep2PromptRate=elPromptRates.at(2);
+      else if(vSSLep.at(1)->pt<60) lep2PromptRate=elPromptRates.at(3);
+      else if(vSSLep.at(1)->pt<70) lep2PromptRate=elPromptRates.at(4);
+      else if(vSSLep.at(1)->pt<80) lep2PromptRate=elPromptRates.at(5);
+      else if(vSSLep.at(1)->pt<90) lep2PromptRate=elPromptRates.at(6);
+      else if(vSSLep.at(1)->pt<100) lep2PromptRate=elPromptRates.at(7);
+      else if(vSSLep.at(1)->pt<125) lep2PromptRate=elPromptRates.at(8);
+      else if(vSSLep.at(1)->pt<150) lep2PromptRate=elPromptRates.at(9);
+      else if(vSSLep.at(1)->pt<200) lep2PromptRate=elPromptRates.at(10);
+      else if(vSSLep.at(1)->pt<300) lep2PromptRate=elPromptRates.at(11);
+      else if(vSSLep.at(1)->pt<400) lep2PromptRate=elPromptRates.at(12);
+      else if(vSSLep.at(1)->pt<500) lep2PromptRate=elPromptRates.at(13);
+      else lep2PromptRate = elPromptRates.at(14);
     }
     //now get fake rate for each lepton
     float lep1FakeRate = 0.0;
@@ -949,24 +1118,24 @@ int main(int argc, char* argv[]){
       else if(vSSLep.at(0)->eta < -1.2) lep1FakeRate=muFakeRates.at(1);
       else if(vSSLep.at(0)->eta < -0.9) lep1FakeRate=muFakeRates.at(2);
       else if(vSSLep.at(0)->eta < -0.4) lep1FakeRate=muFakeRates.at(3);
-      else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=muFakeRates.at(4);
-      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=muFakeRates.at(5);
-      else if(vSSLep.at(0)->eta < 0.9) lep1FakeRate=muFakeRates.at(6);
-      else if(vSSLep.at(0)->eta < 1.2) lep1FakeRate=muFakeRates.at(7);
-      else if(vSSLep.at(0)->eta < 2.1) lep1FakeRate=muFakeRates.at(8);
-      else lep1FakeRate=muFakeRates.at(9);
+//       else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(0)->eta < 0.9) lep1FakeRate=muFakeRates.at(5);
+      else if(vSSLep.at(0)->eta < 1.2) lep1FakeRate=muFakeRates.at(6);
+      else if(vSSLep.at(0)->eta < 2.1) lep1FakeRate=muFakeRates.at(7);
+      else lep1FakeRate=muFakeRates.at(8);
     }
     else{ //leading is electron
       if(vSSLep.at(0)->eta < -1.566) lep1FakeRate=elFakeRates.at(0);
-      else if(vSSLep.at(0)->eta < -1.4442) lep1FakeRate=elFakeRates.at(1);
-      else if(vSSLep.at(0)->eta < -0.8) lep1FakeRate=elFakeRates.at(2);
-      else if(vSSLep.at(0)->eta < -0.4) lep1FakeRate=elFakeRates.at(3);
-      else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=elFakeRates.at(4);
-      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=elFakeRates.at(5);
-      else if(vSSLep.at(0)->eta < 0.8) lep1FakeRate=elFakeRates.at(6);
-      else if(vSSLep.at(0)->eta < 1.4442) lep1FakeRate=elFakeRates.at(7);
-      else if(vSSLep.at(0)->eta < 1.566) lep1FakeRate=elFakeRates.at(8);
-      else lep1FakeRate=elFakeRates.at(9);
+//       else if(vSSLep.at(0)->eta < -1.4442) lep1FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(0)->eta < -0.8) lep1FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(0)->eta < -0.4) lep1FakeRate=elFakeRates.at(2);
+//       else if(vSSLep.at(0)->eta < 0.0) lep1FakeRate=elFakeRates.at(4);
+      else if(vSSLep.at(0)->eta < 0.4) lep1FakeRate=elFakeRates.at(3);
+      else if(vSSLep.at(0)->eta < 0.8) lep1FakeRate=elFakeRates.at(4);
+//       else if(vSSLep.at(0)->eta < 1.4442) lep1FakeRate=elFakeRates.at(7);
+      else if(vSSLep.at(0)->eta < 1.566) lep1FakeRate=elFakeRates.at(5);
+      else lep1FakeRate=elFakeRates.at(6);
     }
     //now for subleading
     if(vSSLep.at(1)->isMu){
@@ -974,24 +1143,24 @@ int main(int argc, char* argv[]){
       else if(vSSLep.at(1)->eta < -1.2) lep2FakeRate=muFakeRates.at(1);
       else if(vSSLep.at(1)->eta < -0.9) lep2FakeRate=muFakeRates.at(2);
       else if(vSSLep.at(1)->eta < -0.4) lep2FakeRate=muFakeRates.at(3);
-      else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=muFakeRates.at(4);
-      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=muFakeRates.at(5);
-      else if(vSSLep.at(1)->eta < 0.9) lep2FakeRate=muFakeRates.at(6);
-      else if(vSSLep.at(1)->eta < 1.2) lep2FakeRate=muFakeRates.at(7);
-      else if(vSSLep.at(1)->eta < 2.1) lep2FakeRate=muFakeRates.at(8);
-      else lep2FakeRate=muFakeRates.at(9);
+//       else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=muFakeRates.at(4);
+      else if(vSSLep.at(1)->eta < 0.9) lep2FakeRate=muFakeRates.at(5);
+      else if(vSSLep.at(1)->eta < 1.2) lep2FakeRate=muFakeRates.at(6);
+      else if(vSSLep.at(1)->eta < 2.1) lep2FakeRate=muFakeRates.at(7);
+      else lep2FakeRate=muFakeRates.at(8);
     }
     else{ //leading is electron
       if(vSSLep.at(1)->eta < -1.566) lep2FakeRate=elFakeRates.at(0);
-      else if(vSSLep.at(1)->eta < -1.4442) lep2FakeRate=elFakeRates.at(1);
-      else if(vSSLep.at(1)->eta < -0.8) lep2FakeRate=elFakeRates.at(2);
-      else if(vSSLep.at(1)->eta < -0.4) lep2FakeRate=elFakeRates.at(3);
-      else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=elFakeRates.at(4);
-      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=elFakeRates.at(5);
-      else if(vSSLep.at(1)->eta < 0.8) lep2FakeRate=elFakeRates.at(6);
-      else if(vSSLep.at(1)->eta < 1.4442) lep2FakeRate=elFakeRates.at(7);
-      else if(vSSLep.at(1)->eta < 1.566) lep2FakeRate=elFakeRates.at(8);
-      else lep2FakeRate=elFakeRates.at(9);
+//       else if(vSSLep.at(1)->eta < -1.4442) lep2FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(1)->eta < -0.8) lep2FakeRate=elFakeRates.at(1);
+      else if(vSSLep.at(1)->eta < -0.4) lep2FakeRate=elFakeRates.at(2);
+//       else if(vSSLep.at(1)->eta < 0.0) lep2FakeRate=elFakeRates.at(4);
+      else if(vSSLep.at(1)->eta < 0.4) lep2FakeRate=elFakeRates.at(3);
+      else if(vSSLep.at(1)->eta < 0.8) lep2FakeRate=elFakeRates.at(4);
+//       else if(vSSLep.at(1)->eta < 1.4442) lep2FakeRate=elFakeRates.at(7);
+      else if(vSSLep.at(1)->eta < 1.566) lep2FakeRate=elFakeRates.at(5);
+      else lep2FakeRate=elFakeRates.at(6);
     }
 
     if(!bg_np) {NPweight=1.0;NPAltWeight=1.0;NPSUSYWeight=1.0;TL=-1;}

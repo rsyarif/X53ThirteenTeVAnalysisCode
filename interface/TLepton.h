@@ -7,7 +7,15 @@
 
 class TLepton {
 public:
-  TLepton(double pttemp, double etatemp, double phitemp, double energytemp, int chargetemp, float relIsotemp, float miniIsotemp, float susyisotemp);
+  TLepton(double pttemp, 
+          double etatemp, 
+          double phitemp, 
+          double energytemp, 
+          int chargetemp, 
+          float relIsotemp, 
+          float miniIsotemp, 
+          float susyisotemp
+          );
   //Four vector
   double pt;
   double eta;
