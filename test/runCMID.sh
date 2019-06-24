@@ -44,3 +44,5 @@
 ./ChargeMisID.o Data 2016H3 MVA2016TightRC&
 ./ChargeMisID.o Data 2016H2 MVA2016TightRC;
 
+echo "DONE"
+

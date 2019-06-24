@@ -44,7 +44,8 @@ void cmid_plotter_rizki(){
   text1->SetTextFont(42);
   text1->SetTextSizePixels(24);
 
-  TString lumiStr = "41.6 fb^{-1} (13 TeV)";
+//   TString lumiStr = "41.6 fb^{-1} (13 TeV)";
+  TString lumiStr = "37.6 fb^{-1} (13 TeV)";
   TLatex* text2 = new TLatex(3.570061,23.08044, lumiStr);
   text2->SetNDC();
   text2->SetTextAlign(13);
@@ -54,8 +55,13 @@ void cmid_plotter_rizki(){
 
   text1->SetX(0.354);
   text2->SetX(0.354);
-  std::vector<TString> eras; eras.push_back("2017B");eras.push_back("2017C");eras.push_back("2017D");eras.push_back("2017E");eras.push_back("2017F");eras.push_back("All");
-  std::vector<TString> IDs; IDs.push_back("MVA2017TightIsoRC");//IDs.push_back("MVATightRC"); IDs.push_back("MVA80XTightRC");IDs.push_back("MVAJulieTightRC"); IDs.push_back("MVAJulieNewTightRC");
+
+//   std::vector<TString> eras; eras.push_back("2017B");eras.push_back("2017C");eras.push_back("2017D");eras.push_back("2017E");eras.push_back("2017F");eras.push_back("All");
+//   std::vector<TString> IDs; IDs.push_back("MVA2017TightIsoRC");//IDs.push_back("MVATightRC"); IDs.push_back("MVA80XTightRC");IDs.push_back("MVAJulieTightRC"); IDs.push_back("MVAJulieNewTightRC");
+
+  std::vector<TString> eras; eras.push_back("2017C");eras.push_back("2017D");eras.push_back("2017E");eras.push_back("2017F");eras.push_back("All");
+  std::vector<TString> IDs; IDs.push_back("MVA2017TightV2IsoRC");//IDs.push_back("MVATightRC"); IDs.push_back("MVA80XTightRC");IDs.push_back("MVAJulieTightRC"); IDs.push_back("MVAJulieNewTightRC");
+
   for(unsigned int k=0; k<IDs.size();k++){ TString elID = IDs.at(k);
   for(unsigned int l=0; l< eras.size();l++){
 

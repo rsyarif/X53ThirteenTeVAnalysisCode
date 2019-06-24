@@ -52,3 +52,6 @@
 ./PromptRate.o Data El MVA2016TightRC 2016G&
 ./PromptRate.o Data El MVA2016TightRC 2016H2&
 ./PromptRate.o Data El MVA2016TightRC 2016H3;
+
+
+echo "DONE"

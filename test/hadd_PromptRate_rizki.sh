@@ -1,8 +1,73 @@
 #!/bin/bash
 
-hadd PromptRate_Data_All_Electrons_MVA2017TightRC_SortByPhi.root \
-PromptRate_Data_2017B_Electrons_MVA2017TightRC_SortByPhi.root \
-PromptRate_Data_2017C_Electrons_MVA2017TightRC_SortByPhi.root \
-PromptRate_Data_2017D_Electrons_MVA2017TightRC_SortByPhi.root \
-PromptRate_Data_2017E_Electrons_MVA2017TightRC_SortByPhi.root \
-PromptRate_Data_2017F_Electrons_MVA2017TightRC_SortByPhi.root
+
+# hadd -f PromptRate_Data_2017F_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_1_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_2_1_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_2_2_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_2_3_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root
+# 
+# hadd -f PromptRate_Data_All_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017C_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017D_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017E_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_Muons_CBTightMiniIso_SortByPhi_IsoTrig.root
+# 
+# hadd -f PromptRate_Data_All_Electrons_MVA2017TightV2RC_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017C_Electrons_MVA2017TightV2RC_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017D_Electrons_MVA2017TightV2RC_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017E_Electrons_MVA2017TightV2RC_SortByPhi_IsoTrig.root \
+# PromptRate_Data_2017F_Electrons_MVA2017TightV2RC_SortByPhi_IsoTrig.root \
+
+
+#####
+
+
+# hadd -f PromptRate_Data_2017F_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_1_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_1_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_2_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_3_Muons_CBTightMiniIso_SortByPhi.root
+
+# hadd -f PromptRate_Data_All_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017C_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017D_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017E_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_1_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_1_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_2_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_2_3_Muons_CBTightMiniIso_SortByPhi.root
+
+# hadd -f PromptRate_Data_2017CDEF1_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017C_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017D_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017E_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017F_1_Muons_CBTightMiniIso_SortByPhi.root \
+
+hadd -f PromptRate_Data_2017CDEF1F21_Muons_CBTightMiniIso_SortByPhi.root \
+PromptRate_Data_2017C_Muons_CBTightMiniIso_SortByPhi.root \
+PromptRate_Data_2017D_Muons_CBTightMiniIso_SortByPhi.root \
+PromptRate_Data_2017E_Muons_CBTightMiniIso_SortByPhi.root \
+PromptRate_Data_2017F_1_Muons_CBTightMiniIso_SortByPhi.root \
+PromptRate_Data_2017F_2_1_Muons_CBTightMiniIso_SortByPhi.root
+
+
+# hadd -f PromptRate_Data_2017CDE_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017C_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017D_Muons_CBTightMiniIso_SortByPhi.root \
+# PromptRate_Data_2017E_Muons_CBTightMiniIso_SortByPhi.root
+
+# hadd -f PromptRate_Data_All_Electrons_MVA2017TightV2RC_SortByPhi.root \
+# PromptRate_Data_2017C_Electrons_MVA2017TightV2RC_SortByPhi.root \
+# PromptRate_Data_2017D_Electrons_MVA2017TightV2RC_SortByPhi.root \
+# PromptRate_Data_2017E_Electrons_MVA2017TightV2RC_SortByPhi.root \
+# PromptRate_Data_2017F_Electrons_MVA2017TightV2RC_SortByPhi.root \
+
+#####
+
+# hadd PromptRate_Data_All_Electrons_MVA2017TightRC_SortByPhi.root \
+# PromptRate_Data_2017B_Electrons_MVA2017TightRC_SortByPhi.root \
+# PromptRate_Data_2017C_Electrons_MVA2017TightRC_SortByPhi.root \
+# PromptRate_Data_2017D_Electrons_MVA2017TightRC_SortByPhi.root \
+# PromptRate_Data_2017E_Electrons_MVA2017TightRC_SortByPhi.root \
+# PromptRate_Data_2017F_Electrons_MVA2017TightRC_SortByPhi.root

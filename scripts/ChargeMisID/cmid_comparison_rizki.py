@@ -1,6 +1,7 @@
 from ROOT import *
 
-eras = ['2017B','2017C','2017D','2017E','2017F','All']
+# eras = ['2017B','2017C','2017D','2017E','2017F','All']
+eras = ['2017C','2017D','2017E','2017F','All']
 files=[]
 hists=[]
 
@@ -20,14 +21,19 @@ def drawComparison(histname,elID):
         #keep objects accessible
         files.append(f)
         hists.append(h)
-        if era=='2017B':
+#         if era=='2017B':
+#             h.SetMarkerColor(kBlack)
+#             if histname=='h_pt_final':
+#                 h.GetYaxis().SetRangeUser(0.0001,1)
+#             h.Draw("pe")
+#         elif era=='2017C':
+#             h.SetMarkerColor(kBlue)
+#             h.Draw('pe same')
+        if era=='2017C':
             h.SetMarkerColor(kBlack)
             if histname=='h_pt_final':
                 h.GetYaxis().SetRangeUser(0.0001,1)
             h.Draw("pe")
-        elif era=='2017C':
-            h.SetMarkerColor(kBlue)
-            h.Draw('pe same')
         elif era=='2017D':
             h.SetMarkerColor(kRed)
             h.Draw('pe same')
@@ -85,7 +91,8 @@ def drawAllCombined(histname,elID):
     cmstex.SetX(0.354)
     cmstex.Draw()
     #lumi latex
-    lumitex = TLatex(3.570061,23.08044,"41.6 fb^{-1} (13 TeV)")
+#     lumitex = TLatex(3.570061,23.08044,"41.6 fb^{-1} (13 TeV)")
+    lumitex = TLatex(3.570061,23.08044,"37.6 fb^{-1} (13 TeV)")
     lumitex.SetNDC()
     lumitex.SetTextSizePixels(24)
     lumitex.SetY(0.87)
@@ -164,3 +171,8 @@ drawAllCombined('h_num_lpt','MVA2017TightIsoRC')
 drawAllCombined('hpt_final','MVA2017TightIsoRC')
 drawAllCombined('hhpt_final','MVA2017TightIsoRC')
 drawAllCombined('h_pt_final','MVA2017TightIsoRC')
+
+drawAllCombined('h_num_lpt','MVA2017TightV2IsoRC')
+drawAllCombined('hpt_final','MVA2017TightV2IsoRC')
+drawAllCombined('hhpt_final','MVA2017TightV2IsoRC')
+drawAllCombined('h_pt_final','MVA2017TightV2IsoRC')
